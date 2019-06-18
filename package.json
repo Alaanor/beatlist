@@ -9,8 +9,7 @@
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps",
-    "test:unit": "vue-cli-service test:unit"
+    "postuninstall": "electron-builder install-app-deps"
   },
   "main": "background.js",
   "dependencies": {
@@ -20,11 +19,11 @@
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.1.0",
+    "vue-router": "^3.0.6",
     "vuetify": "^1.5.5",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@types/jest": "^23.1.4",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-typescript": "^3.8.0",
     "@vue/cli-plugin-unit-jest": "^3.8.0",

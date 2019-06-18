@@ -1,39 +1,94 @@
 <template>
-  <v-app>
-    <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>open_in_new</v-icon>
-      </v-btn>
+  <v-app dark>
+    <v-navigation-drawer v-model="drawer" clipped app>
+      <v-list dense>
+        <v-list-tile v-for="menu in menus" :to="menu.path">
+          <v-list-tile-action>
+            <v-icon>{{ menu.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ menu.name }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+    <v-toolbar app fixed clipped-left>
+      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-title>Beatlist</v-toolbar-title>
     </v-toolbar>
-
     <v-content>
-      <HelloWorld/>
+      <v-container fluid fill-height>
+        <router-view></router-view>
+      </v-container>
     </v-content>
+    <v-footer app fixed>
+      <span>&copy; 2019</span>
+    </v-footer>
   </v-app>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld'
+<script lang="ts">
+  import Vue from 'vue';
+  import VueRouter from 'vue-router';
+  import Home from '@/components/Home.vue';
+  import SongList from '@/components/SongList.vue';
+  import Playlist from '@/components/Playlist.vue';
+  import Settings from '@/components/Settings.vue';
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  },
-  data () {
-    return {
-      //
-    }
-  }
-}
+  Vue.use(VueRouter);
+
+  let router = new VueRouter({
+    routes: [
+      {
+        path: '/',
+        name: 'home',
+        component: Home
+      },
+      {
+        path: '/song-list',
+        name: 'song-list',
+        component: SongList,
+      },
+      {
+        path: '/playlist',
+        name: 'playlist',
+        component: Playlist,
+      },
+      {
+        path: '/settings',
+        name: 'settings',
+        component: Settings,
+      },
+      { path: '*', redirect: '/' }
+    ]
+  });
+
+  export default {
+    router,
+    data: () => ({
+      drawer: null,
+      menus: [
+        {
+          path: '/',
+          name: 'home',
+          icon: 'home',
+        },
+        {
+          path: '/song-list',
+          name: 'Song list',
+          icon: 'queue_music'
+        },
+        {
+          path: '/playlist',
+          name: 'Playlist',
+          icon: 'playlist_play'
+        },
+        {
+          path: '/settings',
+          name: 'Settings',
+          icon: 'settings'
+        }
+      ]
+    })
+  };
 </script>
