@@ -1,5 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import {promisify} from 'util';
+
+const readdir = promisify(fs.readdir);
 
 export default class BeatSaber {
 
@@ -19,7 +22,8 @@ export default class BeatSaber {
     this.installationPath = installationPath;
   }
 
-  public getSongList() {
-    // @TODO
+  public async getSongList(): Promise<string[]> {
+    const pathSongList = path.join(this.installationPath, 'Beat Saber_Data\\CustomLevels');
+    return await readdir(pathSongList);
   }
 }
