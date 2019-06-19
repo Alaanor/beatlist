@@ -1,11 +1,14 @@
 <template>
   <v-container>
     <h1>Settings</h1>
+    <br/>
     <form>
       <v-text-field
               v-model="installationPath"
               label="Installation path"
-              required
+              append-icon="folder"
+              @click:append="openFileExplorer"
+              required solo
       ></v-text-field>
     </form>
   </v-container>
@@ -13,6 +16,7 @@
 
 <script lang="ts">
   import store from '@/store';
+  import { remote } from 'electron';
 
   export default {
     name: 'Settings',
@@ -24,6 +28,11 @@
         set(value: string) {
           store.commit('setInstallationPath', value);
         },
+      },
+    },
+    methods: {
+      openFileExplorer() {
+        store.commit('setInstallationPath', remote.dialog.showOpenDialog({}));
       },
     },
   };
