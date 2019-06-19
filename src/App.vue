@@ -63,7 +63,7 @@
         name: 'settings',
         component: Settings,
       },
-      { path: '*', redirect: '/' },
+      {path: '*', redirect: '/'},
     ],
   });
 
@@ -96,3 +96,10 @@
     }),
   };
 </script>
+
+<style>
+  /* Disable scrollbar */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+</style>
