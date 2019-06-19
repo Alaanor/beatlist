@@ -5,7 +5,16 @@
     <div v-for="song in songs.list">
       <p>{{song}}</p>
     </div>
-    <p class="red" v-if="songs.err !== undefined">{{songs.err}}</p>
+    <v-alert :value="true" type="error" v-if="songs.err !== undefined">
+      <v-container class="ma-0 pa-0">
+        <v-layout align-center justify-space-between row fill-height>
+          <span>Couldn't find any song, you probably haven't specified the right folder in <b>Settings</b>.</span>
+          <v-btn icon to="settings" class="pa-0 ma-0">
+            <v-icon>launch</v-icon>
+          </v-btn>
+        </v-layout>
+      </v-container>
+    </v-alert>
   </v-container>
 </template>
 
