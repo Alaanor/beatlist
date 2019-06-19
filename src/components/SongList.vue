@@ -4,8 +4,8 @@
 
 <script lang="ts">
   export default {
-    name: "SongList"
-  }
+    name: 'SongList',
+  };
 </script>
 
 <style scoped>

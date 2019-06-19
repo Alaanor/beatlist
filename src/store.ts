@@ -5,12 +5,11 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-
+    installationPath: '',
   },
   mutations: {
-
-  },
-  actions: {
-
+    setInstallationPath(state, status) {
+      state.installationPath = status;
+    },
   },
 });

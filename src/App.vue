@@ -17,8 +17,12 @@
       <v-toolbar-title>Beatlist</v-toolbar-title>
     </v-toolbar>
     <v-content>
-      <v-container fluid fill-height>
-        <router-view></router-view>
+      <v-container fluid>
+        <v-layout>
+          <v-flex md8 xs12 offset-md2>
+            <router-view></router-view>
+          </v-flex>
+        </v-layout>
       </v-container>
     </v-content>
     <v-footer app fixed>
@@ -37,12 +41,12 @@
 
   Vue.use(VueRouter);
 
-  let router = new VueRouter({
+  const router = new VueRouter({
     routes: [
       {
         path: '/',
         name: 'home',
-        component: Home
+        component: Home,
       },
       {
         path: '/song-list',
@@ -59,8 +63,8 @@
         name: 'settings',
         component: Settings,
       },
-      { path: '*', redirect: '/' }
-    ]
+      { path: '*', redirect: '/' },
+    ],
   });
 
   export default {
@@ -76,19 +80,19 @@
         {
           path: '/song-list',
           name: 'Song list',
-          icon: 'queue_music'
+          icon: 'queue_music',
         },
         {
           path: '/playlist',
           name: 'Playlist',
-          icon: 'playlist_play'
+          icon: 'playlist_play',
         },
         {
           path: '/settings',
           name: 'Settings',
-          icon: 'settings'
-        }
-      ]
-    })
+          icon: 'settings',
+        },
+      ],
+    }),
   };
 </script>
