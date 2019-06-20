@@ -38,7 +38,7 @@
   import SongList from '@/components/SongList.vue';
   import Playlist from '@/components/Playlist.vue';
   import Settings from '@/components/Settings.vue';
-  import {sync} from 'vuex-pathify';
+  import { get } from 'vuex-pathify';
 
   Vue.use(VueRouter);
 
@@ -96,7 +96,7 @@
       ],
     }),
     computed: {
-      settings: sync('settings'),
+      settings: get('settings'),
     },
   };
 </script>
