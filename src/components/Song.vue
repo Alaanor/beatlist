@@ -1,18 +1,18 @@
 <template>
-  <v-card v-if="data !== undefined" width="305px" height="185px">
+  <v-card v-if="data !== undefined" width="305px" height="160px">
     <v-layout justify-space-between row>
       <v-flex xs5>
-        <v-img :src="data.imgData" height="125px" contain class="mx-2"></v-img>
+        <v-img :src="data.imgData" height="100px" contain class="mx-2"></v-img>
       </v-flex>
       <v-flex xs7>
-        <v-card-title primary-title>
-          <v-container grid-list ma-0 pa-0 height="100px">
+        <div>
+          <v-container pa-0>
             <div class="subheading">{{data.songName}}</div>
             <div class="caption">{{data.songSubName}}</div>
             <div class="caption text-truncate">{{data.songAuthorName}}</div>
             <div class="caption">{{data.levelAuthorName}}</div>
           </v-container>
-        </v-card-title>
+        </div>
       </v-flex>
     </v-layout>
     <v-divider light></v-divider>
