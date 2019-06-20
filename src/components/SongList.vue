@@ -1,10 +1,19 @@
 <template>
   <v-container>
-    <h1>Song list</h1>
+    <v-container>
+      <v-layout align-start justify-space-between>
+        <v-flex>
+          <h1>Song list</h1>
+        </v-flex>
+        <v-flex>
+          <v-text-field v-model="search" label="search" solo append-icon="search"></v-text-field>
+        </v-flex>
+      </v-layout>
+    </v-container>
     <br/>
     <v-container fluid grid-list-lg>
       <v-layout row wrap align-center justify-center>
-        <v-flex v-for="song in songs.list">
+        <v-flex v-for="song in filtered">
           <Song :songPath="song"></Song>
         </v-flex>
       </v-layout>
@@ -27,6 +36,7 @@
   import BeatSaber from '@/lib/BeatSaber';
   import store from '@/store';
   import Song from '@/components/Song.vue';
+  import SongData from '@/lib/SongData';
 
   interface SongList {
     list: string[];
@@ -35,10 +45,16 @@
 
   export default Vue.extend({
     name: 'SongList',
-    components: { Song },
+    components: {Song},
     data: () => ({
       songs: {list: [], err: undefined} as SongList,
+      search: "",
     }),
+    computed: {
+      filtered: function () {
+        return this.songs.list;
+      },
+    },
     created() {
       new BeatSaber(store.state.installationPath).getSongList()
         .then((list) => {
