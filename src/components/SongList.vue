@@ -2,9 +2,13 @@
   <v-container>
     <h1>Song list</h1>
     <br/>
-    <div v-for="song in songs.list">
-      <p>{{song}}</p>
-    </div>
+    <v-container fluid grid-list-lg>
+      <v-layout row wrap align-center justify-center>
+        <v-flex v-for="song in songs.list">
+          <Song :songPath="song"></Song>
+        </v-flex>
+      </v-layout>
+    </v-container>
     <v-alert :value="true" type="error" v-if="songs.err !== undefined">
       <v-container class="ma-0 pa-0">
         <v-layout align-center justify-space-between row fill-height>
@@ -22,6 +26,7 @@
   import Vue from 'vue';
   import BeatSaber from '@/lib/BeatSaber';
   import store from '@/store';
+  import Song from '@/components/Song.vue';
 
   interface SongList {
     list: string[];
@@ -30,6 +35,7 @@
 
   export default Vue.extend({
     name: 'SongList',
+    components: { Song },
     data: () => ({
       songs: {list: [], err: undefined} as SongList,
     }),

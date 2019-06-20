@@ -25,6 +25,7 @@
     "vuex-persist": "^2.0.1"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.9.0",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-typescript": "^3.8.0",
     "@vue/cli-plugin-unit-jest": "^3.8.0",

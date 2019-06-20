@@ -16,7 +16,7 @@ export default class BeatSaber {
     }
   }
 
-  private installationPath: string;
+  private readonly installationPath: string;
 
   constructor(installationPath: string) {
     this.installationPath = installationPath;
@@ -24,6 +24,9 @@ export default class BeatSaber {
 
   public async getSongList(): Promise<string[]> {
     const pathSongList = path.join(this.installationPath, 'Beat Saber_Data\\CustomLevels');
-    return await readdir(pathSongList);
+    const directoryList = await readdir(pathSongList);
+    return directoryList.map((directory) => {
+      return path.join(pathSongList, directory);
+    });
   }
 }

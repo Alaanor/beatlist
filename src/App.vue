@@ -19,7 +19,7 @@
     <v-content>
       <v-container fluid>
         <v-layout>
-          <v-flex md8 xs12 offset-md2>
+          <v-flex lg8 xs12 offset-lg2>
             <router-view></router-view>
           </v-flex>
         </v-layout>
