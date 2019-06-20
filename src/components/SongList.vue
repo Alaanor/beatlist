@@ -34,9 +34,8 @@
 <script lang="ts">
   import Vue from 'vue';
   import BeatSaber from '@/lib/BeatSaber';
-  import store from '@/store';
+  import store from '@/store/store';
   import Song from '@/components/Song.vue';
-  import SongData from '@/lib/SongData';
 
   interface SongList {
     list: string[];
@@ -48,15 +47,15 @@
     components: {Song},
     data: () => ({
       songs: {list: [], err: undefined} as SongList,
-      search: "",
+      search: '',
     }),
     computed: {
-      filtered: function () {
+      filtered() {
         return this.songs.list;
       },
     },
     created() {
-      new BeatSaber(store.state.installationPath).getSongList()
+      new BeatSaber(this.$store.state.installationPath).getSongList()
         .then((list) => {
           this.songs.list = list;
           this.songs.err = undefined;

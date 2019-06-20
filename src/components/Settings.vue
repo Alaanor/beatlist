@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <h1>Settings</h1>
-    <br/>
+    <h1>Settings</h1><br>
+    <h2>Required</h2><br>
     <v-form v-model="configValid">
       <v-text-field
               v-model="installationPath"
@@ -14,14 +14,17 @@
               solo
       ></v-text-field>
     </v-form>
+    <h2>Preferences</h2>
+    <v-switch v-model="darkTheme" label="Dark theme"></v-switch>
+    <v-switch v-model="miniVariant" label="Mini sidebar"></v-switch>
   </v-container>
 </template>
 
 <script lang="ts">
-  import store from '@/store';
   import {remote} from 'electron';
   import BeatSaber from '@/lib/BeatSaber';
   import Vue from 'vue';
+  import { sync } from 'vuex-pathify';
 
   export default Vue.extend({
     name: 'Settings',
@@ -31,28 +34,16 @@
       },
     }),
     computed: {
-      installationPath: {
-        get() {
-          return store.state.installationPath;
-        },
-        set(value: string) {
-          store.commit('setInstallationPath', value);
-        },
-      },
-      configValid: {
-        get() {
-          return store.state.configValid;
-        },
-        set(value: boolean) {
-          store.commit('setConfigValidState', value);
-        },
-      },
+      installationPath: sync('settings/installationPath'),
+      configValid: sync('settings/configValid'),
+      darkTheme: sync('settings/darkTheme'),
+      miniVariant: sync('settings/miniVariant'),
     },
     methods: {
-      openFileExplorer() {
+      openFileExplorer(): void {
         const folder = remote.dialog.showOpenDialog({properties: ['openDirectory']});
         if (folder !== undefined) {
-          store.commit('setInstallationPath', folder[0]);
+          this.installationPath = folder[0];
         }
       },
       validate() {
@@ -62,7 +53,3 @@
     },
   });
 </script>
-
-<style scoped>
-
-</style>

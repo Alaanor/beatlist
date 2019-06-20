@@ -6,8 +6,13 @@ const readdir = promisify(fs.readdir);
 
 export default class BeatSaber {
 
-  public static isPathLegit(installationPath: string): boolean {
+  public static isPathLegit(installationPath: string | undefined): boolean {
+    if (installationPath === undefined) {
+      return false;
+    }
+
     const pathToBeatSaberExe = path.join(installationPath, 'Beat Saber.exe');
+
     try {
       fs.accessSync(pathToBeatSaberExe, fs.constants.F_OK);
       return true;

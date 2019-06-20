@@ -1,6 +1,6 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer v-model="drawer" clipped app>
+  <v-app :dark="settings.darkTheme">
+    <v-navigation-drawer v-model="drawer" clipped app :mini-variant="settings.miniVariant">
       <v-list dense>
         <v-list-tile v-for="menu in menus" :to="menu.path">
           <v-list-tile-action>
@@ -38,6 +38,7 @@
   import SongList from '@/components/SongList.vue';
   import Playlist from '@/components/Playlist.vue';
   import Settings from '@/components/Settings.vue';
+  import {sync} from 'vuex-pathify';
 
   Vue.use(VueRouter);
 
@@ -94,6 +95,9 @@
         },
       ],
     }),
+    computed: {
+      settings: sync('settings'),
+    },
   };
 </script>
 
