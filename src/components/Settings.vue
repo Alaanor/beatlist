@@ -79,11 +79,11 @@
       },
       getNumberOfSongs(): number {
         const songs = this.songs as SongData[];
-        return this.songs !== undefined ? songs.filter(s => s.valid).length : 0;
+        return this.songs !== undefined ? songs.filter((s) => s.valid).length : 0;
       },
       getNumberOfInvalidSongs(): number {
         const songs = this.songs as SongData[];
-        return this.songs !== undefined ? songs.filter(s => !s.valid).length : 0;
+        return this.songs !== undefined ? songs.filter((s) => !s.valid).length : 0;
       },
     },
   });

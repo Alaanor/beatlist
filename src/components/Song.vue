@@ -47,15 +47,15 @@
             .LoadCover(song.songPath, song.coverImagePath)
             .then((data) => this.imageData = data);
         }
-      }
+      },
     },
     mounted() {
-      this.$nextTick(async function () {
+      this.$nextTick(async function() {
         this.LoadImage();
       });
     },
     watch: {
-      data: function () {
+      data() {
         this.imageData = '';
         this.LoadImage();
       },

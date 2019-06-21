@@ -59,7 +59,7 @@
       rowsPerPageItems: [6, 12, 24, 48],
       pagination: {
         rowsPerPage: 6,
-      }
+      },
     }),
     computed: {
       songs: get('songs/songs'),
@@ -71,7 +71,7 @@
       Filter(items: object[], search: string) {
         const songs = items as SongData[];
 
-        if (search === ''){
+        if (search === '') {
           return songs.filter((s: SongData) => s.valid);
         }
 
