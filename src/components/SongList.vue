@@ -76,11 +76,11 @@
         }
 
         return songs.filter( (song: SongData) => {
-          return search.toLowerCase().split(' ').map(() => (
-            (song.songName && song.songName.toLowerCase().indexOf(search) !== -1) ||
-            (song.songSubName && song.songSubName.toLowerCase().indexOf(search) !== -1) ||
-            (song.songAuthorName && song.songAuthorName.toLowerCase().indexOf(search) !== -1) ||
-            (song.levelAuthorName && song.levelAuthorName.toLowerCase().indexOf(search) !== -1)
+          return search.toLowerCase().split(' ').filter((v) => v !== '').map((word) => (
+            (song.songName && song.songName.toLowerCase().indexOf(word) !== -1) ||
+            (song.songSubName && song.songSubName.toLowerCase().indexOf(word) !== -1) ||
+            (song.songAuthorName && song.songAuthorName.toLowerCase().indexOf(word) !== -1) ||
+            (song.levelAuthorName && song.levelAuthorName.toLowerCase().indexOf(word) !== -1)
           )).every(Boolean);
         });
       },
