@@ -1,3 +1,4 @@
+<!--suppress XmlUnboundNsPrefix -->
 <template>
   <v-container>
     <v-container>
@@ -10,18 +11,25 @@
         </v-flex>
       </v-layout>
     </v-container>
-    <br/>
     <v-container fluid grid-list-lg>
-      <v-layout row wrap align-center justify-center>
-        <v-flex v-for="song in filtered">
-          <Song :songPath="song"></Song>
-        </v-flex>
-      </v-layout>
+      <v-data-iterator
+              :items="songs"
+              :rows-per-page-items="rowsPerPageItems"
+              :pagination.sync="pagination"
+              content-tag="v-layout" row wrap
+              @update:pagination="LoadImages"
+              :search="search">
+        <template v-slot:item="props">
+          <v-flex>
+            <Song :data="props.item"></Song>
+          </v-flex>
+        </template>
+      </v-data-iterator>
     </v-container>
-    <v-alert :value="true" type="error" v-if="songs.err !== undefined">
+    <v-alert :value="true" type="error" v-if="songs === undefined">
       <v-container class="ma-0 pa-0">
         <v-layout align-center justify-space-between row fill-height>
-          <span>Couldn't find any song, you probably haven't specified the right folder in <b>Settings</b>.</span>
+          <span>Couldn't find any song, you probably haven't specified the right folder in <strong>Settings</strong>.</span>
           <v-btn icon to="settings" class="pa-0 ma-0">
             <v-icon>launch</v-icon>
           </v-btn>
@@ -33,8 +41,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import BeatSaber from '@/lib/BeatSaber';
-  import store from '@/store/store';
+  import {get} from 'vuex-pathify';
   import Song from '@/components/Song.vue';
 
   interface SongList {
@@ -46,28 +53,25 @@
     name: 'SongList',
     components: {Song},
     data: () => ({
-      songs: {list: [], err: undefined} as SongList,
       search: '',
+      rowsPerPageItems: [6, 12, 24, 48],
+      pagination: {
+        rowsPerPage: 6,
+      }
     }),
     computed: {
-      filtered() {
-        return this.songs.list;
-      },
+      songs: get('songs/songs'),
     },
-    created() {
-      new BeatSaber(this.$store.state.installationPath).getSongList()
-        .then((list) => {
-          this.songs.list = list;
-          this.songs.err = undefined;
-        })
-        .catch((err) => {
-          this.songs.list = [];
-          this.songs.err = err;
-        });
+    methods: {
+      LoadImages() {
+        this.$emit('loadImage');
+      }
     },
   });
 </script>
 
 <style scoped>
-
+  .scroller {
+    height: 100%;
+  }
 </style>

@@ -20,7 +20,9 @@
       <v-container fluid>
         <v-layout>
           <v-flex lg8 xs12 offset-lg2>
-            <router-view></router-view>
+            <keep-alive>
+              <router-view></router-view>
+            </keep-alive>
           </v-flex>
         </v-layout>
       </v-container>

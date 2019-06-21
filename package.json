@@ -14,6 +14,7 @@
   "main": "background.js",
   "dependencies": {
     "core-js": "^2.6.5",
+    "localforage": "^1.7.3",
     "material-design-icons-iconfont": "^3.0.3",
     "roboto-fontface": "*",
     "vue": "^2.6.10",

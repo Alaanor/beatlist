@@ -14,6 +14,18 @@
               solo
       ></v-text-field>
     </v-form>
+    <h2>Song library</h2>
+    <v-container>
+      <v-layout>
+        <v-flex>
+          <div class="subheading">Number of songs detected: {{getNumberOfSongs()}}</div>
+          <div>Last scan: {{getLastScan()}}</div>
+        </v-flex>
+        <v-flex>
+          <Scan></Scan>
+        </v-flex>
+      </v-layout>
+    </v-container>
     <h2>Preferences</h2>
     <v-switch v-model="darkTheme" label="Dark theme"></v-switch>
     <v-switch v-model="miniVariant" label="Mini sidebar"></v-switch>
@@ -24,10 +36,13 @@
   import {remote} from 'electron';
   import BeatSaber from '@/lib/BeatSaber';
   import Vue from 'vue';
-  import { sync } from 'vuex-pathify';
+  import {sync, get} from 'vuex-pathify';
+  import SongData from '@/lib/SongData';
+  import Scan from '@/components/Scan.vue';
 
   export default Vue.extend({
     name: 'Settings',
+    components: {Scan},
     data: () => ({
       rules: {
         validInstallationPath: [(v: string) => BeatSaber.isPathLegit(v) || 'Installation path is not valid'],
@@ -38,6 +53,8 @@
       configValid: sync('settings/configValid'),
       darkTheme: sync('settings/darkTheme'),
       miniVariant: sync('settings/miniVariant'),
+      lastScan: get('songs/lastScan'),
+      songs: get('songs/songs'),
     },
     methods: {
       openFileExplorer(): void {
@@ -49,6 +66,19 @@
       validate() {
         const form = this.$refs.form as HTMLFormElement;
         form.validate();
+      },
+      getLastScan() {
+        const lastScan = this.lastScan as Date;
+
+        if (lastScan === undefined) {
+          return 'Never';
+        }
+
+        return lastScan.toLocaleString();
+      },
+      getNumberOfSongs(): number {
+        const songs = this.songs as SongData[];
+        return this.songs !== undefined ? songs.length : 0;
       },
     },
   });

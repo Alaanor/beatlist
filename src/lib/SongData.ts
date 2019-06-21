@@ -15,7 +15,6 @@ export default class SongData {
   public coverImagePath: string | undefined;
   public songFilename: string | undefined;
   public difficultyLevels: DifficultyBeatMapSets[] | undefined;
-  public imgData: string | undefined;
 
   private readonly songPath: string;
   private valid: boolean = false;
@@ -37,24 +36,18 @@ export default class SongData {
       this.beatsPerMinute = data._beatsPerMinute;
       this.coverImagePath = data._coverImageFilename;
       this.songFilename = data._songFilename;
-      this.difficultyLevels = data.difficultyLevels as DifficultyBeatMapSets[];
+      this.difficultyLevels = data._difficultyBeatmapSets as DifficultyBeatMapSets[];
 
       this.valid = true;
-
-      this.imgData = await this.GetCoverSrc();
-
     } catch (e) {
       return;
     }
   }
 
-  private async GetCoverSrc(): Promise<string> {
-    if (this.valid) {
-      const filePath = nodePath.join(this.songPath, this.coverImagePath || '');
-      const imgData = await readFile(filePath);
-      return 'data:image/jpg;base64,' + imgData.toString('base64');
-    }
-    return '';
+  public static async LoadCover(songPath: string, coverImagePath: string): Promise<string> {
+    const filePath = nodePath.join(songPath, coverImagePath || '');
+    const imgData = await readFile(filePath);
+    return 'data:image/jpg;base64,' + imgData.toString('base64');
   }
 
 }
