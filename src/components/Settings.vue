@@ -27,7 +27,11 @@
                 {{getNumberOfInvalidSongs()}} song(s) couldn't've been imported.
               </div>
             </template>
-            <span>For example old song/version of song<br>that aren't on beatSaver anymore</span>
+            <span>
+              For example old song/version of song<br>
+              that aren't on beatSaver anymore.<br>
+              Or custom map not published yet.
+            </span>
           </v-tooltip>
         </v-flex>
         <v-flex>
