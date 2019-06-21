@@ -2,6 +2,7 @@ import nodePath from 'path';
 import fs from 'fs';
 import {promisify} from 'util';
 import DifficultyBeatMapSets from '@/lib/DifficultyBeatMapSets';
+import SongHashData from './SongHashData';
 
 const readFile = promisify(fs.readFile);
 
@@ -13,6 +14,7 @@ export default class SongData {
     return 'data:image/jpg;base64,' + imgData.toString('base64');
   }
 
+  public songHash: string | undefined;
   public songName: string | undefined;
   public songSubName: string | undefined;
   public songAuthorName: string | undefined;
@@ -35,6 +37,7 @@ export default class SongData {
       const raw = await readFile(path, 'utf8');
       const data = JSON.parse(raw);
 
+      this.songHash = (await SongHashData.data())[this.songPath].songHash;
       this.songName = data._songName;
       this.songSubName = data._songSubName;
       this.songAuthorName = data._songAuthorName;
@@ -49,5 +52,4 @@ export default class SongData {
       return;
     }
   }
-
 }
