@@ -7,6 +7,12 @@ const readFile = promisify(fs.readFile);
 
 export default class SongData {
 
+  public static async LoadCover(songPath: string, coverImagePath: string): Promise<string> {
+    const filePath = nodePath.join(songPath, coverImagePath || '');
+    const imgData = await readFile(filePath);
+    return 'data:image/jpg;base64,' + imgData.toString('base64');
+  }
+
   public songName: string | undefined;
   public songSubName: string | undefined;
   public songAuthorName: string | undefined;
@@ -15,9 +21,9 @@ export default class SongData {
   public coverImagePath: string | undefined;
   public songFilename: string | undefined;
   public difficultyLevels: DifficultyBeatMapSets[] | undefined;
+  public valid: boolean = false;
 
   private readonly songPath: string;
-  private valid: boolean = false;
 
   constructor(path: string) {
     this.songPath = path;
@@ -42,12 +48,6 @@ export default class SongData {
     } catch (e) {
       return;
     }
-  }
-
-  public static async LoadCover(songPath: string, coverImagePath: string): Promise<string> {
-    const filePath = nodePath.join(songPath, coverImagePath || '');
-    const imgData = await readFile(filePath);
-    return 'data:image/jpg;base64,' + imgData.toString('base64');
   }
 
 }

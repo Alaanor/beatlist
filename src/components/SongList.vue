@@ -16,6 +16,7 @@
               :items="songs"
               :rows-per-page-items="rowsPerPageItems"
               :pagination.sync="pagination"
+              :custom-filter="Filter"
               content-tag="v-layout" row wrap
               @update:pagination="LoadImages"
               :search="search">
@@ -43,6 +44,7 @@
   import Vue from 'vue';
   import {get} from 'vuex-pathify';
   import Song from '@/components/Song.vue';
+  import SongData from '@/lib/SongData';
 
   interface SongList {
     list: string[];
@@ -65,7 +67,23 @@
     methods: {
       LoadImages() {
         this.$emit('loadImage');
-      }
+      },
+      Filter(items: object[], search: string) {
+        const songs = items as SongData[];
+
+        if (search === ''){
+          return songs.filter((s: SongData) => s.valid);
+        }
+
+        return songs.filter( (song: SongData) => {
+          return search.toLowerCase().split(' ').map(() => (
+            (song.songName && song.songName.toLowerCase().indexOf(search) !== -1) ||
+            (song.songSubName && song.songSubName.toLowerCase().indexOf(search) !== -1) ||
+            (song.songAuthorName && song.songAuthorName.toLowerCase().indexOf(search) !== -1) ||
+            (song.levelAuthorName && song.levelAuthorName.toLowerCase().indexOf(search) !== -1)
+          )).every(Boolean);
+        });
+      },
     },
   });
 </script>
