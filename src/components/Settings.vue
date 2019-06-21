@@ -20,6 +20,7 @@
         <v-flex>
           <div class="subheading">Number of songs detected: {{getNumberOfSongs()}}</div>
           <div>Last scan: {{getLastScan()}}</div>
+          <div class="caption" v-if="getNumberOfInvalidSongs() > 0">{{getNumberOfInvalidSongs()}} song(s) couldn't've been imported.</div>
         </v-flex>
         <v-flex>
           <Scan></Scan>
@@ -78,7 +79,11 @@
       },
       getNumberOfSongs(): number {
         const songs = this.songs as SongData[];
-        return this.songs !== undefined ? songs.length : 0;
+        return this.songs !== undefined ? songs.filter(s => s.valid).length : 0;
+      },
+      getNumberOfInvalidSongs(): number {
+        const songs = this.songs as SongData[];
+        return this.songs !== undefined ? songs.filter(s => !s.valid).length : 0;
       },
     },
   });
