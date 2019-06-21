@@ -61,7 +61,7 @@
     methods: {
       getNumberOfSongs(): number {
         const songs = this.songs as SongData[];
-        return this.songs !== undefined ? songs.length : 0;
+        return this.songs !== undefined ? songs.filter((s) => s.valid).length : 0;
       },
       scan() {
         this.dialogScan = true;
@@ -82,6 +82,10 @@
             this.scanResult.type = 'success';
             this.scanResult.message = `Successfully imported ${this.getNumberOfSongs()} songs.`;
             this.scanResult.err = undefined;
+
+            if (this.getNumberOfSongs() == 0) {
+              throw new Error("Something went wrong, 0 song were correctly imported")
+            }
         })
           .catch((err) => {
             this.scanResult.type = 'error';
