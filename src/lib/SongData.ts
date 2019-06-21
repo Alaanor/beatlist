@@ -3,8 +3,10 @@ import fs from 'fs';
 import {promisify} from 'util';
 import DifficultyBeatMapSets from '@/lib/DifficultyBeatMapSets';
 import SongHashData from './SongHashData';
+import axios from 'axios';
 
 const readFile = promisify(fs.readFile);
+const apiHashUrl = 'https://beatsaver.com/api/maps/by-hash/';
 
 export default class SongData {
 
@@ -14,7 +16,18 @@ export default class SongData {
     return 'data:image/jpg;base64,' + imgData.toString('base64');
   }
 
+  private static async GetKeyFromHash(hash: string): Promise<string> {
+    return axios({
+      method: 'get',
+      url: apiHashUrl + hash,
+      responseType: 'json',
+    }).then((response) => {
+      return response.data.key;
+    });
+  }
+
   public songHash: string | undefined;
+  public songKey: string | undefined;
   public songName: string | undefined;
   public songSubName: string | undefined;
   public songAuthorName: string | undefined;
@@ -23,6 +36,8 @@ export default class SongData {
   public coverImagePath: string | undefined;
   public songFilename: string | undefined;
   public difficultyLevels: DifficultyBeatMapSets[] | undefined;
+
+  public hashNotFound: boolean = false;
   public valid: boolean = false;
 
   private readonly songPath: string;
@@ -37,7 +52,6 @@ export default class SongData {
       const raw = await readFile(path, 'utf8');
       const data = JSON.parse(raw);
 
-      this.songHash = (await SongHashData.data())[this.songPath].songHash;
       this.songName = data._songName;
       this.songSubName = data._songSubName;
       this.songAuthorName = data._songAuthorName;
@@ -46,6 +60,9 @@ export default class SongData {
       this.coverImagePath = data._coverImageFilename;
       this.songFilename = data._songFilename;
       this.difficultyLevels = data._difficultyBeatmapSets as DifficultyBeatMapSets[];
+
+      this.songHash = (await SongHashData.data())[this.songPath].songHash;
+      this.songKey = (await SongData.GetKeyFromHash(this.songHash));
 
       this.valid = true;
     } catch (e) {

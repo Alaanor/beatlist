@@ -1,3 +1,4 @@
+<!--suppress XmlUnboundNsPrefix -->
 <template>
   <v-container>
     <h1>Settings</h1><br>
@@ -20,7 +21,14 @@
         <v-flex>
           <div class="subheading">Number of songs detected: {{getNumberOfSongs()}}</div>
           <div>Last scan: {{getLastScan()}}</div>
-          <div class="caption" v-if="getNumberOfInvalidSongs() > 0">{{getNumberOfInvalidSongs()}} song(s) couldn't've been imported.</div>
+          <v-tooltip left>
+            <template v-slot:activator="{ on }">
+              <div class="caption" v-if="getNumberOfInvalidSongs() > 0" v-on="on">
+                {{getNumberOfInvalidSongs()}} song(s) couldn't've been imported.
+              </div>
+            </template>
+            <span>For example old song/version of song<br>that aren't on beatSaver anymore</span>
+          </v-tooltip>
         </v-flex>
         <v-flex>
           <Scan></Scan>
