@@ -83,8 +83,8 @@
             this.scanResult.message = `Successfully imported ${this.getNumberOfSongs()} songs.`;
             this.scanResult.err = undefined;
 
-            if (this.getNumberOfSongs() == 0) {
-              throw new Error("Something went wrong, 0 song were correctly imported")
+            if (this.getNumberOfSongs() === 0) {
+              throw new Error('Something went wrong, 0 song were correctly imported');
             }
         })
           .catch((err) => {
