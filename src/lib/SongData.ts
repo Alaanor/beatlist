@@ -26,6 +26,17 @@ export default class SongData {
     });
   }
 
+  private static GetFolderId(songPath: string): string | undefined {
+    const regex = /\\([0-9]*-*[0-9]*)[^\\]+$/;
+    const m = regex.exec(songPath);
+
+    if (m !== null && m[1] !== undefined) {
+      return m[1] || undefined;
+    }
+
+    return undefined;
+  }
+
   public songHash: string | undefined;
   public songKey: string | undefined;
   public songName: string | undefined;
@@ -36,8 +47,8 @@ export default class SongData {
   public coverImagePath: string | undefined;
   public songFilename: string | undefined;
   public difficultyLevels: DifficultyBeatMapSets[] | undefined;
+  public folderId: string | undefined;
 
-  public hashNotFound: boolean = false;
   public valid: boolean = false;
 
   private readonly songPath: string;
@@ -61,6 +72,7 @@ export default class SongData {
       this.songFilename = data._songFilename;
       this.difficultyLevels = data._difficultyBeatmapSets as DifficultyBeatMapSets[];
 
+      this.folderId = SongData.GetFolderId(this.songPath);
       this.songHash = (await SongHashData.data())[this.songPath].songHash;
       this.songKey = (await SongData.GetKeyFromHash(this.songHash));
 
