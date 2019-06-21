@@ -42,15 +42,13 @@
     methods: {
       LoadImage() {
         const song = this.$props.data;
-        if (song.valid) {
-          SongData
-            .LoadCover(song.songPath, song.coverImagePath)
-            .then((data) => this.imageData = data);
-        }
+        SongData
+          .LoadCover(song.songPath, song.coverImagePath)
+          .then((data) => this.imageData = data);
       },
     },
     mounted() {
-      this.$nextTick(async function() {
+      this.$nextTick(async function () {
         this.LoadImage();
       });
     },

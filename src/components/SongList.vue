@@ -13,7 +13,7 @@
     </v-container>
     <v-container fluid grid-list-lg>
       <v-data-iterator
-              :items="songs"
+              :items="songs.filter((s) => s.valid)"
               :rows-per-page-items="rowsPerPageItems"
               :pagination.sync="pagination"
               :custom-filter="Filter"
