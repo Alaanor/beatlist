@@ -21,14 +21,7 @@
         <v-window v-model="window" class="elevation-1" vertical>
           <v-window-item key="1">
             <v-card flat>
-              <v-card-text>
-                <v-layout align-center mb-3>
-                  <v-avatar class="mr-3">
-                    <v-img v-if="imageData.length > 0" :src="imageData"></v-img>
-                  </v-avatar>
-                  <strong class="title">{{playlist.playlistTitle}}</strong>
-                </v-layout>
-              </v-card-text>
+              <PlaylistEditorData :data="playlist"></PlaylistEditorData>
             </v-card>
           </v-window-item>
           <v-window-item key="2">
@@ -54,9 +47,11 @@
   import Vue from 'vue';
   import {get} from 'vuex-pathify';
   import Playlist from '../lib/Playlist';
+  import PlaylistEditorData from './PlaylistEditorData';
 
   export default Vue.extend({
     name: 'PlaylistEditor',
+    components: { PlaylistEditorData },
     data: () => ({
       length: 2,
       window: 0,
