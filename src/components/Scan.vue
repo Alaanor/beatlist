@@ -79,6 +79,8 @@
               return song;
             }));
 
+            SongData.DetectDuplicate(this.songs as SongData[]);
+
             this.scanResult.type = 'success';
             this.scanResult.message = `Successfully imported ${this.getNumberOfSongs()} songs.`;
             this.scanResult.err = undefined;

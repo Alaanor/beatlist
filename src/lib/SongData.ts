@@ -40,6 +40,13 @@ export default class SongData {
     return 'data:image/jpg;base64,' + imgData.toString('base64');
   }
 
+  public static DetectDuplicate(songs: SongData[]) {
+    const newFormatSongs = songs.filter((s) => s.folderId === s.songKey).map((s) => s.songKey);
+    songs.filter((s) => (
+      newFormatSongs.includes(s.songKey) && s.songKey !== s.folderId
+    )).forEach((s) => s.valid = false);
+  }
+
   private static async GetKeyFromHash(hash: string): Promise<string> {
     return axios({
       method: 'get',
