@@ -39,7 +39,7 @@ export default class SongData {
   }
 
   private static GetFolderId(songPath: string): string | undefined {
-    const regex = /\\([0-9]*-*[0-9]*)[^\\]+$/;
+    const regex = /\\([0-9a-f]*-*[0-9a-f]*)[^\\]+$/;
     const m = regex.exec(songPath);
 
     if (m !== null && m[1] !== undefined) {
