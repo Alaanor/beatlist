@@ -4,6 +4,7 @@ import {promisify} from 'util';
 import crypto from 'crypto';
 
 const readFile = promisify(fs.readFile);
+const writeFile = promisify(fs.writeFile);
 
 export default class Playlist {
 
@@ -48,12 +49,25 @@ export default class Playlist {
 
   public songs: SongData[] = [];
 
-  public GetImage(): string {
-    return '';
+  public async Save(image: string) {
+    await writeFile(this.playlistPath, this.ExportJson(image));
   }
 
-  public ExportJson(): string {
-    // @todo
-    return '';
+  private ExportJson(img: string): string {
+    const data = {
+      playlistTitle: this.playlistTitle,
+      playlistAuthor: this.playlistAuthor,
+      playlistDescription: this.playlistDescription,
+      image: img,
+      songs: this.songs
+        .filter((s) => s.valid)
+        .map((s) => ({
+          songName: s.songName,
+          hash: s.songHash,
+        })),
+    };
+
+    return JSON.stringify(data);
   }
+
 }

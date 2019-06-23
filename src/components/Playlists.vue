@@ -9,7 +9,7 @@
               :pagination.sync="pagination"
               content-tag="v-layout" row wrap>
         <template v-slot:item="props">
-          <v-flex>
+          <v-flex my-3>
             <Playlist :data="props.item"></Playlist>
           </v-flex>
         </template>

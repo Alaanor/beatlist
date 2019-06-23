@@ -20,7 +20,7 @@
               content-tag="v-layout" row wrap
               :search="search">
         <template v-slot:item="props">
-          <v-flex>
+          <v-flex my-3>
             <Song :data="props.item"></Song>
           </v-flex>
         </template>
