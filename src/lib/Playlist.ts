@@ -1,6 +1,7 @@
 import SongData from '@/lib/SongData';
 import fs from 'fs';
 import {promisify} from 'util';
+import crypto from 'crypto';
 
 const readFile = promisify(fs.readFile);
 
@@ -15,6 +16,12 @@ export default class Playlist {
     playlist.playlistTitle = data.playlistTitle;
     playlist.playlistAuthor = data.playlistAuthor;
     playlist.playlistDescription = data.playlistDescription;
+
+    playlist.playlistHash = crypto
+      .createHash('sha1')
+      .update(playlist.playlistPath)
+      .digest('hex')
+      .substr(0, 5);
 
     playlist.songs = data.songs.map((s: any) => {
       return (
@@ -33,6 +40,7 @@ export default class Playlist {
     return data.image;
   }
 
+  public playlistHash: string = '';
   public playlistPath: string = '';
   public playlistTitle: string = '';
   public playlistAuthor: string = '';

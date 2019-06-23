@@ -7,16 +7,16 @@
         <v-flex xs5 pa-0>
           <v-img v-if="imageData.length > 0" :src="imageData" height="100px" contain class="mx-3"></v-img>
         </v-flex>
-        <v-flex xs7 pa-3>
+        <v-flex xs7 pa-1>
           <div>
             <v-container pa-0>
-              <div class="subheading">{{data.playlistTitle}}</div>
+              <div class="subheading">{{data.playlistTitle}}<span class="grey--text"> ({{data.songs.length}})</span></div>
               <div class="caption">{{data.playlistAuthor}}</div>
             </v-container>
           </div>
         </v-flex>
         <v-flex>
-          <v-btn icon>
+          <v-btn icon exact :to="`playlist/edit/${data.playlistHash}`">
             <v-icon>chevron_right</v-icon>
           </v-btn>
         </v-flex>

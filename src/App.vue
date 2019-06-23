@@ -45,8 +45,9 @@
   import VueRouter from 'vue-router';
   import Home from '@/components/Home.vue';
   import SongList from '@/components/SongList.vue';
-  import Playlist from '@/components/Playlists.vue';
+  import Playlists from '@/components/Playlists.vue';
   import Settings from '@/components/Settings.vue';
+  import PlaylistEditor from '@/components/PlaylistEditor.vue';
   import {get} from 'vuex-pathify';
 
   Vue.use(VueRouter);
@@ -64,9 +65,14 @@
         component: SongList,
       },
       {
-        path: '/playlists',
-        name: 'playlists',
-        component: Playlist,
+        path: '/playlist',
+        name: 'playlist',
+        component: Playlists,
+      },
+      {
+        path: '/playlist/edit/:hash',
+        name: 'playlistEditor',
+        component: PlaylistEditor,
       },
       {
         path: '/settings',
@@ -94,8 +100,8 @@
           icon: 'queue_music',
         },
         {
-          path: '/playlists',
-          name: 'Playlists',
+          path: '/playlist',
+          name: 'Playlist',
           icon: 'playlist_play',
         },
         {
