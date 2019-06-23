@@ -36,7 +36,7 @@ export default new Vuex.Store<any>({
     songs,
   },
   mutations: {
-    RESTORE_MUTATION: vuexLocal.RESTORE_MUTATION
+    RESTORE_MUTATION: vuexLocal.RESTORE_MUTATION,
   },
   strict: true,
 });

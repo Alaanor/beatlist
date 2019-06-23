@@ -36,6 +36,6 @@
     },
     async mounted() {
       await store.dispatch('songs/loadPlaylists');
-    }
+    },
   });
 </script>

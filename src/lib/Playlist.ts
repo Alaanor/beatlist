@@ -21,7 +21,7 @@ export default class Playlist {
         SongData.GetSongFromHash(s.hash, songs) ||
         SongData.GetSongFromDirId(s.key, songs)
       );
-    }).filter((s: any) => s === undefined);
+    }).filter((s: any) => s !== undefined && s.valid);
 
     return playlist;
   }

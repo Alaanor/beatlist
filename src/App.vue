@@ -109,7 +109,7 @@
     mounted(): void {
       const st = this.$store as unknown as { _vm: { $root: Vue } };
       st._vm.$root.$on('storageReady', () => this.isReady = true);
-    }
+    },
   });
 </script>
 
