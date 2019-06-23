@@ -1,41 +1,58 @@
-<!--suppress HtmlUnknownBooleanAttribute, XmlUnboundNsPrefix -->
 <template>
-  <v-container>
-    <h1>Playlist</h1>
-    <v-container v-if="playlists !== null">
-      <v-layout row wrap>
+  <v-hover>
+    <v-card slot-scope="{hover}" v-if="data !== undefined"
+            :class="`elevation-${hover ? 12 : 2}`"
+            width="305px">
+      <v-layout justify-space-between row align-center>
+        <v-flex xs5 pa-0>
+          <v-img v-if="imageData.length > 0" :src="imageData" height="100px" contain class="mx-3"></v-img>
+        </v-flex>
+        <v-flex xs7 pa-3>
+          <div>
+            <v-container pa-0>
+              <div class="subheading">{{data.playlistTitle}}</div>
+              <div class="caption">{{data.playlistAuthor}}</div>
+            </v-container>
+          </div>
+        </v-flex>
         <v-flex>
-          <v-expansion-panel popout>
-            <v-expansion-panel-content v-for="playlist in playlists">
-              <template v-slot:header>
-                <div>{{playlist.playlistTitle}} ({{playlist.songs.length}})</div>
-              </template>
-              <v-card>
-                <v-card-text>
-                  Path: {{playlist.playlistPath}}
-                </v-card-text>
-              </v-card>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
+          <v-btn icon>
+            <v-icon>chevron_right</v-icon>
+          </v-btn>
         </v-flex>
       </v-layout>
-    </v-container>
-  </v-container>
+    </v-card>
+  </v-hover>
 </template>
 
-<script lang="ts">
+<script>
   import Vue from 'vue';
-  import {get} from 'vuex-pathify';
-  import Playlist from '@/lib/Playlist';
-  import store from '@/store/store';
+  import Playlist from '../lib/Playlist';
 
   export default Vue.extend({
     name: 'Playlist',
-    computed: {
-      playlists: get('songs/playlists'),
+    data: () => ({
+      imageData: '',
+    }),
+    props: {data: {type: Object, required: true}},
+    methods: {
+      LoadImage() {
+        const playlist = this.$props.data;
+        Playlist
+          .LoadCover(playlist.playlistPath)
+          .then((data) => this.imageData = data);
+      },
     },
-    async mounted() {
-      await store.dispatch('songs/loadPlaylists');
+    mounted() {
+      this.$nextTick(async function () {
+        this.LoadImage();
+      });
+    },
+    watch: {
+      data() {
+        this.imageData = '';
+        this.LoadImage();
+      },
     },
   });
 </script>

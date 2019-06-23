@@ -14,6 +14,7 @@ export default class Playlist {
     playlist.playlistPath = pathToJson;
     playlist.playlistTitle = data.playlistTitle;
     playlist.playlistAuthor = data.playlistAuthor;
+    playlist.playlistDescription = data.playlistDescription;
 
     playlist.songs = data.songs.map((s: any) => {
       return (
@@ -26,9 +27,17 @@ export default class Playlist {
     return playlist;
   }
 
+  public static async LoadCover(playlistPath: string): Promise<string> {
+    const raw = await readFile(playlistPath);
+    const data = JSON.parse(raw.toString());
+    return data.image;
+  }
+
   public playlistPath: string = '';
   public playlistTitle: string = '';
   public playlistAuthor: string = '';
+  public playlistDescription: string = '';
+
   public songs: SongData[] = [];
 
   public GetImage(): string {

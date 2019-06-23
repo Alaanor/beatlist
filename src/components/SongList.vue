@@ -18,7 +18,6 @@
               :pagination.sync="pagination"
               :custom-filter="Filter"
               content-tag="v-layout" row wrap
-              @update:pagination="LoadImages"
               :search="search">
         <template v-slot:item="props">
           <v-flex>
@@ -65,9 +64,6 @@
       songs: get('songs/songs'),
     },
     methods: {
-      LoadImages() {
-        this.$emit('loadImage');
-      },
       Filter(items: object[], search: string) {
         const songs = items as SongData[];
 

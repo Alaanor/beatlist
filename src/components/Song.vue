@@ -2,9 +2,9 @@
   <v-card v-if="data !== undefined" width="305px" height="160px">
     <v-layout justify-space-between row>
       <v-flex xs5>
-        <v-img :src="imageData" height="100px" contain class="mx-2"></v-img>
+        <v-img v-if="imageData.length > 0" :src="imageData" height="100px" contain class="mx-2"></v-img>
       </v-flex>
-      <v-flex xs7>
+      <v-flex xs7 pa-3>
         <div>
           <v-container pa-0>
             <div class="subheading">{{data.songName}}</div>
