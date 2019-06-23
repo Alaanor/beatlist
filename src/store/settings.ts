@@ -5,6 +5,7 @@ const state = {
   configValid: false,
   darkTheme: true,
   miniVariant: false,
+  permanent: false,
 };
 
 const mutations = {

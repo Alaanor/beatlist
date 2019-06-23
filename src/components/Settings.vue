@@ -42,6 +42,7 @@
     <h2>Preferences</h2>
     <v-switch v-model="darkTheme" label="Dark theme"></v-switch>
     <v-switch v-model="miniVariant" label="Mini sidebar"></v-switch>
+    <v-switch v-model="permanent" label="Permanent sidebar"></v-switch>
   </v-container>
 </template>
 
@@ -66,6 +67,7 @@
       configValid: sync('settings/configValid'),
       darkTheme: sync('settings/darkTheme'),
       miniVariant: sync('settings/miniVariant'),
+      permanent: sync('settings/permanent'),
       lastScan: get('songs/lastScan'),
       songs: get('songs/songs'),
     },

@@ -1,6 +1,6 @@
 <template>
   <v-app :dark="settings.darkTheme">
-    <v-navigation-drawer v-model="drawer" clipped app :mini-variant="settings.miniVariant">
+    <v-navigation-drawer v-model="drawer" clipped app :mini-variant="settings.miniVariant" :permanent="settings.permanent">
       <v-list dense>
         <v-list-tile v-for="menu in menus" :to="menu.path">
           <v-list-tile-action>
@@ -13,7 +13,7 @@
       </v-list>
     </v-navigation-drawer>
     <v-toolbar app fixed clipped-left>
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-side-icon v-if="!settings.permanent" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>Beatlist</v-toolbar-title>
     </v-toolbar>
     <v-content>
