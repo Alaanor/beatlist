@@ -21,7 +21,9 @@
         <v-layout v-if="isReady">
           <v-flex lg8 xs12 offset-lg2>
             <keep-alive>
-              <router-view></router-view>
+              <transition appear name="slide-x-transition" mode="out-in">
+                <router-view></router-view>
+              </transition>
             </keep-alive>
           </v-flex>
         </v-layout>

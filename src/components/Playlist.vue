@@ -44,7 +44,7 @@
       },
     },
     mounted() {
-      this.$nextTick(async function () {
+      this.$nextTick(async function() {
         this.LoadImage();
       });
     },

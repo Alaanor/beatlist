@@ -22,7 +22,7 @@
   import Vue from 'vue';
   import {get} from 'vuex-pathify';
   import store from '@/store/store';
-  import Playlist from '@/components/Playlist';
+  import Playlist from '@/components/Playlist.vue';
 
   export default Vue.extend({
     name: 'Playlists',
