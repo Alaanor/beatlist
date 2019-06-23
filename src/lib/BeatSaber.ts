@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import {promisify} from 'util';
+import Playlist from '@/lib/Playlist';
+import SongData from '@/lib/SongData';
 
 const readdir = promisify(fs.readdir);
 
@@ -33,5 +35,14 @@ export default class BeatSaber {
     return directoryList.map((directory) => {
       return path.join(pathSongList, directory);
     });
+  }
+
+  public async getPlaylists(songs: SongData[]): Promise<Playlist[]> {
+    const pathSongList = path.join(this.installationPath, 'Playlists');
+    const directoryList = await readdir(pathSongList);
+    return await Promise.all(directoryList.map(async (file) => {
+      const playlistPath = path.join(pathSongList, file);
+      return await Playlist.Parse(playlistPath, songs);
+    }));
   }
 }

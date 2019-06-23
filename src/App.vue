@@ -17,12 +17,17 @@
       <v-toolbar-title>Beatlist</v-toolbar-title>
     </v-toolbar>
     <v-content>
-      <v-container fluid>
-        <v-layout>
+      <v-container fluid fill-height>
+        <v-layout v-if="isReady">
           <v-flex lg8 xs12 offset-lg2>
             <keep-alive>
               <router-view></router-view>
             </keep-alive>
+          </v-flex>
+        </v-layout>
+        <v-layout justify-center align-center v-else>
+          <v-flex shrink>
+            <v-progress-circular :size="100" :width="5" indeterminate></v-progress-circular>
           </v-flex>
         </v-layout>
       </v-container>
@@ -40,7 +45,7 @@
   import SongList from '@/components/SongList.vue';
   import Playlist from '@/components/Playlist.vue';
   import Settings from '@/components/Settings.vue';
-  import { get } from 'vuex-pathify';
+  import {get} from 'vuex-pathify';
 
   Vue.use(VueRouter);
 
@@ -70,10 +75,11 @@
     ],
   });
 
-  export default {
+  export default Vue.extend({
     router,
     data: () => ({
       drawer: null,
+      isReady: false,
       menus: [
         {
           path: '/',
@@ -100,7 +106,11 @@
     computed: {
       settings: get('settings'),
     },
-  };
+    mounted(): void {
+      const st = this.$store as unknown as { _vm: { $root: Vue } };
+      st._vm.$root.$on('storageReady', () => this.isReady = true);
+    }
+  });
 </script>
 
 <style>

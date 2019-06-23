@@ -10,6 +10,18 @@ const apiHashUrl = 'https://beatsaver.com/api/maps/by-hash/';
 
 export default class SongData {
 
+  public static GetSongFromKey(key: string, songs: SongData[]): SongData | undefined {
+    return songs.find((s) => s.songKey === key);
+  }
+
+  public static GetSongFromHash(hash: string, songs: SongData[]): SongData | undefined {
+    return songs.find((s) => s.songHash === hash);
+  }
+
+  public static GetSongFromDirId(dirId: string, songs: SongData[]): SongData | undefined {
+    return songs.find((s) => s.folderId === dirId);
+  }
+
   public static async LoadCover(songPath: string, coverImagePath: string): Promise<string> {
     const filePath = nodePath.join(songPath, coverImagePath || '');
     const imgData = await readFile(filePath);

@@ -11,7 +11,7 @@
         </v-flex>
       </v-layout>
     </v-container>
-    <v-container fluid grid-list-lg>
+    <v-container fluid grid-list-lg v-if="songs !== undefined">
       <v-data-iterator
               :items="songs.filter((s) => s.valid)"
               :rows-per-page-items="rowsPerPageItems"
@@ -87,9 +87,3 @@
     },
   });
 </script>
-
-<style scoped>
-  .scroller {
-    height: 100%;
-  }
-</style>
