@@ -53,7 +53,7 @@
           .CreateNewPlaylistFile();
         await store.dispatch('songs/loadPlaylists');
         this.$router.push({name: 'playlistEditor', params: {hash: playlist.playlistHash}});
-      }
+      },
     },
     async mounted() {
       await store.dispatch('songs/loadPlaylists');

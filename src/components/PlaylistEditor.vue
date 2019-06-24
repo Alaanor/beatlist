@@ -63,9 +63,9 @@
         this.UpdatePlaylist();
       });
     },
-    beforeRouteUpdate(to, from, next){
+    beforeRouteUpdate(to, from, next) {
       this.UpdatePlaylist();
       next();
-    }
+    },
   });
 </script>
