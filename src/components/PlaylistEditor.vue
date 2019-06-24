@@ -7,7 +7,7 @@
       <h1>Playlist editor</h1>
     </v-layout>
     <br>
-    <v-layout align-center>
+    <v-layout align-start>
       <v-item-group v-model="window" class="shrink mr-4" mandatory tag="v-flex">
         <v-item v-for="n in length" :key="n">
           <div slot-scope="{ active, toggle }">
@@ -18,18 +18,15 @@
         </v-item>
       </v-item-group>
       <v-flex>
-        <v-window v-model="window" class="elevation-1" vertical>
+        <v-window v-model="window" vertical>
           <v-window-item key="1" transition="fade-transition" reverse-transition="fade-transition">
-            <v-card flat>
-              <PlaylistEditorData :hash="hash"></PlaylistEditorData>
-            </v-card>
+            <PlaylistEditorData :hash="hash"></PlaylistEditorData>
           </v-window-item>
           <v-window-item key="2" transition="fade-transition" reverse-transition="fade-transition">
-            <v-card flat>
-              <v-card-text>
-                <p>@TODO</p>
-              </v-card-text>
-            </v-card>
+            <PlaylistEditorSongsReader :hash="hash"></PlaylistEditorSongsReader>
+          </v-window-item>
+          <v-window-item key="3" transition="fade-transition" reverse-transition="fade-transition">
+
           </v-window-item>
         </v-window>
       </v-flex>
@@ -40,12 +37,13 @@
 <script>
   import Vue from 'vue';
   import PlaylistEditorData from './PlaylistEditorData';
+  import PlaylistEditorSongsReader from './PlaylistEditorSongsReader';
 
   export default Vue.extend({
     name: 'PlaylistEditor',
-    components: { PlaylistEditorData },
+    components: {PlaylistEditorData, PlaylistEditorSongs: PlaylistEditorSongsReader},
     data: () => ({
-      length: 2,
+      length: 3,
       window: 0,
     }),
     methods: {
@@ -59,7 +57,7 @@
       },
     },
     mounted() {
-      this.$nextTick(async function() {
+      this.$nextTick(async function () {
         this.UpdatePlaylist();
       });
     },

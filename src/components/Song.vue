@@ -2,7 +2,7 @@
   <v-card v-if="data !== undefined" width="305px" height="160px">
     <v-layout justify-space-between row>
       <v-flex xs5>
-        <v-img v-if="imageData.length > 0" :src="imageData" height="100px" contain class="mx-2"></v-img>
+        <SongCover :song="data" contain class="mx-2" height="100px"></SongCover>
       </v-flex>
       <v-flex xs7 pa-3>
         <div>
@@ -26,36 +26,15 @@
 
 <script>
   import Vue from 'vue';
-  import SongData from '../lib/SongData';
+  import SongCover from './SongCover';
 
   export default Vue.extend({
     name: 'Song',
-    data: () => ({
-      imageData: '',
-    }),
     props: {data: {type: Object, required: true}},
+    components: { SongCover },
     filters: {
       forceInt(value) {
         return Number.parseInt(value, 10).toString();
-      },
-    },
-    methods: {
-      LoadImage() {
-        const song = this.$props.data;
-        SongData
-          .LoadCover(song.songPath, song.coverImagePath)
-          .then((data) => this.imageData = data);
-      },
-    },
-    mounted() {
-      this.$nextTick(async function() {
-        this.LoadImage();
-      });
-    },
-    watch: {
-      data() {
-        this.imageData = '';
-        this.LoadImage();
       },
     },
   });
