@@ -19,12 +19,12 @@
       </v-item-group>
       <v-flex>
         <v-window v-model="window" class="elevation-1" vertical>
-          <v-window-item key="1">
+          <v-window-item key="1" transition="fade-transition" reverse-transition="fade-transition">
             <v-card flat>
               <PlaylistEditorData :hash="hash"></PlaylistEditorData>
             </v-card>
           </v-window-item>
-          <v-window-item key="2">
+          <v-window-item key="2" transition="fade-transition" reverse-transition="fade-transition">
             <v-card flat>
               <v-card-text>
                 <p>@TODO</p>
