@@ -33,20 +33,20 @@
         <v-container>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="grey" @click="Cancel">Cancel</v-btn>
-            <v-btn color="success" @click="Save">Save</v-btn>
+            <v-btn color="grey" :disabled="!IsThereChange()" @click="Cancel">Cancel</v-btn>
+            <v-btn color="success" :disabled="!IsThereChange()" @click="Save">Save</v-btn>
           </v-card-actions>
         </v-container>
       </v-form>
     </v-card>
-    <v-snackbar v-model="snackbar" :color="snackbarType" timeout="3000">
+    <v-snackbar v-model="snackbar" :color="snackbarType" :timeout="3000">
       {{ snackbarText }}
       <v-btn flat @click="snackbar = false">Close</v-btn>
     </v-snackbar>
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
   import Vue from 'vue';
   import {remote} from 'electron';
   import Playlist from '../lib/Playlist';
@@ -61,6 +61,7 @@
       author: '',
       description: '',
       imageData: '',
+      imageChanged: false,
       snackbar: false,
       snackbarType: '',
       snackbarText: '',
@@ -69,15 +70,22 @@
       LoadImage() {
         Playlist
           .LoadCover(this.data.playlistPath)
-          .then((data) => this.imageData = data);
+          .then((data) => {
+            this.imageChanged = false;
+            return this.imageData = data;
+          });
       },
       async openFileExplorer() {
         const file = remote.dialog.showOpenDialog({
           properties: ['openFile'],
-          filters: [{name: 'Images', extensions: ['png', 'jpg']}]
+          filters: [{
+            name: 'Images',
+            extensions: ['png', 'jpg'],
+          }],
         });
         if (file !== undefined) {
           this.imageData = await Utils.LoadCover(file[0]);
+          this.imageChanged = true;
         }
       },
       Cancel() {
@@ -85,6 +93,14 @@
         this.title = this.data.playlistTitle;
         this.author = this.data.playlistAuthor;
         this.description = this.data.playlistDescription;
+      },
+      IsThereChange(): boolean {
+        return !(
+          this.data.playlistTitle === this.title &&
+          this.data.playlistAuthor === this.author &&
+          this.data.playlistDescription === this.description &&
+          !this.imageChanged
+        );
       },
       Save() {
         const playlist = new Playlist();
@@ -98,7 +114,7 @@
             this.snackbarText = 'Successfully saved';
             this.snackbarType = 'success';
           })
-          .catch(err => {
+          .catch(() => {
             this.snackbarText = 'Failed to save';
             this.snackbarType = 'error';
           })
@@ -106,7 +122,7 @@
       },
     },
     mounted() {
-      this.$nextTick(async function () {
+      this.$nextTick(async function() {
         this.LoadImage();
         this.title = this.data.playlistTitle;
         this.author = this.data.playlistAuthor;

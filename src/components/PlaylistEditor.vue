@@ -74,7 +74,7 @@
       playlists: get('songs/playlists'),
     },
     mounted() {
-      this.$nextTick(async function () {
+      this.$nextTick(async function() {
         this.LoadImage();
       });
     },
