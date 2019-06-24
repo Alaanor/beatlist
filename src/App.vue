@@ -35,7 +35,8 @@
       </v-container>
     </v-content>
     <v-footer app fixed>
-      <span>&copy; 2019</span>
+      <v-spacer></v-spacer>
+      <span class="mr-3">2019 - <strong>Beatlist</strong></span>
     </v-footer>
   </v-app>
 </template>
