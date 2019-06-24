@@ -1,5 +1,5 @@
 <template>
-  <v-container pa-0 ma-0>
+  <v-container pa-0 ma-0 v-if="!!playlist">
     <v-card flat>
       <v-form ref="form" v-model="valid">
         <v-card-text>
@@ -46,15 +46,16 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script>
   import Vue from 'vue';
   import {remote} from 'electron';
+  import {get} from 'vuex-pathify';
   import Playlist from '../lib/Playlist';
   import Utils from '../lib/Utils';
 
   export default Vue.extend({
     name: 'PlaylistEditorData',
-    props: {data: {type: Object, required: true}},
+    props: {hash: {type: String, required: true}},
     data: () => ({
       valid: false,
       title: '',
@@ -66,10 +67,16 @@
       snackbarType: '',
       snackbarText: '',
     }),
+    computed: {
+      playlist() {
+        return this.playlists.find((p) => p.playlistHash === this.hash);
+      },
+      playlists: get('songs/playlists'),
+    },
     methods: {
       LoadImage() {
         Playlist
-          .LoadCover(this.data.playlistPath)
+          .LoadCover(this.playlist.playlistPath)
           .then((data) => {
             this.imageChanged = false;
             return this.imageData = data;
@@ -90,43 +97,53 @@
       },
       Cancel() {
         this.LoadImage();
-        this.title = this.data.playlistTitle;
-        this.author = this.data.playlistAuthor;
-        this.description = this.data.playlistDescription;
+        this.title = this.playlist.playlistTitle;
+        this.author = this.playlist.playlistAuthor;
+        this.description = this.playlist.playlistDescription;
       },
-      IsThereChange(): boolean {
+      /**
+       * @return {boolean}
+       */
+      IsThereChange() {
         return !(
-          this.data.playlistTitle === this.title &&
-          this.data.playlistAuthor === this.author &&
-          this.data.playlistDescription === this.description &&
+          this.playlist.playlistTitle === this.title &&
+          this.playlist.playlistAuthor === this.author &&
+          this.playlist.playlistDescription === this.description &&
           !this.imageChanged
         );
       },
       Save() {
         const playlist = new Playlist();
+
         playlist.playlistTitle = this.title;
         playlist.playlistAuthor = this.author;
         playlist.playlistDescription = this.description;
-        playlist.playlistPath = this.data.playlistPath;
-        playlist.songs = this.data.songs;
+        playlist.playlistPath = this.playlist.playlistPath;
+        playlist.songs = this.playlist.songs;
+        playlist.CalculateHash();
+
         playlist.Save(this.imageData)
           .then(() => {
             this.snackbarText = 'Successfully saved';
             this.snackbarType = 'success';
+            this.imageChanged = false;
+            this.$router.replace({name: 'playlistEditor', params: { hash: playlist.playlistHash }});
           })
           .catch(() => {
             this.snackbarText = 'Failed to save';
             this.snackbarType = 'error';
           })
-          .finally(() => this.snackbar = true);
+          .finally(() => {
+            return this.snackbar = true;
+          });
       },
     },
     mounted() {
       this.$nextTick(async function() {
         this.LoadImage();
-        this.title = this.data.playlistTitle;
-        this.author = this.data.playlistAuthor;
-        this.description = this.data.playlistDescription;
+        this.title = this.playlist.playlistTitle;
+        this.author = this.playlist.playlistAuthor;
+        this.description = this.playlist.playlistDescription;
       });
     },
   });

@@ -2,9 +2,11 @@ import SongData from '@/lib/SongData';
 import fs from 'fs';
 import {promisify} from 'util';
 import crypto from 'crypto';
+import path from 'path';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
+const renameFile = promisify(fs.rename);
 
 export default class Playlist {
 
@@ -18,11 +20,7 @@ export default class Playlist {
     playlist.playlistAuthor = data.playlistAuthor;
     playlist.playlistDescription = data.playlistDescription;
 
-    playlist.playlistHash = crypto
-      .createHash('sha1')
-      .update(playlist.playlistPath)
-      .digest('hex')
-      .substr(0, 5);
+    playlist.playlistHash = this.getPlaylistHash(playlist.playlistPath);
 
     playlist.songs = data.songs.map((s: any) => {
       return (
@@ -41,6 +39,14 @@ export default class Playlist {
     return data.image;
   }
 
+  private static getPlaylistHash(playlistPath: string): string {
+    return crypto
+      .createHash('sha1')
+      .update(playlistPath)
+      .digest('hex')
+      .substr(0, 5);
+  }
+
   public playlistHash: string = '';
   public playlistPath: string = '';
   public playlistTitle: string = '';
@@ -50,7 +56,23 @@ export default class Playlist {
   public songs: SongData[] = [];
 
   public async Save(image: string) {
+    await this.EnsureJsonExtensionName();
     await writeFile(this.playlistPath, this.ExportJson(image));
+  }
+
+  public CalculateHash() {
+    this.playlistHash = Playlist.getPlaylistHash(this.playlistPath);
+  }
+
+  private async EnsureJsonExtensionName() {
+    if (path.extname(this.playlistPath) !== '.json') {
+      const dataPath = path.parse(this.playlistPath);
+      const fixedPath = path.join(dataPath.dir, dataPath.name + '.json');
+      await renameFile(this.playlistPath, fixedPath);
+
+      this.playlistPath = fixedPath;
+      this.CalculateHash();
+    }
   }
 
   private ExportJson(img: string): string {
@@ -69,5 +91,4 @@ export default class Playlist {
 
     return JSON.stringify(data);
   }
-
 }

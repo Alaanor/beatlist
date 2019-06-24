@@ -21,18 +21,12 @@
         <v-window v-model="window" class="elevation-1" vertical>
           <v-window-item key="1">
             <v-card flat>
-              <PlaylistEditorData :data="playlist"></PlaylistEditorData>
+              <PlaylistEditorData :hash="hash"></PlaylistEditorData>
             </v-card>
           </v-window-item>
           <v-window-item key="2">
             <v-card flat>
               <v-card-text>
-                <v-layout align-center mb-3>
-                  <v-avatar class="mr-3">
-                    <v-img v-if="imageData.length > 0" :src="imageData"></v-img>
-                  </v-avatar>
-                  <strong class="title">{{playlist.playlistTitle}}</strong>
-                </v-layout>
                 <p>@TODO</p>
               </v-card-text>
             </v-card>
@@ -45,8 +39,6 @@
 
 <script>
   import Vue from 'vue';
-  import {get} from 'vuex-pathify';
-  import Playlist from '../lib/Playlist';
   import PlaylistEditorData from './PlaylistEditorData';
 
   export default Vue.extend({
@@ -55,28 +47,25 @@
     data: () => ({
       length: 2,
       window: 0,
-      imageData: '',
     }),
     methods: {
-      LoadImage() {
-        Playlist
-          .LoadCover(this.playlist.playlistPath)
-          .then((data) => this.imageData = data);
+      async UpdatePlaylist() {
+        await this.$store.dispatch('songs/loadPlaylists');
       },
     },
     computed: {
       hash() {
         return this.$route.params.hash;
       },
-      playlist() {
-        return this.playlists.find((p) => p.playlistHash === this.hash);
-      },
-      playlists: get('songs/playlists'),
     },
     mounted() {
       this.$nextTick(async function() {
-        this.LoadImage();
+        this.UpdatePlaylist();
       });
     },
+    beforeRouteUpdate(to, from, next){
+      this.UpdatePlaylist();
+      next();
+    }
   });
 </script>
