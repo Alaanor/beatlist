@@ -1,7 +1,13 @@
 <!--suppress XmlUnboundNsPrefix -->
 <template>
   <v-container>
-    <h1>Playlists</h1>
+    <v-layout row justify-space-between>
+      <h1>Playlists</h1>
+      <v-btn flat @click="NewPlaylist()" :loading="loadingAdd">
+        Add a new Playlist
+        <v-icon class="ml-1">add</v-icon>
+      </v-btn>
+    </v-layout>
     <v-container fluid grid-list-lg v-if="playlists !== null">
       <v-data-iterator
               :items="playlists"
@@ -23,6 +29,7 @@
   import {get} from 'vuex-pathify';
   import store from '@/store/store';
   import Playlist from '@/components/Playlist.vue';
+  import BeatSaber from '@/lib/BeatSaber';
 
   export default Vue.extend({
     name: 'Playlists',
@@ -32,9 +39,21 @@
       pagination: {
         rowsPerPage: 6,
       },
+      loadingAdd: false,
     }),
     computed: {
+      installationPath: get('settings/installationPath'),
       playlists: get('songs/playlists'),
+    },
+    methods: {
+      async NewPlaylist() {
+        this.loadingAdd = true;
+        const instPath = this.installationPath as string;
+        const playlist = await new BeatSaber(instPath)
+          .CreateNewPlaylistFile();
+        await store.dispatch('songs/loadPlaylists');
+        this.$router.push({name: 'playlistEditor', params: {hash: playlist.playlistHash}});
+      }
     },
     async mounted() {
       await store.dispatch('songs/loadPlaylists');

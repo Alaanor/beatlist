@@ -45,4 +45,17 @@ export default class BeatSaber {
       return await Playlist.Parse(playlistPath, songs);
     }));
   }
+
+  public async CreateNewPlaylistFile(): Promise<Playlist> {
+    const randNum = Math.floor(Math.random() * 1e6 - 1) + 1e5;
+    const fileName = `new-playlist-${randNum}`;
+    const playlist = new Playlist();
+
+    playlist.playlistTitle = fileName;
+    playlist.playlistPath = path.join(this.installationPath, 'Playlists', fileName + '.json');
+    playlist.CalculateHash();
+    await playlist.Save(''); // @TODO default image
+
+    return playlist;
+  }
 }

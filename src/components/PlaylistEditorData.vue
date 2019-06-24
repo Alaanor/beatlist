@@ -33,6 +33,7 @@
         <v-container>
           <v-card-actions>
             <v-spacer></v-spacer>
+            <v-btn color="error" @click="dialogConfirmDelete = true">Delete</v-btn>
             <v-btn color="grey" :disabled="!IsThereChange()" @click="Cancel">Cancel</v-btn>
             <v-btn color="success" :disabled="!IsThereChange()" @click="Save">Save</v-btn>
           </v-card-actions>
@@ -43,6 +44,18 @@
       {{ snackbarText }}
       <v-btn flat @click="snackbar = false">Close</v-btn>
     </v-snackbar>
+    <v-dialog v-model="dialogConfirmDelete" width="350">
+      <v-card>
+        <v-card-text color="error">
+          Are you sure you want to <strong class="error--text">delete</strong> this playlist ?
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat color="grey" @click="dialogConfirmDelete = false">Cancel</v-btn>
+          <v-btn flat color="error" @click="Delete()">Confirm</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -66,6 +79,7 @@
       snackbar: false,
       snackbarType: '',
       snackbarText: '',
+      dialogConfirmDelete: false,
     }),
     computed: {
       playlist() {
@@ -101,9 +115,11 @@
         this.author = this.playlist.playlistAuthor;
         this.description = this.playlist.playlistDescription;
       },
-      /**
-       * @return {boolean}
-       */
+      Delete() {
+        this.playlist.Delete();
+        this.$router.push({name: 'playlist'});
+      },
+      /** @return {boolean} */
       IsThereChange() {
         return !(
           this.playlist.playlistTitle === this.title &&

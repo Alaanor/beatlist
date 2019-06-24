@@ -7,6 +7,7 @@ import path from 'path';
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 const renameFile = promisify(fs.rename);
+const deleteFile = promisify(fs.unlink);
 
 export default class Playlist {
 
@@ -58,6 +59,10 @@ export default class Playlist {
   public async Save(image: string) {
     await this.EnsureJsonExtensionName();
     await writeFile(this.playlistPath, this.ExportJson(image));
+  }
+
+  public async Delete() {
+    return deleteFile(this.playlistPath);
   }
 
   public CalculateHash() {
