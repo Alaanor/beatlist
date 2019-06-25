@@ -59,8 +59,7 @@ export default class BeatSaber {
     playlist.playlistPath = path.join(this.installationPath, 'Playlists', fileName + '.json');
     playlist.CalculateHash();
 
-    await playlist.Save(cover); // @TODO default image
-
+    await playlist.Save(cover);
     return playlist;
   }
 }
