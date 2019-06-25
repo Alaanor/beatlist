@@ -18,6 +18,12 @@ const mutations = {
     pl.songs.push(song);
     pl.Save();
   },
+  removeSongFromPlaylist(context: any, {playlist, song}: { playlist: Playlist, song: SongData }) {
+    const pl = context.playlists
+      .find((p: Playlist) => p.playlistHash === playlist.playlistHash);
+    pl.songs = pl.songs.filter((s: SongData) => s.songHash !== song.songHash);
+    pl.Save();
+  },
 };
 
 // noinspection JSUnusedGlobalSymbols

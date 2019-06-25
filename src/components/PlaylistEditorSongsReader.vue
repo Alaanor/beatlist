@@ -15,7 +15,7 @@
               </v-list-tile-sub-title>
             </v-list-tile-content>
             <v-list-tile-action>
-              <v-btn icon class="text--secondary">
+              <v-btn icon class="text--secondary" @click="Remove(song)">
                 <v-icon>delete</v-icon>
               </v-btn>
             </v-list-tile-action>
@@ -35,6 +35,7 @@
   import Vue from 'vue';
   import {get} from 'vuex-pathify';
   import SongCover from './SongCover';
+  import store from '@/store/store';
 
   export default Vue.extend({
     name: 'PlaylistEditorSongsReader',
@@ -45,6 +46,11 @@
         return this.playlists.find((p) => p.playlistHash === this.hash);
       },
       playlists: get('songs/playlists'),
+    },
+    methods: {
+      Remove(song) {
+        store.commit('songs/removeSongFromPlaylist', {playlist: this.playlist, song});
+      },
     },
   });
 </script>
