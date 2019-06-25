@@ -17,7 +17,7 @@
     </v-layout>
     <v-divider light></v-divider>
     <v-card-actions class="pa-2">
-      <v-btn flat small pa-0>Add to playlist</v-btn>
+      <AddToPlaylistBtn :song="data"></AddToPlaylistBtn>
       <v-spacer></v-spacer>
       <span><v-icon small>fa-heartbeat</v-icon> {{data.beatsPerMinute | forceInt}}</span>
     </v-card-actions>
@@ -27,11 +27,12 @@
 <script>
   import Vue from 'vue';
   import SongCover from './SongCover';
+  import AddToPlaylistBtn from './AddToPlaylistBtn';
 
   export default Vue.extend({
     name: 'Song',
     props: {data: {type: Object, required: true}},
-    components: { SongCover },
+    components: { SongCover, AddToPlaylistBtn },
     filters: {
       forceInt(value) {
         return Number.parseInt(value, 10).toString();

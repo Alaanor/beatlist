@@ -56,7 +56,11 @@ export default class Playlist {
 
   public songs: SongData[] = [];
 
-  public async Save(image: string) {
+  public async Save(image?: string) {
+    if (!image) {
+      image = await Playlist.LoadCover(this.playlistPath);
+    }
+
     await this.EnsureJsonExtensionName();
     await writeFile(this.playlistPath, this.ExportJson(image));
   }

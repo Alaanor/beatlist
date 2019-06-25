@@ -1,22 +1,22 @@
 <template>
   <v-img v-if="imageData.length > 0" :src="imageData"></v-img>
-  <v-progress-circular v-else indeterminate></v-progress-circular>
+  <v-progress-circular width="2" size="24" v-else indeterminate></v-progress-circular>
 </template>
 
 <script>
   import Vue from 'vue';
-  import SongData from '../lib/SongData';
+  import Playlist from '../lib/Playlist';
 
   export default Vue.extend({
-    name: 'SongCover',
-    props: {song: {type: Object, required: true}},
+    name: 'PlaylistCover',
+    props: {playlist: {type: Object, required: true}},
     data: () => ({
       imageData: '',
     }),
     methods: {
       LoadImage() {
-        SongData
-          .LoadCover(this.song.songPath, this.song.coverImagePath)
+        Playlist
+          .LoadCover(this.playlist.playlistPath)
           .then((data) => this.imageData = data);
       },
     },

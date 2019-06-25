@@ -1,6 +1,7 @@
 import {make} from 'vuex-pathify';
 import SongData from '@/lib/SongData';
 import BeatSaber from '@/lib/BeatSaber';
+import Playlist from '@/lib/Playlist';
 
 const state = {
   lastScan: undefined,
@@ -10,6 +11,13 @@ const state = {
 
 const mutations = {
   ...make.mutations(state),
+  addSongToPlaylist(context: any, {playlist, song}: { playlist: Playlist, song: SongData }) {
+    const pl = context.playlists
+      .find((p: Playlist) => p.playlistHash === playlist.playlistHash);
+
+    pl.songs.push(song);
+    pl.Save();
+  },
 };
 
 // noinspection JSUnusedGlobalSymbols
