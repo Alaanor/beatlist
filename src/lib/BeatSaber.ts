@@ -3,7 +3,10 @@ import path from 'path';
 import {promisify} from 'util';
 import Playlist from '@/lib/Playlist';
 import SongData from '@/lib/SongData';
+import Utils from '@/lib/Utils';
 
+declare var __static: string;
+const defaultCoverPath = path.join(__static, 'defaultCover.png');
 const readdir = promisify(fs.readdir);
 
 export default class BeatSaber {
@@ -49,12 +52,14 @@ export default class BeatSaber {
   public async CreateNewPlaylistFile(): Promise<Playlist> {
     const randNum = Math.floor(Math.random() * 1e6 - 1) + 1e5;
     const fileName = `new-playlist-${randNum}`;
+    const cover = await Utils.LoadCover(defaultCoverPath);
     const playlist = new Playlist();
 
     playlist.playlistTitle = fileName;
     playlist.playlistPath = path.join(this.installationPath, 'Playlists', fileName + '.json');
     playlist.CalculateHash();
-    await playlist.Save(''); // @TODO default image
+
+    await playlist.Save(cover); // @TODO default image
 
     return playlist;
   }
