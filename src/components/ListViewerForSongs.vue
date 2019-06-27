@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-  <ListViewer :items="songs" :filter="Filter">
+  <ListViewer :items="validSongs" :filter="Filter">
 
     <template #item-block="{item}">
       <v-card width="305px" height="160px">
@@ -56,6 +56,10 @@
     components: {ListViewer,  SongCover},
     computed: {
       songs: get('songs/songs'),
+      validSongs: function() {
+        const songs = this.songs as SongData[];
+        return songs.filter((s: SongData) => s.valid)
+      },
     },
     methods: {
       Filter(items: object[], search: string) {
