@@ -1,12 +1,6 @@
 <!--suppress XmlUnboundNsPrefix -->
 <template>
-  <v-btn v-if="!!playlist && icon" icon>
-    <v-icon>{{value || "add"}}</v-icon>
-  </v-btn>
-  <v-btn v-else-if="!!playlist" flat small pa-0>
-    {{value || "Add"}}
-  </v-btn>
-  <v-dialog v-else v-model="dialog" scrollable max-width="450px">
+  <v-dialog v-model="dialog" scrollable max-width="450px">
     <template v-slot:activator="{ on }">
       <slot>
         <v-btn v-if="icon" v-on="on" icon>
@@ -64,7 +58,6 @@
     name: 'BtnAddSongToPlaylist',
     props: {
       song: {type: Object, required: true},
-      playlist: {type: Object, default: false},
       icon: {type: Boolean, default: false },
       value: {type: String, default: undefined},
     },

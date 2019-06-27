@@ -16,7 +16,7 @@
             </v-list-tile-content>
             <v-list-tile-action>
               <v-btn icon class="text--secondary" @click="Remove(song)">
-                <v-icon>delete</v-icon>
+                <v-icon color="error">delete</v-icon>
               </v-btn>
             </v-list-tile-action>
           </v-list-tile>

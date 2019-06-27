@@ -26,7 +26,7 @@
             <PlaylistEditorSongsReader :hash="hash"></PlaylistEditorSongsReader>
           </v-window-item>
           <v-window-item key="3">
-            <PlaylistEditorSongsAdder :hash="hash"></PlaylistEditorSongsAdder>
+            <PlaylistEditorSongsBrowser :hash="hash"></PlaylistEditorSongsBrowser>
           </v-window-item>
         </v-window>
       </v-flex>
@@ -38,14 +38,14 @@
   import Vue from 'vue';
   import PlaylistEditorData from '../components/PlaylistEditorData';
   import PlaylistEditorSongsReader from '../components/PlaylistEditorSongsReader';
-  import PlaylistEditorSongsAdder from '../components/PlaylistEditorSongsAdder';
+  import PlaylistEditorSongsBrowser from '../components/PlaylistEditorSongsBrowser';
 
   export default Vue.extend({
     name: 'PlaylistEditor',
     components: {
       PlaylistEditorData,
       PlaylistEditorSongsReader,
-      PlaylistEditorSongsAdder,
+      PlaylistEditorSongsBrowser,
     },
     data: () => ({
       length: 3,
