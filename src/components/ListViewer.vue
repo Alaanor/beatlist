@@ -20,9 +20,9 @@
             :custom-filter="filter"
             :search="search" wrap
             :content-tag="modeName === 'block' ? 'v-layout' : 'v-list'"
-            content-class="pa-0 ma-0">
+            content-class="pa-0 ma-0 justify-center align-center">
       <template #item="props">
-        <v-flex v-if="modeName === 'block'" my-3>
+        <v-flex v-if="modeName === 'block'" my-3 shrink>
           <slot name="item-block" :item="props.item"></slot>
         </v-flex>
         <v-card v-if="modeName === 'list'">
@@ -54,7 +54,7 @@
     computed: {
       displayModeSelected: sync('settings/displayMode'),
       pagination: sync('settings/pagination'),
-      modeName: function() {
+      modeName() {
         const select = this.displayModeSelected as number;
         const displayMode = this.displayMode as [{ icon: string, mode: string }];
         return displayMode[select].mode;

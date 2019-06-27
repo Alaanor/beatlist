@@ -1,5 +1,5 @@
 <template>
-  <v-img v-if="imageData.length > 0" :src="imageData"></v-img>
+  <v-img v-if="imageData.length > 0" :src="imageData" aspect-ratio="1" contain></v-img>
   <v-progress-circular width="2" size="24" v-else indeterminate></v-progress-circular>
 </template>
 

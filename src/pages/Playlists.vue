@@ -8,19 +8,18 @@
         <v-icon class="ml-1">add</v-icon>
       </v-btn>
     </v-layout>
-    <v-container fluid grid-list-lg v-if="playlists !== null">
-      <v-data-iterator
-              :items="playlists"
-              :rows-per-page-items="rowsPerPageItems"
-              :pagination.sync="pagination"
-              content-tag="v-layout" row wrap>
-        <template v-slot:item="props">
-          <v-flex my-3>
-            <Playlist :data="props.item"></Playlist>
-          </v-flex>
-        </template>
-      </v-data-iterator>
-    </v-container>
+    <ListViewerForPlaylists>
+      <template #item-block-action="{item}">
+        <v-btn icon exact :to="`playlist/edit/${item.playlistHash}`">
+          <v-icon>chevron_right</v-icon>
+        </v-btn>
+      </template>
+      <template #item-list-action="{item}">
+        <v-btn icon exact :to="`playlist/edit/${item.playlistHash}`">
+          <v-icon>chevron_right</v-icon>
+        </v-btn>
+      </template>
+    </ListViewerForPlaylists>
   </v-container>
 </template>
 
@@ -28,12 +27,12 @@
   import Vue from 'vue';
   import {get} from 'vuex-pathify';
   import store from '@/store/store';
-  import Playlist from '@/components/Playlist.vue';
   import BeatSaber from '@/lib/BeatSaber';
+  import ListViewerForPlaylists from '@/components/ListViewerForPlaylists.vue';
 
   export default Vue.extend({
     name: 'Playlists',
-    components: {Playlist},
+    components: {ListViewerForPlaylists},
     data: () => ({
       rowsPerPageItems: [6, 12, 24, 48],
       pagination: {
@@ -43,7 +42,6 @@
     }),
     computed: {
       installationPath: get('settings/installationPath'),
-      playlists: get('songs/playlists'),
     },
     methods: {
       async NewPlaylist() {

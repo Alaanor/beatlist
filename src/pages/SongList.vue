@@ -4,7 +4,7 @@
     <h1>Song list</h1>
     <ListViewerForSongs>
       <template #item-block-action="{item}">
-        <BtnAddSongToPlaylist :song="item" label="Add to playlist"></BtnAddSongToPlaylist>
+        <BtnAddSongToPlaylist :song="item" value="Add to playlist"></BtnAddSongToPlaylist>
       </template>
       <template #item-list-action="{item}">
         <BtnAddSongToPlaylist :song="item" icon></BtnAddSongToPlaylist>
@@ -20,6 +20,6 @@
 
   export default Vue.extend({
     name: 'SongList',
-    components: { ListViewerForSongs, BtnAddSongToPlaylist }
+    components: { ListViewerForSongs, BtnAddSongToPlaylist },
   });
 </script>
