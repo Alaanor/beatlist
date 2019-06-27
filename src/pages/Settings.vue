@@ -86,11 +86,11 @@
         }
       },
       validate() {
-        const form = this.$refs.form as HTMLFormElement;
+        const form = this.$refs.form;
         form.validate();
       },
       getLastScan() {
-        const lastScan = this.lastScan as Date;
+        const lastScan = this.lastScan;
 
         if (lastScan === undefined) {
           return 'Never';

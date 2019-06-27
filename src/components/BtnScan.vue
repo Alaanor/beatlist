@@ -71,12 +71,12 @@
       songs: sync('songs/songs'),
     },
     methods: {
-      getNumberOfSongs(): number {
+      getNumberOfSongs() {
         return this.songs !== undefined ? this.songs.filter((s) => s.valid).length : 0;
       },
       scan() {
         this.dialogScan = true;
-        const instPath = this.installationPath as string;
+        const instPath = this.installationPath;
         new BeatSaber(instPath).getSongList()
           .then(async (list) => {
             this.scanAmount = list.length;

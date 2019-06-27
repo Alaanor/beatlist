@@ -59,7 +59,7 @@
       },
     },
     filters: {
-      forceInt(value: string) {
+      forceInt(value) {
         return Number.parseInt(value, 10).toString();
       },
     },
