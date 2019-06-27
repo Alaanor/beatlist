@@ -16,7 +16,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import ListViewerForSongs from '@/components/ListViewerForSongs.vue';
-  import BtnAddSongToPlaylist from '@/components/BtnAddSongToPlaylist.vue';
+  import BtnAddSongToPlaylist from '@/components/BtnToggleAddRemoveSongInPlaylists.vue';
 
   export default Vue.extend({
     name: 'SongList',
