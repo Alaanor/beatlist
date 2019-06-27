@@ -1,6 +1,6 @@
 <template>
   <v-container pa-0 ma-0>
-    <v-btn :disabled="dialogScan || !configValid" :loading="dialogScan" @click="scan()" color="primary">
+    <v-btn :disabled="dialogScan || !installationPathValid" :loading="dialogScan" @click="scan()" color="primary">
       Scan now
     </v-btn>
     <v-dialog v-model="dialogScan" persistent width="300">
@@ -54,7 +54,7 @@
     }),
     computed: {
       installationPath: get('settings/installationPath'),
-      configValid: get('settings/configValid'),
+      installationPathValid: get('settings/installationPathValid'),
       lastScan: sync('songs/lastScan'),
       songs: sync('songs/songs'),
     },

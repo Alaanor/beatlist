@@ -1,19 +1,23 @@
 <!--suppress XmlUnboundNsPrefix -->
 <template>
   <v-container>
+    <h2>{{configValid}}</h2>
+    <v-alert :value="!configValid" type="warning" class="mb-3">
+      Please set the <strong>installation path</strong> and <strong>scan the library</strong>.
+    </v-alert>
     <h1>Settings</h1><br>
-    <h2>Required</h2><br>
-    <v-form v-model="configValid">
+    <h2>Installation path</h2><br>
+    <v-form v-model="installationPathValid">
       <v-text-field
               v-model="installationPath"
               label="Installation path"
               append-icon="folder"
-              :prepend-icon="configValid ? 'done' : 'warning'"
+              :prepend-icon="installationPathValid ? 'done' : 'warning'"
               :rules="rules.validInstallationPath"
               @click:append="openFileExplorer"
               hint="The folder where Beat Saber is installed, must have a 'Beat Saber.exe' file there"
-              solo
-      ></v-text-field>
+              solo>
+      </v-text-field>
     </v-form>
     <h2>Song library</h2>
     <v-container>
@@ -64,12 +68,17 @@
     }),
     computed: {
       installationPath: sync('settings/installationPath'),
+      installationPathValid: sync('settings/installationPathValid'),
       configValid: sync('settings/configValid'),
       darkTheme: sync('settings/darkTheme'),
       miniVariant: sync('settings/miniVariant'),
       permanent: sync('settings/permanent'),
       lastScan: get('songs/lastScan'),
       songs: get('songs/songs'),
+    },
+    watch: {
+      installationPathValid: function () { this.validateConfig() },
+      songs: function () { this.validateConfig() },
     },
     methods: {
       openFileExplorer(): void {
@@ -98,6 +107,10 @@
       getNumberOfInvalidSongs(): number {
         const songs = this.songs as SongData[];
         return this.songs !== undefined ? songs.filter((s) => !s.valid).length : 0;
+      },
+      validateConfig() {
+        console.log(this.installationPathValid);
+        this.configValid = this.installationPathValid && (this.songs as SongData[]).length > 0;
       },
     },
   });

@@ -2,6 +2,7 @@ import {make} from 'vuex-pathify';
 
 const state = {
   installationPath: '',
+  installationPathValid: false,
   configValid: false,
   darkTheme: true,
   miniVariant: false,

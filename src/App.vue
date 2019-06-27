@@ -2,7 +2,7 @@
   <v-app :dark="settings.darkTheme">
     <v-navigation-drawer v-model="drawer" clipped app :mini-variant="settings.miniVariant" :permanent="settings.permanent">
       <v-list dense>
-        <v-list-tile v-for="menu in menus" :to="menu.path">
+        <v-list-tile v-for="menu in menus" :to="menu.path" v-if="!(menu.requireValidConfig && !settings.configValid)">
           <v-list-tile-action>
             <v-icon>{{ menu.icon }}</v-icon>
           </v-list-tile-action>
@@ -50,6 +50,7 @@
   import Settings from '@/pages/Settings.vue';
   import PlaylistEditor from '@/pages/PlaylistEditor.vue';
   import {get} from 'vuex-pathify';
+  import store from '@/store/store';
 
   Vue.use(VueRouter);
 
@@ -64,16 +65,19 @@
         path: '/song-list',
         name: 'song-list',
         component: SongList,
+        meta: { requireValidSettings: true }
       },
       {
         path: '/playlist',
         name: 'playlist',
         component: Playlists,
+        meta: { requireValidSettings: true },
       },
       {
         path: '/playlist/edit/:hash',
         name: 'playlistEditor',
         component: PlaylistEditor,
+        meta: { requireValidSettings: true },
       },
       {
         path: '/settings',
@@ -82,6 +86,18 @@
       },
       {path: '*', redirect: '/'},
     ],
+  });
+
+  router.beforeEach((to, from , next) => {
+    if (to.matched.some((record) => record.meta.requireValidSettings)) {
+      if (!store.get('settings/configValid')) {
+        next()
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
   });
 
   export default Vue.extend({
@@ -99,11 +115,13 @@
           path: '/song-list',
           name: 'Song list',
           icon: 'queue_music',
+          requireValidConfig: true,
         },
         {
           path: '/playlist',
           name: 'Playlist',
           icon: 'playlist_play',
+          requireValidConfig: true,
         },
         {
           path: '/settings',
