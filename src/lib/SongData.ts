@@ -4,6 +4,7 @@ import {promisify} from 'util';
 import DifficultyBeatMapSets from '@/lib/DifficultyBeatMapSets';
 import SongHashData from './SongHashData';
 import axios from 'axios';
+import store from '@/store/store';
 
 const readFile = promisify(fs.readFile);
 const apiHashUrl = 'https://beatsaver.com/api/maps/by-hash/';
@@ -44,7 +45,9 @@ export default class SongData {
     const newFormatSongs = songs.filter((s) => s.folderId === s.songKey).map((s) => s.songKey);
     songs.filter((s) => (
       newFormatSongs.includes(s.songKey) && s.songKey !== s.folderId
-    )).forEach((s) => s.valid = false);
+    )).forEach((s) => {
+      store.commit('songs/markAsInvalid', s);
+    });
   }
 
   private static async GetKeyFromHash(hash: string): Promise<string> {

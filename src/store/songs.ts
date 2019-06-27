@@ -24,6 +24,9 @@ const mutations = {
     pl.songs = pl.songs.filter((s: SongData) => s.songHash !== song.songHash);
     pl.Save();
   },
+  markAsInvalid(context: any, song: SongData) {
+    context.songs.find((s: SongData) => s === song).valid = false;
+  },
 };
 
 // noinspection JSUnusedGlobalSymbols

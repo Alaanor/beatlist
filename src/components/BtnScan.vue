@@ -1,7 +1,18 @@
+<!--suppress ALL -->
 <template>
   <v-container pa-0 ma-0>
     <v-btn :disabled="dialogScan || !installationPathValid" :loading="dialogScan" @click="scan()" color="primary">
       Scan now
+    </v-btn>
+    <v-btn :disabled="!songs" :loading="clearCacheTimeout" color="warning" @click="clearCache()" flat>
+      Clear cache
+      <template v-slot:loader>
+        <v-scroll-x-transition>
+          <v-icon color="success">
+            check
+          </v-icon>
+        </v-scroll-x-transition>
+      </template>
     </v-btn>
     <v-dialog v-model="dialogScan" persistent width="300">
       <v-card dark>
@@ -51,6 +62,7 @@
         message: '',
         err: undefined,
       },
+      clearCacheTimeout: false,
     }),
     computed: {
       installationPath: get('settings/installationPath'),
@@ -88,7 +100,7 @@
             if (this.getNumberOfSongs() === 0) {
               throw new Error('Something went wrong, 0 song were correctly imported');
             }
-        })
+          })
           .catch((err) => {
             this.scanResult.type = 'error';
             this.scanResult.message = 'Failed to import song :(';
@@ -106,6 +118,12 @@
               this.scanPercent = 0;
             }, 150);
           });
+      },
+      clearCache() {
+        this.songs = undefined;
+        this.lastScan = undefined;
+        this.clearCacheTimeout = true;
+        setTimeout(() => this.clearCacheTimeout = false, 1500)
       },
     },
   });

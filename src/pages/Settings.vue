@@ -109,8 +109,7 @@
         return this.songs !== undefined ? songs.filter((s) => !s.valid).length : 0;
       },
       validateConfig() {
-        console.log(this.installationPathValid);
-        this.configValid = this.installationPathValid && (this.songs as SongData[]).length > 0;
+        this.configValid = this.installationPathValid && (this.songs as SongData[] || []).length > 0;
       },
     },
   });
