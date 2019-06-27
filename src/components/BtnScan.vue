@@ -43,7 +43,7 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script>
   import Vue from 'vue';
   import {get, sync} from 'vuex-pathify';
   import SongData from '@/lib/SongData';
@@ -72,8 +72,7 @@
     },
     methods: {
       getNumberOfSongs(): number {
-        const songs = this.songs as SongData[];
-        return this.songs !== undefined ? songs.filter((s) => s.valid).length : 0;
+        return this.songs !== undefined ? this.songs.filter((s) => s.valid).length : 0;
       },
       scan() {
         this.dialogScan = true;
@@ -91,7 +90,7 @@
               return song;
             }));
 
-            SongData.DetectDuplicate(this.songs as SongData[]);
+            SongData.DetectDuplicate(this.songs);
 
             this.scanResult.type = 'success';
             this.scanResult.message = `Successfully imported ${this.getNumberOfSongs()} songs.`;

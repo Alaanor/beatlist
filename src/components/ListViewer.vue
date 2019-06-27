@@ -33,7 +33,7 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script>
   import Vue from 'vue';
   import {sync} from 'vuex-pathify';
 
@@ -55,9 +55,7 @@
       displayModeSelected: sync('settings/displayMode'),
       pagination: sync('settings/pagination'),
       modeName() {
-        const select = this.displayModeSelected as number;
-        const displayMode = this.displayMode as [{ icon: string, mode: string }];
-        return displayMode[select].mode;
+        return this.displayMode[this.displayModeSelected].mode;
       },
     },
     filters: {

@@ -49,12 +49,11 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script>
   import {remote} from 'electron';
   import BeatSaber from '@/lib/BeatSaber';
   import Vue from 'vue';
   import {sync, get} from 'vuex-pathify';
-  import SongData from '@/lib/SongData';
   import BtnScan from '@/components/BtnScan.vue';
 
   export default Vue.extend({
@@ -62,7 +61,7 @@
     components: {BtnScan},
     data: () => ({
       rules: {
-        validInstallationPath: [(v: string) => BeatSaber.isPathLegit(v) || 'Installation path is not valid'],
+        validInstallationPath: [(v) => BeatSaber.isPathLegit(v) || 'Installation path is not valid'],
       },
     }),
     computed: {
@@ -80,7 +79,7 @@
       songs() { this.validateConfig(); },
     },
     methods: {
-      openFileExplorer(): void {
+      openFileExplorer() {
         const folder = remote.dialog.showOpenDialog({properties: ['openDirectory']});
         if (folder !== undefined) {
           this.installationPath = folder[0];
@@ -99,16 +98,14 @@
 
         return lastScan.toLocaleString();
       },
-      getNumberOfSongs(): number {
-        const songs = this.songs as SongData[];
-        return this.songs !== undefined ? songs.filter((s) => s.valid).length : 0;
+      getNumberOfSongs() {
+        return this.songs !== undefined ? this.songs.filter((s) => s.valid).length : 0;
       },
-      getNumberOfInvalidSongs(): number {
-        const songs = this.songs as SongData[];
-        return this.songs !== undefined ? songs.filter((s) => !s.valid).length : 0;
+      getNumberOfInvalidSongs() {
+        return this.songs !== undefined ? this.songs.filter((s) => !s.valid).length : 0;
       },
       validateConfig() {
-        this.configValid = this.installationPathValid && (this.songs as SongData[] || []).length > 0;
+        this.configValid = this.installationPathValid && this.songs.length > 0;
       },
     },
   });

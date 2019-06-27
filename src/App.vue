@@ -1,5 +1,5 @@
 <template>
-  <v-app :dark="settings.darkTheme">
+  <v-app :dark="settings.darkTheme" class="no-text-selection">
     <v-navigation-drawer v-model="drawer" clipped app :mini-variant="settings.miniVariant" :permanent="settings.permanent">
       <v-list dense>
         <v-list-tile v-for="menu in menus" :to="menu.path" v-if="!(menu.requireValidConfig && !settings.configValid)">
@@ -12,9 +12,19 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar app fixed clipped-left>
+    <v-toolbar app fixed clipped-left dense flat class="windows-draggable">
       <v-toolbar-side-icon v-if="!settings.permanent" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>Beatlist</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn flat icon @click="toggleMinimize()" class="btn-win-control ma-0">
+        <v-icon small>minimize</v-icon>
+      </v-btn>
+      <v-btn flat icon @click="toggleMaximized()" class="btn-win-control ma-0">
+        <v-icon small>web_asset</v-icon>
+      </v-btn>
+      <v-btn flat icon @click="appClose()" class="btn-win-control ma-0">
+        <v-icon small>close</v-icon>
+      </v-btn>
     </v-toolbar>
     <v-content>
       <v-container fluid fill-height>
@@ -51,6 +61,7 @@
   import PlaylistEditor from '@/pages/PlaylistEditor.vue';
   import {get} from 'vuex-pathify';
   import store from '@/store/store';
+  import {remote} from 'electron';
 
   Vue.use(VueRouter);
 
@@ -111,6 +122,7 @@
           path: '/',
           name: 'home',
           icon: 'home',
+
         },
         {
           path: '/song-list',
@@ -138,6 +150,21 @@
       const st = this.$store as unknown as { _vm: { $root: Vue } };
       st._vm.$root.$on('storageReady', () => this.isReady = true);
     },
+    methods: {
+      toggleMinimize() {
+        remote.getCurrentWindow().minimize();
+      },
+      toggleMaximized() {
+        if (remote.getCurrentWindow().isMaximized()) {
+          remote.getCurrentWindow().unmaximize();
+        } else {
+          remote.getCurrentWindow().maximize();
+        }
+      },
+      appClose() {
+        remote.getCurrentWindow().close();
+      },
+    },
   });
 </script>
 
@@ -145,5 +172,17 @@
   /* Disable scrollbar */
   ::-webkit-scrollbar {
     display: none;
+  }
+
+  .windows-draggable {
+    -webkit-app-region: drag;
+  }
+
+  .btn-win-control {
+    -webkit-app-region: no-drag;
+  }
+
+  .no-text-selection {
+    -webkit-user-select: none;
   }
 </style>
