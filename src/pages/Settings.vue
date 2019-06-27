@@ -77,8 +77,8 @@
       songs: get('songs/songs'),
     },
     watch: {
-      installationPathValid: function () { this.validateConfig() },
-      songs: function () { this.validateConfig() },
+      installationPathValid() { this.validateConfig(); },
+      songs() { this.validateConfig(); },
     },
     methods: {
       openFileExplorer(): void {

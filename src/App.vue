@@ -65,7 +65,7 @@
         path: '/song-list',
         name: 'song-list',
         component: SongList,
-        meta: { requireValidSettings: true }
+        meta: { requireValidSettings: true },
       },
       {
         path: '/playlist',
@@ -90,8 +90,9 @@
 
   router.beforeEach((to, from , next) => {
     if (to.matched.some((record) => record.meta.requireValidSettings)) {
-      if (!store.get('settings/configValid')) {
-        next()
+      const st = store as unknown as {get: (path: string) => boolean};
+      if (!st.get('settings/configValid')) {
+        next();
       } else {
         next();
       }

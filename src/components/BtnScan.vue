@@ -123,7 +123,7 @@
         this.songs = undefined;
         this.lastScan = undefined;
         this.clearCacheTimeout = true;
-        setTimeout(() => this.clearCacheTimeout = false, 1500)
+        setTimeout(() => this.clearCacheTimeout = false, 1500);
       },
     },
   });

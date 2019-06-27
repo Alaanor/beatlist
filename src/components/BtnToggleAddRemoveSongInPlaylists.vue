@@ -78,7 +78,7 @@
       Remove(playlist: Playlist) {
         store.commit('songs/removeSongFromPlaylist', {playlist, song: this.song});
       },
-    }
+    },
   });
 </script>
 

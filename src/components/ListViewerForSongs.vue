@@ -56,9 +56,9 @@
     components: {ListViewer,  SongCover},
     computed: {
       songs: get('songs/songs'),
-      validSongs: function() {
+      validSongs() {
         const songs = this.songs as SongData[];
-        return songs.filter((s: SongData) => s.valid)
+        return songs.filter((s: SongData) => s.valid);
       },
     },
     methods: {
