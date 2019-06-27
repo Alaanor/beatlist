@@ -1,13 +1,19 @@
 <!--suppress XmlUnboundNsPrefix -->
 <template>
-  <v-dialog v-model="dialog" scrollable max-width="450px">
+  <v-btn v-if="!!playlist && icon" icon>
+    <v-icon>{{value || "add"}}</v-icon>
+  </v-btn>
+  <v-btn v-else-if="!!playlist" flat small pa-0>
+    {{value || "Add"}}
+  </v-btn>
+  <v-dialog v-else v-model="dialog" scrollable max-width="450px">
     <template v-slot:activator="{ on }">
       <slot>
         <v-btn v-if="icon" v-on="on" icon>
-          <v-icon>{{label || "add"}}</v-icon>
+          <v-icon>{{value || "add"}}</v-icon>
         </v-btn>
         <v-btn v-else flat small pa-0 v-on="on">
-          {{label || "Add"}}
+          {{value || "Add"}}
         </v-btn>
       </slot>
     </template>
@@ -55,11 +61,12 @@
   import PlaylistCover from '@/components/PlaylistCover.vue';
 
   export default Vue.extend({
-    name: 'AddToPlaylistBtn',
+    name: 'BtnAddSongToPlaylist',
     props: {
       song: {type: Object, required: true},
+      playlist: {type: Object, default: false},
       icon: {type: Boolean, default: false },
-      label: {type: String, default: undefined}
+      value: {type: String, default: undefined},
     },
     components: {PlaylistCover},
     data: () => ({

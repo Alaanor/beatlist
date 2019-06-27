@@ -39,7 +39,7 @@
   import BeatSaber from '@/lib/BeatSaber';
 
   export default Vue.extend({
-    name: 'Scan',
+    name: 'BtnScan',
     data: () => ({
       dialogScan: false,
       dialogResult: false,

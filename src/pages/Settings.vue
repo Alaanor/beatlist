@@ -35,7 +35,7 @@
           </v-tooltip>
         </v-flex>
         <v-flex>
-          <Scan></Scan>
+          <BtnScan></BtnScan>
         </v-flex>
       </v-layout>
     </v-container>
@@ -52,11 +52,11 @@
   import Vue from 'vue';
   import {sync, get} from 'vuex-pathify';
   import SongData from '@/lib/SongData';
-  import Scan from '@/components/Scan.vue';
+  import BtnScan from '@/components/BtnScan.vue';
 
   export default Vue.extend({
     name: 'Settings',
-    components: {Scan},
+    components: {BtnScan},
     data: () => ({
       rules: {
         validInstallationPath: [(v: string) => BeatSaber.isPathLegit(v) || 'Installation path is not valid'],
