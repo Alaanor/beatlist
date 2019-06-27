@@ -18,14 +18,14 @@
         </v-item>
       </v-item-group>
       <v-flex>
-        <v-window v-model="window" vertical>
-          <v-window-item key="1" transition="fade-transition" reverse-transition="fade-transition">
+        <v-window v-model="window">
+          <v-window-item key="1">
             <PlaylistEditorData :hash="hash"></PlaylistEditorData>
           </v-window-item>
-          <v-window-item key="2" transition="fade-transition" reverse-transition="fade-transition">
+          <v-window-item key="2">
             <PlaylistEditorSongsReader :hash="hash"></PlaylistEditorSongsReader>
           </v-window-item>
-          <v-window-item key="3" transition="fade-transition" reverse-transition="fade-transition">
+          <v-window-item key="3">
             <PlaylistEditorSongsAdder :hash="hash"></PlaylistEditorSongsAdder>
           </v-window-item>
         </v-window>
