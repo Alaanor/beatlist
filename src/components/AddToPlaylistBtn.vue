@@ -2,7 +2,14 @@
 <template>
   <v-dialog v-model="dialog" scrollable max-width="450px">
     <template v-slot:activator="{ on }">
-      <v-btn flat small pa-0 v-on="on">Add to playlist</v-btn>
+      <slot>
+        <v-btn v-if="icon" v-on="on" icon>
+          <v-icon>{{label || "add"}}</v-icon>
+        </v-btn>
+        <v-btn v-else flat small pa-0 v-on="on">
+          {{label || "Add"}}
+        </v-btn>
+      </slot>
     </template>
     <v-card v-if="checkboxList">
       <v-card-title class="subheading">Select playlist</v-card-title>
@@ -49,7 +56,11 @@
 
   export default Vue.extend({
     name: 'AddToPlaylistBtn',
-    props: {song: {type: Object, required: true}},
+    props: {
+      song: {type: Object, required: true},
+      icon: {type: Boolean, default: false },
+      label: {type: String, default: undefined}
+    },
     components: {PlaylistCover},
     data: () => ({
       dialog: false,
@@ -68,7 +79,7 @@
         if (this.dialog) {
           this.LoadCheckbox();
         }
-      }
+      },
     },
     methods: {
       LoadCheckbox() {
@@ -82,7 +93,7 @@
           }
 
           return {
-            playlist: playlist,
+            playlist,
             disabled: isAlreadyIn,
           };
         });
@@ -97,7 +108,7 @@
             store.commit('songs/addSongToPlaylist', {playlist: p, song: this.song});
           });
         this.dialog = false;
-      }
+      },
     },
   });
 </script>

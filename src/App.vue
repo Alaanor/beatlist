@@ -44,11 +44,11 @@
 <script lang="ts">
   import Vue from 'vue';
   import VueRouter from 'vue-router';
-  import Home from '@/components/Home.vue';
-  import SongList from '@/components/SongList.vue';
-  import Playlists from '@/components/Playlists.vue';
-  import Settings from '@/components/Settings.vue';
-  import PlaylistEditor from '@/components/PlaylistEditor.vue';
+  import Home from '@/pages/Home.vue';
+  import SongList from '@/pages/SongList.vue';
+  import Playlists from '@/pages/Playlists.vue';
+  import Settings from '@/pages/Settings.vue';
+  import PlaylistEditor from '@/pages/PlaylistEditor.vue';
   import {get} from 'vuex-pathify';
 
   Vue.use(VueRouter);

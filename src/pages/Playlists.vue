@@ -1,4 +1,4 @@
-<!--suppress XmlUnboundNsPrefix -->
+<!--suppress ALL -->
 <template>
   <v-container>
     <v-layout row justify-space-between>

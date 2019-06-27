@@ -26,7 +26,7 @@
             <PlaylistEditorSongsReader :hash="hash"></PlaylistEditorSongsReader>
           </v-window-item>
           <v-window-item key="3" transition="fade-transition" reverse-transition="fade-transition">
-
+            <PlaylistEditorSongsAdder :hash="hash"></PlaylistEditorSongsAdder>
           </v-window-item>
         </v-window>
       </v-flex>
@@ -36,12 +36,17 @@
 
 <script>
   import Vue from 'vue';
-  import PlaylistEditorData from './PlaylistEditorData';
-  import PlaylistEditorSongsReader from './PlaylistEditorSongsReader';
+  import PlaylistEditorData from '../components/PlaylistEditorData';
+  import PlaylistEditorSongsReader from '../components/PlaylistEditorSongsReader';
+  import PlaylistEditorSongsAdder from '../components/PlaylistEditorSongsAdder';
 
   export default Vue.extend({
     name: 'PlaylistEditor',
-    components: {PlaylistEditorData, PlaylistEditorSongs: PlaylistEditorSongsReader},
+    components: {
+      PlaylistEditorData,
+      PlaylistEditorSongsReader,
+      PlaylistEditorSongsAdder,
+    },
     data: () => ({
       length: 3,
       window: 0,
@@ -57,7 +62,7 @@
       },
     },
     mounted() {
-      this.$nextTick(async function () {
+      this.$nextTick(async function() {
         this.UpdatePlaylist();
       });
     },
