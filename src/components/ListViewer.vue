@@ -35,6 +35,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
+  import {sync} from 'vuex-pathify';
 
   export default Vue.extend({
     name: 'ListViewer',
@@ -45,16 +46,14 @@
     data: () => ({
       search: '',
       rowsPerPageItems: [6, 12, 24, 48],
-      pagination: {
-        rowsPerPage: 6,
-      },
       displayMode: [
         {icon: 'view_module', mode: 'block'},
         {icon: 'view_stream', mode: 'list'},
       ],
-      displayModeSelected: 0,
     }),
     computed: {
+      displayModeSelected: sync('settings/displayMode'),
+      pagination: sync('settings/pagination'),
       modeName: function() {
         const select = this.displayModeSelected as number;
         const displayMode = this.displayMode as [{ icon: string, mode: string }];

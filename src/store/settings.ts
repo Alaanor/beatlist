@@ -1,4 +1,4 @@
-import { make } from 'vuex-pathify';
+import {make} from 'vuex-pathify';
 
 const state = {
   installationPath: '',
@@ -6,6 +6,10 @@ const state = {
   darkTheme: true,
   miniVariant: false,
   permanent: false,
+  displayMode: 0,
+  pagination: {
+    rowsPerPage: 6,
+  },
 };
 
 const mutations = {
