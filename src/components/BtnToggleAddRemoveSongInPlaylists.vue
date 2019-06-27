@@ -12,7 +12,13 @@
       </slot>
     </template>
     <v-card v-if="playlists">
-      <v-card-title class="subheading">Select playlist</v-card-title>
+      <v-card-title class="subheading">
+        Select playlist
+        <v-spacer></v-spacer>
+        <v-btn icon @click="dialog = false" small class="ma-0">
+          <v-icon>close</v-icon>
+        </v-btn>
+      </v-card-title>
       <v-divider></v-divider>
       <v-card-text style="max-height: 350px;">
         <v-card elevation="10">
