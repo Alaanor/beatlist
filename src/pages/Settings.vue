@@ -1,7 +1,6 @@
 <!--suppress XmlUnboundNsPrefix -->
 <template>
   <v-container>
-    <h2>{{configValid}}</h2>
     <v-alert :value="!configValid" type="warning" class="mb-3">
       Please set the <strong>installation path</strong> and <strong>scan the library</strong>.
     </v-alert>
