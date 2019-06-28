@@ -176,7 +176,7 @@
       },
       openGithubRepo() {
         shell.openExternal('https://github.com/Alaanor/beatlist');
-      }
+      },
     },
   });
 </script>

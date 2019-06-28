@@ -70,7 +70,7 @@
   import {ipcRenderer} from 'electron';
   import {
     RESOLVE_INST_PATH_MSG,
-    RESOLVE_INST_PATH_REPLY
+    RESOLVE_INST_PATH_REPLY,
   } from '../lib/ipc/PathResolver';
 
   export default Vue.extend({
