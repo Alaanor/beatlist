@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.9.0",
+    "@mdi/font": "^3.7.95",
     "@types/winreg": "^1.2.30",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-typescript": "^3.8.0",

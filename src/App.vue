@@ -1,6 +1,7 @@
 <template>
   <v-app :dark="settings.darkTheme" class="no-text-selection">
-    <v-navigation-drawer v-model="drawer" clipped app :mini-variant="settings.miniVariant" :permanent="settings.permanent">
+    <v-navigation-drawer v-model="drawer" clipped app :mini-variant="settings.miniVariant"
+                         :permanent="settings.permanent">
       <v-list dense>
         <v-list-tile v-for="menu in menus" :to="menu.path" v-if="!(menu.requireValidConfig && !settings.configValid)">
           <v-list-tile-action>
@@ -10,10 +11,19 @@
             <v-list-tile-title>{{ menu.name }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile @click="openGithubRepo()">
+          <v-list-tile-action>
+            <v-icon>mdi-github-circle</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Github repo</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar app fixed clipped-left dense flat class="windows-draggable">
-      <v-toolbar-side-icon v-if="!settings.permanent" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-side-icon v-if="!settings.permanent" @click.stop="drawer = !drawer"
+                           class="btn-win-control"></v-toolbar-side-icon>
       <v-toolbar-title>Beatlist</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn flat icon @click="toggleMinimize()" class="btn-win-control ma-0">
@@ -61,7 +71,7 @@
   import PlaylistEditor from '@/pages/PlaylistEditor.vue';
   import {get} from 'vuex-pathify';
   import store from '@/store/store';
-  import {remote} from 'electron';
+  import {remote, shell} from 'electron';
 
   Vue.use(VueRouter);
 
@@ -76,19 +86,19 @@
         path: '/song-list',
         name: 'song-list',
         component: SongList,
-        meta: { requireValidSettings: true },
+        meta: {requireValidSettings: true},
       },
       {
         path: '/playlist',
         name: 'playlist',
         component: Playlists,
-        meta: { requireValidSettings: true },
+        meta: {requireValidSettings: true},
       },
       {
         path: '/playlist/edit/:hash',
         name: 'playlistEditor',
         component: PlaylistEditor,
-        meta: { requireValidSettings: true },
+        meta: {requireValidSettings: true},
       },
       {
         path: '/settings',
@@ -99,9 +109,9 @@
     ],
   });
 
-  router.beforeEach((to, from , next) => {
+  router.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.requireValidSettings)) {
-      const st = store as unknown as {get: (path: string) => boolean};
+      const st = store as unknown as { get: (path: string) => boolean };
       if (!st.get('settings/configValid')) {
         next();
       } else {
@@ -164,6 +174,9 @@
       appClose() {
         remote.getCurrentWindow().close();
       },
+      openGithubRepo() {
+        shell.openExternal('https://github.com/Alaanor/beatlist');
+      }
     },
   });
 </script>
