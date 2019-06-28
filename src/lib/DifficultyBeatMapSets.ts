@@ -1,4 +1,4 @@
-import Difficulty from '@/lib/Difficulty';
+import Difficulty from './Difficulty';
 
 export default interface DifficultyBeatMapSets {
   _beatmapCharacteristicName: string | undefined;

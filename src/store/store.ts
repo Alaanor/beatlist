@@ -4,8 +4,8 @@ import VuexPersistence from 'vuex-persist';
 import pathify from 'vuex-pathify';
 import localForage from 'localforage';
 
-import settings from '@/store/settings';
-import songs from '@/store/songs';
+import settings from '../store/settings';
+import songs from '../store/songs';
 
 Vue.use(Vuex);
 

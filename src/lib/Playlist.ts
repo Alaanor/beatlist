@@ -1,4 +1,4 @@
-import SongData from '@/lib/SongData';
+import SongData from './SongData';
 import fs from 'fs';
 import {promisify} from 'util';
 import crypto from 'crypto';
@@ -11,9 +11,14 @@ const deleteFile = promisify(fs.unlink);
 
 export default class Playlist {
 
-  public static async Parse(pathToJson: string, songs: SongData[]): Promise<Playlist> {
+  public static async Parse(pathToJson: string, songs: SongData[]): Promise<Playlist | undefined> {
     const raw = await readFile(pathToJson);
-    const data = JSON.parse(raw.toString());
+    let data;
+    try {
+      data = JSON.parse(raw.toString());
+    } catch (e) {
+      return undefined;
+    }
 
     const playlist = new Playlist();
     playlist.playlistPath = pathToJson;

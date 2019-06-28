@@ -11,12 +11,20 @@
               v-model="installationPath"
               label="Installation path"
               append-icon="folder"
+              :color="installationPathValid ? '' : 'red'"
               :prepend-icon="installationPathValid ? 'done' : 'warning'"
               :rules="rules.validInstallationPath"
               @click:append="openFileExplorer"
               hint="The folder where Beat Saber is installed, must have a 'Beat Saber.exe' file there"
               solo>
       </v-text-field>
+      <v-btn flat color="success" class="mb-4"
+             :disabled="installationPathValid"
+             @click="detectPath()"
+             :loading="resolveBtnLoading">
+        <v-icon class="pr-3">fa-magic</v-icon>
+        Detect installation path
+      </v-btn>
     </v-form>
     <h2>Song library</h2>
     <v-container>
@@ -46,6 +54,10 @@
     <v-switch v-model="darkTheme" label="Dark theme"></v-switch>
     <v-switch v-model="miniVariant" label="Mini sidebar"></v-switch>
     <v-switch v-model="permanent" label="Permanent sidebar"></v-switch>
+    <v-snackbar v-model="snackbar" :color="snackbarType" :timeout="3000">
+      {{ snackbarText }}
+      <v-btn flat @click="snackbar = false">Close</v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -55,6 +67,11 @@
   import Vue from 'vue';
   import {sync, get} from 'vuex-pathify';
   import BtnScan from '@/components/BtnScan.vue';
+  import {ipcRenderer} from 'electron';
+  import {
+    RESOLVE_INST_PATH_MSG,
+    RESOLVE_INST_PATH_REPLY
+  } from '../lib/ipc/PathResolver';
 
   export default Vue.extend({
     name: 'Settings',
@@ -63,6 +80,10 @@
       rules: {
         validInstallationPath: [(v) => BeatSaber.isPathLegit(v) || 'Installation path is not valid'],
       },
+      snackbar: false,
+      snackbarType: '',
+      snackbarText: '',
+      resolveBtnLoading: false,
     }),
     computed: {
       installationPath: sync('settings/installationPath'),
@@ -75,8 +96,12 @@
       songs: get('songs/songs'),
     },
     watch: {
-      installationPathValid() { this.validateConfig(); },
-      songs() { this.validateConfig(); },
+      installationPathValid() {
+        this.validateConfig();
+      },
+      songs() {
+        this.validateConfig();
+      },
     },
     methods: {
       openFileExplorer() {
@@ -106,6 +131,25 @@
       },
       validateConfig() {
         this.configValid = this.installationPathValid && this.songs.length > 0;
+      },
+      async detectPath() {
+        this.resolveBtnLoading = true;
+
+        ipcRenderer.send(RESOLVE_INST_PATH_MSG);
+        ipcRenderer.on(RESOLVE_INST_PATH_REPLY, (event, arg) => {
+          const instPath = arg;
+          if (!instPath) {
+            this.snackbarType = 'error';
+            this.snackbarText = 'Couldn\'t detect installation path :(';
+          } else {
+            this.installationPath = instPath;
+            this.snackbarType = 'success';
+            this.snackbarText = 'Installation path found :)';
+          }
+
+          this.resolveBtnLoading = false;
+          this.snackbar = true;
+        });
       },
     },
   });

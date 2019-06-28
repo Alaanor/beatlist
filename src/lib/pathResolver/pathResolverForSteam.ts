@@ -1,4 +1,4 @@
-import {regKey} from '@/lib/pathResolver/registry';
+import regKey from './registry';
 import path from 'path';
 import {promisify} from 'util';
 import fs, {PathLike} from 'fs';
@@ -6,9 +6,9 @@ import fs, {PathLike} from 'fs';
 const access = promisify(fs.access);
 const readFile = promisify(fs.readFile);
 
-const STEAM_APP_ID = '620980';
-const STEAM_REG_KEY = '\\Software\\WOW6432Node\\Valve\\PathResolverForSteam';
-const STEAM_REG_VAL = 'InstallPath';
+const STEAM_APP_ID: string = '620980';
+const STEAM_REG_KEY: string = '\\Software\\WOW6432Node\\Valve\\PathResolverForSteam';
+const STEAM_REG_VAL: string = 'InstallPath';
 
 export default class PathResolverForSteam {
 

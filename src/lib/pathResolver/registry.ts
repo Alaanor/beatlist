@@ -1,19 +1,15 @@
 import Registry from 'winreg';
 
-export const regKey: (path: string, key: string, hive?: string) => Promise<string | undefined> =
-  (path, key, hive = Registry.HKLM) =>
-    new Promise((resolve) => {
-      const reg = new Registry({hive, key: path});
+export default function regKey(path: string, key: string, hive: string = Registry.HKLM): Promise<string | undefined> {
+  return new Promise((resolve) => {
+    const reg = new Registry({hive, key: path});
 
-      reg.get(key, (err, resp) => {
-        if (err) {
-          return resolve(undefined);
-        }
-
-        if (resp === undefined) {
-          return resolve(undefined);
-        } else {
-          return resolve(resp.value);
-        }
-      });
+    reg.get(key, (err, resp) => {
+      if (err || resp === undefined) {
+        return resolve(undefined);
+      } else {
+        return resolve(resp.value);
+      }
     });
+  });
+}

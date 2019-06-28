@@ -1,7 +1,7 @@
 import {make} from 'vuex-pathify';
-import SongData from '@/lib/SongData';
-import BeatSaber from '@/lib/BeatSaber';
-import Playlist from '@/lib/Playlist';
+import SongData from '../lib/SongData';
+import BeatSaber from '../lib/BeatSaber';
+import Playlist from '../lib/Playlist';
 
 const state = {
   lastScan: undefined,

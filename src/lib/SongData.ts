@@ -1,10 +1,10 @@
 import nodePath from 'path';
 import fs from 'fs';
 import {promisify} from 'util';
-import DifficultyBeatMapSets from '@/lib/DifficultyBeatMapSets';
+import DifficultyBeatMapSets from './DifficultyBeatMapSets';
 import SongHashData from './SongHashData';
 import axios from 'axios';
-import store from '@/store/store';
+import store from '../store/store';
 
 const readFile = promisify(fs.readFile);
 const apiHashUrl = 'https://beatsaver.com/api/maps/by-hash/';

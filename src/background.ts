@@ -1,6 +1,7 @@
 'use strict';
 
 import {app, protocol, BrowserWindow} from 'electron';
+import ipcEventRegister from './lib/ipc';
 import {
   createProtocol,
   installVueDevtools,
@@ -90,3 +91,6 @@ if (isDevelopment) {
     });
   }
 }
+
+// Register event for ipc call
+ipcEventRegister();

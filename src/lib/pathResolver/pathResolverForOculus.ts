@@ -1,4 +1,4 @@
-import {regKey} from '@/lib/pathResolver/registry';
+import regKey from './registry';
 import path from 'path';
 
 export default class PathResolverForOculus {
