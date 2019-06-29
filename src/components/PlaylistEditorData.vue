@@ -65,6 +65,7 @@
   import {get} from 'vuex-pathify';
   import Playlist from '../lib/Playlist';
   import Utils from '../lib/Utils';
+  import store from '@/store/store';
 
   export default Vue.extend({
     name: 'PlaylistEditorData',
@@ -117,6 +118,7 @@
       },
       Delete() {
         this.playlist.Delete();
+        store.dispatch('songs/loadPlaylists');
         this.$router.push({name: 'playlist'});
       },
       /** @return {boolean} */

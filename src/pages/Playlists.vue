@@ -23,7 +23,7 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script>
   import Vue from 'vue';
   import {get} from 'vuex-pathify';
   import store from '@/store/store';
@@ -46,8 +46,7 @@
     methods: {
       async NewPlaylist() {
         this.loadingAdd = true;
-        const instPath = this.installationPath as string;
-        const playlist = await new BeatSaber(instPath)
+        const playlist = await new BeatSaber(this.installationPath)
           .CreateNewPlaylistFile();
         await store.dispatch('songs/loadPlaylists');
         this.$router.push({name: 'playlistEditor', params: {hash: playlist.playlistHash}});
