@@ -69,6 +69,7 @@
   import Playlists from '@/pages/Playlists.vue';
   import Settings from '@/pages/Settings.vue';
   import PlaylistEditor from '@/pages/PlaylistEditor.vue';
+  import FAQ from '@/pages/FAQ.vue';
   import {get} from 'vuex-pathify';
   import store from '@/store/store';
   import {remote, shell} from 'electron';
@@ -105,6 +106,11 @@
         name: 'settings',
         component: Settings,
       },
+      {
+        path: '/faq',
+        name: 'faq',
+        component: FAQ,
+      },
       {path: '*', redirect: '/'},
     ],
   });
@@ -130,7 +136,7 @@
       menus: [
         {
           path: '/',
-          name: 'home',
+          name: 'Home',
           icon: 'home',
 
         },
@@ -145,6 +151,11 @@
           name: 'Playlist',
           icon: 'playlist_play',
           requireValidConfig: true,
+        },
+        {
+          path: '/faq',
+          name: 'Frequently asked questions',
+          icon: 'question_answer',
         },
         {
           path: '/settings',
