@@ -35,7 +35,7 @@
     },
     async mounted() {
       try{
-        this.changelogRaw = await axios.get('https://raw.githubusercontent.com/Alaanor/beatlist/master/CHANGELOG.md');
+        this.changelogRaw = (await axios.get('https://raw.githubusercontent.com/Alaanor/beatlist/master/CHANGELOG.md')).data;
       } catch (e) {
         this.changelogRaw = undefined;
         this.hasErr = true;
