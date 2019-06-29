@@ -5,9 +5,18 @@ import DifficultyBeatMapSets from './DifficultyBeatMapSets';
 import SongHashData from './SongHashData';
 import axios from 'axios';
 import store from '../store/store';
+import Difficulty from './Difficulty';
 
 const readFile = promisify(fs.readFile);
 const apiHashUrl = 'https://beatsaver.com/api/maps/by-hash/';
+
+export interface Difficulties {
+  ExpertPlus: boolean;
+  Expert: boolean;
+  Hard: boolean;
+  Normal: boolean;
+  Easy: boolean;
+}
 
 export default class SongData {
 
@@ -48,6 +57,23 @@ export default class SongData {
     )).forEach((s) => {
       store.commit('songs/markAsInvalid', s);
     });
+  }
+
+  public static GetDifficulties(song: SongData): string[] | undefined {
+    if (!song.difficultyLevels) {
+      return undefined;
+    }
+
+    const standard = song.difficultyLevels
+      .find((b: DifficultyBeatMapSets) => b._beatmapCharacteristicName === 'Standard');
+
+    if (!standard || !standard._difficultyBeatmaps) {
+      return undefined;
+    }
+
+    return standard._difficultyBeatmaps
+      .map((d: Difficulty) => d._difficulty || '')
+      .filter((d: string) => d !== '');
   }
 
   private static async GetKeyFromHash(hash: string): Promise<string> {
