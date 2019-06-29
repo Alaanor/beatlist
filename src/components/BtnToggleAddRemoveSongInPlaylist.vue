@@ -1,5 +1,5 @@
 <template>
-  <v-btn :icon="icon && !label" @click="onButtonClicked()" flat :small="small" :color="!isInPlaylist?'success':'error'">
+  <v-btn :icon="icon && !label" @click.stop="onButtonClicked()" flat :small="small" :color="!isInPlaylist?'success':'error'">
     <v-icon v-if="icon">{{!isInPlaylist?'add':'delete'}}</v-icon>
     <span v-if="!!label">{{!isInPlaylist?'Add':'Delete'}}</span>
   </v-btn>
