@@ -16,7 +16,7 @@ Beatlist is an electron app to create and manage playlist for the game BeatSaber
 3. **Scan** your songs library in settings through the scan button.
 4. Enjoy !
 
-# Screenshot
+# Screenshots
 
 <a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/songlist.png">
   <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/songlist.png" width="33%">
