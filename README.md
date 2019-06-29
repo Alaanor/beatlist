@@ -5,7 +5,7 @@ Beatlist is an electron app to create and manage playlist for the game BeatSaber
 # Feature
 
  - Create, edit, delete playlist.
- - Songs browser, ability to add and remove song to a playlist.
+ - Songs browser: ability to add and remove song to a playlist.
  - Should be compatible wherever you created your playlist.
  - Song are scanned from your BeatSaber installation path. I do not fetch for song online (yet?)
  
@@ -34,9 +34,25 @@ Beatlist is an electron app to create and manage playlist for the game BeatSaber
 
 I'd be more than happy to accept a pull request !
 
+## Setting up the development environment
+
+```bash
+# Clone the project
+git clone https://github.com/Alaanor/beatlist.git
+cd beatlist
+
+# Install dependencies
+npm install
+
+# Run the electron app
+npm run electron:serve
+```
+
+It use [Vuetify](https://vuetifyjs.com/) for the UI and [Pathify](https://github.com/davestewart/vuex-pathify) to simplify vuex. If you got any question, feel free to hit me up.
+
 # Contact
 
-You can reach me through discord: Alaanor#9999
+You can reach me through discord: [Alaanor#9999](https://discordapp.com/users/213397906571395072)
 
 # Licence
 
