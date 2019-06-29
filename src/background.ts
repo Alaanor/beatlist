@@ -27,6 +27,12 @@ function createWindow() {
     },
   });
 
+  // Open target="__blank" link to the browser instead of this app
+  win.webContents.on('new-window', (e, url) => {
+    e.preventDefault();
+    require('electron').shell.openExternal(url);
+  });
+
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);

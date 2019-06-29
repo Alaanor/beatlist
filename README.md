@@ -30,6 +30,10 @@ Beatlist is an electron app to create and manage playlist for the game BeatSaber
   <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/playlistEditor2.png" width="33%">
 </a>
 
+# Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for the details of each release.
+
 # Contributing
 
 I'd be more than happy to accept a pull request !
@@ -56,4 +60,4 @@ You can reach me through discord: [Alaanor#9999](https://discordapp.com/users/21
 
 # Licence
 
-Although the license of this project is under [WTFPL](LICENSE.txt), all **my dependency are not**, so please be sure to check them if needed. Tools like [nlf](https://www.npmjs.com/package/nlf) make easy to list the license of each dependencies. If someone know a license that fit all the dependency, just tell me I'd be more than happy to fix it !
+Although the license of this project is under [WTFPL](LICENSE), all **my dependency are not**, so please be sure to check them if needed. Tools like [nlf](https://www.npmjs.com/package/nlf) make easy to list the license of each dependencies. If someone know a license that fit all the dependency, just tell me I'd be more than happy to fix it !
