@@ -60,4 +60,4 @@ You can reach me through discord: [Alaanor#9999](https://discordapp.com/users/21
 
 # Licence
 
-Although the license of this project is under [WTFPL](LICENSE), all **my dependency are not**, so please be sure to check them if needed. Tools like [nlf](https://www.npmjs.com/package/nlf) make easy to list the license of each dependencies. If someone know a license that fit all the dependency, just tell me I'd be more than happy to fix it !
+This project is licensed under [WTFPL](LICENSE).
