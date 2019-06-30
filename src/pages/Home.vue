@@ -12,7 +12,10 @@
       <v-flex xs6 offset-xs3 id="markdown" v-if="!!changelogRaw" v-html="changelog"></v-flex>
       <v-flex v-if="hasErr" class="text-xs-center">
         <span class="warning--text subheading">Unfortunately, couldn't fetch the CHANGELOG.md</span><br>
-        <span class="caption">You can always check the <a href="https://github.com/Alaanor/beatlist" target="_blank">Github repo</a>.</span>
+        <span class="caption">
+          You can always check the
+          <a href="https://github.com/Alaanor/beatlist" target="_blank">Github repo</a>.
+        </span>
       </v-flex>
     </v-layout>
   </v-container>
@@ -39,13 +42,15 @@
       },
     },
     async mounted() {
-      try{
-        this.changelogRaw = (await axios.get('https://raw.githubusercontent.com/Alaanor/beatlist/master/CHANGELOG.md')).data;
+      try {
+        const url = 'https://raw.githubusercontent.com/Alaanor/beatlist/master/CHANGELOG.md';
+        const request = await axios.get(url);
+        this.changelogRaw = request.data;
       } catch (e) {
         this.changelogRaw = undefined;
         this.hasErr = true;
       }
-    }
+    },
   });
 </script>
 
