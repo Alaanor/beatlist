@@ -4,6 +4,7 @@
       <v-flex shrink>
         <v-img :src="require('@/assets/logo.png')" heigth="128" width="128"/>
         <h1 class="text-xs-center">Beatlist</h1>
+        <div class="text-xs-center grey--text caption">Current version: {{currentVersion}}</div>
       </v-flex>
     </v-layout>
     <br>
@@ -21,6 +22,7 @@
   import Vue from 'vue';
   import marked from 'marked';
   import axios from 'axios';
+  import {remote} from 'electron';
 
   export default Vue.extend({
     name: 'Home',
@@ -31,6 +33,9 @@
     computed: {
       changelog() {
         return marked(this.changelogRaw, { breaks: true, headerIds: false, sanitize: true });
+      },
+      currentVersion() {
+        return remote.app.getVersion();
       },
     },
     async mounted() {
