@@ -23,8 +23,11 @@
     </v-navigation-drawer>
     <v-toolbar app fixed clipped-left dense flat class="windows-draggable">
       <v-toolbar-side-icon v-if="!settings.permanent" @click.stop="drawer = !drawer"
-                           class="btn-win-control"></v-toolbar-side-icon>
-      <v-toolbar-title>Beatlist</v-toolbar-title>
+                           class="btn-win-control">
+      </v-toolbar-side-icon>
+      <v-toolbar-title class="ma-1">
+        <v-img :src="require(`@/assets/${settings.darkTheme ? 'title_dark' : 'title_white'}.png`)" width="108"></v-img>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn flat icon @click="toggleMinimize()" class="btn-win-control ma-0">
         <v-icon small>minimize</v-icon>

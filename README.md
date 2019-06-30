@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="src/assets/title_white.png" width="256px" alt="logo">
+</p>
+
 # Beatlist
 
 Beatlist is an electron app to create and manage playlist for the game BeatSaber.

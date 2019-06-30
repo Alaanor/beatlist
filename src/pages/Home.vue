@@ -2,7 +2,7 @@
   <v-container>
     <v-layout justify-center align-center>
       <v-flex shrink>
-        <v-img :src="require('@/assets/logo.png')" heigth="128" width="128"/>
+        <v-img :src="require('@/assets/logo.png')" height="128" width="128"/>
         <h1 class="text-xs-center">Beatlist</h1>
         <div class="text-xs-center grey--text caption">Current version: {{currentVersion}}</div>
       </v-flex>

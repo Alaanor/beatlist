@@ -7,7 +7,7 @@ import Utils from './Utils';
 import { resolveInstallPath } from './pathResolver/resolve';
 
 declare var __static: string;
-const defaultCoverPath = path.join(__static, 'defaultCover.png');
+const defaultCoverPath = path.join(__static, 'defaultCover.jpg');
 const readdir = promisify(fs.readdir);
 
 const BEAT_SABER_EXE = 'Beat Saber.exe';
