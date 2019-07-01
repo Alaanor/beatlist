@@ -1,6 +1,11 @@
 # Changelog
 
-## v1.0.0
+## v1.0.1 (01/07/2019)
+
+**Fixes:**
+ - (#1) Title is not saved when editing a playlist
+
+## v1.0.0 (30/06/2019)
 
 Release of beatlist
 
