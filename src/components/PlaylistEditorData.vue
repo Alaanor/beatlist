@@ -23,9 +23,9 @@
                 </v-sheet>
               </v-hover>
               <v-flex>
-                <v-text-field ref="title" label="Title" v-model="title" clearable></v-text-field>
-                <v-text-field ref="author" label="Author" v-model="author" clearable></v-text-field>
-                <v-textarea ref="description" label="Description" v-model="description"></v-textarea>
+                <v-text-field ref="title" label="Title" v-model="playlistTitle" clearable></v-text-field>
+                <v-text-field ref="author" label="Author" v-model="playlistAuthor" clearable></v-text-field>
+                <v-textarea ref="description" label="Description" v-model="playlistDescription"></v-textarea>
               </v-flex>
             </v-layout>
           </v-container>
@@ -72,9 +72,9 @@
     props: {hash: {type: String, required: true}},
     data: () => ({
       valid: false,
-      title: '',
-      author: '',
-      description: '',
+      playlistTitle: '',
+      playlistAuthor: '',
+      playlistDescription: '',
       imageData: '',
       imageChanged: false,
       snackbar: false,
@@ -112,7 +112,7 @@
       },
       Cancel() {
         this.LoadImage();
-        this.title = this.playlist.playlistTitle;
+        this.playlistTitle = this.playlist.playlistTitle;
         this.author = this.playlist.playlistAuthor;
         this.description = this.playlist.playlistDescription;
       },
@@ -124,18 +124,18 @@
       /** @return {boolean} */
       IsThereChange() {
         return !(
-          this.playlist.playlistTitle === this.title &&
-          this.playlist.playlistAuthor === this.author &&
-          this.playlist.playlistDescription === this.description &&
+          this.playlist.playlistTitle === this.playlistTitle &&
+          this.playlist.playlistAuthor === this.playlistAuthor &&
+          this.playlist.playlistDescription === this.playlistDescription &&
           !this.imageChanged
         );
       },
       Save() {
         const playlist = new Playlist();
 
-        playlist.playlistTitle = this.title;
-        playlist.playlistAuthor = this.author;
-        playlist.playlistDescription = this.description;
+        playlist.playlistTitle = this.playlistTitle;
+        playlist.playlistAuthor = this.playlistAuthor;
+        playlist.playlistDescription = this.playlistDescription;
         playlist.playlistPath = this.playlist.playlistPath;
         playlist.songs = this.playlist.songs;
         playlist.CalculateHash();
@@ -152,6 +152,7 @@
             this.snackbarType = 'error';
           })
           .finally(() => {
+            store.dispatch('songs/loadPlaylists');
             return this.snackbar = true;
           });
       },
@@ -159,9 +160,9 @@
     mounted() {
       this.$nextTick(async function() {
         this.LoadImage();
-        this.title = this.playlist.playlistTitle;
-        this.author = this.playlist.playlistAuthor;
-        this.description = this.playlist.playlistDescription;
+        this.playlistTitle = this.playlist.playlistTitle;
+        this.playlistAuthor = this.playlist.playlistAuthor;
+        this.playlistDescription = this.playlist.playlistDescription;
       });
     },
   });
