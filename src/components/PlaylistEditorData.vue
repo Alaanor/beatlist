@@ -113,8 +113,8 @@
       Cancel() {
         this.LoadImage();
         this.playlistTitle = this.playlist.playlistTitle;
-        this.author = this.playlist.playlistAuthor;
-        this.description = this.playlist.playlistDescription;
+        this.playlistAuthor = this.playlist.playlistAuthor;
+        this.playlistDescription = this.playlist.playlistDescription;
       },
       Delete() {
         this.playlist.Delete();
