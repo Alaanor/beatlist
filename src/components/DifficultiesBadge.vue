@@ -10,7 +10,10 @@
 
   export default Vue.extend({
     name: 'DifficultiesBadge',
-    props: {song: {type: Object, required: true}},
+    props: {
+      song: {type: Object, required: false},
+      data: {type: Object, required: false},
+    },
     data: () => ({
       map: {
         ExpertPlus: 'purple',
@@ -22,15 +25,25 @@
     }),
     computed: {
       difficulties() {
-        return SongData.GetDifficulties(this.song);
+        if (!!this.song) {
+          return SongData.GetDifficulties(this.song);
+        } else if (!!this.data) {
+          return Object.keys(this.data)
+            .filter((key) => this.data[key] === true)
+            .map((d) => this.capitalizeFirstLetter(d));
+        }
       },
     },
     methods: {
       mapColor(difficulty) {
         return this.map[difficulty];
       },
+      capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      }
     },
-  });
+  })
+  ;
 </script>
 
 <style scoped>

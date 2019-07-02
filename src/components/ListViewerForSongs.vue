@@ -48,36 +48,13 @@
 
     </ListViewer>
 
-    <v-dialog v-model="dialog" width="400">
-      <v-card v-if="song">
+    <v-dialog v-model="dialog" width="600">
+      <v-card>
         <v-card-title>
           <div class="title">Song info</div>
         </v-card-title>
         <v-card-text>
-          <table>
-            <tr>
-              <td class="body-2 pr-2">Name</td>
-              <td class="body-1 pl-2">{{song.songName}}</td>
-            </tr>
-            <tr>
-              <td class="body-2 pr-2">Author</td>
-              <td class="body-1 pl-2">{{song.songAuthorName}}</td>
-            </tr>
-            <tr>
-              <td class="body-2 pr-2">Mapper</td>
-              <td class="body-1 pl-2">{{song.levelAuthorName}}</td>
-            </tr>
-            <tr>
-              <td class="body-2 pr-2">BPM</td>
-              <td class="body-1 pl-2">{{song.beatsPerMinute}}</td>
-            </tr>
-            <tr>
-              <td class="body-2 pr-2">Difficulties</td>
-              <td>
-                <DifficultiesBadge :song="song"></DifficultiesBadge>
-              </td>
-            </tr>
-          </table>
+          <BeatSaverSongInfo v-if="!!song" :hash="song.songHash"></BeatSaverSongInfo>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -94,11 +71,11 @@
   import SongData from '@/lib/SongData';
   import SongCover from '@/components/SongCover.vue';
   import ListViewer from '@/components/ListViewer.vue';
-  import DifficultiesBadge from '@/components/DifficultiesBadge.vue';
+  import BeatSaverSongInfo from '@/components/BeatSaverSongInfo.vue';
 
   export default Vue.extend({
     name: 'ListViewerForSongs',
-    components: {ListViewer, SongCover, DifficultiesBadge},
+    components: {ListViewer, SongCover, BeatSaverSongInfo},
     data: () => ({
       dialog: false,
       song: undefined,
