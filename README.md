@@ -1,6 +1,10 @@
 <p align="center">
   <img src="src/assets/title_white.png" width="256px" alt="logo">
 </p>
+<p align="center">
+  <img src="https://img.shields.io/github/release/Alaanor/beatlist.svg?style=flat-square" alt="version">
+  <img src="https://img.shields.io/github/downloads/Alaanor/beatlist/total.svg?color=#3fb911?style=flat-square" alt="download count">
+</p>
 
 # Beatlist
 
