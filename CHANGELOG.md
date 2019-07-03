@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.2 (03/07/2019)
+
+**Fixes:**
+ - (#2) Songs scan: directories path are case sensitive
+
 ## v1.0.1 (01/07/2019)
 
 **Fixes:**
