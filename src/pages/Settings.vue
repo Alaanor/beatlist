@@ -130,7 +130,7 @@
         return this.songs !== undefined ? this.songs.filter((s) => !s.valid).length : 0;
       },
       validateConfig() {
-        this.configValid = this.installationPathValid && this.songs.length > 0;
+        this.configValid = this.installationPathValid && this.songs && this.songs.length > 0;
       },
       async detectPath() {
         this.resolveBtnLoading = true;
