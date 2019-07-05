@@ -6,7 +6,7 @@
  - Playlist list/grid are now clickable
 
 **Fixes:**
- - (#-) Some songs were not display in the playlist
+ - (#-) Some songs were not displayed in the playlist
 
 ## v1.0.2 (03/07/2019)
 
