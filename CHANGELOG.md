@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.0.3 (05/07/2019)
+
+**Feature:**
+ - Playlist list/grid are now clickable
+
+**Fixes:**
+ - (#-) Some songs were not display in the playlist
+
 ## v1.0.2 (03/07/2019)
 
 **Fixes:**
@@ -17,7 +25,7 @@ Release of beatlist
 **Feature:**
  - Manage playlist/songs
  - Scan local song
- - Read old playlist, convert to json, use hash as key.
+ - Read old playlist, convert to json, use hash as key
  - Search + Grid/List view layout
  - Settings validation form for installation path
  - UI preference in settings
