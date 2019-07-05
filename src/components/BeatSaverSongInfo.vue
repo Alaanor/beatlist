@@ -72,6 +72,16 @@
       </v-flex>
     </v-layout>
   </v-container>
+  <v-container v-else-if="err" ma-0 pa-0>
+    <v-alert type="warning" :value="true" outline>
+      Couldn't fetch data on beatsaver.com, try later ?
+    </v-alert>
+  </v-container>
+  <v-container v-else>
+    <v-layout justify-center>
+      <v-progress-circular indeterminate></v-progress-circular>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -87,13 +97,15 @@
     },
     data: () => ({
       song: undefined,
+      err: undefined,
     }),
     watch: {
       hash() {
         this.song = undefined;
         BeatSaverAPI.Singleton.getSongByHash(this.hash)
-          .then((data) => this.song = data);
-      }
+          .then((data) => this.song = data)
+          .catch((err) => this.err = err);
+      },
     },
     methods: {
       FormatNewLine(x) {
@@ -108,8 +120,8 @@
       /** @return {string} */
       PrettyDateTime(x) {
         return new Date(x).toLocaleString();
-      }
-    }
+      },
+    },
   });
 </script>
 
