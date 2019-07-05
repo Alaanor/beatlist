@@ -50,11 +50,11 @@ export default class BeatSaber {
   }
 
   public async getPlaylists(songs: SongData[]): Promise<Playlist[]> {
-    const pathSongList = path.join(this.installationPath, BEAT_SABER_PLAYLIST);
-    const directoryList = await readdir(pathSongList);
+    const pathPlaylists = path.join(this.installationPath, BEAT_SABER_PLAYLIST);
+    const directoryList = await readdir(pathPlaylists);
 
     const playlists = await Promise.all(directoryList.map(async (file) => {
-      const playlistPath = path.join(pathSongList, file);
+      const playlistPath = path.join(pathPlaylists, file);
       return await Playlist.Parse(playlistPath, songs);
     }));
 
