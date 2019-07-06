@@ -131,9 +131,8 @@ export default class SongData {
       this.coverImagePath = data._coverImageFilename;
       this.songFilename = data._songFilename;
       this.difficultyLevels = data._difficultyBeatmapSets as DifficultyBeatMapSets[];
-
       this.folderId = SongData.GetFolderId(this.songPath);
-      this.songHash = (await SongHashData.data())[this.songPath].songHash;
+      this.songHash = (await SongHashData.data())[this.songPath.toLowerCase()].songHash;
       this.songKey = (await SongData.GetKeyFromHash(this.songHash));
 
       this.valid = true;

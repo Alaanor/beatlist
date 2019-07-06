@@ -11,12 +11,19 @@ interface SongHash {
 
 export default class SongHashData {
 
+  public static async forceInit() {
+    await this.data();
+  }
+
   public static async data(): Promise<{ [key: string]: SongHash }> {
     if (this.Hash === undefined) {
       const songHashFile = path.join(remote.app.getPath('appData'), '..',
         'LocalLow\\Hyperbolic Magnetism\\Beat Saber\\SongHashData.dat');
       const rawJson = await readFile(songHashFile);
-      this.Hash = this.ToSongHashData(rawJson.toString());
+      const hashes = this.ToSongHashData(rawJson.toString());
+      this.Hash = Object.assign({},
+        ...Object.keys(hashes).map((key) => ({[key.toLowerCase()]: hashes[key]})),
+      );
     }
     return this.Hash;
   }

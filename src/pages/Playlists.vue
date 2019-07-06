@@ -8,7 +8,7 @@
         <v-icon class="ml-1">add</v-icon>
       </v-btn>
     </v-layout>
-    <ListViewerForPlaylists>
+    <ListViewerForPlaylists :action="GoToPlaylist">
       <template #item-block-action="{item}">
         <v-btn icon exact :to="`playlist/edit/${item.playlistHash}`">
           <v-icon>chevron_right</v-icon>
@@ -49,8 +49,11 @@
         const playlist = await new BeatSaber(this.installationPath)
           .CreateNewPlaylistFile();
         await store.dispatch('songs/loadPlaylists');
-        this.$router.push({name: 'playlistEditor', params: {hash: playlist.playlistHash}});
+        this.GoToPlaylist(playlist);
       },
+      GoToPlaylist(playlist) {
+        this.$router.push({name: 'playlistEditor', params: {hash: playlist.playlistHash}});
+      }
     },
     async mounted() {
       await store.dispatch('songs/loadPlaylists');

@@ -20,6 +20,8 @@ export default class Playlist {
       return undefined;
     }
 
+    songs = songs.filter((s: SongData) => s.valid);
+
     const playlist = new Playlist();
     playlist.playlistPath = pathToJson;
     playlist.playlistTitle = data.playlistTitle;
@@ -30,12 +32,11 @@ export default class Playlist {
 
     playlist.songs = data.songs.map((s: any) => {
       return (
-        SongData.GetSongFromKey(s.key, songs) ||
         SongData.GetSongFromHash(s.hash, songs) ||
+        SongData.GetSongFromKey(s.key, songs) ||
         SongData.GetSongFromDirId(s.key, songs)
       );
     }).filter((s: any) => s !== undefined && s.valid);
-
     return playlist;
   }
 

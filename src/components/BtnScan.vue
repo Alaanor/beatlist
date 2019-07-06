@@ -48,6 +48,7 @@
   import {get, sync} from 'vuex-pathify';
   import SongData from '@/lib/SongData';
   import BeatSaber from '@/lib/BeatSaber';
+  import SongHashData from '../lib/SongHashData';
 
   export default Vue.extend({
     name: 'BtnScan',
@@ -79,6 +80,8 @@
         const instPath = this.installationPath;
         new BeatSaber(instPath).getSongList()
           .then(async (list) => {
+            await SongHashData.forceInit();
+
             this.scanAmount = list.length;
             this.songs = await Promise.all(list.map(async (songPath) => {
               const song = new SongData(songPath);

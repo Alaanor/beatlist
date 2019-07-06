@@ -7,7 +7,7 @@ import Utils from './Utils';
 import { resolveInstallPath } from './pathResolver/resolve';
 
 declare var __static: string;
-const defaultCoverPath = path.join(__static, 'defaultCover.png');
+const defaultCoverPath = path.join(__static, 'defaultCover.jpg');
 const readdir = promisify(fs.readdir);
 
 const BEAT_SABER_EXE = 'Beat Saber.exe';
@@ -50,11 +50,11 @@ export default class BeatSaber {
   }
 
   public async getPlaylists(songs: SongData[]): Promise<Playlist[]> {
-    const pathSongList = path.join(this.installationPath, BEAT_SABER_PLAYLIST);
-    const directoryList = await readdir(pathSongList);
+    const pathPlaylists = path.join(this.installationPath, BEAT_SABER_PLAYLIST);
+    const directoryList = await readdir(pathPlaylists);
 
     const playlists = await Promise.all(directoryList.map(async (file) => {
-      const playlistPath = path.join(pathSongList, file);
+      const playlistPath = path.join(pathPlaylists, file);
       return await Playlist.Parse(playlistPath, songs);
     }));
 

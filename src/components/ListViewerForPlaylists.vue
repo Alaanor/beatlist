@@ -3,7 +3,8 @@
   <ListViewer :items="playlists" :filter="Filter">
     <template #item-block="{item}">
       <v-hover>
-        <v-card slot-scope="{hover}" :class="`elevation-${hover ? 12 : 2}`" width="305px">
+        <v-card slot-scope="{hover}" :class="`elevation-${hover ? 12 : 2}`" width="305px"
+                style="cursor: pointer" @click.stop="action && action(item)">
           <v-layout justify-space-between row align-center>
             <v-flex xs5>
               <PlaylistCover :playlist="item" class="mx-2"></PlaylistCover>
@@ -27,7 +28,7 @@
     </template>
 
     <template #item-list="{item}">
-      <v-list-tile>
+      <v-list-tile @click.stop="action && action(item)">
         <v-list-tile-avatar>
           <PlaylistCover :playlist="item"></PlaylistCover>
         </v-list-tile-avatar>
@@ -58,6 +59,9 @@
   export default Vue.extend({
     name: 'ListViewerForPlaylists',
     components: {ListViewer, PlaylistCover},
+    props: {
+      action: {type: Function},
+    },
     computed: {
       playlists: get('songs/playlists'),
     },
