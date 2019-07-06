@@ -3,14 +3,7 @@
     <v-navigation-drawer v-model="drawer" clipped app :mini-variant="settings.miniVariant"
                          :permanent="settings.permanent">
       <v-list dense>
-        <v-list-tile v-for="menu in menus" :to="menu.path" v-if="!(menu.requireValidConfig && !settings.configValid)">
-          <v-list-tile-action>
-            <v-icon>{{ menu.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>{{ menu.name }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+        <MenuNavigationItem v-for="menu in menus" :item="menu"></MenuNavigationItem>
         <v-list-tile @click="openGithubRepo()">
           <v-list-tile-action>
             <v-icon>mdi-github-circle</v-icon>
@@ -76,6 +69,7 @@
   import {get} from 'vuex-pathify';
   import store from '@/store/store';
   import {remote, shell} from 'electron';
+  import MenuNavigationItem from '@/components/MenuNavigationItem.vue';
 
   Vue.use(VueRouter);
 
@@ -87,8 +81,8 @@
         component: Home,
       },
       {
-        path: '/song-list',
-        name: 'song-list',
+        path: '/songs/local',
+        name: 'song-list-local',
         component: SongList,
         meta: {requireValidSettings: true},
       },
@@ -133,6 +127,7 @@
 
   export default Vue.extend({
     router,
+    components: {MenuNavigationItem},
     data: () => ({
       drawer: null,
       isReady: false,
@@ -144,10 +139,18 @@
 
         },
         {
-          path: '/song-list',
+          path: '/songs',
           name: 'Song list',
           icon: 'queue_music',
           requireValidConfig: true,
+          items: [
+            {
+              path: '/songs/local',
+              name: 'Local',
+              icon: 'computer',
+              requireValidConfig: true,
+            },
+          ],
         },
         {
           path: '/playlist',
