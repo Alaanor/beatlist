@@ -61,7 +61,8 @@
   import Vue from 'vue';
   import VueRouter from 'vue-router';
   import Home from '@/pages/Home.vue';
-  import SongList from '@/pages/SongList.vue';
+  import SongListLocal from '@/pages/SongListLocal.vue';
+  import SongListOnline from '@/pages/SongListOnline.vue';
   import Playlists from '@/pages/Playlists.vue';
   import Settings from '@/pages/Settings.vue';
   import PlaylistEditor from '@/pages/PlaylistEditor.vue';
@@ -83,7 +84,13 @@
       {
         path: '/songs/local',
         name: 'song-list-local',
-        component: SongList,
+        component: SongListLocal,
+        meta: {requireValidSettings: true},
+      },
+      {
+        path: '/songs/online',
+        name: 'song-list-online',
+        component: SongListOnline,
         meta: {requireValidSettings: true},
       },
       {
@@ -145,6 +152,12 @@
           requireValidConfig: true,
           items: [
             {
+              path: '/songs/online',
+              name: 'Online',
+              icon: 'language',
+              requireValidConfig: true,
+            },
+            {
               path: '/songs/local',
               name: 'Local',
               icon: 'computer',
@@ -199,7 +212,6 @@
 </script>
 
 <style>
-  /* Disable scrollbar */
   ::-webkit-scrollbar {
     display: none;
   }

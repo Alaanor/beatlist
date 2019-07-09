@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
   <v-container>
-    <h1>Song list</h1>
+    <h1>Local songs</h1>
     <ListViewerForSongs>
       <template #item-block-action="{item}">
         <BtnAddSongToPlaylist :song="item" value="Add to playlist"></BtnAddSongToPlaylist>
@@ -19,7 +19,7 @@
   import BtnAddSongToPlaylist from '@/components/BtnToggleAddRemoveSongInPlaylists.vue';
 
   export default Vue.extend({
-    name: 'SongList',
+    name: 'SongListLocal',
     components: { ListViewerForSongs, BtnAddSongToPlaylist },
   });
 </script>
