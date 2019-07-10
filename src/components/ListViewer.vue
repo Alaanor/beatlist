@@ -19,6 +19,7 @@
             :pagination.sync="pagination"
             :custom-filter="filter"
             :search="search" wrap
+            :total-items="total"
             :content-tag="modeName === 'block' ? 'v-layout' : 'v-list'"
             content-class="pa-0 ma-0 justify-center align-center">
       <template #item="props">
@@ -42,6 +43,7 @@
     props: {
       items: {type: Array, required: true},
       filter: {type: Function},
+      total: {type: Number, default: 0},
     },
     data: () => ({
       search: '',
@@ -56,6 +58,14 @@
       pagination: sync('settings/pagination'),
       modeName() {
         return this.displayMode[this.displayModeSelected].mode;
+      },
+    },
+    watch: {
+      pagination: {
+        handler() {
+          this.$emit("paginate");
+        },
+        deep: true
       },
     },
     filters: {

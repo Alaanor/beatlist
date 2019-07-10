@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
   <div>
-    <ListViewer :items="validSongs" :filter="Filter">
+    <ListViewer :items="GetSongs()" :filter="Filter" :total="total">
 
       <template #item-block="{item}">
         <v-hover>
@@ -14,9 +14,9 @@
               </v-flex>
               <v-flex xs7 pa-3>
                 <v-container pa-0>
-                  <div class="subheading text-truncate ma-1">{{item.songName}}</div>
-                  <div class="caption text-truncate ma-1">{{item.songAuthorName}}</div>
-                  <div class="caption text-truncate ma-1">{{item.levelAuthorName}}</div>
+                  <div class="subheading text-truncate ma-1">{{item.songName || item.metadata.songName}}</div>
+                  <div class="caption text-truncate ma-1">{{item.songAuthorName || item.metadata.songAuthorName}}</div>
+                  <div class="caption text-truncate ma-1">{{item.levelAuthorName || item.metadata.levelAuthorName}}</div>
                 </v-container>
               </v-flex>
             </v-layout>
@@ -34,10 +34,10 @@
             <SongCover :song="item"></SongCover>
           </v-list-tile-avatar>
           <v-list-tile-content>
-            <v-list-tile-title>{{item.songName}}</v-list-tile-title>
+            <v-list-tile-title>{{item.songName || item.metadata.songName}}</v-list-tile-title>
             <v-list-tile-sub-title>
-              <span class="text--primary">{{item.songAuthorName}}</span> -
-              {{item.levelAuthorName}}
+              <span class="text--primary">{{item.songAuthorName || item.metadata.songAuthorName}}</span> -
+              {{item.levelAuthorName || item.metadata.levelAuthorName}}
             </v-list-tile-sub-title>
           </v-list-tile-content>
           <v-list-tile-action>
@@ -76,6 +76,10 @@
   export default Vue.extend({
     name: 'ListViewerForSongs',
     components: {ListViewer, SongCover, BeatSaverSongInfo},
+    props: {
+      items: {Type: Array, default: undefined},
+      total: {type: Number, default: 0},
+    },
     data: () => ({
       dialog: false,
       song: undefined,
@@ -87,6 +91,13 @@
       },
     },
     methods: {
+      GetSongs() {
+        if (this.items === undefined) {
+          return this.validSongs();
+        } else {
+          return this.items;
+        }
+      },
       Filter(songs, search) {
         if (search === '') {
           return songs.filter((s) => s.valid);
