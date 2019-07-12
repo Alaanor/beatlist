@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
   <div>
-    <ListViewer :items="GetSongs()" :filter="Filter" :total="total">
+    <ListViewer :items="getSongs" :filter="Filter" :total="total">
 
       <template #item-block="{item}">
         <v-hover>
@@ -14,9 +14,9 @@
               </v-flex>
               <v-flex xs7 pa-3>
                 <v-container pa-0>
-                  <div class="subheading text-truncate ma-1">{{item.songName || item.metadata.songName}}</div>
-                  <div class="caption text-truncate ma-1">{{item.songAuthorName || item.metadata.songAuthorName}}</div>
-                  <div class="caption text-truncate ma-1">{{item.levelAuthorName || item.metadata.levelAuthorName}}</div>
+                  <div class="subheading text-truncate ma-1">{{item.metadata.songName}}</div>
+                  <div class="caption text-truncate ma-1">{{item.metadata.songAuthorName}}</div>
+                  <div class="caption text-truncate ma-1">{{item.metadata.levelAuthorName}}</div>
                 </v-container>
               </v-flex>
             </v-layout>
@@ -34,10 +34,10 @@
             <SongCover :song="item"></SongCover>
           </v-list-tile-avatar>
           <v-list-tile-content>
-            <v-list-tile-title>{{item.songName || item.metadata.songName}}</v-list-tile-title>
+            <v-list-tile-title>{{item.metadata.songName}}</v-list-tile-title>
             <v-list-tile-sub-title>
-              <span class="text--primary">{{item.songAuthorName || item.metadata.songAuthorName}}</span> -
-              {{item.levelAuthorName || item.metadata.levelAuthorName}}
+              <span class="text--primary">{{item.metadata.songAuthorName}}</span> -
+              {{item.metadata.levelAuthorName}}
             </v-list-tile-sub-title>
           </v-list-tile-content>
           <v-list-tile-action>
@@ -54,7 +54,7 @@
           <div class="title">Song info</div>
         </v-card-title>
         <v-card-text>
-          <BeatSaverSongInfo v-if="!!song" :hash="song.songHash"></BeatSaverSongInfo>
+          <BeatSaverSongInfo v-if="!!song" :hash="song.songHash || song.hash"></BeatSaverSongInfo>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -89,15 +89,15 @@
       validSongs() {
         return this.songs.filter((s) => s.valid);
       },
-    },
-    methods: {
-      GetSongs() {
+      getSongs() {
         if (this.items === undefined) {
-          return this.validSongs();
+          return this.validSongs;
         } else {
           return this.items;
         }
       },
+    },
+    methods: {
       Filter(songs, search) {
         if (search === '') {
           return songs.filter((s) => s.valid);

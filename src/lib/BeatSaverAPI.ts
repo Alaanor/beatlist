@@ -1,58 +1,14 @@
 import axios, {AxiosAdapter, AxiosInstance} from 'axios';
 import {cacheAdapterEnhancer, throttleAdapterEnhancer} from 'axios-extensions';
 import path from 'path';
+import {SongInfo} from '@/lib/data/SongInfo';
+import {SearchResult} from '@/lib/data/SearchResult';
 
 const WEBSITE_BASE_URL = 'https://beatsaver.com/';
 const API_BASE_URL = 'https://beatsaver.com/api';
 const GET_BY_HASH = 'maps/by-hash/';
 const GET_BY_KEY = 'maps/detail/';
 const SEARCH_TEXT = 'search/text/';
-
-export interface SearchResult {
-  docs: SongInfo[];
-  totalDocs: number;
-  lastPage: number;
-  prevPage: null;
-  nextPage: number;
-}
-
-export interface SongInfo {
-  metadata: Metadata;
-  stats: Stats;
-  description: string;
-  key: string;
-  uploaded: Date;
-  hash: string;
-  downloadURL: string;
-  coverURL: string;
-}
-
-export interface Metadata {
-  difficulties: Difficulties;
-  characteristics: string[];
-  songName: string;
-  songSubName: string;
-  songAuthorName: string;
-  levelAuthorName: string;
-  bpm: number;
-}
-
-export interface Difficulties {
-  easy: boolean;
-  normal: boolean;
-  hard: boolean;
-  expert: boolean;
-  expertPlus: boolean;
-}
-
-export interface Stats {
-  downloads: number;
-  plays: number;
-  downVotes: number;
-  upVotes: number;
-  heat: number;
-  rating: number;
-}
 
 export default class BeatSaverAPI {
   public static Singleton: BeatSaverAPI = new BeatSaverAPI();

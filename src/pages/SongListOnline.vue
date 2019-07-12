@@ -25,7 +25,6 @@
           .then((result) => {
             this.items = result.docs;
             this.total = result.totalDocs;
-            console.log(this.total);
           });
       },
     },

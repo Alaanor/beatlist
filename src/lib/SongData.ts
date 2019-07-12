@@ -1,22 +1,15 @@
 import nodePath from 'path';
 import fs from 'fs';
 import {promisify} from 'util';
-import DifficultyBeatMapSets from './DifficultyBeatMapSets';
+import DifficultyBeatMapSets from './data/DifficultyBeatMapSets';
 import SongHashData from './SongHashData';
 import axios from 'axios';
 import store from '../store/store';
-import Difficulty from './Difficulty';
+import Difficulty from './data/Difficulty';
+import Metadata from './data/Metadata';
 
 const readFile = promisify(fs.readFile);
 const apiHashUrl = 'https://beatsaver.com/api/maps/by-hash/';
-
-export interface Difficulties {
-  ExpertPlus: boolean;
-  Expert: boolean;
-  Hard: boolean;
-  Normal: boolean;
-  Easy: boolean;
-}
 
 export default class SongData {
 
@@ -97,13 +90,9 @@ export default class SongData {
     return undefined;
   }
 
+  public metadata: Metadata;
   public songHash: string | undefined;
   public songKey: string | undefined;
-  public songName: string | undefined;
-  public songSubName: string | undefined;
-  public songAuthorName: string | undefined;
-  public levelAuthorName: string | undefined;
-  public beatsPerMinute: number | undefined;
   public coverImagePath: string | undefined;
   public songFilename: string | undefined;
   public difficultyLevels: DifficultyBeatMapSets[] | undefined;
@@ -115,6 +104,7 @@ export default class SongData {
 
   constructor(path: string) {
     this.songPath = path;
+    this.metadata = {} as Metadata;
   }
 
   public async LoadInfo() {
@@ -123,14 +113,16 @@ export default class SongData {
       const raw = await readFile(path, 'utf8');
       const data = JSON.parse(raw);
 
-      this.songName = data._songName;
-      this.songSubName = data._songSubName;
-      this.songAuthorName = data._songAuthorName;
-      this.levelAuthorName = data._levelAuthorName;
-      this.beatsPerMinute = data._beatsPerMinute;
+      this.metadata.songName = data._songName;
+      this.metadata.songSubName = data._songSubName;
+      this.metadata.songAuthorName = data._songAuthorName;
+      this.metadata.levelAuthorName = data._levelAuthorName;
+      this.metadata.bpm = data._beatsPerMinute;
+
       this.coverImagePath = data._coverImageFilename;
       this.songFilename = data._songFilename;
       this.difficultyLevels = data._difficultyBeatmapSets as DifficultyBeatMapSets[];
+
       this.folderId = SongData.GetFolderId(this.songPath);
       this.songHash = (await SongHashData.data())[this.songPath.toLowerCase()].songHash;
       this.songKey = (await SongData.GetKeyFromHash(this.songHash));
