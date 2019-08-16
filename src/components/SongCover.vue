@@ -5,7 +5,7 @@
 
 <script>
   import Vue from 'vue';
-  import SongData from '../lib/SongData';
+  import SongLoader from '../lib/SongLoader';
   import BeatSaverAPI from '../lib/BeatSaverAPI';
 
   export default Vue.extend({
@@ -17,7 +17,7 @@
     methods: {
       LoadImage() {
         if ('coverImagePath' in this.song) {
-          SongData
+          SongLoader
             .LoadCover(this.song.songPath, this.song.coverImagePath)
             .then((data) => this.imageData = data);
         } else if ('coverURL' in this.song) {

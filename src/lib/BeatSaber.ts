@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import {promisify} from 'util';
 import Playlist from './Playlist';
-import SongData from './SongData';
+import SongLoader from './SongLoader';
 import Utils from './Utils';
 import { resolveInstallPath } from './pathResolver/resolve';
 
@@ -49,7 +49,7 @@ export default class BeatSaber {
     });
   }
 
-  public async getPlaylists(songs: SongData[]): Promise<Playlist[]> {
+  public async getPlaylists(songs: SongLoader[]): Promise<Playlist[]> {
     const pathPlaylists = path.join(this.installationPath, BEAT_SABER_PLAYLIST);
     const directoryList = await readdir(pathPlaylists);
 

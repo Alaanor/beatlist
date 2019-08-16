@@ -46,7 +46,7 @@
 <script>
   import Vue from 'vue';
   import {get, sync} from 'vuex-pathify';
-  import SongData from '@/lib/SongData';
+  import SongLoader from '@/lib/SongLoader';
   import BeatSaber from '@/lib/BeatSaber';
   import SongHashData from '../lib/SongHashData';
 
@@ -84,8 +84,7 @@
 
             this.scanAmount = list.length;
             this.songs = await Promise.all(list.map(async (songPath) => {
-              const song = new SongData(songPath);
-              await song.LoadInfo();
+              const song = await SongLoader.LoadInfo(songPath);
               this.scanCount++;
               if (this.scanCount % 100 === 0) { // dumb hack for smoother progress bar
                 this.scanPercent = (this.scanCount / this.scanAmount) * 100;
@@ -93,7 +92,7 @@
               return song;
             }));
 
-            SongData.DetectDuplicate(this.songs);
+            SongLoader.DetectDuplicate(this.songs);
 
             this.scanResult.type = 'success';
             this.scanResult.message = `Successfully imported ${this.getNumberOfSongs()} songs.`;

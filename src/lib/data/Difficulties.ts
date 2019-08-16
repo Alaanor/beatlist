@@ -4,4 +4,6 @@ export default interface Difficulties {
   hard: boolean;
   expert: boolean;
   expertPlus: boolean;
+
+  [difficulty: string]: boolean;
 }

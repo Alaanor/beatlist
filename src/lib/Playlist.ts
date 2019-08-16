@@ -1,4 +1,4 @@
-import SongData from './SongData';
+import SongLoader from './SongLoader';
 import fs from 'fs';
 import {promisify} from 'util';
 import crypto from 'crypto';
@@ -11,7 +11,7 @@ const deleteFile = promisify(fs.unlink);
 
 export default class Playlist {
 
-  public static async Parse(pathToJson: string, songs: SongData[]): Promise<Playlist | undefined> {
+  public static async Parse(pathToJson: string, songs: SongLoader[]): Promise<Playlist | undefined> {
     const raw = await readFile(pathToJson);
     let data;
     try {
@@ -20,7 +20,7 @@ export default class Playlist {
       return undefined;
     }
 
-    songs = songs.filter((s: SongData) => s.valid);
+    songs = songs.filter((s: SongLoader) => s.valid);
 
     const playlist = new Playlist();
     playlist.playlistPath = pathToJson;
@@ -32,9 +32,9 @@ export default class Playlist {
 
     playlist.songs = data.songs.map((s: any) => {
       return (
-        SongData.GetSongFromHash(s.hash, songs) ||
-        SongData.GetSongFromKey(s.key, songs) ||
-        SongData.GetSongFromDirId(s.key, songs)
+        SongLoader.GetSongFromHash(s.hash, songs) ||
+        SongLoader.GetSongFromKey(s.key, songs) ||
+        SongLoader.GetSongFromDirId(s.key, songs)
       );
     }).filter((s: any) => s !== undefined && s.valid);
     return playlist;
@@ -60,7 +60,7 @@ export default class Playlist {
   public playlistAuthor: string = '';
   public playlistDescription: string = '';
 
-  public songs: SongData[] = [];
+  public songs: SongLoader[] = [];
 
   public async Save(image?: string) {
     if (!image) {

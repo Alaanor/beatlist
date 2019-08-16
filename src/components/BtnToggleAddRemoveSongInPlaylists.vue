@@ -54,7 +54,7 @@
   import {get} from 'vuex-pathify';
   import store from '@/store/store';
   import PlaylistCover from '@/components/PlaylistCover.vue';
-  import SongData from '@/lib/SongData';
+  import SongLoader from '@/lib/SongLoader';
   import Playlist from '@/lib/Playlist';
 
   export default Vue.extend({
@@ -76,7 +76,7 @@
     },
     methods: {
       IsInPlaylist(playlist: Playlist) {
-        return !!playlist.songs.find((s: SongData) => s.songHash === (this.song as SongData).songHash);
+        return !!playlist.songs.find((s: SongLoader) => s.songHash === (this.song as SongLoader).songHash);
       },
       Add(playlist: Playlist) {
         store.commit('songs/addSongToPlaylist', {playlist, song: this.song});

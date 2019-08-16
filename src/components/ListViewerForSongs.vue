@@ -68,7 +68,7 @@
 <script>
   import Vue from 'vue';
   import {get} from 'vuex-pathify';
-  import SongData from '@/lib/SongData';
+  import SongLoader from '@/lib/SongLoader';
   import SongCover from '@/components/SongCover.vue';
   import ListViewer from '@/components/ListViewer.vue';
   import BeatSaverSongInfo from '@/components/BeatSaverSongInfo.vue';

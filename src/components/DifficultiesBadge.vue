@@ -6,7 +6,7 @@
 
 <script>
   import Vue from 'vue';
-  import SongData from '../lib/SongData';
+  import SongLoader from '../lib/SongLoader';
 
   export default Vue.extend({
     name: 'DifficultiesBadge',
@@ -26,7 +26,7 @@
     computed: {
       difficulties() {
         if (!!this.song) {
-          return SongData.GetDifficulties(this.song);
+          return SongLoader.GetDifficulties(this.song);
         } else if (!!this.data) {
           return Object.keys(this.data)
             .filter((key) => this.data[key] === true)
