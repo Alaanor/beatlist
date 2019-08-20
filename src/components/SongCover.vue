@@ -16,9 +16,9 @@
     }),
     methods: {
       LoadImage() {
-        if ('coverImagePath' in this.song) {
+        if ('coverImage' in this.song) {
           SongLoader
-            .LoadCover(this.song.songPath, this.song.coverImagePath)
+            .LoadCover(this.song.path, this.song.coverImage)
             .then((data) => this.imageData = data);
         } else if ('coverURL' in this.song) {
           this.imageData = BeatSaverAPI.FullCoverUrl(this.song.coverURL);
