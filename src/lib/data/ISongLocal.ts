@@ -4,6 +4,6 @@ export default interface ISongLocal extends ISongInfo {
   path: string;
   filename: string;
   coverImage: string;
-  folderId: string;
+  folderId: string | undefined;
   valid: boolean;
 }

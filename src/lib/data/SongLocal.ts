@@ -6,7 +6,7 @@ export default class SongLocal extends Song implements ISongLocal {
 
   public coverImage: string;
   public filename: string;
-  public folderId: string;
+  public folderId: string | undefined;
   public path: string;
   public valid: boolean;
 
