@@ -1,8 +1,8 @@
 import axios, {AxiosAdapter, AxiosInstance} from 'axios';
 import {cacheAdapterEnhancer, throttleAdapterEnhancer} from 'axios-extensions';
 import path from 'path';
-import {SongInfo} from '@/lib/data/SongInfo';
-import {SearchResult} from '@/lib/data/SearchResult';
+import ISongInfo from '@/lib/data/ISongInfo';
+import ISearchResult from '@/lib/data/ISearchResult';
 
 const WEBSITE_BASE_URL = 'https://beatsaver.com/';
 const API_BASE_URL = 'https://beatsaver.com/api';
@@ -26,18 +26,18 @@ export default class BeatSaverAPI {
     });
   }
 
-  public getSongByHash(hash: string): Promise<SongInfo | undefined> {
+  public getSongByHash(hash: string): Promise<ISongInfo | undefined> {
     return this.http.get(GET_BY_HASH + hash + '/')
-      .then((answer) => answer.data as SongInfo);
+      .then((answer) => answer.data as ISongInfo);
   }
 
-  public getSongByKey(key: string): Promise<SongInfo | undefined> {
+  public getSongByKey(key: string): Promise<ISongInfo | undefined> {
     return this.http.get(GET_BY_KEY + key)
-      .then((answer) => answer.data as SongInfo);
+      .then((answer) => answer.data as ISongInfo);
   }
 
-  public search(text: string, page = 0): Promise<SearchResult | undefined> {
+  public search(text: string, page = 0): Promise<ISearchResult | undefined> {
     return this.http.get(SEARCH_TEXT + page + '?q=' + text)
-      .then((answer) => answer.data as SearchResult);
+      .then((answer) => answer.data as ISearchResult);
   }
 }

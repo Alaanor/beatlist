@@ -1,4 +1,4 @@
-export default interface Stats {
+export default interface IStats {
   downloads: number;
   plays: number;
   downVotes: number;

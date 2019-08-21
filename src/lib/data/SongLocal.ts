@@ -1,12 +1,27 @@
-import SongInfo from '@/lib/data/SongInfo';
+import Song from '@/lib/data/Song';
+import ISongLocal from '@/lib/data/ISongLocal';
+import SongLoader from '@/lib/SongLoader';
 
-export default interface SongLocal {
-  info: SongInfo;
+export default class SongLocal extends Song implements ISongLocal {
 
-  path: string | undefined;
-  filename: string | undefined;
-  coverImage: string | undefined;
-  folderId: string | undefined;
+  public coverImage: string;
+  public filename: string;
+  public folderId: string;
+  public path: string;
+  public valid: boolean;
 
-  valid: boolean;
+  constructor(song: ISongLocal) {
+    super(song);
+    this.coverImage = song.coverImage;
+    this.filename = song.filename;
+    this.folderId = song.folderId;
+    this.path = song.path;
+    this.valid = song.valid;
+  }
+
+  public getImage(): Promise<string> {
+    return SongLoader
+      .LoadCover(this.path, this.coverImage);
+  }
+
 }

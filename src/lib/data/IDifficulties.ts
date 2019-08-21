@@ -1,4 +1,4 @@
-export default interface Difficulties {
+export default interface IDifficulties {
   easy: boolean;
   normal: boolean;
   hard: boolean;

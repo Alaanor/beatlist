@@ -1,7 +1,7 @@
-import Difficulties from '@/lib/data/Difficulties';
+import IDifficulties from '@/lib/data/IDifficulties';
 
-export default interface Metadata {
-  difficulties: Difficulties;
+export default interface IMetadata {
+  difficulties: IDifficulties;
   characteristics: string[];
   songName: string;
   songSubName: string;

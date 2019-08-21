@@ -14,9 +14,9 @@
               </v-flex>
               <v-flex xs7 pa-3>
                 <v-container pa-0>
-                  <div class="subheading text-truncate ma-1">{{item.info.metadata.songName}}</div>
-                  <div class="caption text-truncate ma-1">{{item.info.metadata.songAuthorName}}</div>
-                  <div class="caption text-truncate ma-1">{{item.info.metadata.levelAuthorName}}</div>
+                  <div class="subheading text-truncate ma-1">{{item.metadata.songName}}</div>
+                  <div class="caption text-truncate ma-1">{{item.metadata.songAuthorName}}</div>
+                  <div class="caption text-truncate ma-1">{{item.metadata.levelAuthorName}}</div>
                 </v-container>
               </v-flex>
             </v-layout>

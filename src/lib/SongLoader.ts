@@ -4,34 +4,33 @@ import {promisify} from 'util';
 import SongHashData from './SongHashData';
 import axios from 'axios';
 import store from '../store/store';
-import SongLocal from '@/lib/data/SongLocal';
-import Difficulties from '@/lib/data/Difficulties';
-import SongInfo from '@/lib/data/SongInfo';
-import Metadata from '@/lib/data/Metadata';
+import ISongLocal from '@/lib/data/ISongLocal';
+import IDifficulties from '@/lib/data/IDifficulties';
+import IMetadata from '@/lib/data/IMetadata';
 
 const readFile = promisify(fs.readFile);
 const apiHashUrl = 'https://beatsaver.com/api/maps/by-hash/';
 
 export default class SongLoader {
 
-  public static GetSongFromKey(key: string, songs: SongLocal[]): SongLocal | undefined {
+  public static GetSongFromKey(key: string, songs: ISongLocal[]): ISongLocal | undefined {
     if (key) {
       return songs.find((s) => {
-        return ((s.info.key || '').toLowerCase() === key.toLowerCase()) && !!s.info.key;
+        return ((s.key || '').toLowerCase() === key.toLowerCase()) && !!s.key;
       });
     }
 
     return undefined;
   }
 
-  public static GetSongFromHash(hash: string, songs: SongLocal[]): SongLocal | undefined {
+  public static GetSongFromHash(hash: string, songs: ISongLocal[]): ISongLocal | undefined {
     return songs.find((s) => {
-      return (s.info.hash || '').toLowerCase() === (hash || '').toLowerCase()
-        && s.info.hash !== undefined && hash !== undefined;
+      return (s.hash || '').toLowerCase() === (hash || '').toLowerCase()
+        && s.hash !== undefined && hash !== undefined;
     });
   }
 
-  public static GetSongFromDirId(dirId: string, songs: SongLocal[]): SongLocal | undefined {
+  public static GetSongFromDirId(dirId: string, songs: ISongLocal[]): ISongLocal | undefined {
     return songs.find((s) => {
       return (s.folderId || '').toLowerCase() === (dirId || '').toLowerCase()
         && s.folderId !== undefined && dirId !== undefined;
@@ -44,17 +43,17 @@ export default class SongLoader {
     return 'data:image/jpg;base64,' + imgData.toString('base64');
   }
 
-  public static DetectDuplicate(songs: SongLocal[]) {
-    const newFormatSongs = songs.filter((s) => s.folderId === s.info.key).map((s) => s.info.key);
+  public static DetectDuplicate(songs: ISongLocal[]) {
+    const newFormatSongs = songs.filter((s) => s.folderId === s.key).map((s) => s.key);
     songs.filter((s) => (
-      newFormatSongs.includes(s.info.key) && s.info.key !== s.folderId
+      newFormatSongs.includes(s.key) && s.key !== s.folderId
     )).forEach((s) => {
       store.commit('songs/markAsInvalid', s);
     });
   }
 
-  public static GetDifficulties(sets: []): Difficulties {
-    const diff = {} as Difficulties;
+  public static GetDifficulties(sets: []): IDifficulties {
+    const diff = {} as IDifficulties;
 
     sets.forEach((s: { _difficultyBeatmaps: [] }) => {
       s._difficultyBeatmaps.forEach((s: { _difficulty: string }) => {
@@ -67,29 +66,28 @@ export default class SongLoader {
   }
 
   public static async LoadInfo(path: string) {
-    const song = {} as SongLocal;
-    song.info = {} as SongInfo;
-    song.info.metadata = {} as Metadata;
+    const song = {} as ISongLocal;
+    song.metadata = {} as IMetadata;
 
     try {
       const filePath = nodePath.join(path, 'info.dat');
       const raw = await readFile(filePath, 'utf8');
       const data = JSON.parse(raw);
 
-      song.info.metadata.songName = data._songName;
-      song.info.metadata.songSubName = data._songSubName;
-      song.info.metadata.songAuthorName = data._songAuthorName;
-      song.info.metadata.levelAuthorName = data._levelAuthorName;
-      song.info.metadata.bpm = data._beatsPerMinute;
+      song.metadata.songName = data._songName;
+      song.metadata.songSubName = data._songSubName;
+      song.metadata.songAuthorName = data._songAuthorName;
+      song.metadata.levelAuthorName = data._levelAuthorName;
+      song.metadata.bpm = data._beatsPerMinute;
 
       song.path = path;
       song.coverImage = data._coverImageFilename;
       song.filename = data._songFilename;
-      song.info.metadata.difficulties = SongLoader.GetDifficulties(data._difficultyBeatmapSets);
+      song.metadata.difficulties = SongLoader.GetDifficulties(data._difficultyBeatmapSets);
 
       song.folderId = SongLoader.GetFolderId(song.path);
-      song.info.hash = (await SongHashData.data())[song.path.toLowerCase()].songHash;
-      song.info.key = (await SongLoader.GetKeyFromHash(song.info.hash));
+      song.hash = (await SongHashData.data())[song.path.toLowerCase()].songHash;
+      song.key = (await SongLoader.GetKeyFromHash(song.hash));
 
       song.valid = true;
     } catch (e) {
