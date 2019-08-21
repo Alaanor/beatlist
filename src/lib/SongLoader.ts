@@ -7,6 +7,7 @@ import store from '../store/store';
 import ISongLocal from '@/lib/data/ISongLocal';
 import IDifficulties from '@/lib/data/IDifficulties';
 import IMetadata from '@/lib/data/IMetadata';
+import SongLocal from '@/lib/data/SongLocal';
 
 const readFile = promisify(fs.readFile);
 const apiHashUrl = 'https://beatsaver.com/api/maps/by-hash/';
@@ -91,10 +92,10 @@ export default class SongLoader {
 
       song.valid = true;
     } catch (e) {
-      return song;
+      return new SongLocal(song);
     }
 
-    return song;
+    return new SongLocal(song);
   }
 
   private static async GetKeyFromHash(hash: string): Promise<string> {
