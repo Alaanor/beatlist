@@ -1,7 +1,7 @@
 <template>
   <v-app class="no-text-selection">
-    <v-navigation-drawer app clipped v-model="drawer" :mini-variant.sync="settings.miniVariant"
-                         :permanent="settings.permanent" expand-on-hover mobile-break-point="0">
+    <v-navigation-drawer app clipped v-model="drawer" :mini-variant.sync="miniVariant"
+                         :permanent="permanent" expand-on-hover mobile-break-point="0">
       <v-list dense>
         <MenuNavigationItem v-for="menu in menus" :item="menu"></MenuNavigationItem>
         <v-list-item @click="openGithubRepo()">
@@ -15,9 +15,9 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar app dense clipped-left class="windows-draggable">
-      <v-app-bar-nav-icon v-if="!settings.permanent" @click.stop="drawer = !drawer" class="btn-win-control"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon v-if="!permanent" @click.stop="drawer = !drawer" class="btn-win-control"></v-app-bar-nav-icon>
       <v-toolbar-title class="ma-1">
-        <v-img :src="require(`@/assets/${settings.darkTheme ? 'title_dark' : 'title_white'}.png`)" width="108"></v-img>
+        <v-img :src="require(`@/assets/${darkTheme ? 'title_dark' : 'title_white'}.png`)" width="108"></v-img>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn text icon @click="toggleMinimize()" class="btn-win-control ma-0">
@@ -71,6 +71,7 @@
   import store from '@/store/store';
   import {remote, shell} from 'electron';
   import MenuNavigationItem from '@/components/MenuNavigationItem.vue';
+  import settings from '@/store/settings';
 
   Vue.use(VueRouter);
 
@@ -184,14 +185,21 @@
       ],
     }),
     computed: {
-      settings: get('settings'),
+      darkTheme: get('settings/darkTheme'),
+      miniVariant: get('settings/miniVariant'),
+      permanent: get('settings/permanent'),
     },
     mounted(): void {
       const st = this.$store as unknown as { _vm: { $root: Vue } };
       st._vm.$root.$on('storageReady', () => this.isReady = true);
     },
+    watch: {
+      darkTheme() {
+        this.$vuetify.theme.dark = this.darkTheme;
+      },
+    },
     created() {
-      this.$vuetify.theme.dark = this.settings.darkTheme;
+      this.$vuetify.theme.dark = this.darkTheme;
     },
     methods: {
       toggleMinimize() {

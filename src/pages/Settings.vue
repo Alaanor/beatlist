@@ -18,7 +18,7 @@
               hint="The folder where Beat Saber is installed, must have a 'Beat Saber.exe' file there"
               solo>
       </v-text-field>
-      <v-btn flat color="success" class="mb-4"
+      <v-btn text color="success" class="mb-4"
              :disabled="installationPathValid"
              @click="detectPath()"
              :loading="resolveBtnLoading">
@@ -56,7 +56,7 @@
     <v-switch v-model="permanent" label="Permanent sidebar"></v-switch>
     <v-snackbar v-model="snackbar" :color="snackbarType" :timeout="3000">
       {{ snackbarText }}
-      <v-btn flat @click="snackbar = false">Close</v-btn>
+      <v-btn text @click="snackbar = false">Close</v-btn>
     </v-snackbar>
   </v-container>
 </template>

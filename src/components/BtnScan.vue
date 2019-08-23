@@ -4,7 +4,7 @@
     <v-btn :disabled="dialogScan || !installationPathValid" :loading="dialogScan" @click="scan()" color="primary">
       Scan now
     </v-btn>
-    <v-btn :disabled="!songs" :loading="clearCacheTimeout" color="warning" @click="clearCache()" flat>
+    <v-btn :disabled="!songs" :loading="clearCacheTimeout" color="warning" @click="clearCache()" text>
       Clear cache
       <template v-slot:loader>
         <v-scroll-x-transition>
