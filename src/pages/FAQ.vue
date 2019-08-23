@@ -3,23 +3,22 @@
   <v-container>
     <h1>Frequently asked questions</h1>
     <br>
-    <v-expansion-panel popout focusable>
-      <v-expansion-panel-content v-for="item in items">
-        <template v-slot:header>
-          <div>{{item.question}}</div>
-        </template>
-        <v-card>
-          <v-card-text v-html="item.answer"></v-card-text>
-        </v-card>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
+    <v-expansion-panels popout>
+      <v-expansion-panel v-for="item in items">
+        <v-expansion-panel-header>{{item.question}}</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <span v-html="item.answer"></span>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
     <br>
     <v-layout align-center>
       <v-flex>
-        <div class="text-xs-center">
+        <div class="text-center">
           <v-chip style="cursor: pointer" @click="openLink('https://discordapp.com/users/213397906571395072')">
             <v-avatar>
-              <img src="https://cdn.discordapp.com/avatars/213397906571395072/a_8c702d715ac7a908e6d428dc26923473.png?size=128" alt="trevor">
+              <img src="https://cdn.discordapp.com/avatars/213397906571395072/a_8c702d715ac7a908e6d428dc26923473.png?size=128"
+                   alt="trevor">
             </v-avatar>
             Alaanor#9999
           </v-chip>
