@@ -4,28 +4,28 @@
     <v-list-group v-if="('items' in item) && !(item.requireValidConfig && !settings.configValid)"
                   :prepend-icon="item.icon" :no-action="!settings.miniVariant" :group="item.path">
       <template v-slot:activator>
-        <v-list-tile>
-          <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-        </v-list-tile>
+        <v-list>
+          <v-list-item-title>{{ item.name }}</v-list-item-title>
+        </v-list>
       </template>
       <MenuNavigationItem v-for="entry in item.items" :item="entry" :depth="depth+1"></MenuNavigationItem>
     </v-list-group>
 
-    <v-list-tile :to="item.path" v-else-if="depth === 0 || settings.miniVariant">
-      <v-list-tile-action>
+    <v-list-item :to="item.path" v-else-if="depth === 0 || settings.miniVariant">
+      <v-list-item-icon>
         <v-icon>{{ item.icon }}</v-icon>
-      </v-list-tile-action>
-      <v-list-tile-content>
-        <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-      </v-list-tile-content>
-    </v-list-tile>
+      </v-list-item-icon>
+      <v-list-item-content>
+        <v-list-item-title>{{ item.name }}</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
 
-    <v-list-tile :to="item.path" v-else-if="depth > 0">
-      <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-      <v-list-tile-action>
+    <v-list-item :to="item.path" v-else-if="depth > 0">
+      <v-list-item-title>{{ item.name }}</v-list-item-title>
+      <v-list-item-icon>
         <v-icon>{{ item.icon }}</v-icon>
-      </v-list-tile-action>
-    </v-list-tile>
+      </v-list-item-icon>
+    </v-list-item>
   </div>
 </template>
 
@@ -41,7 +41,7 @@
     computed: {
       settings: get('settings'),
     },
-  }
+  };
 </script>
 
 <style scoped>

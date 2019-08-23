@@ -1,8 +1,16 @@
-import Song from '@/lib/data/Song';
-import ISongLocal from '@/lib/data/ISongLocal';
-import SongLoader from '@/lib/SongLoader';
+import Song from './Song';
+import ISongLocal from './ISongLocal';
+import SongLoader from '../SongLoader';
 
 export default class SongLocal extends Song implements ISongLocal {
+
+  public static isSongLocal(object: any): object is SongLocal {
+    return 'folderId' in object;
+  }
+
+  public static isSongsLocal(objects: any[]): objects is SongLocal[] {
+    return objects.map((o: any) => this.isSongLocal(o)).every((b: boolean) => b);
+  }
 
   public coverImage: string;
   public filename: string;
@@ -23,5 +31,4 @@ export default class SongLocal extends Song implements ISongLocal {
     return SongLoader
       .LoadCover(this.path, this.coverImage);
   }
-
 }

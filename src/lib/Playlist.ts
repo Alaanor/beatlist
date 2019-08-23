@@ -3,6 +3,8 @@ import fs from 'fs';
 import {promisify} from 'util';
 import crypto from 'crypto';
 import path from 'path';
+import ISongInfo from '@/lib/data/ISongInfo';
+import ISongLocal from '@/lib/data/ISongLocal';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -11,7 +13,7 @@ const deleteFile = promisify(fs.unlink);
 
 export default class Playlist {
 
-  public static async Parse(pathToJson: string, songs: SongLoader[]): Promise<Playlist | undefined> {
+  public static async Parse(pathToJson: string, songs: ISongLocal[]): Promise<Playlist | undefined> {
     const raw = await readFile(pathToJson);
     let data;
     try {
@@ -19,8 +21,6 @@ export default class Playlist {
     } catch (e) {
       return undefined;
     }
-
-    songs = songs.filter((s: SongLoader) => s.valid);
 
     const playlist = new Playlist();
     playlist.playlistPath = pathToJson;
@@ -36,7 +36,7 @@ export default class Playlist {
         SongLoader.GetSongFromKey(s.key, songs) ||
         SongLoader.GetSongFromDirId(s.key, songs)
       );
-    }).filter((s: any) => s !== undefined && s.valid);
+    }).filter((s: ISongInfo | undefined) => s !== undefined);
     return playlist;
   }
 
@@ -60,7 +60,7 @@ export default class Playlist {
   public playlistAuthor: string = '';
   public playlistDescription: string = '';
 
-  public songs: SongLoader[] = [];
+  public songs: ISongLocal[] = [];
 
   public async Save(image?: string) {
     if (!image) {
@@ -99,8 +99,8 @@ export default class Playlist {
       songs: this.songs
         .filter((s) => s.valid)
         .map((s) => ({
-          songName: s.songName,
-          hash: s.songHash,
+          songName: s.metadata.songName,
+          hash: s.hash,
         })),
     };
 

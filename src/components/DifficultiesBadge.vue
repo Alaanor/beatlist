@@ -38,9 +38,9 @@
       mapColor(difficulty) {
         return this.map[difficulty];
       },
-      capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-      }
+      capitalizeFirstLetter(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+      },
     },
   })
   ;

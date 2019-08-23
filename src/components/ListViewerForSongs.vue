@@ -29,7 +29,7 @@
       </template>
 
       <template #item-list="{item}">
-        <v-list-tile @click.stop="showInfo(item)">
+        <v-list @click.stop="showInfo(item)">
           <v-list-tile-avatar>
             <SongCover :song="item"></SongCover>
           </v-list-tile-avatar>
@@ -43,7 +43,7 @@
           <v-list-tile-action>
             <slot name="item-list-action" :item="item"></slot>
           </v-list-tile-action>
-        </v-list-tile>
+        </v-list>
       </template>
 
     </ListViewer>
@@ -58,7 +58,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat @click="dialog = false">Close</v-btn>
+          <v-btn text @click="dialog = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

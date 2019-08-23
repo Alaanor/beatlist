@@ -1,10 +1,9 @@
 import {make} from 'vuex-pathify';
-import SongLoader from '../lib/SongLoader';
 import BeatSaber from '../lib/BeatSaber';
 import Playlist from '../lib/Playlist';
 import Song from '@/lib/data/Song';
-import SongLocal from '@/lib/data/SongLocal';
 import ISongLocal from '@/lib/data/ISongLocal';
+import SongLocal from '../lib/data/SongLocal';
 
 const state = {
   lastScan: undefined,
@@ -14,7 +13,9 @@ const state = {
 
 const getters = {
   songs: ({songs}: {songs: ISongLocal[]}) => {
-    return songs.map((song: ISongLocal) => new SongLocal(song));
+    return songs
+      .map((song: ISongLocal) => new SongLocal(song))
+      .filter((s: ISongLocal) => s.valid);
   },
 };
 
@@ -42,7 +43,7 @@ const mutations = {
 const actions = {
   async loadPlaylists(context: any) {
     const instPath = context.rootState.settings.installationPath as string;
-    const songs = context.state.songs as SongLoader[];
+    const songs = context.state.songs as ISongLocal[];
     const beatSaber = new BeatSaber(instPath);
     context.commit('SET_PLAYLISTS', await beatSaber.getPlaylists(songs));
   },

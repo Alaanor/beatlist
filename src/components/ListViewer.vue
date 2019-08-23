@@ -63,9 +63,9 @@
     watch: {
       pagination: {
         handler() {
-          this.$emit("paginate");
+          this.$emit('paginate');
         },
-        deep: true
+        deep: true,
       },
     },
     filters: {

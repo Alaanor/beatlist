@@ -109,7 +109,7 @@
     },
     methods: {
       FormatNewLine(x) {
-        return x.replace(/\r\n/g, '<br>')
+        return x.replace(/\r\n/g, '<br>');
       },
     },
     filters: {

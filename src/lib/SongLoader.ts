@@ -7,7 +7,7 @@ import store from '../store/store';
 import ISongLocal from '@/lib/data/ISongLocal';
 import IDifficulties from '@/lib/data/IDifficulties';
 import IMetadata from '@/lib/data/IMetadata';
-import SongLocal from '@/lib/data/SongLocal';
+import SongLocal from './data/SongLocal';
 
 const readFile = promisify(fs.readFile);
 const apiHashUrl = 'https://beatsaver.com/api/maps/by-hash/';
@@ -56,8 +56,8 @@ export default class SongLoader {
   public static GetDifficulties(sets: []): IDifficulties {
     const diff = {} as IDifficulties;
 
-    sets.forEach((s: { _difficultyBeatmaps: [] }) => {
-      s._difficultyBeatmaps.forEach((s: { _difficulty: string }) => {
+    sets.forEach((set: { _difficultyBeatmaps: [] }) => {
+      set._difficultyBeatmaps.forEach((s: { _difficulty: string }) => {
         const key = s._difficulty.charAt(0).toLowerCase() + s._difficulty.slice(1);
         diff[key] = true;
       });

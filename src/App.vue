@@ -1,37 +1,37 @@
 <template>
-  <v-app :dark="settings.darkTheme" class="no-text-selection">
-    <v-navigation-drawer v-model="drawer" clipped app :mini-variant="settings.miniVariant"
-                         :permanent="settings.permanent">
+  <v-app class="no-text-selection">
+    <v-navigation-drawer app clipped v-model="drawer" :mini-variant.sync="settings.miniVariant"
+                         :permanent="settings.permanent" expand-on-hover mobile-break-point="0">
       <v-list dense>
         <MenuNavigationItem v-for="menu in menus" :item="menu"></MenuNavigationItem>
-        <v-list-tile @click="openGithubRepo()">
-          <v-list-tile-action>
+        <v-list-item @click="openGithubRepo()">
+          <v-list-item-icon>
             <v-icon>mdi-github-circle</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Github repo</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Github repo</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar app fixed clipped-left dense flat class="windows-draggable">
-      <v-toolbar-side-icon v-if="!settings.permanent" @click.stop="drawer = !drawer"
-                           class="btn-win-control">
-      </v-toolbar-side-icon>
+    <v-app-bar app dense clipped-left class="windows-draggable">
+      <v-app-bar-nav-icon v-if="!settings.permanent" @click.stop="drawer = !drawer" class="btn-win-control"></v-app-bar-nav-icon>
       <v-toolbar-title class="ma-1">
         <v-img :src="require(`@/assets/${settings.darkTheme ? 'title_dark' : 'title_white'}.png`)" width="108"></v-img>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn flat icon @click="toggleMinimize()" class="btn-win-control ma-0">
+      <v-btn text icon @click="toggleMinimize()" class="btn-win-control ma-0">
         <v-icon small>minimize</v-icon>
       </v-btn>
-      <v-btn flat icon @click="toggleMaximized()" class="btn-win-control ma-0">
+      <v-btn text icon @click="toggleMaximized()" class="btn-win-control ma-0">
         <v-icon small>web_asset</v-icon>
       </v-btn>
-      <v-btn flat icon @click="appClose()" class="btn-win-control ma-0">
-        <v-icon small>close</v-icon>
-      </v-btn>
-    </v-toolbar>
+      <v-hover v-slot:default="{ hover }">
+        <v-btn text icon @click="appClose()" :color="hover ? 'error' : ''" class="btn-win-control ma-0">
+          <v-icon small>close</v-icon>
+        </v-btn>
+      </v-hover>
+    </v-app-bar>
     <v-content>
       <v-container fluid fill-height>
         <v-layout v-if="isReady">
@@ -189,6 +189,9 @@
     mounted(): void {
       const st = this.$store as unknown as { _vm: { $root: Vue } };
       st._vm.$root.$on('storageReady', () => this.isReady = true);
+    },
+    created() {
+      this.$vuetify.theme.dark = this.settings.darkTheme;
     },
     methods: {
       toggleMinimize() {

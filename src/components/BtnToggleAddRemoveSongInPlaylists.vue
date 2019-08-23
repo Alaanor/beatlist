@@ -56,6 +56,7 @@
   import PlaylistCover from '@/components/PlaylistCover.vue';
   import SongLoader from '@/lib/SongLoader';
   import Playlist from '@/lib/Playlist';
+  import ISongInfo from '@/lib/data/ISongInfo';
 
   export default Vue.extend({
     name: 'BtnToggleAddRemoveSongInPlaylists',
@@ -76,7 +77,7 @@
     },
     methods: {
       IsInPlaylist(playlist: Playlist) {
-        return !!playlist.songs.find((s: SongLoader) => s.songHash === (this.song as SongLoader).songHash);
+        return !!playlist.songs.find((s: ISongInfo) => s.hash === (this.song as ISongInfo).hash);
       },
       Add(playlist: Playlist) {
         store.commit('songs/addSongToPlaylist', {playlist, song: this.song});
