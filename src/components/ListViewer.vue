@@ -13,14 +13,16 @@
       </v-flex>
     </v-layout>
     <v-data-iterator :items="items" :custom-filter="filter" :search="search"
-      :footer-props="{ itemsPerPageOptions }">
+                     :footer-props="{ itemsPerPageOptions }">
       <template v-slot:default="props">
-        <v-row align="center" justify="center">
+        <v-row v-if="modeName === 'block'" align="center" justify="center">
           <v-col cols="auto" v-for="item in props.items">
-            <slot name="item-block" v-if="modeName === 'block'" :item="item"></slot>
-            <slot name="item-list" v-if="modeName === 'list'" :item="item"></slot>
+            <slot name="item-block" :item="item"></slot>
           </v-col>
         </v-row>
+        <v-list v-if="modeName === 'list'" rounded>
+          <slot name="item-list" :item="item" v-for="item in props.items"></slot>
+        </v-list>
       </template>
     </v-data-iterator>
   </v-container>

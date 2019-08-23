@@ -29,21 +29,20 @@
       </template>
 
       <template #item-list="{item}">
-        <v-list @click.stop="showInfo(item)">
-          <v-list-tile-avatar>
+        <v-list-item @click.stop="showInfo(item)">
+          <v-list-item-avatar class="my-0">
             <SongCover :song="item"></SongCover>
-          </v-list-tile-avatar>
-          <v-list-tile-content>
-            <v-list-tile-title>{{item.metadata.songName}}</v-list-tile-title>
-            <v-list-tile-sub-title>
-              <span class="text--primary">{{item.metadata.songAuthorName}}</span> -
-              {{item.metadata.levelAuthorName}}
-            </v-list-tile-sub-title>
-          </v-list-tile-content>
+          </v-list-item-avatar>
+          <v-list-item-content class="pa-0">
+            <v-list-item-title>{{item.metadata.songName}}</v-list-item-title>
+            <v-list-item-subtitle>
+              {{item.metadata.songAuthorName}} - {{item.metadata.levelAuthorName}}
+            </v-list-item-subtitle>
+          </v-list-item-content>
           <v-list-tile-action>
             <slot name="item-list-action" :item="item"></slot>
           </v-list-tile-action>
-        </v-list>
+        </v-list-item>
       </template>
 
     </ListViewer>
