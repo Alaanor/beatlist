@@ -35,7 +35,7 @@
     <v-content>
       <v-container fluid fill-height>
         <v-layout v-if="isReady">
-          <v-flex lg8 xs12 offset-lg2>
+          <v-flex lg10 xs12 offset-lg1>
             <keep-alive>
               <transition appear name="slide-x-transition" mode="out-in">
                 <router-view></router-view>

@@ -6,7 +6,7 @@
         <v-btn v-if="icon" v-on="on" icon>
           <v-icon>{{value || "add"}}</v-icon>
         </v-btn>
-        <v-btn v-else flat small pa-0 v-on="on">
+        <v-btn v-else text small pa-0 v-on="on">
           {{value || "Add"}}
         </v-btn>
       </slot>
@@ -25,22 +25,22 @@
           <v-list class="py-0">
             <template v-for="(playlist, i) in playlists">
               <v-divider v-if="i !== 0"></v-divider>
-              <v-list-tile>
-                <v-list-tile-action>
+              <v-list-item>
+                <v-list-item-action>
                   <v-btn icon @click="!IsInPlaylist(playlist)?Add(playlist):Remove(playlist)">
                     <v-icon :color="!IsInPlaylist(playlist)?'success':'error'">
                       {{!IsInPlaylist(playlist)?'add':'remove'}}
                     </v-icon>
                   </v-btn>
-                </v-list-tile-action>
-                <v-list-tile-title>
+                </v-list-item-action>
+                <v-list-item-title>
                   {{playlist.playlistTitle}}
-                </v-list-tile-title>
+                </v-list-item-title>
                 <v-spacer></v-spacer>
-                <v-list-tile-avatar class="pl-3">
+                <v-list-item-avatar class="pl-3">
                   <PlaylistCover :playlist="playlist"></PlaylistCover>
-                </v-list-tile-avatar>
-              </v-list-tile>
+                </v-list-item-avatar>
+              </v-list-item>
             </template>
           </v-list>
         </v-card>
@@ -54,7 +54,6 @@
   import {get} from 'vuex-pathify';
   import store from '@/store/store';
   import PlaylistCover from '@/components/PlaylistCover.vue';
-  import SongLoader from '@/lib/SongLoader';
   import Playlist from '@/lib/Playlist';
   import ISongInfo from '@/lib/data/ISongInfo';
 
