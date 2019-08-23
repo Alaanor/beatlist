@@ -6,20 +6,20 @@
         <v-card slot-scope="{hover}" :class="`elevation-${hover ? 12 : 2}`" width="305px"
                 style="cursor: pointer" @click.stop="action && action(item)">
           <v-layout justify-space-between row align-center>
-            <v-flex xs5>
+            <v-flex xs4>
               <PlaylistCover :playlist="item" class="mx-2"></PlaylistCover>
             </v-flex>
-            <v-flex xs7 pa-1>
+            <v-flex xs5>
               <div>
                 <v-container pa-0>
-                  <div class="subheading">
+                  <div class="body-1">
                     {{item.playlistTitle}}<span class="grey--text"> ({{item.songs.length}})</span>
                   </div>
                   <div class="caption">{{item.playlistAuthor}}</div>
                 </v-container>
               </div>
             </v-flex>
-            <v-flex>
+            <v-flex xs2 class="pa-0">
               <slot name="item-block-action" :item="item"></slot>
             </v-flex>
           </v-layout>
@@ -28,21 +28,20 @@
     </template>
 
     <template #item-list="{item}">
-      <v-list-tile @click.stop="action && action(item)">
-        <v-list-tile-avatar>
+      <v-list-item @click.stop="action && action(item)">
+        <v-list-item-avatar class="my-0">
           <PlaylistCover :playlist="item"></PlaylistCover>
-        </v-list-tile-avatar>
-        <v-list-tile-content>
-          <v-list-tile-title>{{item.playlistTitle}}</v-list-tile-title>
-          <v-list-tile-sub-title>
-            <span class="text--primary">{{item.playlistAuthor}}</span> -
-            {{item.songs.length}} songs
-          </v-list-tile-sub-title>
-        </v-list-tile-content>
-        <v-list-tile-action>
+        </v-list-item-avatar>
+        <v-list-item-content class="pa-0">
+          <v-list-item-title>{{item.playlistTitle}}</v-list-item-title>
+          <v-list-item-subtitle>
+            {{item.playlistAuthor}} - <span class="grey--text">{{item.songs.length}} songs</span>
+          </v-list-item-subtitle>
+        </v-list-item-content>
+        <v-list-item-action class="my-0">
           <slot name="item-list-action" :item="item"></slot>
-        </v-list-tile-action>
-      </v-list-tile>
+        </v-list-item-action>
+      </v-list-item>
     </template>
 
   </ListViewer>

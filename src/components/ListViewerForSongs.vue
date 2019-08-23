@@ -39,9 +39,9 @@
               {{item.metadata.songAuthorName}} - {{item.metadata.levelAuthorName}}
             </v-list-item-subtitle>
           </v-list-item-content>
-          <v-list-tile-action>
+          <v-list-item-action class="my-0">
             <slot name="item-list-action" :item="item"></slot>
-          </v-list-tile-action>
+          </v-list-item-action>
         </v-list-item>
       </template>
 
