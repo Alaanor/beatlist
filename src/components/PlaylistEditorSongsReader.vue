@@ -4,22 +4,22 @@
       <v-list class="py-0">
         <template v-for="(song, i) in playlist.songs">
           <v-divider v-if="i !== 0"></v-divider>
-          <v-list-tile>
-            <v-list-tile-avatar>
+          <v-list-item>
+            <v-list-item-avatar>
               <SongCover :song="song"></SongCover>
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>{{song.songName}}</v-list-tile-title>
-              <v-list-tile-sub-title><span class="text--primary">{{song.songAuthorName}}</span> -
-                {{song.levelAuthorName}}
-              </v-list-tile-sub-title>
-            </v-list-tile-content>
-            <v-list-tile-action>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>{{song.metadata.songName}}</v-list-item-title>
+              <v-list-item-subtitle><span class="text--primary">{{song.metadata.songAuthorName}}</span> -
+                {{song.metadata.levelAuthorName}}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-action>
               <v-btn icon class="text--secondary" @click="Remove(song)">
                 <v-icon color="error">delete</v-icon>
               </v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
+            </v-list-item-action>
+          </v-list-item>
         </template>
       </v-list>
     </v-card>

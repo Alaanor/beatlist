@@ -20,7 +20,7 @@
     },
     computed: {
       isInPlaylist() {
-        return !!this.playlist.songs.find((s) => s.songHash === this.song.songHash);
+        return !!this.playlist.songs.find((s) => s.hash === this.song.hash);
       },
     },
     methods: {

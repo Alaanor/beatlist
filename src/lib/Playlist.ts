@@ -43,7 +43,13 @@ export default class Playlist {
   public static async LoadCover(playlistPath: string): Promise<string> {
     const raw = await readFile(playlistPath);
     const data = JSON.parse(raw.toString());
-    return data.image;
+
+    let src = data.image;
+    if (src.substring(0, 10) !== 'data:image') {
+      src = `data:image/jpeg;charset=utf-8;base64,${src}`;
+    }
+
+    return src;
   }
 
   private static getPlaylistHash(playlistPath: string): string {
