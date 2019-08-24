@@ -2,7 +2,7 @@
 <template>
   <v-container>
     <h1>Local songs</h1>
-    <ListViewerForSongs>
+    <ListViewerForSongs :filter="Filter">
       <template #item-block-action="{item}">
         <BtnAddSongToPlaylists :song="item" value="Add to playlist"></BtnAddSongToPlaylists>
       </template>
@@ -17,9 +17,26 @@
   import Vue from 'vue';
   import ListViewerForSongs from '@/components/ListViewerForSongs.vue';
   import BtnAddSongToPlaylists from '@/components/BtnToggleAddRemoveSongInPlaylists.vue';
+  import ISongLocal from '@/lib/data/ISongLocal';
 
   export default Vue.extend({
     name: 'SongListLocal',
     components: { ListViewerForSongs, BtnAddSongToPlaylists },
+    methods: {
+      Filter(songs: ISongLocal[], search: string) {
+        if (search === '') {
+          return songs.filter((s: ISongLocal) => s.valid);
+        }
+
+        return songs.filter((song) => {
+          return search.toLowerCase().split(' ').filter((v) => v !== '').map((word) => (
+            (song.metadata.songName && song.metadata.songName.toLowerCase().indexOf(word) !== -1) ||
+            (song.metadata.songSubName && song.metadata.songSubName.toLowerCase().indexOf(word) !== -1) ||
+            (song.metadata.songAuthorName && song.metadata.songAuthorName.toLowerCase().indexOf(word) !== -1) ||
+            (song.metadata.levelAuthorName && song.metadata.levelAuthorName.toLowerCase().indexOf(word) !== -1)
+          )).every(Boolean);
+        });
+      },
+    }
   });
 </script>

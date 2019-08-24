@@ -78,6 +78,7 @@
     props: {
       items: {Type: Array, default: undefined},
       total: {type: Number, default: 0},
+      filter: {type: Function},
     },
     data: () => ({
       dialog: false,
@@ -97,20 +98,6 @@
       },
     },
     methods: {
-      Filter(songs, search) {
-        if (search === '') {
-          return songs.filter((s) => s.valid);
-        }
-
-        return songs.filter((song) => {
-          return search.toLowerCase().split(' ').filter((v) => v !== '').map((word) => (
-            (song.songName && song.songName.toLowerCase().indexOf(word) !== -1) ||
-            (song.songSubName && song.songSubName.toLowerCase().indexOf(word) !== -1) ||
-            (song.songAuthorName && song.songAuthorName.toLowerCase().indexOf(word) !== -1) ||
-            (song.levelAuthorName && song.levelAuthorName.toLowerCase().indexOf(word) !== -1)
-          )).every(Boolean);
-        });
-      },
       showInfo(song) {
         this.dialog = true;
         this.song = song;
