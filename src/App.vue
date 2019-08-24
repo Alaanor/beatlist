@@ -1,7 +1,7 @@
 <template>
   <v-app class="no-text-selection">
-    <v-navigation-drawer app clipped v-model="drawer" :mini-variant.sync="miniVariant"
-                         :permanent="permanent" expand-on-hover mobile-break-point="0">
+    <v-navigation-drawer app clipped v-model="drawer" :permanent="permanent"
+                         :expand-on-hover="miniVariant" mobile-break-point="0">
       <v-list dense>
         <MenuNavigationItem v-for="menu in menus" :item="menu"></MenuNavigationItem>
         <v-list-item @click="openGithubRepo()">
