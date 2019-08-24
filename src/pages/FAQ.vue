@@ -16,8 +16,8 @@
       <v-flex>
         <div class="text-center">
           <v-chip style="cursor: pointer" @click="openLink('https://discordapp.com/users/213397906571395072')">
-            <v-avatar>
-              <img src="https://cdn.discordapp.com/avatars/213397906571395072/a_8c702d715ac7a908e6d428dc26923473.png?size=128"
+            <v-avatar left>
+              <img src="https://cdn.discordapp.com/avatars/213397906571395072/a_dcae5045fba3fffee46a967ce187b609.webp?size=128"
                    alt="trevor">
             </v-avatar>
             Alaanor#9999
