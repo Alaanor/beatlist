@@ -4,10 +4,10 @@
     <h1>Local songs</h1>
     <ListViewerForSongs>
       <template #item-block-action="{item}">
-        <BtnAddSongToPlaylist :song="item" value="Add to playlist"></BtnAddSongToPlaylist>
+        <BtnAddSongToPlaylists :song="item" value="Add to playlist"></BtnAddSongToPlaylists>
       </template>
       <template #item-list-action="{item}">
-        <BtnAddSongToPlaylist :song="item" icon></BtnAddSongToPlaylist>
+        <BtnAddSongToPlaylists :song="item" icon></BtnAddSongToPlaylists>
       </template>
     </ListViewerForSongs>
   </v-container>
@@ -16,10 +16,10 @@
 <script lang="ts">
   import Vue from 'vue';
   import ListViewerForSongs from '@/components/ListViewerForSongs.vue';
-  import BtnAddSongToPlaylist from '@/components/BtnToggleAddRemoveSongInPlaylists.vue';
+  import BtnAddSongToPlaylists from '@/components/BtnToggleAddRemoveSongInPlaylists.vue';
 
   export default Vue.extend({
     name: 'SongListLocal',
-    components: { ListViewerForSongs, BtnAddSongToPlaylist },
+    components: { ListViewerForSongs, BtnAddSongToPlaylists },
   });
 </script>

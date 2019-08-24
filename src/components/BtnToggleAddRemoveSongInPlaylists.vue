@@ -1,13 +1,12 @@
-<!--suppress XmlUnboundNsPrefix -->
 <template>
   <v-dialog v-model="dialog" scrollable max-width="450px">
     <template v-slot:activator="{ on }">
       <slot>
-        <v-btn v-if="icon" v-on="on" icon>
-          <v-icon>{{value || "add"}}</v-icon>
+        <v-btn v-if="icon" v-on="on" @click.stop="" icon>
+          <v-icon>{{value || 'add'}}</v-icon>
         </v-btn>
-        <v-btn v-else text small pa-0 v-on="on">
-          {{value || "Add"}}
+        <v-btn v-else text small pa-0 v-on="on" @click.stop="">
+          {{value || 'Add'}}
         </v-btn>
       </slot>
     </template>
@@ -20,30 +19,26 @@
         </v-btn>
       </v-card-title>
       <v-divider></v-divider>
-      <v-card-text style="max-height: 350px;">
-        <v-card elevation="10">
-          <v-list class="py-0">
-            <template v-for="(playlist, i) in playlists">
-              <v-divider v-if="i !== 0"></v-divider>
-              <v-list-item>
-                <v-list-item-action>
-                  <v-btn icon @click="!IsInPlaylist(playlist)?Add(playlist):Remove(playlist)">
-                    <v-icon :color="!IsInPlaylist(playlist)?'success':'error'">
-                      {{!IsInPlaylist(playlist)?'add':'remove'}}
-                    </v-icon>
-                  </v-btn>
-                </v-list-item-action>
-                <v-list-item-title>
-                  {{playlist.playlistTitle}}
-                </v-list-item-title>
-                <v-spacer></v-spacer>
-                <v-list-item-avatar class="pl-3">
-                  <PlaylistCover :playlist="playlist"></PlaylistCover>
-                </v-list-item-avatar>
-              </v-list-item>
-            </template>
-          </v-list>
-        </v-card>
+      <v-card-text>
+        <v-list rounded avatar>
+          <v-list-item v-for="playlist in playlists" @click="">
+            <v-list-item-avatar>
+              <PlaylistCover :playlist="playlist"></PlaylistCover>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>{{playlist.playlistTitle}}</v-list-item-title>
+              <v-list-item-subtitle>{{playlist.playlistAuthor}} - <span class="grey--text">{{playlist.songs.length}} songs</span>
+              </v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-action>
+              <v-btn icon @click="!IsInPlaylist(playlist)?Add(playlist):Remove(playlist)">
+                <v-icon :color="!IsInPlaylist(playlist)?'success':'error'">
+                  {{!IsInPlaylist(playlist)?'add':'remove'}}
+                </v-icon>
+              </v-btn>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -61,7 +56,7 @@
     name: 'BtnToggleAddRemoveSongInPlaylists',
     props: {
       song: {type: Object, required: true},
-      icon: {type: Boolean, default: false },
+      icon: {type: Boolean, default: false},
       value: {type: String, default: undefined},
     },
     components: {PlaylistCover},
