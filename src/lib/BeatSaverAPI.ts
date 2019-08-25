@@ -3,11 +3,17 @@ import {cacheAdapterEnhancer, throttleAdapterEnhancer} from 'axios-extensions';
 import path from 'path';
 import ISongInfo from '@/lib/data/ISongInfo';
 import ISearchResult from '@/lib/data/ISearchResult';
+import SongOnline from '@/lib/data/SongOnline';
+import ISongOnline from '@/lib/data/ISongOnline';
 
 const WEBSITE_BASE_URL = 'https://beatsaver.com/';
 const API_BASE_URL = 'https://beatsaver.com/api';
 const GET_BY_HASH = 'maps/by-hash/';
 const GET_BY_KEY = 'maps/detail/';
+const GET_BY_HOT = 'maps/hot/';
+const GET_BY_LATEST = 'maps/latest/';
+const GET_BY_PLAYS = 'maps/plays';
+const GET_BY_DOWNLOADS = 'maps/downloads/';
 const SEARCH_TEXT = 'search/text/';
 
 export default class BeatSaverAPI {
@@ -37,7 +43,39 @@ export default class BeatSaverAPI {
   }
 
   public search(text: string, page = 0): Promise<ISearchResult | undefined> {
-    return this.http.get(SEARCH_TEXT + page + '?q=' + text)
+    const result = this.http.get(SEARCH_TEXT + page + '?q=' + text)
       .then((answer) => answer.data as ISearchResult);
+    return this.toSongOnlineObject(result);
+  }
+
+  public getHot(page = 0): Promise<ISearchResult | undefined> {
+    const result = this.http.get(GET_BY_HOT + page)
+      .then((answer) => answer.data as ISearchResult);
+    return this.toSongOnlineObject(result);
+  }
+
+  public getLatest(page = 0): Promise<ISearchResult | undefined> {
+    const result = this.http.get(GET_BY_LATEST + page)
+      .then((answer) => answer.data as ISearchResult);
+    return this.toSongOnlineObject(result);
+  }
+
+  public getPlays(page = 0): Promise<ISearchResult | undefined> {
+    const result = this.http.get(GET_BY_PLAYS + page)
+      .then((answer) => answer.data as ISearchResult);
+    return this.toSongOnlineObject(result);
+  }
+
+  public getDownloads(page = 0): Promise<ISearchResult | undefined> {
+    const result = this.http.get(GET_BY_DOWNLOADS + page)
+      .then((answer) => answer.data as ISearchResult);
+    return this.toSongOnlineObject(result);
+  }
+
+  private toSongOnlineObject(result: Promise<ISearchResult>): Promise<ISearchResult | undefined> {
+    return result.then((answer: ISearchResult) => {
+      answer.docs = answer.docs.map((s: ISongOnline) => new SongOnline(s));
+      return answer;
+    });
   }
 }

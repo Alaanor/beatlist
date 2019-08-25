@@ -1,7 +1,14 @@
 <template>
   <v-container>
     <h1>Online songs</h1>
-    <ListViewerForSongs :items="items" :total="total">
+    <ListViewerForSongs
+            :items="items"
+            :total="total"
+            @paginate="updatePagination"
+            :loading="loading"
+            :items-per-page="10"
+            :items-per-page-options="[10]"
+            @updateSearch="updateSearch">
     </ListViewerForSongs>
   </v-container>
 </template>
@@ -17,16 +24,33 @@
     data: () => ({
       items: [],
       total: 0,
+      loading: false,
+      page: 0,
+      search: '',
     }),
     methods: {
-      updatePagination() {
-        BeatSaverAPI.Singleton
-          .search('test', 0)
-          .then((result) => {
-            this.items = result.docs;
-            this.total = result.totalDocs;
-          });
+      updatePagination(options) {
+        this.loading = true;
+
+        if (options !== undefined)
+          this.page = options.page - 1;
+
+        let results = {};
+        if (this.search.length !== 0)
+          results = BeatSaverAPI.Singleton.search(this.search, this.page);
+        else
+          results = BeatSaverAPI.Singleton.getHot(this.page);
+
+        results.then((result) => {
+          this.items = result.docs;
+          this.total = result.totalDocs;
+          this.loading = false;
+        });
       },
+      updateSearch(str) {
+        this.search = str;
+        this.updatePagination();
+      }
     },
     mounted() {
       this.updatePagination();

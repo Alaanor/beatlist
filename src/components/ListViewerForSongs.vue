@@ -1,7 +1,8 @@
 <!--suppress ALL -->
 <template>
   <div>
-    <ListViewer :items="getSongs" :filter="Filter" :total="total">
+    <ListViewer :items="getSongs" :filter="filter" :total="total" @paginate="updatePagination" :loading="loading"
+                :items-per-page="itemsPerPage" :items-per-page-options="itemsPerPageOptions" @updateSearch="search">
 
       <template #item-block="{item}">
         <v-hover>
@@ -66,7 +67,6 @@
 
 <script>
   import Vue from 'vue';
-  import {get} from 'vuex-pathify';
   import SongLoader from '@/lib/SongLoader';
   import SongCover from '@/components/SongCover.vue';
   import ListViewer from '@/components/ListViewer.vue';
@@ -76,25 +76,20 @@
     name: 'ListViewerForSongs',
     components: {ListViewer, SongCover, BeatSaverSongInfo},
     props: {
-      items: {Type: Array, default: undefined},
-      total: {type: Number, default: 0},
-      filter: {type: Function},
+      items: {Type: Array, required: true},
+      total: {type: Number, default: undefined},
+      filter: {type: Function, default: undefined},
+      loading: {type: Boolean, default: false},
+      itemsPerPage: {type: Number, default: 12},
+      itemsPerPageOptions: {type: Array, default: () => [6, 12, 24, 48]},
     },
     data: () => ({
       dialog: false,
       song: undefined,
     }),
     computed: {
-      songs: get('songs/songs'),
-      validSongs() {
-        return this.songs.filter((s) => s.valid);
-      },
       getSongs() {
-        if (this.items === undefined) {
-          return this.validSongs;
-        } else {
-          return this.items;
-        }
+        return this.items;
       },
     },
     methods: {
@@ -102,6 +97,12 @@
         this.dialog = true;
         this.song = song;
       },
+      updatePagination(payload) {
+        this.$emit('paginate', payload);
+      },
+      search(str) {
+        this.$emit('updateSearch', str);
+      }
     },
   });
 </script>

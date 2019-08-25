@@ -2,7 +2,7 @@
 <template>
   <v-container>
     <h1>Local songs</h1>
-    <ListViewerForSongs :filter="Filter">
+    <ListViewerForSongs :items="songs" :filter="Filter">
       <template #item-block-action="{item}">
         <BtnAddSongToPlaylists :song="item" value="Add to playlist"></BtnAddSongToPlaylists>
       </template>
@@ -18,10 +18,14 @@
   import ListViewerForSongs from '@/components/ListViewerForSongs.vue';
   import BtnAddSongToPlaylists from '@/components/BtnToggleAddRemoveSongInPlaylists.vue';
   import ISongLocal from '@/lib/data/ISongLocal';
+  import { get } from 'vuex-pathify';
 
   export default Vue.extend({
     name: 'SongListLocal',
     components: { ListViewerForSongs, BtnAddSongToPlaylists },
+    computed: {
+      songs: get('songs/songs'),
+    },
     methods: {
       Filter(songs: ISongLocal[], search: string) {
         if (search === '') {

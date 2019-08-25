@@ -13,7 +13,8 @@
       </v-flex>
     </v-layout>
     <v-data-iterator :items="items" :custom-filter="filter" :search="search"
-                     :footer-props="{ itemsPerPageOptions }">
+                     :items-per-page="itemsPerPage" :footer-props="{ itemsPerPageOptions }"
+                     :server-items-length="total" :options.sync="options" :loading="loading">
       <template v-slot:default="props">
         <v-row v-if="modeName === 'block'" align="center" justify="center">
           <v-col cols="auto" v-for="item in props.items">
@@ -36,12 +37,15 @@
     name: 'ListViewer',
     props: {
       items: {type: Array, required: true},
-      filter: {type: Function},
-      total: {type: Number, default: 0},
+      filter: {type: Function, default: undefined},
+      total: {type: Number, default: undefined},
+      loading: {type: Boolean, default: false},
+      itemsPerPage: {type: Number, default: 12},
+      itemsPerPageOptions: {type: Array, default: () => [6, 12, 24, 48]},
     },
     data: () => ({
       search: '',
-      itemsPerPageOptions: [6, 12, 24, 48],
+      options: {},
       displayMode: [
         {icon: 'view_module', mode: 'block'},
         {icon: 'view_stream', mode: 'list'},
@@ -49,18 +53,20 @@
     }),
     computed: {
       displayModeSelected: sync('settings/displayMode'),
-      pagination: sync('settings/pagination'),
       modeName() {
         return this.displayMode[this.displayModeSelected].mode;
       },
     },
     watch: {
-      pagination: {
+      options: {
         handler() {
-          this.$emit('paginate');
+          this.$emit('paginate', this.options);
         },
         deep: true,
       },
+      search() {
+        this.$emit('updateSearch', this.search);
+      }
     },
     filters: {
       forceInt(value) {

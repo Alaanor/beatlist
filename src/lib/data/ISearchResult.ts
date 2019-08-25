@@ -1,7 +1,7 @@
-import ISongInfo from '@/lib/data/ISongInfo';
+import ISongOnline from '@/lib/data/ISongOnline';
 
 export default interface ISearchResult {
-  docs: ISongInfo[];
+  docs: ISongOnline[];
   totalDocs: number;
   lastPage: number;
   prevPage: null;
