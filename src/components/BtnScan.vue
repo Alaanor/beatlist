@@ -22,13 +22,13 @@
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>Scanning song</v-list-item-title>
-            <v-list-item-subtitle>{{scanCount}}/{{scanAmount}}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{songScanner.songScanned}}/{{songScanner.totalNewSongsToScan}}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
         <v-card-text>
           <v-progress-linear
                   v-model="scanPercent"
-                  :indeterminate="scanAmount === -1"
+                  :indeterminate="songScanner.totalNewSongsToScan === -1"
                   class="mb-0">
           </v-progress-linear>
         </v-card-text>
@@ -59,27 +59,30 @@
   import SongLoader from '@/lib/SongLoader';
   import BeatSaber from '@/lib/BeatSaber';
   import SongHashData from '../lib/SongHashData';
+  import SongScanner from '@/lib/SongScanner';
 
   export default Vue.extend({
     name: 'BtnScan',
     data: () => ({
       dialogScan: false,
       dialogResult: false,
-      scanAmount: -1,
-      scanCount: 0,
-      scanPercent: 0,
       scanResult: {
         type: '',
         message: '',
         err: undefined,
       },
       clearCacheTimeout: false,
+      songScanner: new SongScanner(),
+      scanPercent: 0,
     }),
     computed: {
       installationPath: get('settings/installationPath'),
       installationPathValid: get('settings/installationPathValid'),
       lastScan: sync('songs/lastScan'),
       songs: sync('songs/songs'),
+      songScanned() {
+        return this.songScanner.songScanned;
+      }
     },
     methods: {
       getNumberOfSongs() {
@@ -90,23 +93,11 @@
         const instPath = this.installationPath;
         new BeatSaber(instPath).getSongList()
           .then(async (list) => {
-            await SongHashData.forceInit();
-
-            this.scanAmount = list.length;
-            this.songs = await Promise.all(list.map(async (songPath) => {
-              const song = await SongLoader.LoadInfo(songPath);
-              this.scanCount++;
-              if (this.scanCount % 100 === 0) { // dumb hack for smoother progress bar
-                this.scanPercent = (this.scanCount / this.scanAmount) * 100;
-              }
-              return song;
-            }));
-
-            SongLoader.DetectDuplicate(this.songs);
+            await this.songScanner.Scan();
 
             this.scanResult.type = 'success';
             this.scanResult.title = 'Done !';
-            this.scanResult.subtitle = `Successfully imported <strong>${this.getNumberOfSongs()}</strong> songs.`;
+            this.scanResult.subtitle = `Successfully imported <strong>${this.songScanner.totalNewSongsScanned}</strong> songs.`;
             this.scanResult.icon = 'check';
 
             if (this.getNumberOfSongs() === 0) {
@@ -126,8 +117,7 @@
 
             setTimeout(() => {
               this.lastScan = new Date();
-              this.scanAmount = -1;
-              this.scanCount = 0;
+              this.songScanner = new SongScanner();
               this.scanPercent = 0;
             }, 150);
           });
@@ -137,6 +127,11 @@
         this.lastScan = undefined;
         this.clearCacheTimeout = true;
         setTimeout(() => this.clearCacheTimeout = false, 1500);
+      },
+    },
+    watch: {
+      songScanned() {
+        this.scanPercent = (this.songScanner.songScanned/this.songScanner.totalNewSongsToScan) * 100;
       },
     },
   });

@@ -21,6 +21,7 @@ const getters = {
 
     return songs;
   },
+  ...make.getters(state),
 };
 
 const mutations = {

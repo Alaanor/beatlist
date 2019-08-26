@@ -14,9 +14,14 @@ const mutations = {
   ...make.mutations(state),
 };
 
+const getters = {
+  ...make.getters(state),
+};
+
 
 export default {
   namespaced: true,
   state,
+  getters,
   mutations,
 };
