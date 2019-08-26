@@ -12,10 +12,14 @@ const state = {
 };
 
 const getters = {
-  songs: ({songs}: {songs: ISongLocal[]}) => {
-    return songs
-      .map((song: ISongLocal) => new SongLocal(song))
-      .filter((s: ISongLocal) => s.valid);
+  songs: ({songs}: { songs: ISongLocal[] }) => {
+    if (songs !== undefined) {
+      return songs
+        .map((song: ISongLocal) => new SongLocal(song))
+        .filter((s: ISongLocal) => s.valid);
+    }
+
+    return songs;
   },
 };
 

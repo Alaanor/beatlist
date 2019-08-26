@@ -72,41 +72,26 @@
       </v-flex>
     </v-layout>
   </v-container>
-  <v-container v-else-if="err" ma-0 pa-0>
+  <v-container v-else-if="!song" ma-0 pa-0>
     <v-alert type="warning" :value="true" outline>
-      Couldn't fetch data on beatsaver.com, try later ?
+      Meh, I couldn't load data :( Try to rescan song ?
     </v-alert>
-  </v-container>
-  <v-container v-else>
-    <v-layout justify-center>
-      <v-progress-circular indeterminate></v-progress-circular>
-    </v-layout>
   </v-container>
 </template>
 
 <script>
   import Vue from 'vue';
-  import BeatSaverAPI from '../lib/BeatSaverAPI';
   import DifficultiesBadge from '@/components/DifficultiesBadge.vue';
 
   export default Vue.extend({
-    name: 'BeatSaverSongInfo',
+    name: 'OnlineSongInfo',
     components: {DifficultiesBadge},
     props: {
-      hash: {type: String, required: true},
+      song: {type: Object, required: true},
     },
     data: () => ({
-      song: undefined,
       err: undefined,
     }),
-    watch: {
-      hash() {
-        this.song = undefined;
-        BeatSaverAPI.Singleton.getSongByHash(this.hash)
-          .then((data) => this.song = data)
-          .catch((err) => this.err = err);
-      },
-    },
     methods: {
       FormatNewLine(x) {
         return x.replace(/\r\n/g, '<br>');

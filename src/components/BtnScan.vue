@@ -15,9 +15,17 @@
       </template>
     </v-btn>
     <v-dialog v-model="dialogScan" persistent width="300">
-      <v-card dark>
+      <v-card>
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon>search</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Scanning song</v-list-item-title>
+            <v-list-item-subtitle>{{scanCount}}/{{scanAmount}}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
         <v-card-text>
-          Scanning song {{scanCount}}/{{scanAmount}}
           <v-progress-linear
                   v-model="scanPercent"
                   :indeterminate="scanAmount === -1"
@@ -26,18 +34,20 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogResult" persistent width="300">
+    <v-dialog v-model="dialogResult" persistent width="400">
       <v-card dark :color="scanResult.type">
-        <v-card-title>
-          <v-container ma-0 pa-0>
-            <div class="subheading">{{scanResult.message}}</div>
-            <div class="caption">{{scanResult.err}}</div>
-          </v-container>
-        </v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn flat @click="dialogResult = false">Ok</v-btn>
-        </v-card-actions>
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon>{{scanResult.icon}}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title v-html="scanResult.title"></v-list-item-title>
+            <v-list-item-subtitle v-html="scanResult.subtitle"></v-list-item-subtitle>
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-btn text @click="dialogResult = false">Ok</v-btn>
+          </v-list-item-action>
+        </v-list-item>
       </v-card>
     </v-dialog>
   </v-container>
@@ -95,8 +105,9 @@
             SongLoader.DetectDuplicate(this.songs);
 
             this.scanResult.type = 'success';
-            this.scanResult.message = `Successfully imported ${this.getNumberOfSongs()} songs.`;
-            this.scanResult.err = undefined;
+            this.scanResult.title = 'Done !'
+            this.scanResult.subtitle = `Successfully imported <strong>${this.getNumberOfSongs()}</strong> songs.`;
+            this.scanResult.icon = 'check'
 
             if (this.getNumberOfSongs() === 0) {
               throw new Error('Something went wrong, 0 song were correctly imported');
@@ -104,8 +115,9 @@
           })
           .catch((err) => {
             this.scanResult.type = 'error';
-            this.scanResult.message = 'Failed to import song :(';
-            this.scanResult.err = err;
+            this.scanResult.title = 'Failed to import song :(';
+            this.scanResult.subtitle = err;
+            this.scanResult.icon = 'close'
             throw err;
           })
           .finally(() => {

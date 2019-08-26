@@ -1,6 +1,7 @@
 import Song from './Song';
 import ISongLocal from './ISongLocal';
 import SongLoader from '../SongLoader';
+import ISongOnline from '@/lib/data/ISongOnline';
 
 export default class SongLocal extends Song implements ISongLocal {
 
@@ -17,6 +18,7 @@ export default class SongLocal extends Song implements ISongLocal {
   public folderId: string | undefined;
   public path: string;
   public valid: boolean;
+  public onlineData: ISongOnline;
 
   constructor(song: ISongLocal) {
     super(song);
@@ -25,6 +27,7 @@ export default class SongLocal extends Song implements ISongLocal {
     this.folderId = song.folderId;
     this.path = song.path;
     this.valid = song.valid;
+    this.onlineData = song.onlineData;
   }
 
   public getImage(): Promise<string> {

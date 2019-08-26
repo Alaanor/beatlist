@@ -8,6 +8,8 @@ import ISongLocal from '@/lib/data/ISongLocal';
 import IDifficulties from '@/lib/data/IDifficulties';
 import IMetadata from '@/lib/data/IMetadata';
 import SongLocal from './data/SongLocal';
+import BeatSaverAPI from '@/lib/BeatSaverAPI';
+import ISongOnline from '@/lib/data/ISongOnline';
 
 const readFile = promisify(fs.readFile);
 const apiHashUrl = 'https://beatsaver.com/api/maps/by-hash/';
@@ -88,7 +90,8 @@ export default class SongLoader {
 
       song.folderId = SongLoader.GetFolderId(song.path);
       song.hash = (await SongHashData.data())[song.path.toLowerCase()].songHash;
-      song.key = (await SongLoader.GetKeyFromHash(song.hash));
+      song.onlineData = (await BeatSaverAPI.Singleton.getSongByHash(song.hash) as ISongOnline);
+      song.key = song.onlineData.key;
 
       song.valid = true;
     } catch (e) {
@@ -96,16 +99,6 @@ export default class SongLoader {
     }
 
     return new SongLocal(song);
-  }
-
-  private static async GetKeyFromHash(hash: string): Promise<string> {
-    return axios({
-      method: 'get',
-      url: apiHashUrl + hash,
-      responseType: 'json',
-    }).then((response) => {
-      return response.data.key;
-    });
   }
 
   private static GetFolderId(songPath: string): string | undefined {

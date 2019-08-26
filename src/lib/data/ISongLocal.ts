@@ -1,4 +1,5 @@
 import ISongInfo from '@/lib/data/ISongInfo';
+import ISongOnline from '@/lib/data/ISongOnline';
 
 export default interface ISongLocal extends ISongInfo {
   path: string;
@@ -6,4 +7,5 @@ export default interface ISongLocal extends ISongInfo {
   coverImage: string;
   folderId: string | undefined;
   valid: boolean;
+  onlineData: ISongOnline;
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-chip :color="mapColor(d)" v-for="d in difficulties" small>{{d}}</v-chip>
+    <v-chip :color="mapColor(d)" v-for="d in difficulties" small class="ma-1">{{d}}</v-chip>
   </div>
 </template>
 
