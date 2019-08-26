@@ -1,10 +1,9 @@
 import axios, {AxiosAdapter, AxiosInstance} from 'axios';
 import {cacheAdapterEnhancer, throttleAdapterEnhancer} from 'axios-extensions';
 import path from 'path';
-import ISongInfo from '@/lib/data/ISongInfo';
-import ISearchResult from '@/lib/data/ISearchResult';
-import SongOnline from '@/lib/data/SongOnline';
-import ISongOnline from '@/lib/data/ISongOnline';
+import ISearchResult from '../lib/data/ISearchResult';
+import SongOnline from '../lib/data/SongOnline';
+import ISongOnline from '../lib/data/ISongOnline';
 
 const WEBSITE_BASE_URL = 'https://beatsaver.com/';
 const API_BASE_URL = 'https://beatsaver.com/api';

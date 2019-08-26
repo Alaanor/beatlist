@@ -1,7 +1,7 @@
-import Song from '@/lib/data/Song';
-import ISongOnline from '@/lib/data/ISongOnline';
-import IStats from '@/lib/data/IStats';
-import BeatSaverAPI from '@/lib/BeatSaverAPI';
+import Song from './Song';
+import ISongOnline from './ISongOnline';
+import IStats from './IStats';
+import BeatSaverAPI from '../BeatSaverAPI';
 
 export default class SongOnline extends Song implements ISongOnline {
   public coverURL: string;

@@ -53,7 +53,8 @@
           <div class="title">Song info</div>
         </v-card-title>
         <v-card-text>
-          <OnlineSongInfo v-if="!!song" :song="song.onlineData"></OnlineSongInfo>
+          <OnlineSongInfo v-if="!!song && !!song.onlineData" :song="song.onlineData"></OnlineSongInfo>
+          <OnlineSongInfo v-if="!!song && !song.onlineData" :hash="song.hash"></OnlineSongInfo>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

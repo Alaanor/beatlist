@@ -2,17 +2,15 @@ import nodePath from 'path';
 import fs from 'fs';
 import {promisify} from 'util';
 import SongHashData from './SongHashData';
-import axios from 'axios';
 import store from '../store/store';
-import ISongLocal from '@/lib/data/ISongLocal';
-import IDifficulties from '@/lib/data/IDifficulties';
-import IMetadata from '@/lib/data/IMetadata';
+import ISongLocal from '../lib/data/ISongLocal';
+import IDifficulties from '../lib/data/IDifficulties';
+import IMetadata from '../lib/data/IMetadata';
 import SongLocal from './data/SongLocal';
-import BeatSaverAPI from '@/lib/BeatSaverAPI';
-import ISongOnline from '@/lib/data/ISongOnline';
+import BeatSaverAPI from '../lib/BeatSaverAPI';
+import ISongOnline from '../lib/data/ISongOnline';
 
 const readFile = promisify(fs.readFile);
-const apiHashUrl = 'https://beatsaver.com/api/maps/by-hash/';
 
 export default class SongLoader {
 
