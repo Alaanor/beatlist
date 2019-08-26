@@ -66,7 +66,7 @@
       },
       search() {
         this.$emit('updateSearch', this.search);
-      }
+      },
     },
     filters: {
       forceInt(value) {

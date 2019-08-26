@@ -47,7 +47,7 @@ const actions = {
   async loadPlaylists(context: any) {
     const instPath = context.rootState.settings.installationPath as string;
     const songs = (context.state.songs as ISongLocal[])
-      .map((song: ISongLocal) => new SongLocal(song)); //@todo, it can be a online song too
+      .map((song: ISongLocal) => new SongLocal(song)); // @todo, it can be a online song too
     const beatSaber = new BeatSaber(instPath);
     context.commit('SET_PLAYLISTS', await beatSaber.getPlaylists(songs));
   },

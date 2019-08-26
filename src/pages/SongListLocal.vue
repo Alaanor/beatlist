@@ -41,6 +41,6 @@
           )).every(Boolean);
         });
       },
-    }
+    },
   });
 </script>

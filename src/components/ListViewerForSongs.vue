@@ -101,7 +101,7 @@
       },
       search(str) {
         this.$emit('updateSearch', str);
-      }
+      },
     },
   });
 </script>

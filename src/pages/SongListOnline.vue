@@ -32,14 +32,17 @@
       updatePagination(options) {
         this.loading = true;
 
-        if (options !== undefined)
+        if (options !== undefined) {
           this.page = options.page - 1;
+        }
 
         let results = {};
-        if (this.search.length !== 0)
+
+        if (this.search.length !== 0) {
           results = BeatSaverAPI.Singleton.search(this.search, this.page);
-        else
+        } else {
           results = BeatSaverAPI.Singleton.getHot(this.page);
+        }
 
         results.then((result) => {
           this.items = result.docs;
@@ -50,7 +53,7 @@
       updateSearch(str) {
         this.search = str;
         this.updatePagination();
-      }
+      },
     },
     mounted() {
       this.updatePagination();

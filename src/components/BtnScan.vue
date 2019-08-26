@@ -105,9 +105,9 @@
             SongLoader.DetectDuplicate(this.songs);
 
             this.scanResult.type = 'success';
-            this.scanResult.title = 'Done !'
+            this.scanResult.title = 'Done !';
             this.scanResult.subtitle = `Successfully imported <strong>${this.getNumberOfSongs()}</strong> songs.`;
-            this.scanResult.icon = 'check'
+            this.scanResult.icon = 'check';
 
             if (this.getNumberOfSongs() === 0) {
               throw new Error('Something went wrong, 0 song were correctly imported');
@@ -117,7 +117,7 @@
             this.scanResult.type = 'error';
             this.scanResult.title = 'Failed to import song :(';
             this.scanResult.subtitle = err;
-            this.scanResult.icon = 'close'
+            this.scanResult.icon = 'close';
             throw err;
           })
           .finally(() => {

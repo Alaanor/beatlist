@@ -94,7 +94,7 @@
     components: {DifficultiesBadge},
     props: {
       song: {type: Object},
-      hash: {type: String}
+      hash: {type: String},
     },
     data: () => ({
       err: undefined,
