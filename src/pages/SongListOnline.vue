@@ -9,6 +9,25 @@
             :items-per-page="10"
             :items-per-page-options="[10]"
             @updateSearch="updateSearch">
+      <template #item-block-action="{item}">
+        <span class="pa-2">
+          <OnlineSongQuickSummary :song="item" class="body-2"></OnlineSongQuickSummary>
+        </span>
+        <v-spacer></v-spacer>
+        <span class="pa-2">
+          <v-btn icon small color="success">
+            <v-icon>file_download</v-icon>
+          </v-btn>
+        </span>
+      </template>
+      <template #item-list-action="{item}">
+        <v-list-item-action-text>
+          <OnlineSongQuickSummary :song="item" class="pr-5"></OnlineSongQuickSummary>
+          <v-btn icon color="success">
+            <v-icon>file_download</v-icon>
+          </v-btn>
+        </v-list-item-action-text>
+      </template>
     </ListViewerForSongs>
   </v-container>
 </template>
@@ -16,11 +35,12 @@
 <script>
   import Vue from 'vue';
   import ListViewerForSongs from '@/components/ListViewerForSongs.vue';
+  import OnlineSongQuickSummary from '@/components/OnlineSongQuickSummary.vue';
   import BeatSaverAPI from '../lib/BeatSaverAPI';
 
   export default Vue.extend({
     name: 'SongListOnline',
-    components: {ListViewerForSongs},
+    components: {ListViewerForSongs, OnlineSongQuickSummary},
     data: () => ({
       items: [],
       total: 0,

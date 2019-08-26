@@ -5,7 +5,7 @@
         <v-btn v-if="icon" v-on="on" @click.stop="" icon>
           <v-icon>{{value || 'add'}}</v-icon>
         </v-btn>
-        <v-btn v-else text small pa-0 v-on="on" @click.stop="">
+        <v-btn v-else text small v-on="on" @click.stop="">
           {{value || 'Add'}}
         </v-btn>
       </slot>

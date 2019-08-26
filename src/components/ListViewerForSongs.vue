@@ -21,7 +21,7 @@
               </v-flex>
             </v-layout>
             <v-divider light></v-divider>
-            <v-card-actions class="pa-2">
+            <v-card-actions class="pa-0">
               <slot name="item-block-action" :item="item"></slot>
             </v-card-actions>
           </v-card>
@@ -54,7 +54,7 @@
         </v-card-title>
         <v-card-text>
           <OnlineSongInfo v-if="!!song && !!song.onlineData" :song="song.onlineData"></OnlineSongInfo>
-          <OnlineSongInfo v-if="!!song && !song.onlineData" :hash="song.hash"></OnlineSongInfo>
+          <OnlineSongInfo v-if="!!song && !song.onlineData" :song="song"></OnlineSongInfo>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

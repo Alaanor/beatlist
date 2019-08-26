@@ -4,7 +4,9 @@
     <h1>Local songs</h1>
     <ListViewerForSongs :items="songs" :filter="Filter">
       <template #item-block-action="{item}">
-        <BtnAddSongToPlaylists :song="item" value="Add to playlist"></BtnAddSongToPlaylists>
+        <div class="pa-2">
+          <BtnAddSongToPlaylists :song="item" value="Add to playlist"></BtnAddSongToPlaylists>
+        </div>
       </template>
       <template #item-list-action="{item}">
         <BtnAddSongToPlaylists :song="item" icon></BtnAddSongToPlaylists>
