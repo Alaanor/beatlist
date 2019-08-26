@@ -12,6 +12,7 @@ const state = {
 };
 
 const getters = {
+  ...make.getters(state),
   songs: ({songs}: { songs: ISongLocal[] }) => {
     if (songs !== undefined) {
       return songs
@@ -21,7 +22,6 @@ const getters = {
 
     return songs;
   },
-  ...make.getters(state),
 };
 
 const mutations = {

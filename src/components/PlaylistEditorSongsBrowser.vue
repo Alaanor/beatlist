@@ -1,9 +1,9 @@
 <!--suppress ALL -->
 <template>
-  <ListViewerForSongs>
+  <ListViewerForSongs :items="songs">
     <template #item-block-action="{item}">
       <v-spacer></v-spacer>
-      <BtnToggleAddRemoveSongInPlaylist :song="item" :playlist="playlist" icon small label></BtnToggleAddRemoveSongInPlaylist>
+      <BtnToggleAddRemoveSongInPlaylist :song="item" :playlist="playlist" class="ma-2" icon small label></BtnToggleAddRemoveSongInPlaylist>
     </template>
     <template #item-list-action="{item}">
       <BtnToggleAddRemoveSongInPlaylist :song="item" :playlist="playlist" icon></BtnToggleAddRemoveSongInPlaylist>
@@ -26,6 +26,7 @@
         return this.playlists.find((p) => p.playlistHash === this.hash);
       },
       playlists: get('songs/playlists'),
+      songs: get('songs/songs'),
     },
   });
 </script>
