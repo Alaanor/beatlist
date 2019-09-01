@@ -15,17 +15,13 @@
         </span>
         <v-spacer></v-spacer>
         <span class="pa-2">
-          <v-btn icon small color="success" @click.stop="installBeatMap(item)">
-            <v-icon>file_download</v-icon>
-          </v-btn>
+          <BtnDownloadBeatMap :beatmap="item" small></BtnDownloadBeatMap>
         </span>
       </template>
       <template #item-list-action="{item}">
         <v-list-item-action-text>
           <OnlineSongQuickSummary :song="item" class="pr-5"></OnlineSongQuickSummary>
-          <v-btn icon color="success" @click.stop="installBeatMap(item)">
-            <v-icon>file_download</v-icon>
-          </v-btn>
+          <BtnDownloadBeatMap :beatmap="item"></BtnDownloadBeatMap>
         </v-list-item-action-text>
       </template>
     </ListViewerForSongs>
@@ -36,11 +32,12 @@
   import Vue from 'vue';
   import ListViewerForSongs from '@/components/ListViewerForSongs.vue';
   import OnlineSongQuickSummary from '@/components/OnlineSongQuickSummary.vue';
+  import BtnDownloadBeatMap from '@/components/BtnDownloadBeatMap';
   import BeatSaverAPI from '../lib/BeatSaverAPI';
 
   export default Vue.extend({
     name: 'SongListOnline',
-    components: {ListViewerForSongs, OnlineSongQuickSummary},
+    components: {ListViewerForSongs, OnlineSongQuickSummary, BtnDownloadBeatMap},
     data: () => ({
       items: [],
       total: 0,
@@ -73,9 +70,6 @@
       updateSearch(str) {
         this.search = str;
         this.updatePagination();
-      },
-      installBeatMap(beatmap) {
-        beatmap.InstallIt();
       },
     },
     mounted() {
