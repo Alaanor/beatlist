@@ -4,7 +4,6 @@ import {promisify} from 'util';
 import Playlist from './Playlist';
 import Utils from './Utils';
 import { resolveInstallPath } from './pathResolver/resolve';
-import ISongInfo from '@/lib/data/ISongInfo';
 import ISongLocal from '@/lib/data/ISongLocal';
 
 declare var __static: string;

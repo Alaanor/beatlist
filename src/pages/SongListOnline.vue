@@ -15,7 +15,7 @@
         </span>
         <v-spacer></v-spacer>
         <span class="pa-2">
-          <v-btn icon small color="success">
+          <v-btn icon small color="success" @click.stop="installBeatMap(item)">
             <v-icon>file_download</v-icon>
           </v-btn>
         </span>
@@ -23,7 +23,7 @@
       <template #item-list-action="{item}">
         <v-list-item-action-text>
           <OnlineSongQuickSummary :song="item" class="pr-5"></OnlineSongQuickSummary>
-          <v-btn icon color="success">
+          <v-btn icon color="success" @click.stop="installBeatMap(item)">
             <v-icon>file_download</v-icon>
           </v-btn>
         </v-list-item-action-text>
@@ -73,6 +73,9 @@
       updateSearch(str) {
         this.search = str;
         this.updatePagination();
+      },
+      installBeatMap(beatmap) {
+        beatmap.InstallIt();
       },
     },
     mounted() {

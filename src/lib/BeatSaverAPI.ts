@@ -5,7 +5,7 @@ import ISearchResult from '../lib/data/ISearchResult';
 import SongOnline from '../lib/data/SongOnline';
 import ISongOnline from '../lib/data/ISongOnline';
 
-const WEBSITE_BASE_URL = 'https://beatsaver.com/';
+const WEBSITE_BASE_URL = 'https://beatsaver.com';
 const API_BASE_URL = 'https://beatsaver.com/api';
 const GET_BY_HASH = 'maps/by-hash/';
 const GET_BY_KEY = 'maps/detail/';
@@ -20,6 +20,10 @@ export default class BeatSaverAPI {
 
   public static FullCoverUrl(coverUrl: string) {
     return path.join(WEBSITE_BASE_URL + coverUrl);
+  }
+
+  public static getDownloadUrlFor(beatmap: ISongOnline) {
+    return WEBSITE_BASE_URL + beatmap.downloadURL;
   }
 
   public http: AxiosInstance;

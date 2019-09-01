@@ -2,6 +2,7 @@ import Song from './Song';
 import ISongOnline from './ISongOnline';
 import IStats from './IStats';
 import BeatSaverAPI from '../BeatSaverAPI';
+import DownloadBeatMapItem from '../DownloadBeatMapItem';
 
 export default class SongOnline extends Song implements ISongOnline {
   public coverURL: string;
@@ -18,8 +19,15 @@ export default class SongOnline extends Song implements ISongOnline {
     this.stats = song.stats;
     this.uploaded = song.uploaded;
   }
+
   public async getImage(): Promise<string> {
     return BeatSaverAPI.FullCoverUrl(this.coverURL);
+  }
+
+  public InstallIt(): DownloadBeatMapItem {
+    const dl = new DownloadBeatMapItem(this);
+    dl.Install();
+    return dl;
   }
 
 }
