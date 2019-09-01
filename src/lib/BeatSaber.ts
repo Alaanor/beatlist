@@ -3,12 +3,15 @@ import path from 'path';
 import {promisify} from 'util';
 import Playlist from './Playlist';
 import Utils from './Utils';
-import { resolveInstallPath } from './pathResolver/resolve';
+import {resolveInstallPath} from './pathResolver/resolve';
 import ISongLocal from '@/lib/data/ISongLocal';
+import ISongOnline from '@/lib/data/ISongOnline';
 
 declare var __static: string;
 const defaultCoverPath = path.join(__static, 'defaultCover.jpg');
 const readdir = promisify(fs.readdir);
+const mkdir = promisify(fs.mkdir);
+const exists = promisify(fs.exists);
 
 const BEAT_SABER_EXE = 'Beat Saber.exe';
 const BEAT_SABER_PLAYLIST = 'Playlists';
@@ -73,5 +76,23 @@ export default class BeatSaber {
 
     await playlist.Save(cover);
     return playlist;
+  }
+
+  public async CreateBeatMapFolder(beatmap: ISongOnline) {
+    const songFolder = path.join(this.installationPath, BEAT_SABER_CUSTOM_LEVEL);
+    const newFolderName = `${beatmap.key} (${beatmap.metadata.songName} - ${beatmap.metadata.levelAuthorName})`;
+    const finalPath = path.join(songFolder, newFolderName);
+
+    if (!(await exists(finalPath))) {
+      return mkdir(finalPath)
+        .then(() => {
+          return finalPath;
+        })
+        .catch(() => {
+          throw new Error('Couldn\'t create a folder for the new beatmap.');
+        });
+    } else {
+      return finalPath;
+    }
   }
 }

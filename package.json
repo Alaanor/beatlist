@@ -25,6 +25,7 @@
   },
   "main": "background.js",
   "dependencies": {
+    "adm-zip": "^0.4.13",
     "axios": "^0.19.0",
     "axios-extensions": "^3.0.6",
     "core-js": "^2.6.9",
@@ -48,6 +49,7 @@
     "@fortawesome/fontawesome-free": "^5.10.1",
     "@mdi/font": "^4.1.95",
     "@types/winreg": "^1.2.30",
+    "@types/adm-zip": "^0.4.32",
     "@vue/cli-plugin-babel": "^3.10.0",
     "@vue/cli-plugin-typescript": "^3.10.0",
     "@vue/cli-service": "^3.10.0",
