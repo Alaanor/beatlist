@@ -1,9 +1,9 @@
-import {ipcMain, app, BrowserWindow} from 'electron';
-import {download} from 'electron-dl';
+import {ipcMain, app, BrowserWindow, DownloadItem} from 'electron';
 import DownloadBeatMapItem from '../DownloadBeatMapItem';
 import BeatSaverAPI from '../BeatSaverAPI';
-import DownloadItem = Electron.DownloadItem;
-import DownloadState from '@/lib/ipc/DownloadState';
+import DownloadState from './DownloadState';
+import ISongOnline from '../data/ISongOnline';
+import path from 'path';
 
 const namespace = 'downloadManager_';
 export const DL_NEW_BEATMAP = namespace + 'dl_new_beatmap';
@@ -17,7 +17,11 @@ export default class DownloadManager {
     ipcMain.on(DL_NEW_BEATMAP, async (event: any, dlItem: DownloadBeatMapItem) => {
       await this.DlNewBeatMap(dlItem);
     });
+    this.RegisterDownloadListener();
   }
+
+  private static readonly ongoingDl = new Map<ISongOnline, DownloadItem>();
+  private static readonly readyToStartDl = new Map<string, ISongOnline>();
 
   private static async DlNewBeatMap(dlItem: DownloadBeatMapItem): Promise<DownloadItem | undefined> {
     const win = BrowserWindow.getFocusedWindow();
@@ -27,27 +31,8 @@ export default class DownloadManager {
     }
 
     const url = BeatSaverAPI.getDownloadUrlFor(dlItem.beatmap);
-    return await download(win, url, {
-      directory: app.getPath('temp'),
-      filename: `${dlItem.beatmap.key}.zip`,
-      onStarted: DownloadManager.onDownloadStarted(dlItem.beatmap.key),
-    });
-  }
-
-  private static onDownloadStarted(key: string) {
-    return (item: DownloadItem) => {
-      item.on('updated', (event, state) => {
-        if (state === 'progressing') {
-          this.SendDownloadState(UPDATE_DOWNLOAD_STATE_ + key, item);
-        }
-      });
-
-      item.once('done', (ev: any, state: string) => {
-        if (state === 'completed') {
-          this.SendDownloadState(DOWNLOAD_END_FOR_ + key, item);
-        }
-      });
-    };
+    win.webContents.downloadURL(url);
+    this.readyToStartDl.set(url, dlItem.beatmap);
   }
 
   private static SendDownloadState(channel: string, item: DownloadItem) {
@@ -67,5 +52,40 @@ export default class DownloadManager {
       totalBytes: dl.getTotalBytes(),
       receivedBytes: dl.getReceivedBytes(),
     } as DownloadState;
+  }
+
+  private static RegisterDownloadListener() {
+    const win = BrowserWindow.getFocusedWindow();
+
+    if (!win) {
+      return;
+    }
+
+    win.webContents.session.on('will-download', (event, item: DownloadItem, webContents) => {
+      const beatmap = this.readyToStartDl.get(item.getURLChain()[0]);
+
+      if (!beatmap) {
+        return;
+      }
+
+      this.readyToStartDl.delete(item.getURL());
+      this.ongoingDl.set(beatmap, item);
+
+      const savePath = path.join(app.getPath('temp'), `${beatmap.key}.zip`);
+      item.setSavePath(savePath);
+
+      item.on('updated', (ev, state: string) => {
+        if (state === 'progressing') {
+          this.SendDownloadState(UPDATE_DOWNLOAD_STATE_ + beatmap.key, item);
+        }
+      });
+
+      item.once('done', (ev, state: string) => {
+        if (state === 'completed') {
+          this.SendDownloadState(DOWNLOAD_END_FOR_ + beatmap.key, item);
+          this.ongoingDl.delete(beatmap);
+        }
+      });
+    });
   }
 }

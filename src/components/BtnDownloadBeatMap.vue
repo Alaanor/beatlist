@@ -1,17 +1,23 @@
 <template>
-  <v-btn icon :small="small"
-         color="success"
-         @click.stop="installBeatMap()"
-         :loading="isDownloading || isExtracting"
-         :disabled="isDownloading || isExtracting">
-    <v-icon>file_download</v-icon>
-    <template #loader>
-      <v-progress-circular color="success" :rotate="-90"
-              :indeterminate="isExtracting"
-              :value="getPercent">
-      </v-progress-circular>
-    </template>
-  </v-btn>
+  <div>
+    <v-btn icon :small="small"
+           color="success"
+           @click.stop="installBeatMap()"
+           :loading="isDownloading || isExtracting"
+           :disabled="isDownloading || isExtracting">
+      <v-icon>file_download</v-icon>
+      <template #loader>
+        <v-progress-circular color="success" :rotate="-90"
+                             :indeterminate="isExtracting"
+                             :value="getPercent">
+        </v-progress-circular>
+      </template>
+    </v-btn>
+    <v-snackbar v-model="snackbar" color="error" :timeout="5000" bottom>
+      <span class="body-2">Error: {{err}}</span>
+      <v-btn dark text @click="snackbar = false">Close</v-btn>
+    </v-snackbar>
+  </div>
 </template>
 
 <script>
@@ -30,6 +36,7 @@
       isDownloading: false,
       isExtracting: false,
       err: undefined,
+      snackbar: false,
     }),
     computed: {
       getPercent() {
@@ -53,7 +60,10 @@
         this.isExtracting = false;
       },
       onDone() {
-        this.err = this.dl.err; // @TODO ui to show the error in case
+        this.err = this.dl.err;
+        if (this.err) {
+          this.snackbar = true;
+        }
       },
     }
   });

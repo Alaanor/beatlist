@@ -6,14 +6,17 @@ import events from 'events';
 import AdmZip from 'adm-zip';
 import BeatSaber from './BeatSaber';
 import store from '../store/store';
+import {promisify} from 'util';
+import fs from 'fs';
+
+const unlink = promisify(fs.unlink);
 
 export default class DownloadBeatMapItem {
 
   public readonly beatmap: ISongOnline;
+  public err: Error | undefined;
 
-  private err: Error | undefined;
   private state: DownloadState;
-  private completed: boolean = false;
   private eventEmitter = new events.EventEmitter();
 
   constructor(beatmap: ISongOnline) {
@@ -25,7 +28,6 @@ export default class DownloadBeatMapItem {
   public Install() {
     this.download();
     this.setListener();
-    // this.updateState();
   }
 
   public on(event: string, listener: () => void) {
@@ -39,13 +41,12 @@ export default class DownloadBeatMapItem {
   private async handleExtract() {
     try {
       await this.extract();
-      this.eventEmitter.emit('extracted')
     } catch (e) {
       this.err = e;
-      console.log(e);
+    } finally {
+      this.eventEmitter.emit('extracted');
+      this.eventEmitter.emit('done');
     }
-
-    this.eventEmitter.emit('done');
   }
 
   private async extract() {
@@ -53,7 +54,9 @@ export default class DownloadBeatMapItem {
     const inputPath = this.state.path;
     const outputPath = await new BeatSaber(instPath).CreateBeatMapFolder(this.beatmap);
     const zip = new AdmZip(inputPath);
-    zip.extractAllTo(outputPath);
+
+    zip.extractAllTo(outputPath, true);
+    await unlink(this.state.path);
   }
 
   private setListener() {

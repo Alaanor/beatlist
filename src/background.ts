@@ -2,7 +2,6 @@
 
 import {app, protocol, BrowserWindow} from 'electron';
 import ipcEventRegister from './lib/ipc';
-import electronDl from 'electron-dl';
 import {
   createProtocol,
   installVueDevtools,
@@ -13,9 +12,6 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: BrowserWindow | null;
-
-// Initiate electron-dl
-electronDl();
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: {secure: true, standard: true}}]);
@@ -85,6 +81,7 @@ app.on('ready', async () => {
     }
   }
   createWindow();
+  ipcEventRegister();
 });
 
 // Exit cleanly on request from parent process in development mode.
@@ -101,6 +98,3 @@ if (isDevelopment) {
     });
   }
 }
-
-// Register event for ipc call
-ipcEventRegister();
