@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
   <v-container>
-    <h1>Local songs</h1>
+    <p class="display-2">Local songs</p>
     <ListViewerForSongs :items="songs" :filter="Filter">
       <template #item-block-action="{item}">
         <div class="pa-2">

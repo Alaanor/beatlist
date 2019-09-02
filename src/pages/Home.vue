@@ -1,12 +1,10 @@
 <template>
   <v-container>
-    <v-layout justify-center align-center>
-      <v-flex shrink>
-        <v-img :src="require('@/assets/logo.png')" height="128" width="128"/>
-        <h1 class="text-xs-center">Beatlist</h1>
-        <div class="text-xs-center grey--text caption">Current version: {{currentVersion}}</div>
-      </v-flex>
-    </v-layout>
+    <div class="d-flex align-center flex-column">
+      <v-img :src="require('@/assets/logo.png')" height="128" width="128"/>
+      <h1 class="display-3 text-center">Beatlist</h1>
+      <div class="text-center grey--text caption">Current version: {{currentVersion}}</div>
+    </div>
     <br>
     <v-layout>
       <v-flex xs6 offset-xs3 id="markdown" v-if="!!changelogRaw" v-html="changelog"></v-flex>
@@ -35,7 +33,7 @@
     }),
     computed: {
       changelog() {
-        return marked(this.changelogRaw, { breaks: true, headerIds: false, sanitize: true });
+        return marked(this.changelogRaw, {breaks: true, headerIds: false, sanitize: true});
       },
       currentVersion() {
         return remote.app.getVersion();

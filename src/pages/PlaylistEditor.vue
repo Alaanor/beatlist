@@ -4,7 +4,7 @@
       <v-btn icon class="mr-3" to="/playlist" exact>
         <v-icon medium>chevron_left</v-icon>
       </v-btn>
-      <h1>Playlist editor</h1>
+      <p class="display-2">Playlist editor</p>
     </v-layout>
     <br>
     <v-layout align-start>

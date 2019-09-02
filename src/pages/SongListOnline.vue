@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <h1>Online songs</h1>
+    <span class="display-2">Online songs</span><br/>
+    <span class="subtitle-1 grey--text">powered by beatsaver.com</span>
     <ListViewerForSongs
             :items="items"
             :total="total"

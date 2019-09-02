@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
   <v-container>
-    <h1>Frequently asked questions</h1>
+    <p class="display-2">Frequently asked questions</p>
     <br>
     <v-expansion-panels popout>
       <v-expansion-panel v-for="item in items">

@@ -2,7 +2,7 @@
 <template>
   <v-container>
     <v-layout row justify-space-between>
-      <h1>Playlists</h1>
+      <p class="display-2">Playlists</p>
       <v-btn text @click="NewPlaylist()" :loading="loadingAdd">
         Add a new Playlist
         <v-icon class="ml-1">add</v-icon>

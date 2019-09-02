@@ -4,8 +4,8 @@
     <v-alert :value="!configValid" type="warning" class="mb-3">
       Please set the <strong>installation path</strong> and <strong>scan the library</strong>.
     </v-alert>
-    <h1>Settings</h1><br>
-    <h2>Installation path</h2><br>
+    <p class="display-2">Settings</p>
+    <p class="display-1">Installation path</p>
     <v-form v-model="installationPathValid">
       <v-text-field
               v-model="installationPath"
@@ -26,7 +26,7 @@
         Detect installation path
       </v-btn>
     </v-form>
-    <h2>Song library</h2>
+    <p class="display-1">Song library</p>
     <v-container>
       <v-layout>
         <v-flex>
@@ -50,10 +50,10 @@
         </v-flex>
       </v-layout>
     </v-container>
-    <h2>Preferences</h2>
-    <v-switch v-model="darkTheme" label="Dark theme"></v-switch>
-    <v-switch v-model="miniVariant" label="Mini sidebar"></v-switch>
-    <v-switch v-model="permanent" label="Permanent sidebar"></v-switch>
+    <p class="display-1">Preferences</p>
+    <v-switch v-model="darkTheme" color="primary" label="Dark theme"></v-switch>
+    <v-switch v-model="miniVariant" color="primary" label="Mini sidebar"></v-switch>
+    <v-switch v-model="permanent" color="primary" label="Permanent sidebar"></v-switch>
     <v-snackbar v-model="snackbar" :color="snackbarType" :timeout="3000">
       {{ snackbarText }}
       <v-btn text @click="snackbar = false">Close</v-btn>
