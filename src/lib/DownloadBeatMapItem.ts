@@ -13,6 +13,8 @@ const unlink = promisify(fs.unlink);
 
 export default class DownloadBeatMapItem {
 
+  public static Downloads = new Map<string, DownloadBeatMapItem>();
+
   public readonly beatmap: ISongOnline;
   public err: Error | undefined;
 
@@ -26,12 +28,17 @@ export default class DownloadBeatMapItem {
   }
 
   public Install() {
+    DownloadBeatMapItem.Downloads.set(this.beatmap.key, this);
     this.download();
     this.setListener();
   }
 
   public on(event: string, listener: () => void) {
     this.eventEmitter.on(event, listener);
+  }
+
+  public off(event: string, listener: () => void) {
+    this.eventEmitter.off(event, listener);
   }
 
   private download() {
@@ -46,6 +53,7 @@ export default class DownloadBeatMapItem {
     } finally {
       this.eventEmitter.emit('extracted');
       this.eventEmitter.emit('done');
+      DownloadBeatMapItem.Downloads.delete(this.beatmap.key);
     }
   }
 

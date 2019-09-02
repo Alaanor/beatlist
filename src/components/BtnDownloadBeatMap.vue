@@ -44,6 +44,11 @@
         return isNaN(percent) ? 0 : percent;
       }
     },
+    watch: {
+      beatmap() {
+        this.reset();
+      },
+    },
     methods: {
       installBeatMap() {
         this.dl = this.beatmap.InstallIt();
@@ -64,6 +69,19 @@
         if (this.err) {
           this.snackbar = true;
         }
+      },
+      reset() {
+        if (this.dl){
+          this.dl.off('downloaded', this.onDownloaded);
+          this.dl.off('extracted', this.onExtracted);
+          this.dl.off('done', this.onDone);
+          this.dl = undefined;
+        }
+
+        this.isDownloading = true;
+        this.isDownloading = false;
+        this.isExtracting = false;
+        this.err = undefined;
       },
     }
   });
