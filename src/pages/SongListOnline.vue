@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <span class="display-2">Online songs</span><br/>
-    <span class="subtitle-1 grey--text">powered by beatsaver.com</span>
+    <span class="subtitle-1 grey--text">Content from <span @click="openUrl()">beatsaver.com</span></span>
     <ListViewerForSongs
             :items="items"
             :total="total"

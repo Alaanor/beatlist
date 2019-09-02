@@ -40,9 +40,9 @@
     }),
     computed: {
       getPercent() {
-        let percent = this.dl ? (this.dl.state.receivedBytes / this.dl.state.totalBytes) * 100 : 0;
+        const percent = this.dl ? (this.dl.state.receivedBytes / this.dl.state.totalBytes) * 100 : 0;
         return isNaN(percent) ? 0 : percent;
-      }
+      },
     },
     watch: {
       beatmap() {
@@ -71,7 +71,7 @@
         }
       },
       reset() {
-        if (this.dl){
+        if (this.dl) {
           this.dl.off('downloaded', this.onDownloaded);
           this.dl.off('extracted', this.onExtracted);
           this.dl.off('done', this.onDone);
@@ -83,7 +83,7 @@
         this.isExtracting = false;
         this.err = undefined;
       },
-    }
+    },
   });
 </script>
 

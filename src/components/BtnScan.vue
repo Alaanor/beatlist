@@ -82,7 +82,7 @@
       songs: sync('songs/songs'),
       songScanned() {
         return this.songScanner.songScanned;
-      }
+      },
     },
     methods: {
       getNumberOfSongs() {
@@ -131,7 +131,7 @@
     },
     watch: {
       songScanned() {
-        this.scanPercent = (this.songScanner.songScanned/this.songScanner.totalNewSongsToScan) * 100;
+        this.scanPercent = (this.songScanner.songScanned / this.songScanner.totalNewSongsToScan) * 100;
       },
     },
   });
