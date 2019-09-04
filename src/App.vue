@@ -54,24 +54,26 @@
       <v-spacer></v-spacer>
       <span class="mr-3">2019 - <strong>Beatlist</strong></span>
     </v-footer>
+    <AutoScanSong></AutoScanSong>
   </v-app>
 </template>
 
 <script lang="ts">
   import Vue from 'vue';
   import VueRouter from 'vue-router';
-  import Home from '@/pages/Home.vue';
-  import SongListLocal from '@/pages/SongListLocal.vue';
-  import SongListOnline from '@/pages/SongListOnline.vue';
-  import Playlists from '@/pages/Playlists.vue';
-  import Settings from '@/pages/Settings.vue';
-  import PlaylistEditor from '@/pages/PlaylistEditor.vue';
-  import FAQ from '@/pages/FAQ.vue';
+  import Home from './pages/Home.vue';
+  import SongListLocal from './pages/SongListLocal.vue';
+  import SongListOnline from './pages/SongListOnline.vue';
+  import Playlists from './pages/Playlists.vue';
+  import Settings from './pages/Settings.vue';
+  import PlaylistEditor from './pages/PlaylistEditor.vue';
+  import FAQ from './pages/FAQ.vue';
   import {get} from 'vuex-pathify';
-  import store from '@/store/store';
+  import store from './store/store';
   import {remote, shell} from 'electron';
-  import MenuNavigationItem from '@/components/MenuNavigationItem.vue';
+  import MenuNavigationItem from './components/MenuNavigationItem.vue';
   import settings from '@/store/settings';
+  import AutoScanSong from './components/AutoScanSong.vue';
 
   Vue.use(VueRouter);
 
@@ -135,7 +137,7 @@
 
   export default Vue.extend({
     router,
-    components: {MenuNavigationItem},
+    components: {MenuNavigationItem, AutoScanSong},
     data: () => ({
       drawer: null,
       isReady: false,

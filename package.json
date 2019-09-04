@@ -34,6 +34,7 @@
     "marked": "^0.7.0",
     "material-design-icons-iconfont": "^5.0.1",
     "mem": ">=4.0.0",
+    "rimraf": "^3.0.0",
     "roboto-fontface": "*",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",

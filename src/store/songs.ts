@@ -22,6 +22,9 @@ const getters = {
 
     return songs;
   },
+  noFilterSongs: ({songs}: {songs: ISongLocal[]}) => {
+    return songs;
+  }
 };
 
 const mutations = {

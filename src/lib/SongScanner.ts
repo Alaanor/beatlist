@@ -11,6 +11,8 @@ export default class SongScanner {
   public totalNewSongsToScan: number = -1;
   public totalNewSongsScanned: number = -1;
   public showLogs = false;
+  public songRemoved = 0;
+  public songAdded = 0;
 
   public async Scan() {
     const installationPath = store.getters['settings/installationPath'];
@@ -21,9 +23,13 @@ export default class SongScanner {
       !cachedSongs.some((s: SongLocal) => s.path === path),
     );
 
+    const cachedSongsLength = cachedSongs.length;
+
     cachedSongs = cachedSongs.filter((s: SongLocal) =>
       availableSongs.some((p: string) => p === s.path),
     );
+
+    this.songRemoved = cachedSongsLength - cachedSongs.length;
 
     await SongHashData.forceInit();
 
@@ -35,6 +41,11 @@ export default class SongScanner {
         .LoadInfo(path, this.showLogs)
         .then((s: SongLocal) => {
           this.songScanned++;
+
+          if (s.valid) {
+            this.songAdded++;
+          }
+
           return s;
         }),
     ));

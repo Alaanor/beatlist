@@ -9,6 +9,7 @@ import IMetadata from '../lib/data/IMetadata';
 import SongLocal from './data/SongLocal';
 import BeatSaverAPI from '../lib/BeatSaverAPI';
 import ISongOnline from '../lib/data/ISongOnline';
+import BeatSaber from '../lib/BeatSaber';
 
 const readFile = promisify(fs.readFile);
 
@@ -100,6 +101,19 @@ export default class SongLoader {
     }
 
     return new SongLocal(song);
+  }
+
+  public static async NewSongAvailable(): Promise<boolean> {
+    const installationPath = store.getters['settings/installationPath'];
+
+    if (!installationPath) {
+      return false;
+    }
+
+    const availableSongs = await new BeatSaber(installationPath).getSongList();
+    const noFilterSongs = store.getters['songs/noFilterSongs'];
+
+    return noFilterSongs.length !== availableSongs.length;
   }
 
   private static async GetHash(path: string, folderId: string | undefined) {

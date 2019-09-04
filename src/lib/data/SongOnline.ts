@@ -3,7 +3,7 @@ import ISongOnline from './ISongOnline';
 import IStats from './IStats';
 import BeatSaverAPI from '../BeatSaverAPI';
 import DownloadBeatMapItem from '../DownloadBeatMapItem';
-import SongLocal from '@/lib/data/SongLocal';
+import SongLocal from './SongLocal';
 
 export default class SongOnline extends Song implements ISongOnline {
   public coverURL: string;
