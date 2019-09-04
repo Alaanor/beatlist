@@ -10,6 +10,7 @@ export default class SongScanner {
   public songScanned: number = -1;
   public totalNewSongsToScan: number = -1;
   public totalNewSongsScanned: number = -1;
+  public showLogs = false;
 
   public async Scan() {
     const installationPath = store.getters['settings/installationPath'];
@@ -31,7 +32,7 @@ export default class SongScanner {
 
     const songs = await Promise.all(songsToParse.map((path: string) =>
       SongLoader
-        .LoadInfo(path)
+        .LoadInfo(path, this.showLogs)
         .then((s: SongLocal) => {
           this.songScanned++;
           return s;

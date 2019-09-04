@@ -93,7 +93,8 @@
         const instPath = this.installationPath;
         new BeatSaber(instPath).getSongList()
           .then(async (list) => {
-            await this.songScanner.Scan();
+            this.songScanner.showLogs = true;
+            await this.songScanner.Scan(true);
 
             this.scanResult.type = 'success';
             this.scanResult.title = 'Done !';

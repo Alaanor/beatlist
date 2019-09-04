@@ -66,7 +66,7 @@ export default class SongLoader {
     return diff;
   }
 
-  public static async LoadInfo(path: string) {
+  public static async LoadInfo(path: string, showLog: boolean = false) {
     const song = {} as ISongLocal;
     song.metadata = {} as IMetadata;
 
@@ -93,7 +93,9 @@ export default class SongLoader {
 
       song.valid = true;
     } catch (e) {
-      console.warn('A song couldn\'t have been imported: ', song, e);
+      if (showLog) {
+        console.warn('A song couldn\'t have been imported: ', song, e);
+      }
       return new SongLocal(song);
     }
 
