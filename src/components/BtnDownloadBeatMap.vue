@@ -4,8 +4,8 @@
            color="success"
            @click.stop="installBeatMap()"
            :loading="isDownloading || isExtracting"
-           :disabled="isDownloading || isExtracting">
-      <v-icon>file_download</v-icon>
+           :disabled="isDownloading || isExtracting || isDownloaded">
+      <v-icon>{{isDownloaded ? 'done' : 'file_download'}}</v-icon>
       <template #loader>
         <v-progress-circular color="success" :rotate="-90"
                              :indeterminate="isExtracting"
@@ -22,6 +22,7 @@
 
 <script>
   import Vue from 'vue';
+  import SongLocal from '../lib/data/SongLocal';
 
   // @TODO what if I paginated and went back during a donwload
   // @TODO show completed download/song I already got
@@ -43,6 +44,9 @@
         const percent = this.dl ? (this.dl.state.receivedBytes / this.dl.state.totalBytes) * 100 : 0;
         return isNaN(percent) ? 0 : percent;
       },
+      isDownloaded() {
+        return SongLocal.isInLibrary(this.beatmap);
+      }
     },
     watch: {
       beatmap() {

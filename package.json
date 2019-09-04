@@ -29,6 +29,7 @@
     "axios": "^0.19.0",
     "axios-extensions": "^3.0.6",
     "core-js": "^2.6.9",
+    "fs-extra": "^8.1.0",
     "localforage": "^1.7.3",
     "marked": "^0.7.0",
     "material-design-icons-iconfont": "^5.0.1",
@@ -47,8 +48,9 @@
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.10.1",
     "@mdi/font": "^4.1.95",
-    "@types/winreg": "^1.2.30",
     "@types/adm-zip": "^0.4.32",
+    "@types/fs-extra": "^8.0.0",
+    "@types/winreg": "^1.2.30",
     "@vue/cli-plugin-babel": "^3.10.0",
     "@vue/cli-plugin-typescript": "^3.10.0",
     "@vue/cli-service": "^3.10.0",

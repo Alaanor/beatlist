@@ -1,8 +1,8 @@
-import store from '@/store/store';
-import BeatSaber from '@/lib/BeatSaber';
-import SongLocal from '@/lib/data/SongLocal';
-import SongLoader from '@/lib/SongLoader';
-import SongHashData from '@/lib/SongHashData';
+import store from '../store/store';
+import BeatSaber from './BeatSaber';
+import SongLocal from './data/SongLocal';
+import SongLoader from './SongLoader';
+import SongHashData from './SongHashData';
 
 export default class SongScanner {
 

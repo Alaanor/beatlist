@@ -8,6 +8,7 @@ import BeatSaber from './BeatSaber';
 import store from '../store/store';
 import {promisify} from 'util';
 import fs from 'fs';
+import SongScanner from '../lib/SongScanner';
 
 const unlink = promisify(fs.unlink);
 
@@ -52,8 +53,11 @@ export default class DownloadBeatMapItem {
       this.err = e;
     } finally {
       this.eventEmitter.emit('extracted');
-      this.eventEmitter.emit('done');
+
       DownloadBeatMapItem.Downloads.delete(this.beatmap.key);
+      await new SongScanner().Scan();
+
+      this.eventEmitter.emit('done');
     }
   }
 

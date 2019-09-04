@@ -87,16 +87,37 @@ export default class SongLoader {
       song.metadata.difficulties = SongLoader.GetDifficulties(data._difficultyBeatmapSets);
 
       song.folderId = SongLoader.GetFolderId(song.path);
-      song.hash = (await SongHashData.data())[song.path.toLowerCase()].songHash;
+      song.hash = await this.GetHash(song.path, song.folderId);
       song.onlineData = (await BeatSaverAPI.Singleton.getSongByHash(song.hash) as ISongOnline);
       song.key = song.onlineData.key;
 
       song.valid = true;
     } catch (e) {
+      console.warn('A song couldn\'t have been imported: ', song, e);
       return new SongLocal(song);
     }
 
     return new SongLocal(song);
+  }
+
+  private static async GetHash(path: string, folderId: string | undefined) {
+    let hash = '';
+
+    try {
+      hash = (await SongHashData.data())[path.toLowerCase()].songHash;
+    } catch (e) {
+      if (!hash && !!folderId && folderId.length > 0) {
+        hash = await BeatSaverAPI.Singleton.getSongByKey(folderId).then((s) => {
+          if (!s) {
+            throw new Error('Unable to find the hash');
+          }
+
+          return s.hash;
+        });
+      }
+    }
+
+    return hash;
   }
 
   private static GetFolderId(songPath: string): string | undefined {
