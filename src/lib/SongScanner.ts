@@ -13,11 +13,15 @@ export default class SongScanner {
 
   public async Scan() {
     const installationPath = store.getters['settings/installationPath'];
-    const cachedSongs = store.getters['songs/songs'] || [];
     const availableSongs = await new BeatSaber(installationPath).getSongList();
+    let cachedSongs = store.getters['songs/songs'] || [];
 
     const songsToParse = availableSongs.filter((path) =>
       !cachedSongs.some((s: SongLocal) => s.path === path),
+    );
+
+    cachedSongs = cachedSongs.filter((s: SongLocal) =>
+      availableSongs.some((p: string) => p === s.path),
     );
 
     await SongHashData.forceInit();
