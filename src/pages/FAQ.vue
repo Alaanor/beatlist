@@ -40,7 +40,7 @@
         {
           question: 'What is the purpose of this app ?',
           answer: 'This app has preliminary been developed to create playlists based on the local songs you already ' +
-            'have it',
+            'have',
         },
         {
           question: 'but wher can i get moar songe ?',
@@ -50,20 +50,20 @@
           question: 'Some song couldn\'t\'ve been imported, why ?',
           answer: 'Custom map or old song that aren\'t on beatsaver are excluded.<br>' +
             'Duplicate map are also excluded.<br>' +
-            'This is to prevent unexpected error when dealing with song that has missing information.',
+            'This is to prevent unexpected error when dealing with songs that have missing information.',
         },
         {
           question: 'I\'ve found a bug ! What can I do ?',
-          answer: 'If you\'re a developer, please create an issue with step to reproduce error. You can also access to ' +
+          answer: 'If you\'re a developer, please create an issue with the steps to reproduce the bug. You can also access ' +
             'the inspector/console through ctrl+shift+i<br>' +
-            'If you\'re a user, try to find the step to reproduce this error and please dm me on discord: ' +
+            'If you\'re a user, try to find the steps to reproduce the error and please dm me on discord: ' +
             '<strong>Alaanor#9999</strong>. So we can try to fix it together :)',
         },
         {
           question: 'Feature X is missing, please implement it',
           answer: 'Well maybe ? Dm me on discord so we can discuss if that would be an awesome feature to implement ! ' +
             'Discord: <strong>Alaanor#9999</strong><br>' +
-            'If you\'re a developper, I\'d gladly accept your pull request !',
+            'If you\'re a developper, I\'ll gladly accept your pull request !',
         },
       ],
     }),
