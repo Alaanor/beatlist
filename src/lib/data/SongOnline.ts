@@ -3,6 +3,7 @@ import ISongOnline from './ISongOnline';
 import IStats from './IStats';
 import BeatSaverAPI from '../BeatSaverAPI';
 import DownloadBeatMapItem from '../DownloadBeatMapItem';
+import SongLocal from '@/lib/data/SongLocal';
 
 export default class SongOnline extends Song implements ISongOnline {
   public coverURL: string;
@@ -28,6 +29,16 @@ export default class SongOnline extends Song implements ISongOnline {
     const dl = new DownloadBeatMapItem(this);
     dl.Install();
     return dl;
+  }
+
+  public async deleteIt() {
+    const localBeatMap = SongLocal.get(this);
+
+    if (!localBeatMap) {
+      return;
+    }
+
+    await localBeatMap.deleteIt();
   }
 
 }

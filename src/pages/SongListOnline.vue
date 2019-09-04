@@ -21,8 +21,10 @@
       </template>
       <template #item-list-action="{item}">
         <v-list-item-action-text>
-          <OnlineSongQuickSummary :song="item" class="pr-5"></OnlineSongQuickSummary>
-          <BtnDownloadBeatMap :beatmap="item"></BtnDownloadBeatMap>
+          <span class="d-flex align-center pr-3">
+            <OnlineSongQuickSummary :song="item" class="pr-4"></OnlineSongQuickSummary>
+            <BtnDownloadBeatMap :beatmap="item" small></BtnDownloadBeatMap>
+          </span>
         </v-list-item-action-text>
       </template>
     </ListViewerForSongs>

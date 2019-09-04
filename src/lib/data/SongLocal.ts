@@ -21,7 +21,7 @@ export default class SongLocal extends Song implements ISongLocal {
     return !!this.get(song);
   }
 
-  public static get(song: ISongOnline) {
+  public static get(song: ISongOnline): SongLocal | undefined {
     return store.getters['songs/songs'].filter((local: SongLocal) => {
       return local.key === song.key;
     })[0];
@@ -29,7 +29,11 @@ export default class SongLocal extends Song implements ISongLocal {
 
   private static isFolderLegit(songPath: string) {
     const instPath = store.getters['settings/installationPath'];
-    const relative = path.relative(songPath, instPath);
+    const relative = path.relative(instPath, songPath);
+
+    console.log(instPath);
+    console.log(songPath);
+    console.log(relative);
     return relative && !relative.startsWith('..') && !path.isAbsolute(relative);
   }
 
@@ -56,11 +60,17 @@ export default class SongLocal extends Song implements ISongLocal {
   }
 
   public async deleteIt() {
+    console.log("yosh");
+
     if (!SongLocal.isFolderLegit(this.path)) {
+      console.log("Bruh");
       return;
     }
 
+    console.log("hey");
     await fsExtra.remove(this.path);
+    console.log("rescanning");
     await new SongScanner().Scan();
+    console.log("rescanned");
   }
 }
