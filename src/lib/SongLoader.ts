@@ -95,6 +95,7 @@ export default class SongLoader {
       song.valid = true;
     } catch (e) {
       if (showLog) {
+        // tslint:disable-next-line:no-console
         console.warn('A song couldn\'t have been imported: ', song, e);
       }
       return new SongLocal(song);

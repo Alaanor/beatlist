@@ -30,10 +30,6 @@ export default class SongLocal extends Song implements ISongLocal {
   private static isFolderLegit(songPath: string) {
     const instPath = store.getters['settings/installationPath'];
     const relative = path.relative(instPath, songPath);
-
-    console.log(instPath);
-    console.log(songPath);
-    console.log(relative);
     return relative && !relative.startsWith('..') && !path.isAbsolute(relative);
   }
 
@@ -60,17 +56,11 @@ export default class SongLocal extends Song implements ISongLocal {
   }
 
   public async deleteIt() {
-    console.log("yosh");
-
     if (!SongLocal.isFolderLegit(this.path)) {
-      console.log("Bruh");
       return;
     }
 
-    console.log("hey");
     await fsExtra.remove(this.path);
-    console.log("rescanning");
     await new SongScanner().Scan();
-    console.log("rescanned");
   }
 }

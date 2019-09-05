@@ -23,7 +23,7 @@
     methods: {
       async onWindowShow() {
         if (await SongLoader.NewSongAvailable()) {
-          let scanner = new SongScanner();
+          const scanner = new SongScanner();
           await scanner.Scan();
           this.songAdded = scanner.songAdded;
           this.songRemoved = scanner.songRemoved;

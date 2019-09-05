@@ -86,7 +86,7 @@
       },
       songPath() {
         return SongLocal.get(this.beatmap).path;
-      }
+      },
     },
     watch: {
       beatmap() {
