@@ -117,6 +117,21 @@ export default class SongLoader {
     return noFilterSongs.length !== availableSongs.length;
   }
 
+  public static async UpdateOnlineDataFor(song: ISongOnline) {
+    const localSong = SongLocal.get(song);
+
+    if (!localSong) {
+      return;
+    }
+
+    const onlineData = await BeatSaverAPI.Singleton.getSongByKey(localSong.key);
+
+    if (onlineData) {
+      localSong.onlineData = onlineData;
+      store.commit('songs/updateSongData', localSong);
+    }
+  }
+
   private static async GetHash(path: string, folderId: string | undefined) {
     let hash = '';
 

@@ -48,29 +48,13 @@
     </ListViewer>
 
     <v-dialog v-model="dialog" width="700">
-      <v-card>
-        <v-card-title>
-          <div class="title">Song info</div>
-          <v-spacer></v-spacer>
-          <v-tooltip left>
-            <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on" @click="openLink(`https://beatsaver.com/beatmap/${song.key}`)">
-                <v-icon>open_in_new</v-icon>
-              </v-btn>
-            </template>
-            <span>Open beatsaver.com link in browser</span>
-          </v-tooltip>
-        </v-card-title>
-        <v-card-text>
-          <OnlineSongInfo v-if="!!song && !!song.onlineData" :song="song.onlineData"></OnlineSongInfo>
-          <OnlineSongInfo v-if="!!song && !song.onlineData" :song="song"></OnlineSongInfo>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
+      <OnlineSongInfo :song="getSongOnlineItem(song)">
+        <template #action>
           <v-btn text @click="dialog = false">Close</v-btn>
-        </v-card-actions>
-      </v-card>
+        </template>
+      </OnlineSongInfo>
     </v-dialog>
+
   </div>
 </template>
 
@@ -79,7 +63,6 @@
   import SongCover from '@/components/SongCover.vue';
   import ListViewer from '@/components/ListViewer.vue';
   import OnlineSongInfo from '@/components/OnlineSongInfo';
-  import {shell} from 'electron';
 
   export default Vue.extend({
     name: 'ListViewerForSongs',
@@ -112,9 +95,9 @@
       search(str) {
         this.$emit('updateSearch', str);
       },
-      openLink(link) {
-        shell.openExternal(link);
-      }
+      getSongOnlineItem(song) {
+        return !!song && !!song.onlineData ? song.onlineData : song;
+      },
     },
   });
 </script>
