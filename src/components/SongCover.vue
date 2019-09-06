@@ -11,11 +11,31 @@
     props: {song: {type: Object, required: true}},
     data: () => ({
       imageData: '',
+      latestFetch: undefined,
     }),
     methods: {
       LoadImage() {
-        this.song.getImage().then((src) => this.imageData = src);
-      },
+        if (this.latestFetch) {
+          this.latestFetch.cancel();
+        }
+
+        this.latestFetch = (() => {
+          let hasCanceled = false;
+
+          const promise = this.song.getImage().then((src) => {
+            if (!hasCanceled) {
+              this.imageData = src;
+            }
+          });
+
+          return {
+            promise,
+            cancel() {
+              hasCanceled = true;
+            },
+          };
+        })();
+      }
     },
     mounted() {
       this.$nextTick(() => {
