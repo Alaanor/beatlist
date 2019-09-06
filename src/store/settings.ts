@@ -5,8 +5,8 @@ const state = {
   installationPathValid: false,
   configValid: false,
   darkTheme: true,
-  miniVariant: false,
-  permanent: false,
+  miniVariant: true,
+  permanent: true,
   displayMode: 0,
 };
 

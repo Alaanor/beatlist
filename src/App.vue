@@ -1,20 +1,23 @@
 <template>
   <v-app class="no-text-selection">
-    <v-navigation-drawer app clipped v-model="drawer" :permanent="permanent"
-                         :expand-on-hover="miniVariant" mobile-break-point="0">
-      <v-list dense>
-        <MenuNavigationItem v-for="menu in menus" :item="menu"></MenuNavigationItem>
-        <v-list-item @click="openGithubRepo()">
-          <v-list-item-icon>
-            <v-icon>mdi-github-circle</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>Github repo</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+    <v-navigation-drawer app clipped floating v-model="drawer" :permanent="permanent" mini-variant-width="70"
+                         :expand-on-hover="miniVariant" mobile-break-point="0" color="transparent">
+      <v-card class="ml-2">
+        <v-list dense>
+          <MenuNavigationItem v-for="menu in menus" :item="menu"></MenuNavigationItem>
+          <v-list-item @click="openGithubRepo()">
+            <v-list-item-icon>
+              <v-icon>mdi-github-circle</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Github repo</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-card>
+
     </v-navigation-drawer>
-    <v-app-bar app dense clipped-left class="windows-draggable">
+    <v-app-bar app dense flat clipped-left class="windows-draggable" :color="darkTheme ? '#303030' : 'rgba(250, 250, 250, 0)'">
       <v-app-bar-nav-icon v-if="!permanent" @click.stop="drawer = !drawer" class="btn-win-control"></v-app-bar-nav-icon>
       <v-toolbar-title class="ma-1">
         <v-img :src="require(`@/assets/${darkTheme ? 'title_dark' : 'title_white'}.png`)" width="108"></v-img>
@@ -50,10 +53,6 @@
         </v-layout>
       </v-container>
     </v-content>
-    <v-footer app fixed>
-      <v-spacer></v-spacer>
-      <span class="mr-3">2019 - <strong>Beatlist</strong></span>
-    </v-footer>
     <AutoScanSong></AutoScanSong>
   </v-app>
 </template>
@@ -198,6 +197,7 @@
     watch: {
       darkTheme() {
         this.$vuetify.theme.dark = this.darkTheme;
+        console.log(this.$vuetify.theme);
       },
     },
     created() {
