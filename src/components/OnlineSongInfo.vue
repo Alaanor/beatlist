@@ -90,7 +90,7 @@
             <td class="body-2">Description</td>
           </v-flex>
           <v-flex>
-            <td class="body-1 pl-2" v-html="FormatNewLine(songData.description)"></td>
+            <td class="body-1 pl-2" v-html="Linkify(FormatNewLine(songData.description))"></td>
           </v-flex>
         </v-layout>
       </v-container>
@@ -108,6 +108,7 @@
   import SongLocal from '@/lib/data/SongLocal';
   import SongLoader from '@/lib/SongLoader';
   import {shell} from 'electron';
+  import linkifyHtml from 'linkifyjs/html';
 
   export default Vue.extend({
     name: 'OnlineSongInfo',
@@ -151,6 +152,12 @@
       openLink(link) {
         shell.openExternal(link);
       },
+      /**
+       * @return {string}
+       */
+      Linkify(str) {
+        return linkifyHtml(str);
+      }
     },
     filters: {
       /** @return {string} */
