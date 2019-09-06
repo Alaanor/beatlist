@@ -1,7 +1,8 @@
 <template>
   <div>
     <ListViewer :items="getSongs" :filter="filter" :total="total" @paginate="updatePagination" :loading="loading"
-                :items-per-page="itemsPerPage" :items-per-page-options="itemsPerPageOptions" @updateSearch="search">
+                :items-per-page="itemsPerPage" :items-per-page-options="itemsPerPageOptions" @updateSearch="search"
+                :allow-filter="allowFilter" item-key="key">
 
       <template #item-block="{item}">
         <v-hover>
@@ -45,6 +46,10 @@
         </v-list-item>
       </template>
 
+      <template #filter>
+        <slot name="filter"></slot>
+      </template>
+
     </ListViewer>
 
     <v-dialog v-model="dialog" width="700">
@@ -74,6 +79,7 @@
       loading: {type: Boolean, default: false},
       itemsPerPage: {type: Number, default: 12},
       itemsPerPageOptions: {type: Array, default: () => [6, 12, 24, 48]},
+      allowFilter: {type: Boolean, default: false},
     },
     data: () => ({
       dialog: false,

@@ -1,17 +1,34 @@
 <template>
   <v-container pa-0 fluid grid-list-lg v-if="!!items">
-    <v-layout justify-space-between align-center>
-      <v-flex class="mb-4">
+    <v-row>
+      <v-col cols="auto">
         <v-btn-toggle v-model="displayModeSelected" mandatory>
           <v-btn text v-for="mode in displayMode">
             <v-icon>{{mode.icon}}</v-icon>
           </v-btn>
         </v-btn-toggle>
-      </v-flex>
-      <v-flex>
+      </v-col>
+      <v-col>
         <v-text-field v-model="search" label="search" solo append-icon="search"></v-text-field>
-      </v-flex>
-    </v-layout>
+      </v-col>
+      <v-col v-if="allowFilter" cols="auto">
+        <v-btn icon large class="mt-1" @click.stop="filterDialog = true">
+          <v-icon>filter_list</v-icon>
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-dialog v-if="allowFilter" v-model="filterDialog" width="600px">
+      <v-card>
+        <v-card-title class="title">Filters</v-card-title>
+        <v-card-text>
+          <slot name="filter"></slot>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click.stop="filterDialog = false">close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-data-iterator :items="items" :custom-filter="filter" :search="search"
                      :items-per-page="itemsPerPage" :footer-props="{ itemsPerPageOptions }"
                      :server-items-length="total" :options.sync="options" :loading="loading">
@@ -42,6 +59,7 @@
       loading: {type: Boolean, default: false},
       itemsPerPage: {type: Number, default: 12},
       itemsPerPageOptions: {type: Array, default: () => [6, 12, 24, 48]},
+      allowFilter: {type: Boolean, default: false},
     },
     data: () => ({
       search: '',
@@ -50,6 +68,7 @@
         {icon: 'view_module', mode: 'block'},
         {icon: 'view_stream', mode: 'list'},
       ],
+      filterDialog: false,
     }),
     computed: {
       displayModeSelected: sync('settings/displayMode'),

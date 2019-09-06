@@ -240,4 +240,8 @@
   .no-text-selection {
     -webkit-user-select: none;
   }
+
+  div.v-toolbar__content {
+    padding-left: 5px;
+  }
 </style>

@@ -49,14 +49,13 @@ export default class DownloadBeatMapItem {
   private async handleExtract() {
     try {
       await this.extract();
-    } catch (e) {
-      this.err = e;
-    } finally {
       this.eventEmitter.emit('extracted');
 
       DownloadBeatMapItem.Downloads.delete(this.beatmap.key);
       await new SongScanner().Scan();
-
+    } catch (e) {
+      this.err = e;
+    } finally {
       this.eventEmitter.emit('done');
     }
   }
