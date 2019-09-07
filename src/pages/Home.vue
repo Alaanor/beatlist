@@ -33,7 +33,7 @@
     }),
     computed: {
       changelog() {
-        return marked(this.changelogRaw, {breaks: true, headerIds: false, sanitize: true});
+        return marked(this.changelogRaw, {breaks: true, headerIds: false});
       },
       currentVersion() {
         return remote.app.getVersion();
