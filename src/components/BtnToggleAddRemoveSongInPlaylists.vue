@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" scrollable max-width="450px">
     <template v-slot:activator="{ on }">
       <slot>
-        <v-btn v-if="icon" v-on="on" @click.stop="" icon>
+        <v-btn v-if="icon" v-on="on" @click.stop="" icon :small="small">
           <v-icon>{{value || 'add'}}</v-icon>
         </v-btn>
         <v-btn v-else text small v-on="on" @click.stop="">
@@ -58,6 +58,7 @@
       song: {type: Object, required: true},
       icon: {type: Boolean, default: false},
       value: {type: String, default: undefined},
+      small: {type: Boolean, default: false},
     },
     components: {PlaylistCover},
     data: () => ({

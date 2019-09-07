@@ -97,6 +97,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
+      <BtnAddSongToPlaylists v-if="isDownloaded" :song="localBeatMap" value="Add to playlist"></BtnAddSongToPlaylists>
       <slot name="action"></slot>
     </v-card-actions>
   </v-card>
@@ -105,6 +106,7 @@
 <script>
   import Vue from 'vue';
   import DifficultiesBadge from '@/components/DifficultiesBadge.vue';
+  import BtnAddSongToPlaylists from '@/components/BtnToggleAddRemoveSongInPlaylists.vue';
   import SongLocal from '@/lib/data/SongLocal';
   import SongLoader from '@/lib/SongLoader';
   import {shell} from 'electron';
@@ -112,7 +114,7 @@
 
   export default Vue.extend({
     name: 'OnlineSongInfo',
-    components: {DifficultiesBadge},
+    components: {DifficultiesBadge, BtnAddSongToPlaylists},
     props: {
       song: {type: Object},
     },
@@ -136,6 +138,9 @@
       isDownloaded() {
         return SongLocal.isInLibrary(this.song);
       },
+      localBeatMap() {
+        return SongLocal.get(this.song);
+      }
     },
     methods: {
       UpdateComponent() {

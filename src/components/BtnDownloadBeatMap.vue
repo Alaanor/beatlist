@@ -32,11 +32,11 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-snackbar v-model="errorSnackbar" color="error" :timeout="5000" bottom>
+    <v-snackbar v-model="errorSnackbar" color="error" :timeout="10000" bottom>
       <span class="body-2">Error: {{err}}</span>
       <v-btn dark text @click="errorSnackbar = false">Close</v-btn>
     </v-snackbar>
-    <v-snackbar v-model="doneSnackbar" :timeout="2500" bottom @click.stop="">
+    <v-snackbar v-model="doneSnackbar" :timeout="5000" bottom @click.stop="">
       <v-list class="pa-0" style="background: none">
         <v-list-item class="pa-0">
           <v-list-item-avatar class="my-0">

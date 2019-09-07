@@ -15,6 +15,9 @@
           <OnlineSongQuickSummary :song="item" class="body-2"></OnlineSongQuickSummary>
         </span>
         <v-spacer></v-spacer>
+        <span>
+          <BtnAddSongToPlaylists v-if="isDownloaded(item)" :song="getLocal(item)" icon small></BtnAddSongToPlaylists>
+        </span>
         <span class="pa-2">
           <BtnDownloadBeatMap :beatmap="item" small></BtnDownloadBeatMap>
         </span>
@@ -37,10 +40,12 @@
   import OnlineSongQuickSummary from '@/components/OnlineSongQuickSummary.vue';
   import BtnDownloadBeatMap from '@/components/BtnDownloadBeatMap';
   import BeatSaverAPI from '../lib/BeatSaverAPI';
+  import BtnAddSongToPlaylists from '@/components/BtnToggleAddRemoveSongInPlaylists.vue';
+  import SongLocal from '@/lib/data/SongLocal';
 
   export default Vue.extend({
     name: 'SongListOnline',
-    components: {ListViewerForSongs, OnlineSongQuickSummary, BtnDownloadBeatMap},
+    components: {ListViewerForSongs, OnlineSongQuickSummary, BtnDownloadBeatMap, BtnAddSongToPlaylists},
     data: () => ({
       items: [],
       total: 0,
@@ -74,6 +79,12 @@
         this.search = str;
         this.updatePagination();
       },
+      isDownloaded(beatmap) {
+        return SongLocal.isInLibrary(beatmap);
+      },
+      getLocal(beatmap) {
+        return SongLocal.get(beatmap);
+      }
     },
     mounted() {
       this.updatePagination();

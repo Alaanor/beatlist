@@ -68,8 +68,6 @@
             song.metadata.bpm <= this.bpmRange.value[1];
         });
 
-        console.log(filtered)
-
         if (search === '') {
           return filtered;
         }

@@ -1,5 +1,5 @@
 <template>
-  <v-snackbar v-model="snackbar" :timeout="2500">
+  <v-snackbar v-model="snackbar" :timeout="7500">
     <span v-if="songAdded !== 0"><strong>{{songAdded}}</strong> new beatmap has been detected.</span>
     <span v-if="songRemoved !== 0"><strong>{{songRemoved}}</strong> beatmap {{songRemoved === 1 ? 'was' : 'were'}} automatically removed.</span>
     <v-btn text color="success" @click="snackbar = false">ok</v-btn>
