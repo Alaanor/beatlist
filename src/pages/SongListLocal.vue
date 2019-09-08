@@ -2,7 +2,8 @@
 <template>
   <v-container>
     <p class="display-2">Local songs</p>
-    <ListViewerForSongs :items="songs" :filter="Filter" allow-filter>
+    <ListViewerForSongs :items="songs" :filter="Filter" allow-filter
+                        :sort-by="sortBy" :sort-desc="!sortDesc" :custom-sort="SortBy">
       <template #item-block-action="{item}">
         <div class="pa-2">
           <BtnAddSongToPlaylists :song="item" value="Add to playlist"></BtnAddSongToPlaylists>
@@ -20,6 +21,20 @@
         <v-range-slider :min="bpmRange.min" :max="bpmRange.max" thumb-label="always"
                         v-model="bpmRange.value" class="mt-10 align-center" step="10">
         </v-range-slider>
+      </template>
+
+      <template #sortBy>
+        <div class="d-flex flex-row">
+          <v-overflow-btn solo :items="sortByElements" v-model="sortBy" class="mt-0" hide-details prefix="Sort by" style="width: 245px;"></v-overflow-btn>
+          <v-btn-toggle class="ml-5" v-model="sortDesc" mandatory>
+            <v-btn text>
+              <v-icon>mdi-sort-ascending</v-icon>
+            </v-btn>
+            <v-btn text>
+              <v-icon>mdi-sort-descending</v-icon>
+            </v-btn>
+          </v-btn-toggle>
+        </div>
       </template>
     </ListViewerForSongs>
   </v-container>
@@ -53,7 +68,17 @@
         value: [10, 500],
         min: 10,
         max: 500,
-      }
+      },
+      sortByElements: [
+        {value: 'date', text: 'Date'},
+        {value: 'downloads', text: 'Downloads'},
+        {value: 'plays', text: 'Plays'},
+        {value: 'upVotes', text: 'Upvotes'},
+        {value: 'downVotes', text: 'Downvotes'},
+        {value: 'rating', text: 'Rating'}
+      ],
+      sortBy: 'date',
+      sortDesc: 1,
     }),
     methods: {
       Filter(songs: ISongLocal[], search: string) {
@@ -82,6 +107,25 @@
           )).every(Boolean);
         });
       },
+      SortBy(songs: ISongLocal[]) {
+        return songs.sort((a: ISongLocal, b: ISongLocal) => {
+          let criteria = this.sortBy as string;
+          switch (criteria) {
+            case 'date':
+              return (a.onlineData.uploaded < b.onlineData.uploaded ? -1 : 1) * (this.sortDesc ? -1 : 1);
+
+            case 'downloads':
+            case 'plays':
+            case 'upVotes':
+            case 'downVotes':
+            case 'rating':
+              return (a.onlineData.stats[criteria] - b.onlineData.stats[criteria]) * (this.sortDesc ? -1 : 1);
+
+            default:
+              return 0;
+          }
+        });
+      }
     },
   });
 </script>

@@ -2,8 +2,7 @@
   <div>
     <ListViewer :items="getSongs" :filter="filter" :total="total" @paginate="updatePagination" :loading="loading"
                 :items-per-page="itemsPerPage" :items-per-page-options="itemsPerPageOptions" @updateSearch="search"
-                :allow-filter="allowFilter" item-key="key">
-
+                :allow-filter="allowFilter" item-key="key" :sort-by="sortBy" :sort-desc="sortDesc" :custom-sort="customSort">
       <template #item-block="{item}">
         <v-hover>
           <v-card width="305px" height="160px"
@@ -50,6 +49,10 @@
         <slot name="filter"></slot>
       </template>
 
+      <template #sortBy>
+        <slot name="sortBy"></slot>
+      </template>
+
     </ListViewer>
 
     <v-dialog v-model="dialog" width="700">
@@ -80,6 +83,9 @@
       itemsPerPage: {type: Number, default: 12},
       itemsPerPageOptions: {type: Array, default: () => [6, 12, 24, 48]},
       allowFilter: {type: Boolean, default: false},
+      sortBy: {type: String, default: undefined},
+      sortDesc: {type: Boolean, default: true},
+      customSort: {type: Function, default: undefined},
     },
     data: () => ({
       dialog: false,

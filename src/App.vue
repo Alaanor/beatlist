@@ -199,7 +199,6 @@
     watch: {
       darkTheme() {
         this.$vuetify.theme.dark = this.darkTheme;
-        console.log(this.$vuetify.theme);
       },
     },
     created() {

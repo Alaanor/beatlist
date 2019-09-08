@@ -61,7 +61,7 @@
                 <td class="body-1 pl-2">{{songData.uploaded | PrettyDateTime}}</td>
               </tr>
               <tr>
-                <td class="body-2 pr-2">Download</td>
+                <td class="body-2 pr-2">Downloads</td>
                 <td class="body-1 pl-2">{{songData.stats.downloads}}</td>
               </tr>
               <tr>
@@ -69,11 +69,11 @@
                 <td class="body-1 pl-2">{{songData.stats.plays}}</td>
               </tr>
               <tr>
-                <td class="body-2 pr-2">upVotes</td>
+                <td class="body-2 pr-2">upvotes</td>
                 <td class="body-1 pl-2">{{songData.stats.upVotes}}</td>
               </tr>
               <tr>
-                <td class="body-2 pr-2">downVotes</td>
+                <td class="body-2 pr-2">downvotes</td>
                 <td class="body-1 pl-2">{{songData.stats.downVotes}}</td>
               </tr>
               <tr>

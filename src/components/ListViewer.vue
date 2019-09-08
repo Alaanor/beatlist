@@ -8,8 +8,11 @@
           </v-btn>
         </v-btn-toggle>
       </v-col>
+      <v-col cols="auto">
+        <slot name="sortBy"></slot>
+      </v-col>
       <v-col>
-        <v-text-field v-model="search" label="search" solo append-icon="search"></v-text-field>
+        <v-text-field v-model="search" label="search" solo append-icon="search" hide-details></v-text-field>
       </v-col>
       <v-col v-if="allowFilter" cols="auto">
         <v-btn icon large class="mt-1" @click.stop="filterDialog = true">
@@ -31,7 +34,8 @@
     </v-dialog>
     <v-data-iterator :items="items" :custom-filter="filter" :search="search"
                      :items-per-page="itemsPerPage" :footer-props="{ itemsPerPageOptions }"
-                     :server-items-length="total" :options.sync="options" :loading="loading">
+                     :server-items-length="total" :options.sync="options" :loading="loading"
+                     :sort-by="sortBy" :sort-desc="sortDesc" :must-sort="!!sortBy" :custom-sort="customSort">
       <template v-slot:default="props">
         <v-row v-if="modeName === 'block'" align="center" justify="center">
           <v-col cols="auto" v-for="item in props.items">
@@ -60,6 +64,9 @@
       itemsPerPage: {type: Number, default: 12},
       itemsPerPageOptions: {type: Array, default: () => [6, 12, 24, 48]},
       allowFilter: {type: Boolean, default: false},
+      sortBy: {type: String, default: undefined},
+      sortDesc: {type: Boolean, default: true},
+      customSort: {type: Function, default: undefined},
     },
     data: () => ({
       search: '',
