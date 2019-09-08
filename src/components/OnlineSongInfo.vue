@@ -3,6 +3,7 @@
     <v-card-title>
       <div class="title">Song info</div>
       <v-spacer></v-spacer>
+      <BtnDownloadBeatMap :beatmap="onlineBeatMap"></BtnDownloadBeatMap>
       <v-tooltip top v-if="isDownloaded">
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on" @click="refreshData()">
@@ -107,6 +108,7 @@
   import Vue from 'vue';
   import DifficultiesBadge from '@/components/DifficultiesBadge.vue';
   import BtnAddSongToPlaylists from '@/components/BtnToggleAddRemoveSongInPlaylists.vue';
+  import BtnDownloadBeatMap from '@/components/BtnDownloadBeatMap';
   import SongLocal from '@/lib/data/SongLocal';
   import SongLoader from '@/lib/SongLoader';
   import {shell} from 'electron';
@@ -114,7 +116,7 @@
 
   export default Vue.extend({
     name: 'OnlineSongInfo',
-    components: {DifficultiesBadge, BtnAddSongToPlaylists},
+    components: {DifficultiesBadge, BtnAddSongToPlaylists, BtnDownloadBeatMap},
     props: {
       song: {type: Object},
     },
@@ -140,6 +142,9 @@
       },
       localBeatMap() {
         return SongLocal.get(this.song);
+      },
+      onlineBeatMap() {
+        return SongLocal.isSongLocal(this.song) ? this.song.onlineData : this.song;
       }
     },
     methods: {
