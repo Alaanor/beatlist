@@ -59,6 +59,7 @@
   import Vue from 'vue';
   import SongLocal from '../lib/data/SongLocal';
   import SongCover from './SongCover';
+  import DownloadBeatMapItem from '@/lib/DownloadBeatMapItem';
 
   export default Vue.extend({
     name: 'BtnDownloadBeatMap',
@@ -91,14 +92,21 @@
     watch: {
       beatmap() {
         this.reset();
+        DownloadBeatMapItem.on(this.beatmap.key, this.reset);
       },
+    },
+    mounted() {
+      DownloadBeatMapItem.on(this.beatmap.key, this.reset);
     },
     methods: {
       installBeatMap() {
         this.dl = this.beatmap.InstallIt();
+        this.isDownloading = true;
+        this.subscribeDlEvent();
+      },
+      subscribeDlEvent() {
         this.dl.on('downloaded', this.onDownloaded);
         this.dl.on('done', this.onDone);
-        this.isDownloading = true;
       },
       deleteBeatMap() {
         this.beatmap.deleteIt();
@@ -128,6 +136,20 @@
         this.isDownloading = false;
         this.isExtracting = false;
         this.err = undefined;
+
+        this.checkForOnGoingDl();
+      },
+      checkForOnGoingDl() {
+        if (DownloadBeatMapItem.IsDownloading(this.beatmap)) {
+          this.dl = DownloadBeatMapItem.GetFor(this.beatmap);
+          this.subscribeDlEvent();
+
+          if (this.dl.state.state === 'completed') {
+            this.isExtracting = true;
+          } else {
+            this.isDownloading = true;
+          }
+        }
       },
     },
   });

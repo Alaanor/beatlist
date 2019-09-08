@@ -9,12 +9,27 @@ import store from '../store/store';
 import {promisify} from 'util';
 import fs from 'fs';
 import SongScanner from '../lib/SongScanner';
+import ISongInfo from '@/lib/data/ISongInfo';
 
 const unlink = promisify(fs.unlink);
 
 export default class DownloadBeatMapItem {
 
   public static Downloads = new Map<string, DownloadBeatMapItem>();
+
+  public static IsDownloading(beatmap: ISongInfo) {
+    return !!DownloadBeatMapItem.Downloads.get(beatmap.key);
+  }
+
+  public static GetFor(beatmap: ISongInfo) {
+    return DownloadBeatMapItem.Downloads.get(beatmap.key);
+  }
+
+  public static on(key: string, listener: () => void) {
+    this.EventEmitter.on(key, listener);
+  }
+
+  private static EventEmitter = new events.EventEmitter();
 
   public readonly beatmap: ISongOnline;
   public err: Error | undefined;
@@ -44,6 +59,7 @@ export default class DownloadBeatMapItem {
 
   private download() {
     ipcRenderer.send(DL_NEW_BEATMAP, this);
+    DownloadBeatMapItem.EventEmitter.emit(this.beatmap.key, this);
   }
 
   private async handleExtract() {
@@ -52,6 +68,8 @@ export default class DownloadBeatMapItem {
       this.eventEmitter.emit('extracted');
 
       DownloadBeatMapItem.Downloads.delete(this.beatmap.key);
+      DownloadBeatMapItem.EventEmitter.removeAllListeners(this.beatmap.key);
+
       await new SongScanner().Scan();
     } catch (e) {
       this.err = e;
