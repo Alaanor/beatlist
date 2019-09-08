@@ -11,8 +11,9 @@ const GET_BY_HASH = 'maps/by-hash/';
 const GET_BY_KEY = 'maps/detail/';
 const GET_BY_HOT = 'maps/hot/';
 const GET_BY_LATEST = 'maps/latest/';
-const GET_BY_PLAYS = 'maps/plays';
+const GET_BY_PLAYS = 'maps/plays/';
 const GET_BY_DOWNLOADS = 'maps/downloads/';
+const GET_BY_RATING = 'maps/rating/';
 const SEARCH_TEXT = 'search/text/';
 
 export default class BeatSaverAPI {
@@ -71,6 +72,12 @@ export default class BeatSaverAPI {
 
   public getDownloads(page = 0): Promise<ISearchResult | undefined> {
     const result = this.http.get(GET_BY_DOWNLOADS + page)
+      .then((answer) => answer.data as ISearchResult);
+    return this.toSongOnlineObject(result);
+  }
+
+  public getRating(page = 0): Promise<ISearchResult | undefined> {
+    const result = this.http.get(GET_BY_RATING + page)
       .then((answer) => answer.data as ISearchResult);
     return this.toSongOnlineObject(result);
   }

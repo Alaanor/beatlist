@@ -9,7 +9,8 @@
             :loading="loading"
             :items-per-page="10"
             :items-per-page-options="[10]"
-            @updateSearch="updateSearch">
+            @updateSearch="updateSearch"
+            :sort-by="sortBy">
       <template #item-block-action="{item}">
         <span class="pa-2">
           <OnlineSongQuickSummary :song="item" class="body-2"></OnlineSongQuickSummary>
@@ -29,6 +30,14 @@
             <BtnDownloadBeatMap :beatmap="item" small></BtnDownloadBeatMap>
           </span>
         </v-list-item-action-text>
+      </template>
+      <template #sortBy>
+        <div class="d-flex flex-row align-center">
+          <v-overflow-btn solo :items="sortByElements" v-model="sortBy" class="mt-0" hide-details prefix="Browse by"
+                          style="width: 265px;" :disabled="!!search">
+          </v-overflow-btn>
+          <span class="pl-5 body-1 grey--text">or</span>
+        </div>
       </template>
     </ListViewerForSongs>
   </v-container>
@@ -52,6 +61,14 @@
       loading: false,
       page: 0,
       search: '',
+      sortByElements: [
+        {value: 'hot', text: 'Hot'},
+        {value: 'rating', text: 'Rating'},
+        {value: 'latest', text: 'Latest'},
+        {value: 'downloads', text: 'Downloads'},
+        {value: 'plays', text: 'Plays'},
+      ],
+      sortBy: 'hot'
     }),
     methods: {
       updatePagination(options) {
@@ -66,7 +83,24 @@
         if (this.search.length !== 0) {
           results = BeatSaverAPI.Singleton.search(this.search, this.page);
         } else {
-          results = BeatSaverAPI.Singleton.getHot(this.page);
+          switch (this.sortBy) {
+            default:
+            case 'hot':
+              results = BeatSaverAPI.Singleton.getHot(this.page);
+              break;
+            case 'rating':
+              results = BeatSaverAPI.Singleton.getRating(this.page);
+              break;
+            case 'latest':
+              results = BeatSaverAPI.Singleton.getLatest(this.page);
+              break;
+            case 'downloads':
+              results = BeatSaverAPI.Singleton.getDownloads(this.page);
+              break;
+            case 'plays':
+              results = BeatSaverAPI.Singleton.getPlays(this.page);
+              break;
+          }
         }
 
         results.then((result) => {

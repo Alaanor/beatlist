@@ -12,7 +12,9 @@
         <slot name="sortBy"></slot>
       </v-col>
       <v-col>
-        <v-text-field v-model="search" label="search" solo append-icon="search" hide-details></v-text-field>
+        <v-text-field v-model="search" label="search" solo append-icon="search"
+                      hide-details clearable @clear="updateSearch">
+        </v-text-field>
       </v-col>
       <v-col v-if="allowFilter" cols="auto">
         <v-btn icon large class="mt-1" @click.stop="filterDialog = true">
@@ -91,8 +93,13 @@
         deep: true,
       },
       search() {
-        this.$emit('updateSearch', this.search);
+        this.updateSearch();
       },
+    },
+    methods: {
+      updateSearch() {
+        this.$emit('updateSearch', this.search);
+      }
     },
     filters: {
       forceInt(value) {

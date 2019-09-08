@@ -25,7 +25,8 @@
 
       <template #sortBy>
         <div class="d-flex flex-row">
-          <v-overflow-btn solo :items="sortByElements" v-model="sortBy" class="mt-0" hide-details prefix="Sort by" style="width: 245px;"></v-overflow-btn>
+          <v-overflow-btn solo :items="sortByElements" v-model="sortBy" class="mt-0" hide-details prefix="Sort by"
+                          style="width: 245px;"></v-overflow-btn>
           <v-btn-toggle class="ml-5" v-model="sortDesc" mandatory>
             <v-btn text>
               <v-icon>mdi-sort-ascending</v-icon>
