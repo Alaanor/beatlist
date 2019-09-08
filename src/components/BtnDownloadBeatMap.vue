@@ -32,38 +32,16 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-snackbar v-model="errorSnackbar" color="error" :timeout="10000" bottom>
-      <span class="body-2">Error: {{err}}</span>
-      <v-btn dark text @click="errorSnackbar = false">Close</v-btn>
-    </v-snackbar>
-    <v-snackbar v-model="doneSnackbar" :timeout="5000" bottom @click.stop="">
-      <v-list class="pa-0" style="background: none">
-        <v-list-item class="pa-0">
-          <v-list-item-avatar class="my-0">
-            <SongCover :song="beatmap"></SongCover>
-          </v-list-item-avatar>
-          <v-list-item-content class="py-0">
-            <v-list-item-title>{{beatmap.metadata.songName}}</v-list-item-title>
-            <v-list-item-subtitle>The beatmap has successfully been downloaded.</v-list-item-subtitle>
-          </v-list-item-content>
-          <v-list-item-action class="my-0">
-            <v-btn color="success" text @click.stop="doneSnackbar = false">Got it</v-btn>
-          </v-list-item-action>
-        </v-list-item>
-      </v-list>
-    </v-snackbar>
   </div>
 </template>
 
 <script>
   import Vue from 'vue';
   import SongLocal from '../lib/data/SongLocal';
-  import SongCover from './SongCover';
   import DownloadBeatMapItem from '@/lib/DownloadBeatMapItem';
 
   export default Vue.extend({
     name: 'BtnDownloadBeatMap',
-    components: {SongCover},
     props: {
       beatmap: {type: Object, required: true},
       small: {type: Boolean, default: false},
@@ -73,8 +51,6 @@
       isDownloading: false,
       isExtracting: false,
       err: undefined,
-      errorSnackbar: false,
-      doneSnackbar: false,
       dialog: false,
     }),
     computed: {
@@ -117,8 +93,10 @@
         this.isExtracting = true;
       },
       onDone() {
+        this.isDownloading = false;
         this.isExtracting = false;
         this.err = this.dl.err;
+
         if (this.err) {
           this.errorSnackbar = true;
         } else {
@@ -144,7 +122,7 @@
           this.dl = DownloadBeatMapItem.GetFor(this.beatmap);
           this.subscribeDlEvent();
 
-          if (this.dl.state.state === 'completed') {
+          if (this.dl.state.receivedBytes === this.dl.state.totalBytes) {
             this.isExtracting = true;
           } else {
             this.isDownloading = true;

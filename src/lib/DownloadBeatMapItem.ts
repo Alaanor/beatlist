@@ -75,6 +75,7 @@ export default class DownloadBeatMapItem {
       this.err = e;
     } finally {
       this.eventEmitter.emit('done');
+      DownloadBeatMapItem.EventEmitter.emit('itemDone', this);
     }
   }
 
