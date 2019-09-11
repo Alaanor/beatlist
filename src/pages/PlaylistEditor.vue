@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout align-center justify-start row fill-height>
-      <v-btn icon class="mr-3" to="/playlist" exact>
+      <v-btn icon class="mr-3" to="/playlists/local" exact>
         <v-icon medium>chevron_left</v-icon>
       </v-btn>
       <p class="display-2">Playlist editor</p>

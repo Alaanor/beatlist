@@ -17,7 +17,8 @@
       </v-card>
 
     </v-navigation-drawer>
-    <v-app-bar app dense flat clipped-left class="windows-draggable" :color="darkTheme ? '#303030' : 'rgba(250, 250, 250, 0)'">
+    <v-app-bar app dense flat clipped-left class="windows-draggable"
+               :color="darkTheme ? '#303030' : 'rgba(250, 250, 250, 0)'">
       <v-app-bar-nav-icon v-if="!permanent" @click.stop="drawer = !drawer" class="btn-win-control"></v-app-bar-nav-icon>
       <v-toolbar-title class="ma-1">
         <v-img :src="require(`@/assets/${darkTheme ? 'title_dark' : 'title_white'}.png`)" width="108"></v-img>
@@ -64,7 +65,8 @@
   import Home from './pages/Home.vue';
   import SongListLocal from './pages/SongListLocal.vue';
   import SongListOnline from './pages/SongListOnline.vue';
-  import Playlists from './pages/Playlists.vue';
+  import PlaylistsLocal from './pages/PlaylistsLocal.vue';
+  import PlaylistsOnline from './pages/PlaylistsOnline.vue';
   import Settings from './pages/Settings.vue';
   import PlaylistEditor from './pages/PlaylistEditor.vue';
   import FAQ from './pages/FAQ.vue';
@@ -98,14 +100,20 @@
         meta: {requireValidSettings: true},
       },
       {
-        path: '/playlist',
-        name: 'playlist',
-        component: Playlists,
+        path: '/playlists/online',
+        name: 'playlists-online',
+        component: PlaylistsOnline,
         meta: {requireValidSettings: true},
       },
       {
-        path: '/playlist/edit/:hash',
-        name: 'playlistEditor',
+        path: '/playlists/local',
+        name: 'playlists-local',
+        component: PlaylistsLocal,
+        meta: {requireValidSettings: true},
+      },
+      {
+        path: '/playlist/local/edit/:hash',
+        name: 'playlist-editor',
         component: PlaylistEditor,
         meta: {requireValidSettings: true},
       },
@@ -152,7 +160,7 @@
         {
           path: '/songs',
           name: 'Song list',
-          icon: 'queue_music',
+          icon: 'library_music',
           requireValidConfig: true,
           items: [
             {
@@ -170,10 +178,24 @@
           ],
         },
         {
-          path: '/playlist',
-          name: 'Playlist',
+          path: '/playlists',
+          name: 'Playlists',
           icon: 'playlist_play',
           requireValidConfig: true,
+          items: [
+            {
+              path: '/playlists/online',
+              name: 'Online',
+              icon: 'language',
+              requireValidConfig: true,
+            },
+            {
+              path: '/playlists/local',
+              name: 'Local',
+              icon: 'computer',
+              requireValidConfig: true,
+            },
+          ],
         },
         {
           path: '/faq',

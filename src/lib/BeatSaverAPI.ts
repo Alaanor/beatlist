@@ -36,14 +36,18 @@ export default class BeatSaverAPI {
     });
   }
 
-  public getSongByHash(hash: string): Promise<ISongOnline | undefined> {
+  public getSongByHash(hash: string, asObject = false): Promise<ISongOnline | undefined> {
     return this.http.get(GET_BY_HASH + hash + '/')
-      .then((answer) => answer.data as ISongOnline);
+      .then((answer) => answer.data as ISongOnline)
+      .then((beatmap) => asObject ? new SongOnline(beatmap) : beatmap)
+      .catch((err) => undefined);
   }
 
-  public getSongByKey(key: string): Promise<ISongOnline | undefined> {
+  public getSongByKey(key: string, asObject = false): Promise<ISongOnline | undefined> {
     return this.http.get(GET_BY_KEY + key)
-      .then((answer) => answer.data as ISongOnline);
+      .then((answer) => answer.data as ISongOnline)
+      .then((beatmap) => asObject ? new SongOnline(beatmap) : beatmap)
+      .catch((err) => undefined);
   }
 
   public search(text: string, page = 0): Promise<ISearchResult | undefined> {

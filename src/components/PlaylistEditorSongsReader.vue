@@ -10,7 +10,8 @@
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{song.metadata.songName}}</v-list-item-title>
-              <v-list-item-subtitle><span class="text--primary">{{song.metadata.songAuthorName}}</span> -
+              <v-list-item-subtitle>
+                <span class="text--primary">{{song.metadata.songAuthorName}}</span> -
                 {{song.metadata.levelAuthorName}}
               </v-list-item-subtitle>
             </v-list-item-content>

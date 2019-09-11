@@ -4,8 +4,7 @@ import {promisify} from 'util';
 import Playlist from './Playlist';
 import Utils from './Utils';
 import {resolveInstallPath} from './pathResolver/resolve';
-import ISongLocal from '@/lib/data/ISongLocal';
-import ISongOnline from '@/lib/data/ISongOnline';
+import ISongOnline from './data/ISongOnline';
 
 declare var __static: string;
 const defaultCoverPath = path.join(__static, 'defaultCover.jpg');
@@ -52,13 +51,13 @@ export default class BeatSaber {
     });
   }
 
-  public async getPlaylists(songs: ISongLocal[]): Promise<Playlist[]> {
+  public async getPlaylists(): Promise<Playlist[]> {
     const pathPlaylists = path.join(this.installationPath, BEAT_SABER_PLAYLIST);
     const directoryList = await readdir(pathPlaylists);
 
     const playlists = await Promise.all(directoryList.map(async (file) => {
       const playlistPath = path.join(pathPlaylists, file);
-      return await Playlist.Parse(playlistPath, songs);
+      return await Playlist.Parse(playlistPath);
     }));
 
     return playlists.filter((p: Playlist | undefined) => p !== undefined) as Playlist[];

@@ -2,7 +2,7 @@
 <template>
   <v-container>
     <v-layout row justify-space-between>
-      <p class="display-2">Playlists</p>
+      <p class="display-2">Local playlists</p>
       <v-btn text @click="NewPlaylist()" :loading="loadingAdd">
         Add a new Playlist
         <v-icon class="ml-1">add</v-icon>
@@ -52,7 +52,7 @@
         this.GoToPlaylist(playlist);
       },
       GoToPlaylist(playlist) {
-        this.$router.push({name: 'playlistEditor', params: {hash: playlist.playlistHash}});
+        this.$router.push({name: 'playlist-editor', params: {hash: playlist.playlistHash}});
       },
     },
     async mounted() {

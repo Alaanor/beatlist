@@ -3,8 +3,9 @@ import fs from 'fs';
 import {promisify} from 'util';
 import crypto from 'crypto';
 import path from 'path';
+import BeatSaverAPI from '@/lib/BeatSaverAPI';
 import ISongInfo from '@/lib/data/ISongInfo';
-import ISongLocal from '@/lib/data/ISongLocal';
+import store from '@/store/store';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -13,8 +14,10 @@ const deleteFile = promisify(fs.unlink);
 
 export default class Playlist {
 
-  public static async Parse(pathToJson: string, songs: ISongLocal[]): Promise<Playlist | undefined> {
+  public static async Parse(pathToJson: string): Promise<Playlist | undefined> {
     const raw = await readFile(pathToJson);
+    const songs = store.getters['songs/songs'];
+
     let data;
     try {
       data = JSON.parse(raw.toString());
@@ -27,17 +30,23 @@ export default class Playlist {
     playlist.playlistTitle = data.playlistTitle;
     playlist.playlistAuthor = data.playlistAuthor;
     playlist.playlistDescription = data.playlistDescription;
-
     playlist.playlistHash = this.getPlaylistHash(playlist.playlistPath);
 
-    playlist.songs = data.songs.map((s: any) => {
+    playlist.songs = (await Promise.all(data.songs.map(async (s: any) => {
       return (
         SongLoader.GetSongFromHash(s.hash, songs) ||
         SongLoader.GetSongFromKey(s.key, songs) ||
-        SongLoader.GetSongFromDirId(s.key, songs)
+        SongLoader.GetSongFromDirId(s.key, songs) ||
+        await BeatSaverAPI.Singleton.getSongByHash(s.hash, true) ||
+        await BeatSaverAPI.Singleton.getSongByKey(s.key, true)
       );
-    }).filter((s: ISongInfo | undefined) => s !== undefined);
+    }))).filter((s: any) => s !== undefined) as ISongInfo[];
+
     return playlist;
+  }
+
+  public static async ParseOnline(url: string) {
+    // @TODO
   }
 
   public static async LoadCover(playlistPath: string): Promise<string> {
@@ -66,7 +75,7 @@ export default class Playlist {
   public playlistAuthor: string = '';
   public playlistDescription: string = '';
 
-  public songs: ISongLocal[] = [];
+  public songs: ISongInfo[] = [];
 
   public async Save(image?: string) {
     if (!image) {
@@ -103,7 +112,6 @@ export default class Playlist {
       playlistDescription: this.playlistDescription,
       image: img,
       songs: this.songs
-        .filter((s) => s.valid)
         .map((s) => ({
           songName: s.metadata.songName,
           hash: s.hash,

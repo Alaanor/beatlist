@@ -42,17 +42,18 @@
     </v-card>
     <v-snackbar v-model="snackbar" :color="snackbarType" :timeout="3000">
       {{ snackbarText }}
-      <v-btn flat @click="snackbar = false">Close</v-btn>
+      <v-btn text @click="snackbar = false">Close</v-btn>
     </v-snackbar>
     <v-dialog v-model="dialogConfirmDelete" width="350">
       <v-card>
-        <v-card-text color="error">
+        <v-card-title>Confirm action</v-card-title>
+        <v-card-text>
           Are you sure you want to <strong class="error--text">delete</strong> this playlist ?
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat color="grey" @click="dialogConfirmDelete = false">Cancel</v-btn>
-          <v-btn flat color="error" @click="Delete()">Confirm</v-btn>
+          <v-btn text color="grey" @click="dialogConfirmDelete = false">Cancel</v-btn>
+          <v-btn text color="error" @click="Delete()">Delete</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -119,7 +120,7 @@
       Delete() {
         this.playlist.Delete();
         store.dispatch('songs/loadPlaylists');
-        this.$router.push({name: 'playlist'});
+        this.$router.push({name: 'playlists-local'});
       },
       /** @return {boolean} */
       IsThereChange() {
@@ -145,7 +146,7 @@
             this.snackbarText = 'Successfully saved';
             this.snackbarType = 'success';
             this.imageChanged = false;
-            this.$router.replace({name: 'playlistEditor', params: { hash: playlist.playlistHash }});
+            this.$router.replace({name: 'playlist-editor', params: { hash: playlist.playlistHash }});
           })
           .catch(() => {
             this.snackbarText = 'Failed to save';
