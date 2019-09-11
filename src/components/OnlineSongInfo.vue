@@ -113,6 +113,7 @@
   import SongLoader from '@/lib/SongLoader';
   import {shell} from 'electron';
   import linkifyHtml from 'linkifyjs/html';
+  import SongOnline from '@/lib/data/SongOnline';
 
   export default Vue.extend({
     name: 'OnlineSongInfo',
@@ -144,7 +145,7 @@
         return SongLocal.get(this.song);
       },
       onlineBeatMap() {
-        return SongLocal.isSongLocal(this.song) ? this.song.onlineData : this.song;
+        return new SongOnline(SongLocal.isSongLocal(this.song) ? this.song.onlineData : this.song);
       }
     },
     methods: {
