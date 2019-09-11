@@ -56,7 +56,7 @@
         store.commit('songs/removeSongFromPlaylist', {playlist: this.playlist, song});
       },
       IsOnlineSong(song) {
-        return SongOnline.IsOnlineSong(song);
+        return SongOnline.isSongOnline(song);
       },
     },
   });

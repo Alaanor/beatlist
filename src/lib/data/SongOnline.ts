@@ -7,7 +7,7 @@ import SongLocal from './SongLocal';
 
 export default class SongOnline extends Song implements ISongOnline {
 
-  public static IsOnlineSong(object: any): object is ISongOnline {
+  public static isSongOnline(object: any): object is ISongOnline {
     return 'coverURL' in object;
   }
   public coverURL: string;

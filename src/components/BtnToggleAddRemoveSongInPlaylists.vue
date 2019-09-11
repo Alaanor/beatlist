@@ -67,9 +67,6 @@
     computed: {
       playlists: get('songs/playlists'),
     },
-    async mounted() {
-      await store.dispatch('songs/loadPlaylists');
-    },
     methods: {
       IsInPlaylist(playlist: Playlist) {
         return !!playlist.songs.find((s: ISongInfo) => s.hash === (this.song as ISongInfo).hash);

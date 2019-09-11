@@ -61,6 +61,17 @@ export default class Playlist {
     return src;
   }
 
+  public static Copy(obj: Playlist) : Playlist {
+    const p = new Playlist();
+    p.playlistHash = obj.playlistHash;
+    p.playlistAuthor = obj.playlistAuthor;
+    p.playlistDescription = obj.playlistDescription;
+    p.playlistPath = obj.playlistPath;
+    p.playlistTitle = obj.playlistTitle;
+    p.songs = obj.songs;
+    return p;
+  }
+
   private static getPlaylistHash(playlistPath: string): string {
     return crypto
       .createHash('sha1')

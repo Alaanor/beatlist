@@ -1,4 +1,3 @@
-<!--suppress ALL -->
 <template>
   <ListViewer :items="playlists" :filter="Filter">
     <template #item-block="{item}">
@@ -77,9 +76,6 @@
           )).every(Boolean);
         });
       },
-    },
-    async mounted() {
-      await store.dispatch('songs/loadPlaylists');
     },
   });
 </script>

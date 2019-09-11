@@ -51,24 +51,10 @@
       length: 3,
       window: 0,
     }),
-    methods: {
-      async UpdatePlaylist() {
-        await this.$store.dispatch('songs/loadPlaylists');
-      },
-    },
     computed: {
       hash() {
         return this.$route.params.hash;
       },
-    },
-    mounted() {
-      this.$nextTick(async function() {
-        this.UpdatePlaylist();
-      });
-    },
-    beforeRouteUpdate(to, from, next) {
-      this.UpdatePlaylist();
-      next();
     },
   });
 </script>

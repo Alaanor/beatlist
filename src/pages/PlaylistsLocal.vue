@@ -55,8 +55,5 @@
         this.$router.push({name: 'playlist-editor', params: {hash: playlist.playlistHash}});
       },
     },
-    async mounted() {
-      await store.dispatch('songs/loadPlaylists');
-    },
   });
 </script>

@@ -146,7 +146,6 @@
             this.snackbarText = 'Successfully saved';
             this.snackbarType = 'success';
             this.imageChanged = false;
-            this.$router.replace({name: 'playlist-editor', params: { hash: playlist.playlistHash }});
           })
           .catch(() => {
             this.snackbarText = 'Failed to save';
