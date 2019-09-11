@@ -15,7 +15,8 @@
                 {{song.metadata.levelAuthorName}}
               </v-list-item-subtitle>
             </v-list-item-content>
-            <v-list-item-action>
+            <v-list-item-action class="d-flex flex-row">
+              <BtnDownloadBeatMap v-if="IsOnlineSong(song)" :beatmap="song" download-only></BtnDownloadBeatMap>
               <v-btn icon class="text--secondary" @click="Remove(song)">
                 <v-icon color="error">delete</v-icon>
               </v-btn>
@@ -37,11 +38,13 @@
   import {get} from 'vuex-pathify';
   import SongCover from './SongCover';
   import store from '@/store/store';
+  import BtnDownloadBeatMap from '@/components/BtnDownloadBeatMap';
+  import SongOnline from '@/lib/data/SongOnline';
 
   export default Vue.extend({
     name: 'PlaylistEditorSongsReader',
     props: {hash: {type: String, required: true}},
-    components: {SongCover},
+    components: {SongCover, BtnDownloadBeatMap},
     computed: {
       playlist() {
         return this.playlists.find((p) => p.playlistHash === this.hash);
@@ -51,6 +54,9 @@
     methods: {
       Remove(song) {
         store.commit('songs/removeSongFromPlaylist', {playlist: this.playlist, song});
+      },
+      IsOnlineSong(song) {
+        return SongOnline.IsOnlineSong(song);
       },
     },
   });

@@ -12,7 +12,7 @@
         </v-progress-circular>
       </template>
     </v-btn>
-    <v-btn v-else icon :small="small" color="error"
+    <v-btn v-else-if="!downloadOnly" icon :small="small" color="error"
            @click.stop="dialog = true">
       <v-icon>delete</v-icon>
     </v-btn>
@@ -45,6 +45,7 @@
     props: {
       beatmap: {type: Object, required: true},
       small: {type: Boolean, default: false},
+      downloadOnly: {type: Boolean, default: false},
     },
     data: () => ({
       dl: undefined,

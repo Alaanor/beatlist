@@ -6,6 +6,10 @@ import DownloadBeatMapItem from '../DownloadBeatMapItem';
 import SongLocal from './SongLocal';
 
 export default class SongOnline extends Song implements ISongOnline {
+
+  public static IsOnlineSong(object: any): object is ISongOnline {
+    return 'coverURL' in object;
+  }
   public coverURL: string;
   public description: string;
   public downloadURL: string;

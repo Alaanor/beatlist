@@ -9,11 +9,11 @@ import SongScanner from '../SongScanner';
 
 export default class SongLocal extends Song implements ISongLocal {
 
-  public static isSongLocal(object: any): object is SongLocal {
+  public static isSongLocal(object: any): object is ISongLocal {
     return 'folderId' in object;
   }
 
-  public static isSongsLocal(objects: any[]): objects is SongLocal[] {
+  public static isSongsLocal(objects: any[]): objects is ISongLocal[] {
     return objects.map((o: any) => this.isSongLocal(o)).every((b: boolean) => b);
   }
 
