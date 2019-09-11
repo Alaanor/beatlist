@@ -12,12 +12,33 @@
     props: {playlist: {type: Object, required: true}},
     data: () => ({
       imageData: '',
+      latestFetch: undefined,
     }),
     methods: {
       LoadImage() {
-        Playlist
-          .LoadCover(this.playlist.playlistPath)
-          .then((data) => this.imageData = data);
+        if (this.latestFetch) {
+          this.latestFetch.cancel();
+        }
+
+        this.latestFetch = (() => {
+          let hasCanceled = false;
+
+          const promise = Playlist
+            .LoadCover(this.playlist.playlistPath)
+            .then((data) => {
+              if (!hasCanceled) {
+                this.imageData = data
+              }
+            });
+
+          return {
+            promise,
+            cancel() {
+              hasCanceled = true;
+            },
+          };
+        })();
+
       },
     },
     mounted() {
@@ -26,7 +47,7 @@
       });
     },
     watch: {
-      song() {
+      playlist() {
         this.imageData = '';
         this.LoadImage();
       },
