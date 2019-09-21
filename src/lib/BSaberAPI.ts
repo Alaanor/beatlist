@@ -19,15 +19,16 @@ export default class BSaberAPI {
     });
   }
 
-  public getPlaylists() {
+  public getPlaylists(): Promise<IBSaberPlaylist[] | undefined>{
     return this.http.get(PLAYLIST_API)
-      .then((answer) => answer.data as IBSaberPlaylist);
+      .then((answer) => answer.data as IBSaberPlaylist[])
+      .catch(() => undefined);
   }
 
   public getPlaylist(playlist: IBSaberPlaylist): Promise<Playlist | undefined> {
-    return axios.get(playlist.playlistURL)
-      .then((answer) => answer.data as string)
+    return axios.get(CORS_ANYWHERE + playlist.playlistURL)
+      .then((answer) => JSON.stringify(answer.data))
       .then((raw) => Playlist.Parse(raw))
-      .catch((err) => undefined);
+      .catch(() => undefined);
   }
 }

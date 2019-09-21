@@ -16,6 +16,9 @@
            @click.stop="dialog = true">
       <v-icon>delete</v-icon>
     </v-btn>
+    <v-btn v-else-if="showTickIfDownloaded" icon :small="small" disabled>
+      <v-icon>check</v-icon>
+    </v-btn>
     <v-dialog v-if="isDownloaded" v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title class="headline">Confirm</v-card-title>
@@ -46,6 +49,7 @@
       beatmap: {type: Object, required: true},
       small: {type: Boolean, default: false},
       downloadOnly: {type: Boolean, default: false},
+      showTickIfDownloaded: {type: Boolean, default: false},
     },
     data: () => ({
       dl: undefined,

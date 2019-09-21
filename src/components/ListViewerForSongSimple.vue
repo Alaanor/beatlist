@@ -1,8 +1,8 @@
 <template>
-  <v-list>
+  <v-list class="py-0">
     <template v-for="(song, i) in songs">
       <v-divider v-if="i !== 0"></v-divider>
-      <v-list-item>
+      <v-list-item @click="onClick(song)">
         <v-list-item-avatar>
           <SongCover :song="song"></SongCover>
         </v-list-item-avatar>
@@ -30,6 +30,11 @@
     props: {
       songs: {type: Array, required: true},
     },
+    methods: {
+      onClick(item) {
+        this.$emit('click', item);
+      }
+    }
   });
 </script>
 
