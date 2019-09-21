@@ -1,10 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import {promisify} from 'util';
-import Playlist from './Playlist';
 import Utils from './Utils';
+import {promisify} from 'util';
+import PlaylistLocal from './PlaylistLocal';
 import {resolveInstallPath} from './pathResolver/resolve';
+import Playlist from './Playlist';
 import ISongOnline from './data/ISongOnline';
+import IPlaylistLocal from './data/IPlaylistLocal';
 
 declare var __static: string;
 const defaultCoverPath = path.join(__static, 'defaultCover.jpg');
@@ -51,24 +53,25 @@ export default class BeatSaber {
     });
   }
 
-  public async getPlaylists(): Promise<Playlist[]> {
+  public async getPlaylists(): Promise<PlaylistLocal[]> {
     const pathPlaylists = path.join(this.installationPath, BEAT_SABER_PLAYLIST);
     const directoryList = await readdir(pathPlaylists);
 
     const playlists = await Promise.all(directoryList.map(async (file) => {
       const playlistPath = path.join(pathPlaylists, file);
-      return await Playlist.Parse(playlistPath);
+      return await PlaylistLocal.ParseFromFile(playlistPath);
     }));
 
-    return playlists.filter((p: Playlist | undefined) => p !== undefined) as Playlist[];
+    return playlists.filter((p: Playlist | undefined) => p !== undefined) as PlaylistLocal[];
   }
 
-  public async CreateNewPlaylistFile(): Promise<Playlist> {
+  public async CreateNewPlaylistFile(): Promise<PlaylistLocal> {
     const randNum = Math.floor(Math.random() * 1e6 - 1) + 1e5;
     const fileName = `new-playlist-${randNum}`;
     const cover = await Utils.LoadCover(defaultCoverPath);
-    const playlist = new Playlist();
+    const playlist = new PlaylistLocal({} as IPlaylistLocal);
 
+    playlist.songs = [];
     playlist.playlistTitle = fileName;
     playlist.playlistPath = path.join(this.installationPath, BEAT_SABER_PLAYLIST, fileName + '.json');
     playlist.CalculateHash();

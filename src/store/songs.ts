@@ -1,12 +1,13 @@
 import {make} from 'vuex-pathify';
 import BeatSaber from '../lib/BeatSaber';
-import Playlist from '../lib/Playlist';
+import PlaylistLocal from '../lib/PlaylistLocal';
 import Song from '../lib/data/Song';
 import ISongLocal from '../lib/data/ISongLocal';
 import SongLocal from '../lib/data/SongLocal';
 import ISongInfo from '../lib/data/ISongInfo';
 import SongOnline from '../lib/data/SongOnline';
-import store from '@/store/store';
+import store from '../store/store';
+import IPlaylistLocal from '@/lib/data/IPlaylistLocal';
 
 const state = {
   lastScan: undefined,
@@ -28,9 +29,9 @@ const getters = {
   noFilterSongs: ({songs}: {songs: ISongLocal[]}) => {
     return songs;
   },
-  playlists: ({playlists}: {playlists: Playlist[]}) => {
-    return playlists.map((p: Playlist) => {
-      const playlist = Playlist.Copy(p);
+  playlists: ({playlists}: {playlists: IPlaylistLocal[]}) => {
+    return playlists.map((p: IPlaylistLocal) => {
+      const playlist = new PlaylistLocal(p);
 
       playlist.songs = p.songs.map((s: ISongInfo) => {
         if (SongLocal.isSongLocal(s)) {
@@ -49,20 +50,20 @@ const getters = {
 
 const mutations = {
   ...make.mutations(state),
-  addSongToPlaylist(context: any, {playlist, song}: { playlist: Playlist, song: Song }) {
-    const pls = store.getters['songs/playlists'] as Playlist[];
-    const plObj = pls.find((p: Playlist) => p.playlistHash === playlist.playlistHash);
-    const plState = context.playlists.find((p: Playlist) => p.playlistHash === playlist.playlistHash);
+  addSongToPlaylist(context: any, {playlist, song}: { playlist: PlaylistLocal, song: Song }) {
+    const pls = store.getters['songs/playlists'] as PlaylistLocal[];
+    const plObj = pls.find((p: PlaylistLocal) => p.playlistHash === playlist.playlistHash);
+    const plState = context.playlists.find((p: PlaylistLocal) => p.playlistHash === playlist.playlistHash);
 
     if (!!plObj) {
       plState.songs.push(song);
       plObj.Save();
     }
   },
-  removeSongFromPlaylist(context: any, {playlist, song}: { playlist: Playlist, song: Song }) {
-    const pls = store.getters['songs/playlists'] as Playlist[];
-    const plObj = pls.find((p: Playlist) => p.playlistHash === playlist.playlistHash);
-    const plState = context.playlists.find((p: Playlist) => p.playlistHash === playlist.playlistHash);
+  removeSongFromPlaylist(context: any, {playlist, song}: { playlist: PlaylistLocal, song: Song }) {
+    const pls = store.getters['songs/playlists'] as PlaylistLocal[];
+    const plObj = pls.find((p: PlaylistLocal) => p.playlistHash === playlist.playlistHash);
+    const plState = context.playlists.find((p: PlaylistLocal) => p.playlistHash === playlist.playlistHash);
 
     if (!!plObj) {
       plState.songs = plState.songs.filter((s: Song) => s.hash !== song.hash);

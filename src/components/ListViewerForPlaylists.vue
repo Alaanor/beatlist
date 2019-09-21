@@ -52,7 +52,7 @@
   import store from '@/store/store';
   import ListViewer from './ListViewer.vue';
   import PlaylistCover from './PlaylistCover.vue';
-  import Playlist from '@/lib/Playlist';
+  import PlaylistLocal from '@/lib/PlaylistLocal';
 
   export default Vue.extend({
     name: 'ListViewerForPlaylists',
@@ -65,9 +65,9 @@
     },
     methods: {
       Filter(items: object[], search: string) {
-        const playlists = items as Playlist[];
+        const playlists = items as PlaylistLocal[];
 
-        return playlists.filter((playlist: Playlist) => {
+        return playlists.filter((playlist: PlaylistLocal) => {
           return search.toLowerCase().split(' ').filter((v) => v !== '').map((word) => (
             (playlist.playlistTitle && playlist.playlistTitle.toLowerCase().indexOf(word) !== -1) ||
             (playlist.playlistDescription && playlist.playlistDescription.toLowerCase().indexOf(word) !== -1) ||

@@ -1,6 +1,7 @@
 import axios, {AxiosAdapter, AxiosInstance} from 'axios';
 import {cacheAdapterEnhancer, throttleAdapterEnhancer} from 'axios-extensions';
 import IBSaberPlaylist from '@/lib/data/IBSaberPlaylist';
+import Playlist from '@/lib/Playlist';
 
 const CORS_ANYWHERE = 'https://cors-anywhere.herokuapp.com/';
 const API_BASE_URL = 'https://bsaber.com/';
@@ -21,5 +22,12 @@ export default class BSaberAPI {
   public getPlaylists() {
     return this.http.get(PLAYLIST_API)
       .then((answer) => answer.data as IBSaberPlaylist);
+  }
+
+  public getPlaylist(playlist: IBSaberPlaylist): Promise<Playlist | undefined> {
+    return axios.get(playlist.playlistURL)
+      .then((answer) => answer.data as string)
+      .then((raw) => Playlist.Parse(raw))
+      .catch((err) => undefined);
   }
 }

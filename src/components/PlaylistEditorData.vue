@@ -64,7 +64,7 @@
   import Vue from 'vue';
   import {remote} from 'electron';
   import {get} from 'vuex-pathify';
-  import Playlist from '../lib/Playlist';
+  import PlaylistLocal from '../lib/PlaylistLocal';
   import Utils from '../lib/Utils';
   import store from '@/store/store';
 
@@ -91,7 +91,7 @@
     },
     methods: {
       LoadImage() {
-        Playlist
+        PlaylistLocal
           .LoadCover(this.playlist.playlistPath)
           .then((data) => {
             this.imageChanged = false;
@@ -132,15 +132,16 @@
         );
       },
       Save() {
-        const playlist = new Playlist();
+        let playlist = {};
 
         playlist.playlistTitle = this.playlistTitle;
         playlist.playlistAuthor = this.playlistAuthor;
         playlist.playlistDescription = this.playlistDescription;
         playlist.playlistPath = this.playlist.playlistPath;
         playlist.songs = this.playlist.songs;
-        playlist.CalculateHash();
 
+        playlist = new PlaylistLocal(playlist);
+        playlist.CalculateHash();
         playlist.Save(this.imageData)
           .then(() => {
             this.snackbarText = 'Successfully saved';

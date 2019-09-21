@@ -49,7 +49,7 @@
   import {get} from 'vuex-pathify';
   import store from '@/store/store';
   import PlaylistCover from '@/components/PlaylistCover.vue';
-  import Playlist from '@/lib/Playlist';
+  import PlaylistLocal from '@/lib/PlaylistLocal';
   import ISongInfo from '@/lib/data/ISongInfo';
 
   export default Vue.extend({
@@ -68,13 +68,13 @@
       playlists: get('songs/playlists'),
     },
     methods: {
-      IsInPlaylist(playlist: Playlist) {
+      IsInPlaylist(playlist: PlaylistLocal) {
         return !!playlist.songs.find((s: ISongInfo) => s.hash === (this.song as ISongInfo).hash);
       },
-      Add(playlist: Playlist) {
+      Add(playlist: PlaylistLocal) {
         store.commit('songs/addSongToPlaylist', {playlist, song: this.song});
       },
-      Remove(playlist: Playlist) {
+      Remove(playlist: PlaylistLocal) {
         store.commit('songs/removeSongFromPlaylist', {playlist, song: this.song});
       },
     },
