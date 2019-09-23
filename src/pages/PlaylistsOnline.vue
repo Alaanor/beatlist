@@ -5,11 +5,22 @@
 
     <v-progress-circular v-if="playlists === []" :size="50" indeterminate></v-progress-circular>
     <v-alert v-else-if="!playlists" type="warning" class="mt-5">Couldn't load playlists :/</v-alert>
-    <v-slide-group v-else class="mt-5" show-arrows center-active>
+    <v-slide-group v-else class="mt-5" show-arrows :mandatory="forceSelected" center-active>
       <v-slide-item v-for="playlist in playlists" v-model="playlistSelected" v-slot:default="{active, toggle}">
         <v-card width="200" class="mx-3" @click.stop="toggle" :raised="active" @click="showPlaylist(playlist)">
           <v-img :src="playlist.image" width="200" height="140"
-                 :gradient="`rgba(0, 0, 0, 0) 50%, rgb(66, 66, 66)`"></v-img>
+                 :gradient="`rgba(0, 0, 0, 0) 50%, rgb(66, 66, 66)`">
+            <v-overlay absolute :value="active" :opacity="0.7">
+              <v-row class="fill-height" align="center" justify="center">
+                <v-scale-transition>
+                  <v-btn v-if="active" icon x-large>
+                    <!-- @TODO Btn download playlist -->
+                    <v-icon color="success" x-large>file_download</v-icon>
+                  </v-btn>
+                </v-scale-transition>
+              </v-row>
+            </v-overlay>
+          </v-img>
           <v-card-title class="subtitle-1 mt-n3" style="height: 75px">{{playlist.playlistTitle}}</v-card-title>
           <v-card-text class="pb-0">
             <table>
@@ -57,7 +68,8 @@
         </div>
         <v-alert v-else-if="playlist === 'failed'" type="warning" class="mt-5">Couldn't load playlist :/</v-alert>
         <div v-else-if="!!playlist" class="mt-10">
-          <span class="headline grey--text">Content of <span class="white--text">{{playlist.playlistTitle}}</span></span>
+          <span class="headline grey--text">Content of <span
+                  class="white--text">{{playlist.playlistTitle}}</span></span>
           <ListViewerForSongSimple class="mt-5" :songs="playlist.songs">
             <template #actions="{item}">
               <BtnDownloadBeatMap :beatmap="item" download-only show-tick-if-downloaded></BtnDownloadBeatMap>
@@ -79,6 +91,7 @@
     name: 'PlaylistsOnline',
     components: {ListViewerForSongSimple, BtnDownloadBeatMap},
     data: () => ({
+      forceSelected: false,
       playlists: [],
       playlist: undefined,
       playlistSelected: null,
@@ -90,6 +103,7 @@
     },
     methods: {
       showPlaylist(playlist) {
+        this.forceSelected = true;
         this.playlist = 'loading';
         BSaberAPI.Singleton
           .getPlaylist(playlist)
