@@ -6,9 +6,9 @@
            :disabled="isDownloading || isExtracting">
       <v-icon>file_download</v-icon>
       <template #loader>
-        <v-progress-circular color="success" :rotate="-90"
-                             :indeterminate="isExtracting"
-                             :value="getPercent">
+        <v-progress-circular
+                color="success" :rotate="-90" :value="getPercent"
+                :indeterminate="isExtracting">
         </v-progress-circular>
       </template>
     </v-btn>
@@ -60,8 +60,10 @@
     }),
     computed: {
       getPercent() {
-        const percent = this.dl ? (this.dl.state.receivedBytes / this.dl.state.totalBytes) * 100 : 0;
-        return isNaN(percent) ? 0 : percent;
+        const percent = this.dl ? ((this.dl.state.receivedBytes / this.dl.state.totalBytes) * 100)  : 0;
+        const easeOutExpo = 100 * (-Math.pow(2, -(1/10) * percent) + 1);
+        console.log(easeOutExpo);
+        return isNaN(easeOutExpo) ? 0 : easeOutExpo;
       },
       isDownloaded() {
         return SongLocal.isInLibrary(this.beatmap);
@@ -83,6 +85,7 @@
       installBeatMap() {
         this.dl = this.beatmap.InstallIt();
         this.isDownloading = true;
+        this.isExtracting = false;
         this.subscribeDlEvent();
       },
       subscribeDlEvent() {
@@ -101,12 +104,6 @@
         this.isDownloading = false;
         this.isExtracting = false;
         this.err = this.dl.err;
-
-        if (this.err) {
-          this.errorSnackbar = true;
-        } else {
-          this.doneSnackbar = true;
-        }
       },
       reset() {
         if (this.dl) {
