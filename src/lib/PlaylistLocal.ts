@@ -10,7 +10,7 @@ const writeFile = promisify(fs.writeFile);
 const renameFile = promisify(fs.rename);
 const deleteFile = promisify(fs.unlink);
 
-export default class PlaylistLocal extends Playlist {
+export default class PlaylistLocal extends Playlist implements IPlaylistLocal {
 
   public static async ParseFromFile(pathToJson: string): Promise<PlaylistLocal | undefined> {
     const raw = await readFile(pathToJson);

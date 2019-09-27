@@ -1,7 +1,7 @@
 import axios, {AxiosAdapter, AxiosInstance} from 'axios';
 import {cacheAdapterEnhancer, throttleAdapterEnhancer} from 'axios-extensions';
 import IBSaberPlaylist from '@/lib/data/IBSaberPlaylist';
-import Playlist from '@/lib/Playlist';
+import PlaylistOnline from '@/lib/PlaylistOnline';
 
 const CORS_ANYWHERE = 'https://cors-anywhere.herokuapp.com/';
 const API_BASE_URL = 'https://bsaber.com/';
@@ -25,10 +25,10 @@ export default class BSaberAPI {
       .catch(() => undefined);
   }
 
-  public getPlaylist(playlist: IBSaberPlaylist): Promise<Playlist | undefined> {
+  public getPlaylist(playlist: IBSaberPlaylist): Promise<PlaylistOnline | undefined> {
     return axios.get(CORS_ANYWHERE + playlist.playlistURL)
       .then((answer) => JSON.stringify(answer.data))
-      .then((raw) => Playlist.Parse(raw))
+      .then((raw) => PlaylistOnline.Parse(raw))
       .catch(() => undefined);
   }
 }

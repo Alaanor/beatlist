@@ -1,4 +1,6 @@
-export default interface IBSaberPlaylist {
+import IPlaylistOnline from '@/lib/data/IPlaylistOnline';
+
+export default interface IBSaberPlaylist extends IPlaylistOnline {
   playlistTitle: string;
   playlistDescription: string;
   playlistAuthor: string;
