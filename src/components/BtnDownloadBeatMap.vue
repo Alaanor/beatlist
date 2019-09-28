@@ -61,8 +61,7 @@
     computed: {
       getPercent() {
         const percent = this.dl ? ((this.dl.state.receivedBytes / this.dl.state.totalBytes) * 100)  : 0;
-        const easeOutExpo = 100 * (-Math.pow(2, -(1/10) * percent) + 1);
-        console.log(easeOutExpo);
+        const easeOutExpo = 100 * (-Math.pow(2, -(1 / 10) * percent) + 1);
         return isNaN(easeOutExpo) ? 0 : easeOutExpo;
       },
       isDownloaded() {

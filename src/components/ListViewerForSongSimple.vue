@@ -33,8 +33,8 @@
     methods: {
       onClick(item) {
         this.$emit('click', item);
-      }
-    }
+      },
+    },
   });
 </script>
 

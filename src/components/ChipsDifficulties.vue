@@ -8,9 +8,9 @@
   import Vue from 'vue';
 
   export default Vue.extend({
-    name: 'ComboBoxDifficulties',
+    name: 'ChipsDifficulties',
     props: {
-      value: {type: Object}
+      value: {type: Object},
     },
     data: () => ({
       selected: [0, 1, 2, 3, 4],
@@ -24,14 +24,14 @@
     }),
     watch: {
       selected() {
-        let diff = {
+        const diff = {
           easy: false, normal: false, hard: false,
           expert: false, expertPlus: false,
         };
 
         this.selected.forEach((i) => diff[this.map[i].value] = true);
         this.$emit('input', diff);
-      }
+      },
     },
   });
 </script>

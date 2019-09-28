@@ -27,7 +27,7 @@
             .LoadCover(this.playlist.playlistPath)
             .then((data) => {
               if (!hasCanceled) {
-                this.imageData = data
+                this.imageData = data;
               }
             });
 

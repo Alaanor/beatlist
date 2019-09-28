@@ -41,7 +41,7 @@
             },
           };
         })();
-      }
+      },
     },
     mounted() {
       this.$nextTick(() => {

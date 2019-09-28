@@ -146,7 +146,7 @@
       },
       onlineBeatMap() {
         return new SongOnline(SongLocal.isSongLocal(this.song) ? this.song.onlineData : this.song);
-      }
+      },
     },
     methods: {
       UpdateComponent() {
@@ -168,7 +168,7 @@
        */
       Linkify(str) {
         return linkifyHtml(str);
-      }
+      },
     },
     filters: {
       /** @return {string} */

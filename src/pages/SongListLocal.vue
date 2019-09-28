@@ -15,7 +15,7 @@
 
       <template #filter>
         <span class="subheading">Difficulties <span class="caption">(at least one of)</span></span>
-        <ComboBoxDifficulties v-model="filterDiff"></ComboBoxDifficulties>
+        <ChipsDifficulties v-model="filterDiff"></ChipsDifficulties>
         <br>
         <span class="subheading">BPM</span><br>
         <v-range-slider :min="bpmRange.min" :max="bpmRange.max" thumb-label="always"
@@ -45,7 +45,7 @@
   import Vue from 'vue';
   import ListViewerForSongs from '@/components/ListViewerForSongs.vue';
   import BtnAddSongToPlaylists from '@/components/BtnToggleAddRemoveSongInPlaylists.vue';
-  import ComboBoxDifficulties from '@/components/ComboBoxDifficulties.vue';
+  import ChipsDifficulties from '@/components/ChipsDifficulties.vue';
   import ISongLocal from '@/lib/data/ISongLocal';
   import IDifficulties from '@/lib/data/IDifficulties';
   import {get} from 'vuex-pathify';
@@ -53,7 +53,7 @@
 
   export default Vue.extend({
     name: 'SongListLocal',
-    components: {ListViewerForSongs, BtnAddSongToPlaylists, ComboBoxDifficulties},
+    components: {ListViewerForSongs, BtnAddSongToPlaylists, ChipsDifficulties},
     computed: {
       songs: get('songs/songs'),
     },
@@ -76,7 +76,7 @@
         {value: 'plays', text: 'Plays'},
         {value: 'upVotes', text: 'Upvotes'},
         {value: 'downVotes', text: 'Downvotes'},
-        {value: 'rating', text: 'Rating'}
+        {value: 'rating', text: 'Rating'},
       ],
       sortBy: 'date',
       sortDesc: 1,
@@ -110,7 +110,7 @@
       },
       SortBy(songs: ISongLocal[]) {
         return songs.sort((a: ISongLocal, b: ISongLocal) => {
-          let criteria = this.sortBy as string;
+          const criteria = this.sortBy as string;
           switch (criteria) {
             case 'date':
               return (a.onlineData.uploaded < b.onlineData.uploaded ? -1 : 1) * (this.sortDesc ? -1 : 1);
@@ -126,7 +126,7 @@
               return 0;
           }
         });
-      }
+      },
     },
   });
 </script>

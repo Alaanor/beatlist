@@ -40,7 +40,7 @@
       dl: {},
     }),
     mounted() {
-      DownloadBeatMapItem.on('itemDone', this.itemDone)
+      DownloadBeatMapItem.on('itemDone', this.itemDone);
     },
     methods: {
       itemDone(dl) {
@@ -54,10 +54,10 @@
 
         setTimeout(() => {
           this.$set(this.dl, dl.beatmap.key, undefined);
-        }, timeout)
+        }, timeout);
       },
-    }
-  })
+    },
+  });
 </script>
 
 <style scoped>

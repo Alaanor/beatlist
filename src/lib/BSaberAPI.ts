@@ -19,7 +19,7 @@ export default class BSaberAPI {
     });
   }
 
-  public getPlaylists(): Promise<IBSaberPlaylist[] | undefined>{
+  public getPlaylists(): Promise<IBSaberPlaylist[] | undefined> {
     return this.http.get(PLAYLIST_API)
       .then((answer) => answer.data as IBSaberPlaylist[])
       .catch(() => undefined);

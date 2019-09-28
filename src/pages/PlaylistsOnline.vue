@@ -3,7 +3,6 @@
     <span class="display-2">Online playlists</span><br>
     <span class="subtitle-1 grey--text">Content from <span @click="openUrl()">bsaber.com</span></span>
 
-    {{isDownloaded}}
     <v-progress-circular v-if="playlists === []" :size="50" indeterminate></v-progress-circular>
     <v-alert v-else-if="!playlists" type="warning" class="mt-5">Couldn't load playlists :/</v-alert>
     <v-slide-group v-else class="mt-5" show-arrows :mandatory="forceSelected" center-active>
@@ -99,7 +98,7 @@
     computed: {
       isDownloaded() {
         return !!this.playlist && this.playlist instanceof PlaylistOnline && this.playlist.IsDownloaded();
-      }
+      },
     },
     mounted() {
       BSaberAPI.Singleton

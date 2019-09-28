@@ -68,7 +68,7 @@
         {value: 'downloads', text: 'Downloads'},
         {value: 'plays', text: 'Plays'},
       ],
-      sortBy: 'hot'
+      sortBy: 'hot',
     }),
     methods: {
       updatePagination(options) {
@@ -118,7 +118,7 @@
       },
       getLocal(beatmap) {
         return SongLocal.get(beatmap);
-      }
+      },
     },
     mounted() {
       this.updatePagination();

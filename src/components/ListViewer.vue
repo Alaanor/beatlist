@@ -99,7 +99,7 @@
     methods: {
       updateSearch() {
         this.$emit('updateSearch', this.search);
-      }
+      },
     },
     filters: {
       forceInt(value) {
