@@ -4,7 +4,7 @@
     <span class="subtitle-1 grey--text">Content from <span @click="openUrl()">bsaber.com</span></span>
 
     <v-progress-circular v-if="playlists === []" :size="50" indeterminate></v-progress-circular>
-    <v-alert v-else-if="!playlists" type="warning" class="mt-5">Couldn't load playlists :/</v-alert>
+    <v-alert v-else-if="!playlists" type="warning" class="mt-5">Couldn't load playlists <v-icon>sentiment_dissatisfied</v-icon></v-alert>
     <v-slide-group v-else class="mt-5" show-arrows :mandatory="forceSelected" center-active>
       <v-slide-item v-for="pl in playlists" v-model="playlistSelected" v-slot:default="{active, toggle}">
         <v-card width="200" class="mx-3" @click.stop="toggle" :raised="active" @click="showPlaylist(pl)">
