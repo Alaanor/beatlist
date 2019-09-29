@@ -13,5 +13,8 @@ export default class AutoScanSong {
         win.on('focus', () => {
             win.webContents.send(ON_WINDOW_SHOW);
         });
+
+        // on start, we also check for change
+        win.webContents.send(ON_WINDOW_SHOW);
     }
 }
