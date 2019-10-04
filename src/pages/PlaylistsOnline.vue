@@ -4,17 +4,21 @@
     <span class="subtitle-1 grey--text">Content from <span @click="openUrl()">bsaber.com</span></span>
 
     <v-progress-circular v-if="playlists === []" :size="50" indeterminate></v-progress-circular>
-    <v-alert v-else-if="!playlists" type="warning" class="mt-5">Couldn't load playlists <v-icon>sentiment_dissatisfied</v-icon></v-alert>
+    <v-alert v-else-if="!playlists" type="warning" class="mt-5">Couldn't load playlists
+      <v-icon>sentiment_dissatisfied</v-icon>
+    </v-alert>
     <v-slide-group v-else class="mt-5" show-arrows :mandatory="forceSelected" center-active>
       <v-slide-item v-for="pl in playlists" v-model="playlistSelected" v-slot:default="{active, toggle}">
-        <v-card width="200" class="mx-3" @click.stop="toggle" :raised="active" @click="showPlaylist(pl)">
+        <v-card width="200" class="mx-3 pb-4 mb-5" @click.stop="toggle" :raised="active" @click="showPlaylist(pl)">
           <v-img :src="pl.image" width="200" height="140"
                  :gradient="`rgba(0, 0, 0, 0) 50%, rgb(66, 66, 66)`">
             <v-overlay absolute :value="active" :opacity="0.7">
               <v-row class="fill-height" align="center" justify="center">
                 <v-scale-transition>
                   <v-btn v-if="active" icon x-large :disabled="playlist === 'loading' || isDownloaded">
-                    <v-icon color="success" x-large @click="installPlaylist()">{{isDownloaded ? 'done' : 'file_download'}}</v-icon>
+                    <v-icon color="success" x-large @click="installPlaylist()">{{isDownloaded ? 'done' :
+                      'file_download'}}
+                    </v-icon>
                   </v-btn>
                 </v-scale-transition>
               </v-row>
@@ -51,7 +55,9 @@
                 <td valign="top">
                   <v-icon small>short_text</v-icon>
                 </td>
-                <td><span class="body-2">{{pl.playlistDescription}}</span></td>
+                <td>
+                  <div class="body-2" style="height: 80px; overflow: hidden">{{pl.playlistDescription}}</div>
+                </td>
               </tr>
             </table>
           </v-card-text>
@@ -65,7 +71,7 @@
           <v-progress-circular class="mt-5" color="grey" :size="50" indeterminate></v-progress-circular>
         </div>
         <v-alert v-else-if="playlist === 'failed'" type="warning" class="mt-5">Couldn't load playlist :/</v-alert>
-        <div v-else-if="!!playlist" class="mt-10">
+        <div v-else-if="!!playlist" class="mt-5">
           <span class="headline grey--text">Content of <span
                   class="white--text">{{playlist.playlistTitle}}</span></span>
           <ListViewerForSongSimple class="mt-5" :songs="playlist.songs">
