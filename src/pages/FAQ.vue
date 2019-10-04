@@ -20,7 +20,7 @@
               <img src="https://cdn.discordapp.com/avatars/213397906571395072/a_dcae5045fba3fffee46a967ce187b609.webp?size=128"
                    alt="trevor">
             </v-avatar>
-            Alaanor#9999
+            Alaanor<span class="grey--text">#9999</span>
           </v-chip>
         </div>
       </v-flex>
@@ -42,14 +42,16 @@
             have',
         },
         {
-          question: 'but wher can i get moar songe ?',
-          answer: 'just use the ig downloader smh',
-        },
-        {
           question: 'Some song couldn\'t\'ve been imported, why ?',
           answer: 'Custom map or old song that aren\'t on beatsaver are excluded.<br>\
             Duplicate map are also excluded.<br>\
             This is to prevent unexpected error when dealing with songs that have missing information.',
+        },
+        {
+          question: 'Some online feature are not loading.',
+          answer: `Either one of them changed their API or their API service is down.<br>\
+            In the first case check you can reach me on discord to notify me, who know, I may not know that is broken !<br>\
+            In the second case, a little of patience should solve it. :)`
         },
         {
           question: 'I\'ve found a bug ! What can I do ?',
