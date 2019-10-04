@@ -47,9 +47,21 @@ export default class PlaylistLocal extends Playlist implements IPlaylistLocal {
     this.playlistPath = playlist.playlistPath;
   }
 
+  public async LoadCover(): Promise<string> {
+    const raw = await readFile(this.playlistPath);
+    const data = JSON.parse(raw.toString());
+
+    let src = data.image;
+    if (src.substring(0, 10) !== 'data:image') {
+      src = `data:image/jpeg;charset=utf-8;base64,${src}`;
+    }
+
+    return src;
+  }
+
   public async Save(image?: string) {
     if (!image) {
-      image = await Playlist.LoadCover(this.playlistPath);
+      image = await this.LoadCover();
     }
 
     await this.EnsureJsonExtensionName();

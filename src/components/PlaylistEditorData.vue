@@ -91,8 +91,8 @@
     },
     methods: {
       LoadImage() {
-        PlaylistLocal
-          .LoadCover(this.playlist.playlistPath)
+        this.playlist
+          .LoadCover()
           .then((data) => {
             this.imageChanged = false;
             return this.imageData = data;

@@ -48,4 +48,8 @@ export default class PlaylistOnline extends Playlist implements IPlaylistOnline 
       pl.playlistDescription === this.playlistDescription);
   }
 
+  public async LoadCover(): Promise<string> {
+    return this.coverImage;
+  }
+
 }

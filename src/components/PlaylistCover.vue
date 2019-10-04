@@ -5,7 +5,6 @@
 
 <script>
   import Vue from 'vue';
-  import Playlist from '@/lib/Playlist';
 
   export default Vue.extend({
     name: 'PlaylistCover',
@@ -23,8 +22,8 @@
         this.latestFetch = (() => {
           let hasCanceled = false;
 
-          const promise = Playlist
-            .LoadCover(this.playlist.playlistPath)
+          const promise = this.playlist
+            .LoadCover()
             .then((data) => {
               if (!hasCanceled) {
                 this.imageData = data;
