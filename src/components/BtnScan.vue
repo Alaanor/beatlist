@@ -1,4 +1,3 @@
-<!--suppress ALL -->
 <template>
   <v-container pa-0 ma-0>
     <v-btn :disabled="dialogScan || !installationPathValid" :loading="dialogScan" @click="scan()" color="primary">
@@ -56,9 +55,7 @@
 <script>
   import Vue from 'vue';
   import {get, sync} from 'vuex-pathify';
-  import SongLoader from '@/lib/SongLoader';
   import BeatSaber from '@/lib/BeatSaber';
-  import SongHashData from '../lib/SongHashData';
   import SongScanner from '@/lib/SongScanner';
 
   export default Vue.extend({
@@ -92,7 +89,7 @@
         this.dialogScan = true;
         const instPath = this.installationPath;
         new BeatSaber(instPath).getSongList()
-          .then(async (list) => {
+          .then(async () => {
             this.songScanner.showLogs = true;
             await this.songScanner.Scan(true);
 
@@ -102,7 +99,10 @@
             this.scanResult.icon = 'check';
 
             if (this.getNumberOfSongs() === 0) {
-              throw new Error('Something went wrong, 0 song were correctly imported');
+              this.scanResult.type = 'warning';
+              this.scanResult.title = 'No local beatmap found';
+              this.scanResult.subtitle = `But you still can use Beatlist !`;
+              this.scanResult.icon = 'warning';
             }
           })
           .catch((err) => {

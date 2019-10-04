@@ -1,4 +1,3 @@
-<!--suppress XmlUnboundNsPrefix -->
 <template>
   <v-container>
     <v-alert :value="!configValid" type="warning" class="mb-3">
@@ -130,7 +129,7 @@
         return this.songs !== undefined ? this.songs.filter((s) => !s.valid).length : 0;
       },
       validateConfig() {
-        this.configValid = this.installationPathValid && this.songs && this.songs.length > 0;
+        this.configValid = this.installationPathValid && this.songs;
       },
       async detectPath() {
         this.resolveBtnLoading = true;
