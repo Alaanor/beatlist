@@ -3,6 +3,7 @@ import BeatSaber from './BeatSaber';
 import store from '../store/store';
 import PlaylistLocal from '@/lib/PlaylistLocal';
 import IPlaylistOnline from '@/lib/data/IPlaylistOnline';
+import events from 'events';
 
 export default class PlaylistOnline extends Playlist implements IPlaylistOnline {
 
@@ -11,6 +12,12 @@ export default class PlaylistOnline extends Playlist implements IPlaylistOnline 
     pl.coverImage = JSON.parse(rawJson).image;
     return new PlaylistOnline(pl);
   }
+
+  public static on(key: string, listener: () => void) {
+    this.EventEmitter.on(key, listener);
+  }
+
+  private static EventEmitter = new events.EventEmitter();
 
   public coverImage: string;
 
@@ -30,6 +37,7 @@ export default class PlaylistOnline extends Playlist implements IPlaylistOnline 
 
     await pl.Save(this.coverImage);
     await store.dispatch('songs/loadPlaylists');
+    PlaylistOnline.EventEmitter.emit('itemDone', this);
   }
 
   public IsDownloaded(): boolean {

@@ -5,7 +5,7 @@
 
 <script>
   import Vue from 'vue';
-  import PlaylistLocal from '../lib/PlaylistLocal';
+  import Playlist from '@/lib/Playlist';
 
   export default Vue.extend({
     name: 'PlaylistCover',
@@ -23,7 +23,7 @@
         this.latestFetch = (() => {
           let hasCanceled = false;
 
-          const promise = PlaylistLocal
+          const promise = Playlist
             .LoadCover(this.playlist.playlistPath)
             .then((data) => {
               if (!hasCanceled) {

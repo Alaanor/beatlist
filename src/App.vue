@@ -55,7 +55,8 @@
       </v-container>
     </v-content>
     <AutoScanSong></AutoScanSong>
-    <BackgroundDownloader></BackgroundDownloader>
+    <BackgroundSongDownloadNotifier></BackgroundSongDownloadNotifier>
+    <BackgroundPlaylistDownloadNotifier></BackgroundPlaylistDownloadNotifier>
   </v-app>
 </template>
 
@@ -76,7 +77,8 @@
   import MenuNavigationItem from './components/MenuNavigationItem.vue';
   import settings from '@/store/settings';
   import AutoScanSong from './components/AutoScanSong.vue';
-  import BackgroundDownloader from './components/BackgroundDownloader.vue';
+  import BackgroundSongDownloadNotifier from './components/BackgroundSongDownloadNotifier.vue';
+  import BackgroundPlaylistDownloadNotifier from './components/BackgroundPlaylistDownloadNotifier.vue';
 
   Vue.use(VueRouter);
 
@@ -146,7 +148,12 @@
 
   export default Vue.extend({
     router,
-    components: {MenuNavigationItem, AutoScanSong, BackgroundDownloader},
+    components: {
+      MenuNavigationItem,
+      AutoScanSong,
+      BackgroundSongDownloadNotifier,
+      BackgroundPlaylistDownloadNotifier,
+    },
     data: () => ({
       drawer: null,
       isReady: false,

@@ -34,7 +34,7 @@
   const timeout = 15000;
 
   export default Vue.extend({
-    name: 'BackgroundDownloader',
+    name: 'BackgroundSongDownloadNotifier',
     components: {SongCover},
     data: () => ({
       dl: {},

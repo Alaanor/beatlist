@@ -10,15 +10,6 @@ const PLAYLIST_API = 'PlaylistAPI/playlistAPI.json';
 export default class BSaberAPI {
   public static Singleton: BSaberAPI = new BSaberAPI();
 
-  private static IsJsonString(str: string) {
-    try {
-      JSON.parse(str);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
   public http: AxiosInstance;
 
   public constructor() {
@@ -31,16 +22,14 @@ export default class BSaberAPI {
   public getPlaylists(): Promise<IBSaberPlaylist[] | undefined> {
     return this.http.get(PLAYLIST_API)
       .then((answer) => {
-        const data = answer.data;
-        if (BSaberAPI.IsJsonString(data)) {
-          return data as IBSaberPlaylist[];
-        }
+        const data = answer.data as IBSaberPlaylist[];
+        return data.length === 0 ? undefined : data;
       })
       .catch(() => undefined);
   }
 
   public getPlaylist(playlist: IBSaberPlaylist): Promise<PlaylistOnline | undefined> {
-    return axios.get(CORS_ANYWHERE + playlist.playlistURL)
+    return this.http.get(CORS_ANYWHERE + playlist.playlistURL)
       .then((answer) => JSON.stringify(answer.data))
       .then((raw) => PlaylistOnline.Parse(raw))
       .catch(() => undefined);
