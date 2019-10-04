@@ -106,11 +106,21 @@
             }
           })
           .catch((err) => {
-            this.scanResult.type = 'error';
-            this.scanResult.title = 'Failed to import song :(';
-            this.scanResult.subtitle = err;
-            this.scanResult.icon = 'close';
-            throw err;
+            switch (err.code) {
+              case 'ENOENT':
+                this.scanResult.type = 'error';
+                this.scanResult.title = `Missing folder`;
+                this.scanResult.subtitle = `CustomLevels folder is missing`;
+                this.scanResult.icon = 'close';
+                throw err;
+
+              default:
+                this.scanResult.type = 'error';
+                this.scanResult.title = 'Failed to import song :(';
+                this.scanResult.subtitle = err;
+                this.scanResult.icon = 'close';
+                throw err;
+            }
           })
           .finally(() => {
             this.dialogScan = false;
