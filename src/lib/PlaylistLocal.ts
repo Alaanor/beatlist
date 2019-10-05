@@ -4,6 +4,8 @@ import crypto from 'crypto';
 import path from 'path';
 import Playlist from './Playlist';
 import IPlaylistLocal from './data/IPlaylistLocal';
+import BeatSaber from '../lib/BeatSaber';
+import store from '../store/store';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -66,6 +68,7 @@ export default class PlaylistLocal extends Playlist implements IPlaylistLocal {
 
     await this.EnsureJsonExtensionName();
     await writeFile(this.playlistPath, this.ExportJson(image));
+    await this.UpdateFileName();
   }
 
   public async Delete() {
@@ -74,6 +77,13 @@ export default class PlaylistLocal extends Playlist implements IPlaylistLocal {
 
   public CalculateHash() {
     this.playlistHash = PlaylistLocal.getPlaylistHash(this.playlistPath);
+  }
+
+  private async UpdateFileName() {
+    const playlistPath = BeatSaber.getPlaylistPath(store.getters['settings/installationPath']);
+    const fileName = this.playlistTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    const newPath = path.join(playlistPath, `${fileName}.json`);
+    await renameFile(this.playlistPath, newPath);
   }
 
   private async EnsureJsonExtensionName() {

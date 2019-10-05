@@ -39,6 +39,10 @@ export default class BeatSaber {
     return resolveInstallPath();
   }
 
+  public static getPlaylistPath(installationPath: string) {
+    return path.join(installationPath, BEAT_SABER_PLAYLIST);
+  }
+
   private readonly installationPath: string;
 
   constructor(installationPath: string) {
