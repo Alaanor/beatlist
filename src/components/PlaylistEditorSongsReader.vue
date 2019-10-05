@@ -2,10 +2,22 @@
   <div v-if="!!playlist">
     <ListViewerForSongSimple :songs="playlist.songs" class="py-0">
       <template #actions="{item}">
-        <BtnDownloadBeatMap v-if="IsOnlineSong(item)" :beatmap="item" download-only></BtnDownloadBeatMap>
-        <v-btn icon class="text--secondary" @click="Remove(item)">
-          <v-icon color="error">delete</v-icon>
-        </v-btn>
+        <v-tooltip top>
+          <template #activator="{on}">
+            <div v-on="on">
+              <BtnDownloadBeatMap v-if="IsOnlineSong(item)" :beatmap="item" download-only></BtnDownloadBeatMap>
+            </div>
+          </template>
+          <span>Download it</span>
+        </v-tooltip>
+        <v-tooltip top>
+          <template #activator="{on}">
+            <v-btn icon class="text--secondary" @click="Remove(item)" v-on="on">
+              <v-icon color="error">close</v-icon>
+            </v-btn>
+          </template>
+          <span>Remove from playlist</span>
+        </v-tooltip>
       </template>
     </ListViewerForSongSimple>
     <v-container>
