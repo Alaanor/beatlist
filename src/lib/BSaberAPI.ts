@@ -31,7 +31,11 @@ export default class BSaberAPI {
   public getPlaylist(playlist: IBSaberPlaylist): Promise<PlaylistOnline | undefined> {
     return this.http.get(CORS_ANYWHERE + playlist.playlistURL)
       .then((answer) => JSON.stringify(answer.data))
-      .then((raw) => PlaylistOnline.Parse(raw))
-      .catch(() => undefined);
+      .then(async (raw) => await PlaylistOnline.Parse(raw))
+      .catch((e) => {
+        // tslint:disable-next-line:no-console
+        console.warn(e);
+        return undefined;
+      });
   }
 }

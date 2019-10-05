@@ -15,15 +15,22 @@ export default abstract class Playlist implements IPlaylist {
     playlist.playlistAuthor = data.playlistAuthor;
     playlist.playlistDescription = data.playlistDescription;
 
-    playlist.songs = (await Promise.all(data.songs.map(async (s: any) => {
-      return (
-        SongLoader.GetSongFromHash(s.hash, songs) ||
-        SongLoader.GetSongFromKey(s.key, songs) ||
-        SongLoader.GetSongFromDirId(s.key, songs) ||
-        await BeatSaverAPI.Singleton.getSongByHash(s.hash, true) ||
-        await BeatSaverAPI.Singleton.getSongByKey(s.key, true)
-      );
-    }))).filter((s: any) => s !== undefined) as ISongInfo[];
+    const promises: Array<Promise<any>> = [];
+
+    for (const song of data.songs) {
+      promises.push((async (s: any) => {
+        return (
+          SongLoader.GetSongFromHash(s.hash, songs) ||
+          SongLoader.GetSongFromKey(s.key, songs) ||
+          SongLoader.GetSongFromDirId(s.key, songs) ||
+          await BeatSaverAPI.Singleton.getSongByHash(s.hash, true) ||
+          await BeatSaverAPI.Singleton.getSongByKey(s.key, true)
+        );
+      })(song));
+    }
+
+    playlist.songs = (await Promise.all(promises))
+      .filter((s: any) => s !== undefined) as ISongInfo[];
 
     return playlist;
   }
@@ -34,6 +41,7 @@ export default abstract class Playlist implements IPlaylist {
   public songs: ISongInfo[] = [];
 
   protected constructor(playlist: IPlaylist) {
+    console.log("Constructor Playlist");
     this.playlistTitle = playlist.playlistTitle;
     this.playlistAuthor = playlist.playlistAuthor;
     this.playlistDescription = playlist.playlistDescription;
