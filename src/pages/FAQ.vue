@@ -51,7 +51,7 @@
           question: 'Some online feature are not loading.',
           answer: `Either one of them changed their API or their API service is down.<br>\
             In the first case check you can reach me on discord to notify me, who know, I may not know that is broken !<br>\
-            In the second case, a little of patience should solve it. :)`
+            In the second case, a little of patience should solve it. :)`,
         },
         {
           question: 'I\'ve found a bug ! What can I do ?',

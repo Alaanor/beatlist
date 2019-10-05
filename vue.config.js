@@ -4,7 +4,8 @@ module.exports = {
       builderOptions: {
         appId: "com.alaanor.beatlist",
         win: {
-          target: "portable"
+          target: "nsis",
+          icon: "./public/icon.ico"
         }
       }
     }
