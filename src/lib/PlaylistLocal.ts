@@ -80,10 +80,16 @@ export default class PlaylistLocal extends Playlist implements IPlaylistLocal {
   }
 
   private async UpdateFileName() {
+    if (!this.playlistTitle) {
+      return;
+    }
+
     const playlistPath = BeatSaber.getPlaylistPath(store.getters['settings/installationPath']);
     const fileName = this.playlistTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase();
     const newPath = path.join(playlistPath, `${fileName}.json`);
     await renameFile(this.playlistPath, newPath);
+    this.playlistPath = newPath;
+    this.CalculateHash();
   }
 
   private async EnsureJsonExtensionName() {
