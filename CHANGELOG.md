@@ -26,7 +26,7 @@
  - (#5) Wrong image could be displayed if the user search fast
  - Fixed app icon, it could be badly displayed.
  
-[See more (include screenshots)](https://www.notion.so/Beatlist-V1-1-848d401722464698a106011a03d359be)
+<a href="https://www.notion.so/Beatlist-V1-1-848d401722464698a106011a03d359be" target="_blank">See more (include screenshots)</a>
 
 ## v1.0.3 (05/07/2019)
 
