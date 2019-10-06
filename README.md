@@ -27,15 +27,15 @@ Beatlist is an electron app to create and manage playlist for the game BeatSaber
 # Screenshots
 
 <a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/songlist.png">
-  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/songlist.png" width="33%">
+  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_0/songlist.png" width="33%">
 </a>
 
 <a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/playlistEditor1.png">
-  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/playlistEditor1.png" width="33%">
+  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_0/playlistEditor1.png" width="33%">
 </a>
 
 <a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/playlistEditor2.png">
-  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/playlistEditor2.png" width="33%">
+  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_0/playlistEditor2.png" width="33%">
 </a>
 
 # Changelog
