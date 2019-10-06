@@ -8,7 +8,7 @@ import events from 'events';
 export default class PlaylistOnline extends Playlist implements IPlaylistOnline {
 
   public static async Parse(rawJson: string): Promise<PlaylistOnline | undefined> {
-    const pl = (await super.Parse(rawJson)) as IPlaylistOnline;
+    const pl = (await Playlist.Parse(rawJson)) as IPlaylistOnline;
     pl.coverImage = JSON.parse(rawJson).image;
     return new PlaylistOnline(pl);
   }
