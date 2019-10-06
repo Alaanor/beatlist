@@ -41,7 +41,6 @@ export default abstract class Playlist implements IPlaylist {
   public songs: ISongInfo[] = [];
 
   protected constructor(playlist: IPlaylist) {
-    console.log("Constructor Playlist");
     this.playlistTitle = playlist.playlistTitle;
     this.playlistAuthor = playlist.playlistAuthor;
     this.playlistDescription = playlist.playlistDescription;

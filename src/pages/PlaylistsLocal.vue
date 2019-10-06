@@ -10,12 +10,12 @@
     </v-layout>
     <ListViewerForPlaylists :action="GoToPlaylist">
       <template #item-block-action="{item}">
-        <v-btn icon exact :to="`playlist/edit/${item.playlistHash}`">
+        <v-btn icon exact :to="`/playlist/local/edit/${item.playlistHash}`">
           <v-icon>chevron_right</v-icon>
         </v-btn>
       </template>
       <template #item-list-action="{item}">
-        <v-btn icon exact :to="`playlist/edit/${item.playlistHash}`">
+        <v-btn icon exact :to="`/playlist/local/edit/${item.playlistHash}`">
           <v-icon>chevron_right</v-icon>
         </v-btn>
       </template>
