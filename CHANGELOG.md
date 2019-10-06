@@ -1,8 +1,34 @@
 # Changelog
 
+## v1.1.0 (06/10/2019)
+**Features:**
+ - Online beatmap download (beatsaver.com)
+ - Online playlist download (bsaber.com)
+
+**Improvement:**
+ - Major
+   - Automatically detect new beatmap installed
+   - Material design 2.0 upgrade, updated the design
+   - More information when you click on a beatmap
+   - On local song:
+     - Sort by Date, Downloads, Plays, Upvotes, Downvotes, Rating
+     - Filter by difficulties (#7) and/or bpm.
+   
+ - Minor:
+   - Use of installer instead of executable.
+   - Playlist filename are now synced with their title.
+   - New default playlist cover image.
+   - You can now delete a beatmap.
+   - Link in description are now clickable.
+   - The local beatmap scanner is now smarter and will only check for the difference.
+
+**Bug fixes:**
+ - (#5) Wrong image could be displayed if the user search fast
+ - Fixed app icon, it could be badly displayed.
+
 ## v1.0.3 (05/07/2019)
 
-**Feature:**
+**Features:**
  - Playlist list/grid are now clickable
 
 **Fixes:**
@@ -22,7 +48,7 @@
 
 Release of beatlist
 
-**Feature:**
+**Features:**
  - Manage playlist/songs
  - Scan local song
  - Read old playlist, convert to json, use hash as key

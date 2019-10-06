@@ -13,9 +13,8 @@ Beatlist is an electron app to create and manage playlist for the game BeatSaber
 # Feature
 
  - Create, edit, delete playlist.
- - Songs browser: ability to add and remove song to a playlist.
- - Should be compatible wherever you created your playlist.
- - Song are scanned from your BeatSaber installation path. I do not fetch for song online (yet?)
+ - Download beatmap and playlist from the community.
+ - Manage your local beatmap library.
  
 # Installation
 
@@ -27,15 +26,19 @@ Beatlist is an electron app to create and manage playlist for the game BeatSaber
 # Screenshots
 
 <a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/songlist.png">
-  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/songlist.png" width="33%">
+  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/onlineBeatmap.png" width="48%">
 </a>
 
 <a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/playlistEditor1.png">
-  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/playlistEditor1.png" width="33%">
+  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/onlinePlaylist.png" width="48%">
 </a>
 
 <a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/playlistEditor2.png">
-  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/playlistEditor2.png" width="33%">
+  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/localPlaylist.png" width="48%">
+</a>
+
+<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/playlistEditor2.png">
+  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/beatmapInfo.png" width="48%">
 </a>
 
 # Changelog
