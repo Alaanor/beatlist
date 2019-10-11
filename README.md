@@ -8,7 +8,7 @@
 
 # Beatlist
 
-Beatlist is an electron app to create and manage playlist for the game BeatSaber.
+Beatlist is an app to manage playlist and beatmap for the game BeatSaber. 
 
 # Feature
 
