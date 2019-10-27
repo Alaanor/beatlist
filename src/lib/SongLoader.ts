@@ -10,6 +10,7 @@ import SongLocal from './data/SongLocal';
 import BeatSaverAPI from '../lib/BeatSaverAPI';
 import ISongOnline from '../lib/data/ISongOnline';
 import BeatSaber from '../lib/BeatSaber';
+import SongHashCompute from '@/lib/SongHashCompute';
 
 const readFile = promisify(fs.readFile);
 
@@ -88,7 +89,7 @@ export default class SongLoader {
       song.metadata.difficulties = SongLoader.GetDifficulties(data._difficultyBeatmapSets);
 
       song.folderId = SongLoader.GetFolderId(song.path);
-      song.hash = await this.GetHash(song.path, song.folderId);
+      song.hash = await this.getHash(song);
       song.onlineData = (await BeatSaverAPI.Singleton.getSongByHash(song.hash) as ISongOnline);
       song.key = song.onlineData.key;
 
@@ -132,8 +133,18 @@ export default class SongLoader {
     }
   }
 
-  private static async GetHash(path: string, folderId: string | undefined) {
-    let hash = '';
+  private static async getHash(song: ISongLocal): Promise<string> {
+    const hash = await this.GetHash(song.path, song.folderId) || await SongHashCompute.Compute(song.path);
+
+    if (!hash) {
+      throw new Error('Couldn\'t find hash');
+    }
+
+    return hash;
+  }
+
+  private static async GetHash(path: string, folderId: string | undefined): Promise<string | undefined> {
+    let hash: string | undefined = '';
 
     try {
       hash = (await SongHashData.data())[path.toLowerCase()].songHash;
@@ -141,7 +152,7 @@ export default class SongLoader {
       if (!hash && !!folderId && folderId.length > 0) {
         hash = await BeatSaverAPI.Singleton.getSongByKey(folderId).then((s) => {
           if (!s) {
-            throw new Error('Unable to find the hash');
+            return undefined;
           }
 
           return s.hash;
