@@ -8,7 +8,7 @@
 
 # Beatlist
 
-Beatlist is an electron app to create and manage playlist for the game BeatSaber.
+Beatlist is an app to manage playlist and beatmap for the game BeatSaber. 
 
 # Feature
 
@@ -25,19 +25,19 @@ Beatlist is an electron app to create and manage playlist for the game BeatSaber
 
 # Screenshots
 
-<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/songlist.png">
+<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/onlineBeatmap.png">
   <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/onlineBeatmap.png" width="48%">
 </a>
 
-<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/playlistEditor1.png">
+<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/onlinePlaylist.png">
   <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/onlinePlaylist.png" width="48%">
 </a>
 
-<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/playlistEditor2.png">
+<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/localPlaylist.png">
   <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/localPlaylist.png" width="48%">
 </a>
 
-<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/playlistEditor2.png">
+<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/beatmapInfo.png">
   <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/beatmapInfo.png" width="48%">
 </a>
 
