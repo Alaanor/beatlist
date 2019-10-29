@@ -14,13 +14,9 @@
   },
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
-    "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "test": "jest"
   },
   "main": "background.js",
   "dependencies": {
@@ -51,6 +47,7 @@
     "@mdi/font": "^4.4.95",
     "@types/adm-zip": "^0.4.32",
     "@types/fs-extra": "^8.0.0",
+    "@types/jest": "^24.0.20",
     "@types/winreg": "^1.2.30",
     "@vue/cli-plugin-babel": "^3.11.0",
     "@vue/cli-plugin-typescript": "^3.11.0",
@@ -58,10 +55,12 @@
     "babel-core": "7.0.0-bridge.0",
     "electron": "^5.0.11",
     "eslint-plugin-vuetify": "^1.0.0-beta.3",
+    "jest": "^24.9.0",
     "sass": "^1.23.0",
     "sass-loader": "^7.3.1",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.1",
+    "ts-jest": "^24.1.0",
     "typescript": "^3.6.3",
     "vue-cli-plugin-electron-builder": "^1.4.0",
     "vue-cli-plugin-vuetify": "^0.6.3",
