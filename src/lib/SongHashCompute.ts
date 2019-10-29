@@ -9,23 +9,25 @@ export default class SongHashCompute {
 
   public static async Compute(folderPath: string): Promise<string | undefined> {
     try {
-      const infoDat = SongHashCompute.readInfoDat(folderPath);
-      let binary = (await readFile(path.join(folderPath, 'info.dat'))).toString();
+      const infoDatPath = path.join(folderPath, 'info.dat');
+      const infoDatStr = (await readFile(infoDatPath)).toString();
+      const infoDat = JSON.parse(infoDatStr);
 
-      for (const d of infoDat._difficultyBeatmapSets._difficultyBeatmaps) {
-        binary += (await readFile(path.join(folderPath, d._beatmapFilename))).toString();
+      let binary = infoDatStr;
+
+      for (const diffSet of infoDat._difficultyBeatmapSets) {
+        for (const d of diffSet._difficultyBeatmaps) {
+          binary += (await readFile(path.join(folderPath, d._beatmapFilename))).toString();
+        }
       }
 
       return crypto
         .createHash('sha1')
         .update(binary)
-        .digest('hex');
+        .digest('hex')
+        .toUpperCase();
     } catch (e) {
       return undefined;
     }
-  }
-
-  private static readInfoDat(folderPath: string) {
-    return JSON.parse(path.join(folderPath, 'info.dat'));
   }
 }
