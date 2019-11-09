@@ -43,6 +43,9 @@
     computed: {
       installationPath: get('settings/installationPath'),
     },
+    async mounted() {
+      await store.dispatch('songs/loadPlaylists');
+    },
     methods: {
       async NewPlaylist() {
         this.loadingAdd = true;
