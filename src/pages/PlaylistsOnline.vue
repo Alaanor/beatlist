@@ -3,65 +3,66 @@
     <span class="display-2">Online playlists</span><br>
     <span class="subtitle-1 grey--text">Content from <span @click="openUrl()">bsaber.com</span></span>
 
-    <v-progress-circular v-if="playlists === []" :size="50" indeterminate></v-progress-circular>
-    <v-alert v-else-if="!playlists" type="warning" class="mt-5">Couldn't load playlists
+    <v-alert v-if="!playlists" type="warning" class="mt-5">Couldn't load playlists
       <v-icon>sentiment_dissatisfied</v-icon>
     </v-alert>
     <v-slide-group v-else class="mt-5" show-arrows :mandatory="forceSelected" center-active>
-      <v-slide-item v-for="pl in playlists" v-model="playlistSelected" v-slot:default="{active, toggle}">
-        <v-card width="200" class="mx-3 pb-4 mb-5" @click.stop="toggle" :raised="active" @click="showPlaylist(pl)">
-          <v-img :src="pl.image" width="200" height="140"
-                 :gradient="`rgba(0, 0, 0, 0) 50%, rgb(66, 66, 66)`">
-            <v-overlay absolute :value="active" :opacity="0.7">
-              <v-row class="fill-height" align="center" justify="center">
-                <v-scale-transition>
-                  <v-btn v-if="active" icon x-large :disabled="playlist === 'loading' || isDownloaded">
-                    <v-icon color="success" x-large @click="installPlaylist()">{{isDownloaded ? 'done' :
-                      'file_download'}}
-                    </v-icon>
-                  </v-btn>
-                </v-scale-transition>
-              </v-row>
-            </v-overlay>
-          </v-img>
-          <v-card-title class="subtitle-1 mt-n3" style="height: 75px">{{pl.playlistTitle}}</v-card-title>
-          <v-card-text class="pb-0">
-            <table>
-              <tr>
-                <td valign="top" class="pr-2">
-                  <v-icon small>person</v-icon>
-                </td>
-                <td><span class="body-2">{{pl.playlistAuthor}}</span></td>
-              </tr>
-              <tr>
-                <td valign="top">
-                  <v-icon small>music_note</v-icon>
-                </td>
-                <td><span class="body-2">{{pl.playlistSongCount}} beatmaps</span></td>
-              </tr>
-              <tr>
-                <td valign="top">
-                  <v-icon small>event_note</v-icon>
-                </td>
-                <td><span class="body-2">{{pl.playlistDate.toLocaleString()}}</span></td>
-              </tr>
-              <tr>
-                <td valign="top">
-                  <v-icon small>category</v-icon>
-                </td>
-                <td><span class="body-2">{{pl.playlistCategory}}</span></td>
-              </tr>
-              <tr>
-                <td valign="top">
-                  <v-icon small>short_text</v-icon>
-                </td>
-                <td>
-                  <div class="body-2" style="height: 80px; overflow: hidden">{{pl.playlistDescription}}</div>
-                </td>
-              </tr>
-            </table>
-          </v-card-text>
-        </v-card>
+      <v-slide-item v-for="pl in playlists" v-model="playlistSelected" v-slot:default="{active, toggle}" :disabled="playlistLoading">
+        <v-skeleton-loader type="image, article" :loading="playlistLoading" width="200" height="" class="mx-3 pb-4 mb-5">
+          <v-card width="200" v-if="!playlistLoading" @click.stop="toggle" :raised="active" @click="showPlaylist(pl)">
+            <v-img :src="pl.image" width="200" height="140"
+                   :gradient="`rgba(0, 0, 0, 0) 50%, rgb(66, 66, 66)`">
+              <v-overlay absolute :value="active" :opacity="0.7">
+                <v-row class="fill-height" align="center" justify="center">
+                  <v-scale-transition>
+                    <v-btn v-if="active" icon x-large :disabled="playlist === 'loading' || isDownloaded">
+                      <v-icon color="success" x-large @click="installPlaylist()">{{isDownloaded ? 'done' :
+                        'file_download'}}
+                      </v-icon>
+                    </v-btn>
+                  </v-scale-transition>
+                </v-row>
+              </v-overlay>
+            </v-img>
+            <v-card-title class="subtitle-1 mt-n3" style="height: 75px">{{pl.playlistTitle}}</v-card-title>
+            <v-card-text class="pb-0">
+              <table>
+                <tr>
+                  <td valign="top" class="pr-2">
+                    <v-icon small>person</v-icon>
+                  </td>
+                  <td><span class="body-2">{{pl.playlistAuthor}}</span></td>
+                </tr>
+                <tr>
+                  <td valign="top">
+                    <v-icon small>music_note</v-icon>
+                  </td>
+                  <td><span class="body-2">{{pl.playlistSongCount}} beatmaps</span></td>
+                </tr>
+                <tr>
+                  <td valign="top">
+                    <v-icon small>event_note</v-icon>
+                  </td>
+                  <td><span class="body-2">{{pl.playlistDate.toLocaleString()}}</span></td>
+                </tr>
+                <tr>
+                  <td valign="top">
+                    <v-icon small>category</v-icon>
+                  </td>
+                  <td><span class="body-2">{{pl.playlistCategory}}</span></td>
+                </tr>
+                <tr>
+                  <td valign="top">
+                    <v-icon small>short_text</v-icon>
+                  </td>
+                  <td>
+                    <div class="body-2" style="height: 80px; overflow: hidden">{{pl.playlistDescription}}</div>
+                  </td>
+                </tr>
+              </table>
+            </v-card-text>
+          </v-card>
+        </v-skeleton-loader>
       </v-slide-item>
     </v-slide-group>
 
@@ -98,7 +99,8 @@
     components: {ListViewerForSongSimple, BtnDownloadBeatMap},
     data: () => ({
       forceSelected: false,
-      playlists: [],
+      playlists: ['', '', '', '', '', '', '', ''],
+      playlistLoading: true,
       playlist: undefined,
       playlistSelected: null,
     }),
@@ -110,7 +112,13 @@
     mounted() {
       BSaberAPI.Singleton
         .getPlaylists()
-        .then((data) => this.playlists = data);
+        .then((data) => {
+          this.playlists = [];
+          this.$nextTick(() => {
+            this.playlists = data;
+          });
+          this.playlistLoading = false;
+        });
     },
     methods: {
       showPlaylist(playlist) {
@@ -132,4 +140,5 @@
   .v-card--link:focus:before {
     opacity: 0 !important;
   }
+
 </style>
