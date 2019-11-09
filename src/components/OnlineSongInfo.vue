@@ -14,6 +14,14 @@
       </v-tooltip>
       <v-tooltip top>
         <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on" @click="openLink(`https://skystudioapps.com/bs-viewer/?id=${song.key}`)">
+            <v-icon>remove_red_eye</v-icon>
+          </v-btn>
+        </template>
+        <span>Preview beatmap</span>
+      </v-tooltip>
+      <v-tooltip top>
+        <template v-slot:activator="{ on }">
           <v-btn icon v-on="on" @click="openLink(`https://beatsaver.com/beatmap/${song.key}`)">
             <v-icon>open_in_new</v-icon>
           </v-btn>
