@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import fsExtra from 'fs-extra';
 import {promisify} from 'util';
 import { remote } from 'electron';
 
@@ -15,10 +16,17 @@ export default class SongHashData {
     await this.data();
   }
 
+  public static async fileAvailable() {
+    return await fsExtra.pathExists(this.GetHashFilePath());
+  }
+
   public static async data(): Promise<{ [key: string]: SongHash }> {
+    if (!await this.fileAvailable()) {
+      return {};
+    }
+
     if (this.Hash === undefined) {
-      const songHashFile = path.join(remote.app.getPath('appData'), '..',
-        'LocalLow\\Hyperbolic Magnetism\\Beat Saber\\SongHashData.dat');
+      const songHashFile = this.GetHashFilePath();
       const rawJson = await readFile(songHashFile);
       const hashes = this.ToSongHashData(rawJson.toString());
       this.Hash = Object.assign({},
@@ -29,6 +37,11 @@ export default class SongHashData {
   }
 
   private static Hash: { [key: string]: SongHash };
+
+  private static GetHashFilePath() {
+    return path.join(remote.app.getPath('appData'), '..',
+      'LocalLow\\Hyperbolic Magnetism\\Beat Saber\\SongHashData.dat');
+  }
 
   private static ToSongHashData(json: string): { [key: string]: SongHash } {
     return JSON.parse(json);

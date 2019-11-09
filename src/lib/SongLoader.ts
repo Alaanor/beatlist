@@ -10,7 +10,7 @@ import SongLocal from './data/SongLocal';
 import BeatSaverAPI from '../lib/BeatSaverAPI';
 import ISongOnline from '../lib/data/ISongOnline';
 import BeatSaber from '../lib/BeatSaber';
-import SongHashCompute from '@/lib/SongHashCompute';
+import SongHashCompute from '../lib/SongHashCompute';
 
 const readFile = promisify(fs.readFile);
 
@@ -144,20 +144,21 @@ export default class SongLoader {
   }
 
   private static async GetHash(path: string, folderId: string | undefined): Promise<string | undefined> {
-    let hash: string | undefined = '';
+    let hash: string | undefined;
+    const hashData = (await SongHashData.data())[path.toLowerCase()];
 
-    try {
-      hash = (await SongHashData.data())[path.toLowerCase()].songHash;
-    } catch (e) {
-      if (!hash && !!folderId && folderId.length > 0) {
-        hash = await BeatSaverAPI.Singleton.getSongByKey(folderId).then((s) => {
-          if (!s) {
-            return undefined;
-          }
+    if (hashData !== undefined) {
+      hash = hashData.songHash;
+    }
 
-          return s.hash;
-        });
-      }
+    if (!hash && !!folderId && folderId.length > 0) {
+      hash = await BeatSaverAPI.Singleton.getSongByKey(folderId).then((s) => {
+        if (!s) {
+          return undefined;
+        }
+
+        return s.hash;
+      });
     }
 
     return hash;
