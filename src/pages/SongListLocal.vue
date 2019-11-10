@@ -108,25 +108,35 @@
           )).every(Boolean);
         });
       },
-      SortBy(songs: ISongLocal[]) {
-        return songs.sort((a: ISongLocal, b: ISongLocal) => {
-          const criteria = this.sortBy as string;
-          switch (criteria) {
-            case 'date':
-              return (a.onlineData.uploaded < b.onlineData.uploaded ? -1 : 1) * (this.sortDesc ? -1 : 1);
-
-            case 'downloads':
-            case 'plays':
-            case 'upVotes':
-            case 'downVotes':
-            case 'rating':
-              return (a.onlineData.stats[criteria] - b.onlineData.stats[criteria]) * (this.sortDesc ? -1 : 1);
-
-            default:
-              return 0;
-          }
-        });
-      },
-    },
-  });
+    SortBy(songs: ISongLocal[]) {
+      let sortMethod: (a: ISongLocal, b: ISongLocal) => number;
+      const criteria = this.sortBy as string;
+      switch (criteria) {
+        case "date":
+          sortMethod = (a: ISongLocal, b: ISongLocal) : number => {
+            return (
+              (a.onlineData.uploaded < b.onlineData.uploaded ? -1 : 1) *
+              (this.sortDesc ? -1 : 1)
+            );
+          };
+          break;
+        case "downloads":
+        case "plays":
+        case "upVotes":
+        case "downVotes":
+        case "rating":
+          sortMethod = (a: ISongLocal, b: ISongLocal) : number => {
+            return (
+              (a.onlineData.stats[criteria] - b.onlineData.stats[criteria]) *
+              (this.sortDesc ? -1 : 1)
+            );
+          };
+          break;
+        default:
+          sortMethod = (a: ISongLocal, b: ISongLocal) : number => { return 0 };
+      }
+      return songs.sort(sortMethod);
+    }
+  }
+});
 </script>
