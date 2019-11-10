@@ -154,6 +154,7 @@
           })
           .finally(() => {
             store.dispatch('songs/loadPlaylists');
+            this.$router.replace({path: `/playlist/local/edit/${playlist.playlistHash}`});
             return this.snackbar = true;
           });
       },
