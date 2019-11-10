@@ -57,6 +57,7 @@ const mutations = {
 
     if (!!plObj) {
       plState.songs.push(song);
+      plObj.songs.push(song);
       plObj.Save();
     }
   },
@@ -67,6 +68,7 @@ const mutations = {
 
     if (!!plObj) {
       plState.songs = plState.songs.filter((s: Song) => s.hash !== song.hash);
+      plObj.songs = plObj.songs.filter((s: ISongInfo) => s.hash !== song.hash);
       plObj.Save();
     }
   },

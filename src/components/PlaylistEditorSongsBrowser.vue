@@ -23,6 +23,8 @@
     components: {ListViewerForSongs, BtnToggleAddRemoveSongInPlaylist},
     computed: {
       playlist() {
+        console.log(this.playlists);
+        console.log(`We're looking for this hash: ${this.hash}`);
         return this.playlists.find((p) => p.playlistHash === this.hash);
       },
       playlists: get('songs/playlists'),
