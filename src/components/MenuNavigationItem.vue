@@ -1,4 +1,3 @@
-<!--suppress ALL -->
 <template>
   <div v-if="!(item.requireValidConfig && !settings.configValid)">
     <v-list-group v-if="('items' in item) && !(item.requireValidConfig && !settings.configValid)"
