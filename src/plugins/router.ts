@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import SongListLocal from './pages/SongListLocal.vue';
-import SongListOnline from './pages/SongListOnline.vue';
-import PlaylistsLocal from './pages/PlaylistsLocal.vue';
-import PlaylistsOnline from './pages/PlaylistsOnline.vue';
-import PlaylistEditor from './pages/PlaylistEditor.vue';
-import Settings from './pages/Settings.vue';
-import Home from './pages/Home.vue';
-import FAQ from './pages/FAQ.vue';
+import SongListLocal from '../pages/SongListLocal.vue';
+import SongListOnline from '../pages/SongListOnline.vue';
+import PlaylistsLocal from '../pages/PlaylistsLocal.vue';
+import PlaylistsOnline from '../pages/PlaylistsOnline.vue';
+import PlaylistEditor from '../pages/PlaylistEditor.vue';
+import Settings from '../pages/Settings.vue';
+import Home from '../pages/Home.vue';
+import FAQ from '../pages/FAQ.vue';
 import store from '../store/store';
 
 Vue.use(VueRouter);

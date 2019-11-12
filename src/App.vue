@@ -75,7 +75,7 @@
   import {get} from 'vuex-pathify';
   import {remote, shell} from 'electron';
   import MenuNavigationItem from './components/MenuNavigationItem.vue';
-  import settings from '@/store/settings';
+  import settings from './store/settings';
   import AutoScanSong from './components/AutoScanSong.vue';
   import BackgroundSongDownloadNotifier from './components/BackgroundSongDownloadNotifier.vue';
   import BackgroundPlaylistDownloadNotifier from './components/BackgroundPlaylistDownloadNotifier.vue';
