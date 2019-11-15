@@ -9,7 +9,7 @@
 <script>
   import Vue from 'vue';
   import {ipcRenderer} from 'electron';
-  import {ON_WINDOW_SHOW} from '../lib/ipc/AutoScanSong';
+  import {ON_AUTO_SCAN_COMPONENT_READY, ON_WINDOW_SHOW} from '../lib/ipc/AutoScanSong';
   import SongScanner from '../lib/SongScanner';
   import SongLoader from '../lib/SongLoader';
 
@@ -25,14 +25,19 @@
         if (await SongLoader.NewSongAvailable()) {
           const scanner = new SongScanner();
           await scanner.Scan();
+
           this.songAdded = scanner.songAdded;
           this.songRemoved = scanner.songRemoved;
-          this.snackbar = true;
+
+          if (this.songAdded !== 0 || this.songRemoved !== 0) {
+            this.snackbar = true;
+          }
         }
       },
     },
     mounted() {
       ipcRenderer.on(ON_WINDOW_SHOW, this.onWindowShow);
+      ipcRenderer.send(ON_AUTO_SCAN_COMPONENT_READY);
     },
   });
 </script>
