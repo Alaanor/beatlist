@@ -1,7 +1,7 @@
 import {BrowserWindow, ipcMain} from 'electron';
 
 export const ON_WINDOW_SHOW = 'on_window_show';
-export const ON_AUTO_SCAN_COMPONENT_READY = 'on_auto_scan_component_ready'
+export const ON_AUTO_SCAN_COMPONENT_READY = 'on_auto_scan_component_ready';
 
 export default class AutoScanSong {
     public static register(): void {

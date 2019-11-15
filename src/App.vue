@@ -186,8 +186,8 @@
         shell.openExternal('https://github.com/Alaanor/beatlist');
       },
       openDiscordInvitation() {
-        shell.openExternal('https://discord.gg/f5AmKSH')
-      }
+        shell.openExternal('https://discord.gg/f5AmKSH');
+      },
     },
   });
 </script>
