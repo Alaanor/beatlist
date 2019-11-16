@@ -6,6 +6,7 @@
  - Skeleton loader for online playlist page
  - Redirect on settings page if no valid settings available (first time user)
  - The app can now compute beatmap hash on its own
+ - Added a discord server for beatlist
 
 **Bug fixes:**
  - Songhashdata.dat is no longer required
