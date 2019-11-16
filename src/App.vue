@@ -155,10 +155,14 @@
       darkTheme: get('settings/darkTheme'),
       miniVariant: get('settings/miniVariant'),
       permanent: get('settings/permanent'),
+      configValid: get('settings/configValid'),
     },
     mounted(): void {
       const st = this.$store as unknown as { _vm: { $root: Vue } };
-      st._vm.$root.$on('storageReady', () => this.isReady = true);
+      st._vm.$root.$on('storageReady', () => {
+        this.isReady = true;
+        this.onReady();
+      });
     },
     watch: {
       darkTheme() {
@@ -169,6 +173,14 @@
       this.$vuetify.theme.dark = this.darkTheme;
     },
     methods: {
+      onReady() {
+        this.CheckForSettingsRequirement();
+      },
+      CheckForSettingsRequirement() {
+        if (!this.configValid) {
+          this.$router.push({name: 'settings'});
+        }
+      },
       toggleMinimize() {
         remote.getCurrentWindow().minimize();
       },
