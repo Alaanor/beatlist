@@ -1,11 +1,23 @@
 # Changelog
 
+## V1.1.1 (16/11/2019)
+**Improvements:**
+ - Added an button to preview beatmap (external website)
+ - Skeleton loader for online playlist page
+ - Redirect on settings page if no valid settings available (first time user)
+ - The app can now compute beatmap hash on its own
+
+**Bug fixes:**
+ - Songhashdata.dat is no longer required
+ - Fixed various bug in playlists
+ - Song are now scanned automatically when you launch the app
+
 ## v1.1.0 (06/10/2019)
 **Features:**
  - Online beatmap download (beatsaver.com)
  - Online playlist download (bsaber.com)
 
-**Improvement:**
+**Improvements:**
  - Major
    - Automatically detect new beatmap installed
    - Material design 2.0 upgrade, updated the design
