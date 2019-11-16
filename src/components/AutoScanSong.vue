@@ -12,6 +12,7 @@
   import {ON_AUTO_SCAN_COMPONENT_READY, ON_WINDOW_SHOW} from '../lib/ipc/AutoScanSong';
   import SongScanner from '../lib/SongScanner';
   import SongLoader from '../lib/SongLoader';
+  import {get} from 'vuex-pathify';
 
   export default Vue.extend({
     name: 'AutoScanSong',
@@ -20,8 +21,15 @@
       songAdded: 0,
       songRemoved: 0,
     }),
+    computed: {
+      configValid: get('settings/configValid'),
+    },
     methods: {
       async onWindowShow() {
+        if (!this.configValid) {
+          return;
+        }
+
         if (await SongLoader.NewSongAvailable()) {
           const scanner = new SongScanner();
           await scanner.Scan();
