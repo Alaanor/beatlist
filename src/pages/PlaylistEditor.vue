@@ -36,9 +36,11 @@
 
 <script>
   import Vue from 'vue';
+  import {get} from 'vuex-pathify';
   import PlaylistEditorData from '../components/PlaylistEditorData';
   import PlaylistEditorSongsReader from '../components/PlaylistEditorSongsReader';
   import PlaylistEditorSongsBrowser from '../components/PlaylistEditorSongsBrowser';
+  import DiscordRichPresence from '@/lib/ipc/DiscordRichPresence';
 
   export default Vue.extend({
     name: 'PlaylistEditor',
@@ -52,9 +54,16 @@
       window: 0,
     }),
     computed: {
+      playlists: get('songs/playlists'),
       hash() {
         return this.$route.params.hash;
       },
+      playlist() {
+        return this.playlists.find((p) => p.playlistHash === this.hash);
+      },
     },
+    mounted() {
+      DiscordRichPresence.UpdateStatus(`Editing playlist`, `${this.playlist.playlistTitle} from ${this.playlist.playlistAuthor}`);
+    }
   });
 </script>

@@ -24,6 +24,7 @@
   import marked from 'marked';
   import axios from 'axios';
   import {remote} from 'electron';
+  import DiscordRichPresence from '@/lib/ipc/DiscordRichPresence';
 
   export default Vue.extend({
     name: 'Home',
@@ -38,6 +39,10 @@
       currentVersion() {
         return remote.app.getVersion();
       },
+    },
+    beforeRouteEnter(to, from , next) {
+      DiscordRichPresence.UpdateStatus("Home");
+      next();
     },
     async mounted() {
       try {

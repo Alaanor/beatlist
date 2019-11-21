@@ -50,6 +50,7 @@
   import IDifficulties from '@/lib/data/IDifficulties';
   import {get} from 'vuex-pathify';
   import SongLocal from '@/lib/data/SongLocal';
+  import DiscordRichPresence from '@/lib/ipc/DiscordRichPresence';
 
   export default Vue.extend({
     name: 'SongListLocal',
@@ -138,5 +139,10 @@
         return songs.sort(sortMethod);
       },
     },
+    mounted() {
+      const amount = this.songs.length;
+      const plural = amount > 1 ? 's' : '';
+      DiscordRichPresence.UpdateStatus(`Browsing local beatmap${plural}`, `Library: ${amount} beatmap${plural}`);
+    }
   });
 </script>

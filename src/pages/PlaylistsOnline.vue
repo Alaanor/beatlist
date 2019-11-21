@@ -93,6 +93,7 @@
   import ListViewerForSongSimple from '@/components/ListViewerForSongSimple';
   import BtnDownloadBeatMap from '@/components/BtnDownloadBeatMap';
   import PlaylistOnline from '@/lib/PlaylistOnline';
+  import DiscordRichPresence from '@/lib/ipc/DiscordRichPresence';
 
   export default Vue.extend({
     name: 'PlaylistsOnline',
@@ -119,6 +120,10 @@
           });
           this.playlistLoading = false;
         });
+    },
+    beforeRouteEnter(to, from , next) {
+      DiscordRichPresence.UpdateStatus("Browsing online playlists");
+      next();
     },
     methods: {
       showPlaylist(playlist) {

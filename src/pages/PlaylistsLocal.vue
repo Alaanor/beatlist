@@ -29,6 +29,7 @@
   import store from '@/store/store';
   import BeatSaber from '@/lib/BeatSaber';
   import ListViewerForPlaylists from '@/components/ListViewerForPlaylists.vue';
+  import DiscordRichPresence from '@/lib/ipc/DiscordRichPresence';
 
   export default Vue.extend({
     name: 'Playlists',
@@ -42,9 +43,11 @@
     }),
     computed: {
       installationPath: get('settings/installationPath'),
+      playlists: get('songs/playlists'),
     },
     async mounted() {
       await store.dispatch('songs/loadPlaylists');
+      this.InitiateRichPresence();
     },
     methods: {
       async NewPlaylist() {
@@ -57,6 +60,11 @@
       GoToPlaylist(playlist) {
         this.$router.push({name: 'playlist-editor', params: {hash: playlist.playlistHash}});
       },
+      InitiateRichPresence() {
+        const amount = this.playlists.length;
+        const plural = amount > 1 ? 's' : '';
+        DiscordRichPresence.UpdateStatus(`Browsing playlist${plural}`, `${amount} local playlist${plural}`);
+      }
     },
   });
 </script>

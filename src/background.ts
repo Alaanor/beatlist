@@ -7,6 +7,7 @@ import {
   installVueDevtools,
 } from 'vue-cli-plugin-electron-builder/lib';
 import path from 'path';
+import DiscordRichPresence from './lib/ipc/DiscordRichPresence';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -100,3 +101,7 @@ if (isDevelopment) {
     });
   }
 }
+
+// Initiate the discord rich presence service
+const richPresence = new DiscordRichPresence();
+richPresence.Initiate();

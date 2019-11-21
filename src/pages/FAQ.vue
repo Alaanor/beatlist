@@ -31,6 +31,7 @@
 <script>
   import Vue from 'vue';
   import {shell} from 'electron';
+  import DiscordRichPresence from '@/lib/ipc/DiscordRichPresence';
 
   export default Vue.extend({
     name: 'faq',
@@ -68,6 +69,10 @@
         },
       ],
     }),
+    beforeRouteEnter(to, from , next) {
+      DiscordRichPresence.UpdateStatus("FAQ");
+      next();
+    },
     methods: {
       openLink(link) {
         shell.openExternal(link);

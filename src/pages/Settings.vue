@@ -71,6 +71,7 @@
     RESOLVE_INST_PATH_MSG,
     RESOLVE_INST_PATH_REPLY,
   } from '../lib/ipc/PathResolver';
+  import DiscordRichPresence from '@/lib/ipc/DiscordRichPresence';
 
   export default Vue.extend({
     name: 'Settings',
@@ -101,6 +102,10 @@
       songs() {
         this.validateConfig();
       },
+    },
+    beforeRouteEnter(to, from , next) {
+      DiscordRichPresence.UpdateStatus("Settings", "Editing preference");
+      next();
     },
     methods: {
       openFileExplorer() {

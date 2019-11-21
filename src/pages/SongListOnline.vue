@@ -51,6 +51,7 @@
   import BeatSaverAPI from '../lib/BeatSaverAPI';
   import BtnAddSongToPlaylists from '@/components/BtnToggleAddRemoveSongInPlaylists.vue';
   import SongLocal from '@/lib/data/SongLocal';
+  import DiscordRichPresence from '@/lib/ipc/DiscordRichPresence';
 
   export default Vue.extend({
     name: 'SongListOnline',
@@ -119,6 +120,10 @@
       getLocal(beatmap) {
         return SongLocal.get(beatmap);
       },
+    },
+    beforeRouteEnter(to, from , next) {
+      DiscordRichPresence.UpdateStatus("Browsing online beatmaps");
+      next();
     },
     mounted() {
       this.updatePagination();
