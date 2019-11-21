@@ -50,9 +50,20 @@
       </v-layout>
     </v-container>
     <p class="display-1">Preferences</p>
-    <v-switch v-model="darkTheme" color="primary" label="Dark theme"></v-switch>
-    <v-switch v-model="miniVariant" color="primary" label="Mini sidebar"></v-switch>
-    <v-switch v-model="permanent" color="primary" label="Permanent sidebar"></v-switch>
+    <v-row>
+      <v-col cols="6" class="pa-0">
+        <v-switch v-model="darkTheme" color="primary" label="Dark theme"></v-switch>
+      </v-col>
+      <v-col cols="6" class="pa-0">
+        <v-switch v-model="miniVariant" color="primary" label="Mini sidebar"></v-switch>
+      </v-col>
+      <v-col cols="6" class="pa-0">
+        <v-switch v-model="permanent" color="primary" label="Permanent sidebar"></v-switch>
+      </v-col>
+      <v-col cols="6" class="pa-0">
+        <v-switch v-model="enableDiscordRichPresence" color="primary" label="Enable Discord Rich Presence"></v-switch>
+      </v-col>
+    </v-row>
     <v-snackbar v-model="snackbar" :color="snackbarType" :timeout="3000">
       {{ snackbarText }}
       <v-btn text @click="snackbar = false">Close</v-btn>
@@ -88,6 +99,7 @@
     computed: {
       installationPath: sync('settings/installationPath'),
       installationPathValid: sync('settings/installationPathValid'),
+      enableDiscordRichPresence: sync('settings/enableDiscordRichPresence'),
       configValid: sync('settings/configValid'),
       darkTheme: sync('settings/darkTheme'),
       miniVariant: sync('settings/miniVariant'),
@@ -102,6 +114,9 @@
       songs() {
         this.validateConfig();
       },
+      enableDiscordRichPresence() {
+        DiscordRichPresence.SetVisibility(this.enableDiscordRichPresence);
+      }
     },
     beforeRouteEnter(to, from , next) {
       DiscordRichPresence.UpdateStatus("Settings", "Editing preference");

@@ -8,6 +8,7 @@ const state = {
   miniVariant: true,
   permanent: true,
   displayMode: 0,
+  enableDiscordRichPresence: true,
 };
 
 const mutations = {

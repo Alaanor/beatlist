@@ -80,6 +80,7 @@
   import BackgroundSongDownloadNotifier from './components/BackgroundSongDownloadNotifier.vue';
   import BackgroundPlaylistDownloadNotifier from './components/BackgroundPlaylistDownloadNotifier.vue';
   import router from './plugins/router';
+  import DiscordRichPresence from '@/lib/ipc/DiscordRichPresence';
 
   export default Vue.extend({
     router,
@@ -156,6 +157,7 @@
       miniVariant: get('settings/miniVariant'),
       permanent: get('settings/permanent'),
       configValid: get('settings/configValid'),
+      enableDiscordRichPresence: get('settings/enableDiscordRichPresence'),
     },
     mounted(): void {
       const st = this.$store as unknown as { _vm: { $root: Vue } };
@@ -163,6 +165,7 @@
         this.isReady = true;
         this.onReady();
       });
+      DiscordRichPresence.SetVisibility(this.enableDiscordRichPresence);
     },
     watch: {
       darkTheme() {
