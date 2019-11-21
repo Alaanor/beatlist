@@ -143,6 +143,6 @@
       const amount = this.songs.length;
       const plural = amount > 1 ? 's' : '';
       DiscordRichPresence.UpdateStatus(`Browsing local beatmap${plural}`, `Library: ${amount} beatmap${plural}`);
-    }
+    },
   });
 </script>

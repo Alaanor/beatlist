@@ -69,8 +69,8 @@
         },
       ],
     }),
-    beforeRouteEnter(to, from , next) {
-      DiscordRichPresence.UpdateStatus("FAQ");
+    beforeRouteEnter: (to, from, next) => {
+      DiscordRichPresence.UpdateStatus('FAQ');
       next();
     },
     methods: {

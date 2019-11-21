@@ -116,10 +116,10 @@
       },
       enableDiscordRichPresence() {
         DiscordRichPresence.SetVisibility(this.enableDiscordRichPresence);
-      }
+      },
     },
     beforeRouteEnter(to, from , next) {
-      DiscordRichPresence.UpdateStatus("Settings", "Editing preference");
+      DiscordRichPresence.UpdateStatus('Settings', 'Editing preference');
       next();
     },
     methods: {

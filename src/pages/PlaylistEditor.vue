@@ -64,6 +64,6 @@
     },
     mounted() {
       DiscordRichPresence.UpdateStatus(`Editing playlist`, `${this.playlist.playlistTitle} from ${this.playlist.playlistAuthor}`);
-    }
+    },
   });
 </script>

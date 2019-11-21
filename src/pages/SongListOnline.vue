@@ -122,7 +122,7 @@
       },
     },
     beforeRouteEnter(to, from , next) {
-      DiscordRichPresence.UpdateStatus("Browsing online beatmaps");
+      DiscordRichPresence.UpdateStatus('Browsing online beatmaps');
       next();
     },
     mounted() {

@@ -64,7 +64,7 @@
         const amount = this.playlists.length;
         const plural = amount > 1 ? 's' : '';
         DiscordRichPresence.UpdateStatus(`Browsing playlist${plural}`, `${amount} local playlist${plural}`);
-      }
+      },
     },
   });
 </script>

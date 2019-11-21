@@ -41,7 +41,7 @@
       },
     },
     beforeRouteEnter(to, from , next) {
-      DiscordRichPresence.UpdateStatus("Home");
+      DiscordRichPresence.UpdateStatus('Home');
       next();
     },
     async mounted() {

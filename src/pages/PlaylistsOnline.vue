@@ -122,7 +122,7 @@
         });
     },
     beforeRouteEnter(to, from , next) {
-      DiscordRichPresence.UpdateStatus("Browsing online playlists");
+      DiscordRichPresence.UpdateStatus('Browsing online playlists');
       next();
     },
     methods: {
