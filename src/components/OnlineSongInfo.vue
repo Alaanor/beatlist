@@ -6,6 +6,14 @@
       <BtnDownloadBeatMap :beatmap="onlineBeatMap"></BtnDownloadBeatMap>
       <v-tooltip top v-if="isDownloaded">
         <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on" @click="openFolder()">
+            <v-icon>folder</v-icon>
+          </v-btn>
+        </template>
+        <span>Open this song in the file explorer</span>
+      </v-tooltip>
+      <v-tooltip top v-if="isDownloaded">
+        <template v-slot:activator="{ on }">
           <v-btn icon v-on="on" @click="refreshData()">
             <v-icon>refresh</v-icon>
           </v-btn>
@@ -170,6 +178,9 @@
       },
       openLink(link) {
         shell.openExternal(link);
+      },
+      openFolder() {
+        shell.openItem(this.localBeatMap.path)
       },
       /**
        * @return {string}
