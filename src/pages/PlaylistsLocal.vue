@@ -3,10 +3,25 @@
   <v-container>
     <v-layout row justify-space-between>
       <p class="display-2">Local playlists</p>
-      <v-btn text @click="NewPlaylist()" :loading="loadingAdd">
-        Add a new Playlist
-        <v-icon class="ml-1">add</v-icon>
-      </v-btn>
+
+      <div class="mr-5">
+        <v-tooltip top>
+          <template v-slot:activator="{ on }">
+            <v-btn icon large @click="OpenFolder()" :loading="loadingAdd" v-on="on">
+              <v-icon>folder</v-icon>
+            </v-btn>
+          </template>
+          <span>Open folder in file explorer</span>
+        </v-tooltip>
+        <v-tooltip top>
+          <template v-slot:activator="{ on }">
+            <v-btn icon large color="success" @click="NewPlaylist()" :loading="loadingAdd" v-on="on">
+              <v-icon large>add</v-icon>
+            </v-btn>
+          </template>
+          <span>Add a new playlist</span>
+        </v-tooltip>
+      </div>
     </v-layout>
     <ListViewerForPlaylists :action="GoToPlaylist">
       <template #item-block-action="{item}">
@@ -26,6 +41,7 @@
 <script>
   import Vue from 'vue';
   import {get} from 'vuex-pathify';
+  import {shell} from 'electron';
   import store from '@/store/store';
   import BeatSaber from '@/lib/BeatSaber';
   import ListViewerForPlaylists from '@/components/ListViewerForPlaylists.vue';
@@ -56,6 +72,9 @@
           .CreateNewPlaylistFile();
         await store.dispatch('songs/loadPlaylists');
         this.GoToPlaylist(playlist);
+      },
+      OpenFolder() {
+        shell.openItem(BeatSaber.getPlaylistPath(this.installationPath));
       },
       GoToPlaylist(playlist) {
         this.$router.push({name: 'playlist-editor', params: {hash: playlist.playlistHash}});

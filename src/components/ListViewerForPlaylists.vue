@@ -49,7 +49,6 @@
 <script lang="ts">
   import Vue from 'vue';
   import {get} from 'vuex-pathify';
-  import store from '@/store/store';
   import ListViewer from './ListViewer.vue';
   import PlaylistCover from './PlaylistCover.vue';
   import PlaylistLocal from '@/lib/PlaylistLocal';
