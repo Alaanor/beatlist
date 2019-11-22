@@ -30,14 +30,27 @@
         return this.$route.params.key;
       },
     },
-    methods: {
-      returnBackHistory() {
-        this.$router.go(-1);
+    watch: {
+      '$route.params.key': {
+        handler: function() {
+          this.updateSong();
+        },
+        deep: true,
+        immediate: true
       },
     },
+    methods: {
+      returnBackHistory() {
+        window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+      },
+      updateSong(key) {
+        this.song = undefined;
+        SongHelper.getSong(key === undefined ? this.key : key)
+          .then((s) => this.song = s);
+      }
+    },
     mounted() {
-      SongHelper.getSong(this.key)
-        .then((s) => this.song = s);
+      this.updateSong();
     },
     beforeRouteEnter: (to, from, next) => {
       DiscordRichPresence.UpdateStatus(`Map details`, `Viewing ${to.params.key}`);

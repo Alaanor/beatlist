@@ -8,6 +8,7 @@ import {
 } from 'vue-cli-plugin-electron-builder/lib';
 import path from 'path';
 import DiscordRichPresence from './lib/ipc/DiscordRichPresence';
+import BeatsaverLinkOpener from './lib/ipc/BeatsaverLinkOpener';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -17,6 +18,24 @@ let win: BrowserWindow | null;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: {secure: true, standard: true}}]);
+
+// force single instance
+const primaryInstance = app.requestSingleInstanceLock();
+
+if (!primaryInstance) {
+  app.quit();
+} else {
+  app.on('second-instance', (event, commmandLine, workingDirectory) => {
+    if (win) {
+      if (win.isMinimized()) {
+        win.restore();
+      }
+
+      win.focus();
+      BeatsaverLinkOpener.SendArgvSecondInstance(commmandLine);
+    }
+  });
+}
 
 function createWindow() {
   // Create the browser window.
@@ -85,6 +104,7 @@ app.on('ready', async () => {
   }
   createWindow();
   ipcEventRegister();
+  app.setAsDefaultProtocolClient('beatsaver');
 });
 
 // Exit cleanly on request from parent process in development mode.

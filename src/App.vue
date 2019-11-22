@@ -73,7 +73,7 @@
   import Home from './pages/Home.vue';
   import Settings from './pages/Settings.vue';
   import {get} from 'vuex-pathify';
-  import {remote, shell} from 'electron';
+  import {ipcRenderer, remote, shell} from 'electron';
   import MenuNavigationItem from './components/MenuNavigationItem.vue';
   import settings from './store/settings';
   import AutoScanSong from './components/AutoScanSong.vue';
@@ -81,6 +81,7 @@
   import BackgroundPlaylistDownloadNotifier from './components/BackgroundPlaylistDownloadNotifier.vue';
   import router from './plugins/router';
   import DiscordRichPresence from '@/lib/ipc/DiscordRichPresence';
+  import {ON_BEATSAVER_LINK_OPENER_COMPONENT_READY, OPEN_BEATSAVER_LINK} from '@/lib/ipc/BeatsaverLinkOpener';
 
   export default Vue.extend({
     router,
@@ -177,7 +178,15 @@
     methods: {
       onReady() {
         this.CheckForSettingsRequirement();
+        this.RegisterBeatsaverLinkListener();
         DiscordRichPresence.SetVisibility(this.enableDiscordRichPresence);
+      },
+      RegisterBeatsaverLinkListener() {
+        ipcRenderer.on(OPEN_BEATSAVER_LINK, (event: any, key: any) => {
+          this.$router.push({name: 'beatmap', params: {key: key}});
+        });
+
+        ipcRenderer.send(ON_BEATSAVER_LINK_OPENER_COMPONENT_READY);
       },
       CheckForSettingsRequirement() {
         if (!this.configValid) {
