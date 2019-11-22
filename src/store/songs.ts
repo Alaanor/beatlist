@@ -73,7 +73,10 @@ const mutations = {
     }
   },
   markAsInvalid(context: any, song: Song) {
-    context.songs.find((s: Song) => s === song).valid = false;
+    const item = context.songs.find((s: Song) => s.hash === song.hash);
+    if (!!item) {
+      item.valid = false;
+    }
   },
   updateSongData(context: any, song: ISongLocal) {
     const index = context.songs.findIndex((s: ISongLocal) => s.key === song.key);
