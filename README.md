@@ -71,4 +71,4 @@ You can reach me through discord: [Alaanor#9999](https://discordapp.com/users/21
 
 # Licence
 
-This project is licensed under [WTFPL](LICENSE).
+This project is licensed under [MIT](LICENSE).
