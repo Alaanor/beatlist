@@ -1,29 +1,34 @@
 import Song from './Song';
 import ISongLocal from './ISongLocal';
 import SongLoader from '../SongLoader';
-import ISongOnline from '@/lib/data/ISongOnline';
+import ISongOnline from './ISongOnline';
 import store from '../../store/store';
 import path from 'path';
 import fsExtra from 'fs-extra';
 import SongScanner from '../SongScanner';
+import SongOnline from './SongOnline';
 
 export default class SongLocal extends Song implements ISongLocal {
 
   public static isSongLocal(object: any): object is ISongLocal {
-    return 'folderId' in object;
+    try {
+      return 'folderId' in object;
+    } catch (e) {
+      return false;
+    }
   }
 
   public static isSongsLocal(objects: any[]): objects is ISongLocal[] {
     return objects.map((o: any) => this.isSongLocal(o)).every((b: boolean) => b);
   }
 
-  public static isInLibrary(song: ISongOnline) {
+  public static isInLibrary(song: ISongOnline | string) {
     return !!this.get(song);
   }
 
-  public static get(song: ISongOnline): SongLocal | undefined {
+  public static get(song: ISongOnline | string): SongLocal | undefined {
     return store.getters['songs/songs'].filter((local: SongLocal) => {
-      return local.key === song.key;
+      return local.key === (SongOnline.isSongOnline(song) ? song.key : song);
     })[0];
   }
 

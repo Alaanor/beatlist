@@ -165,7 +165,6 @@
         this.isReady = true;
         this.onReady();
       });
-      DiscordRichPresence.SetVisibility(this.enableDiscordRichPresence);
     },
     watch: {
       darkTheme() {
@@ -178,6 +177,7 @@
     methods: {
       onReady() {
         this.CheckForSettingsRequirement();
+        DiscordRichPresence.SetVisibility(this.enableDiscordRichPresence);
       },
       CheckForSettingsRequirement() {
         if (!this.configValid) {

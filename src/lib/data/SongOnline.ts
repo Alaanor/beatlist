@@ -8,8 +8,17 @@ import SongLocal from './SongLocal';
 export default class SongOnline extends Song implements ISongOnline {
 
   public static isSongOnline(object: any): object is ISongOnline {
-    return 'coverURL' in object;
+    try {
+      return 'coverURL' in object;
+    } catch (e) {
+      return false;
+    }
   }
+
+  public static async get(key: string): Promise<ISongOnline | undefined> {
+    return await BeatSaverAPI.Singleton.getSongByKey(key);
+  }
+
   public coverURL: string;
   public description: string;
   public downloadURL: string;
@@ -44,5 +53,4 @@ export default class SongOnline extends Song implements ISongOnline {
 
     await localBeatMap.deleteIt();
   }
-
 }

@@ -115,6 +115,7 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <BtnAddSongToPlaylists v-if="isDownloaded" :song="localBeatMap" value="Add to playlist"></BtnAddSongToPlaylists>
+      <v-btn text v-if="moreInfo" @click="getMoreInfo()">More info</v-btn>
       <slot name="action"></slot>
     </v-card-actions>
   </v-card>
@@ -136,6 +137,7 @@
     components: {DifficultiesBadge, BtnAddSongToPlaylists, BtnDownloadBeatMap},
     props: {
       song: {type: Object},
+      moreInfo: {type: Boolean, default: true},
     },
     data: () => ({
       err: undefined,
@@ -166,7 +168,7 @@
     },
     methods: {
       UpdateComponent() {
-        this.songData = this.song;
+        this.songData = this.onlineBeatMap;
       },
       FormatNewLine(x) {
         return x
@@ -176,11 +178,14 @@
       async refreshData() {
         await SongLoader.UpdateOnlineDataFor(this.song);
       },
+      getMoreInfo() {
+        this.$router.push({name: 'beatmap', params: {key: this.song.key}});
+      },
       openLink(link) {
         shell.openExternal(link);
       },
       openFolder() {
-        shell.openItem(this.localBeatMap.path)
+        shell.openItem(this.localBeatMap.path);
       },
       /**
        * @return {string}

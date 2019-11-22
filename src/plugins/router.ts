@@ -6,6 +6,7 @@ import PlaylistsLocal from '../pages/PlaylistsLocal.vue';
 import PlaylistsOnline from '../pages/PlaylistsOnline.vue';
 import PlaylistEditor from '../pages/PlaylistEditor.vue';
 import Settings from '../pages/Settings.vue';
+import Beatmap from '../pages/Beatmap.vue';
 import Home from '../pages/Home.vue';
 import FAQ from '../pages/FAQ.vue';
 import store from '../store/store';
@@ -53,6 +54,11 @@ const router = new VueRouter({
       path: '/settings',
       name: 'settings',
       component: Settings,
+    },
+    {
+      path: '/beatmap/:key',
+      name: 'beatmap',
+      component: Beatmap,
     },
     {
       path: '/faq',
