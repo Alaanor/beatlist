@@ -92,7 +92,7 @@ export default class SongLoader {
       song.hash = await this.getHash(song);
       song.onlineData = (await BeatSaverAPI.Singleton.getSongByHash(song.hash) as ISongOnline);
       if (song.onlineData === undefined) {
-        throw new Error("Not on Beatsaver");
+        throw new Error('Not on Beatsaver');
       }
       song.key = song.onlineData.key;
 

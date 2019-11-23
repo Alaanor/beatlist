@@ -183,7 +183,7 @@
       },
       RegisterBeatsaverLinkListener() {
         ipcRenderer.on(OPEN_BEATSAVER_LINK, (event: any, key: any) => {
-          this.$router.push({name: 'beatmap', params: {key: key}});
+          this.$router.push({name: 'beatmap', params: {key}});
         });
 
         ipcRenderer.send(ON_BEATSAVER_LINK_OPENER_COMPONENT_READY);

@@ -1,6 +1,5 @@
-<!--suppress ALL -->
 <template>
-  <ListViewerForSongs :items="songs">
+  <ListViewerForLocalSongs>
     <template #item-block-action="{item}">
       <v-spacer></v-spacer>
       <BtnToggleAddRemoveSongInPlaylist :song="item" :playlist="playlist" class="ma-2" icon small label></BtnToggleAddRemoveSongInPlaylist>
@@ -8,25 +7,24 @@
     <template #item-list-action="{item}">
       <BtnToggleAddRemoveSongInPlaylist :song="item" :playlist="playlist" icon></BtnToggleAddRemoveSongInPlaylist>
     </template>
-  </ListViewerForSongs>
+  </ListViewerForLocalSongs>
 </template>
 
 <script>
   import Vue from 'vue';
   import {get} from 'vuex-pathify';
-  import ListViewerForSongs from './ListViewerForSongs';
   import BtnToggleAddRemoveSongInPlaylist from './BtnToggleAddRemoveSongInPlaylist';
+  import ListViewerForLocalSongs from '@/components/ListViewerForLocalSongs';
 
   export default Vue.extend({
     name: 'PlaylistEditorSongsBrowser',
     props: {hash: {type: String, required: true}},
-    components: {ListViewerForSongs, BtnToggleAddRemoveSongInPlaylist},
+    components: {ListViewerForLocalSongs, BtnToggleAddRemoveSongInPlaylist},
     computed: {
       playlist() {
         return this.playlists.find((p) => p.playlistHash === this.hash);
       },
       playlists: get('songs/playlists'),
-      songs: get('songs/songs'),
     },
   });
 </script>

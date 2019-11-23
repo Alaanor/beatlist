@@ -32,22 +32,22 @@
     },
     watch: {
       '$route.params.key': {
-        handler: function() {
+        handler: () => {
           this.updateSong();
         },
         deep: true,
-        immediate: true
+        immediate: true,
       },
     },
     methods: {
       returnBackHistory() {
-        window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+        window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
       },
       updateSong(key) {
         this.song = undefined;
         SongHelper.getSong(key === undefined ? this.key : key)
           .then((s) => this.song = s);
-      }
+      },
     },
     mounted() {
       this.updateSong();
