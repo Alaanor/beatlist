@@ -13,7 +13,7 @@
       </v-col>
       <v-col>
         <v-text-field v-model="search" label="search" solo append-icon="search"
-                      hide-details clearable @clear="updateSearch">
+                      hide-details clearable @click:clear="updateSearch">
         </v-text-field>
       </v-col>
       <v-col v-if="allowFilter" cols="auto">
@@ -98,7 +98,8 @@
     },
     methods: {
       updateSearch() {
-        this.$emit('updateSearch', this.search);
+        this.search = this.search === null ? '' : this.search;
+        this.$emit('updateSearch', );
       },
     },
     filters: {
