@@ -1,6 +1,20 @@
 # Changelog
 
-## V1.1.1 (16/11/2019)
+## v1.1.2 (24/11/2019)
+**Features:**
+ - Discord Rich Presence added
+ - Now support the OneClick button on beatsaver.com
+ 
+**Improvements:**
+ - Changed license to MIT
+ - Added a button to open the folder in the context of playlist or beatmap.
+
+**Bug fixes:**
+ - An invalid character from the folder name resulted to an error
+ - Not all song were shown on the playlist editor on the song browser
+ - Fixed the clear button on the search bar. It now really clear the input.
+
+## v1.1.1 (16/11/2019)
 **Improvements:**
  - Added an button to preview beatmap (external website)
  - Skeleton loader for online playlist page
