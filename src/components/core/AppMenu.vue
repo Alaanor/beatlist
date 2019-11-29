@@ -3,11 +3,11 @@
 </template>
 
 <script>
-  import Vue from 'vue';
+import Vue from 'vue';
 
-  export default Vue.extend({
-    name: 'AppMenu'
-  });
+export default Vue.extend({
+  name: 'AppMenu',
+});
 </script>
 
 <style scoped>
