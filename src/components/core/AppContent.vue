@@ -1,5 +1,5 @@
 <template>
-
+  <h1>AppContent</h1>
 </template>
 
 <script>

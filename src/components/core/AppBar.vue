@@ -34,7 +34,9 @@ export default Vue.extend({
   computed: {
     permanent: get('settings/permanent'),
     darkTheme: get('settings/darkTheme'),
-    titleImage: () => (this.darkTheme ? titleDark : titleWhite),
+    titleImage() {
+      return this.darkTheme ? titleDark : titleWhite;
+    },
   },
   methods: {
     toggleMinimize() {
@@ -54,6 +56,24 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
+<style>
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
+  .windows-draggable {
+    -webkit-app-region: drag;
+  }
+
+  .btn-win-control {
+    -webkit-app-region: no-drag;
+  }
+
+  .no-text-selection {
+    -webkit-user-select: none;
+  }
+
+  div.v-toolbar__content {
+    padding-left: 5px;
+  }
 </style>

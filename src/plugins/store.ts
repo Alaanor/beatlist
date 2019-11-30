@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
 import pathify from 'vuex-pathify';
 import localForage from 'localforage';
-import modules from '../store/modules';
+import modules from '../store';
 
 Vue.use(Vuex);
 
