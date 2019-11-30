@@ -1,21 +1,55 @@
 <template>
-  <v-app-bar app dense flat clipped-left class="windows-draggable"
-             :color="darkTheme ? '#303030' : 'rgba(250, 250, 250, 0)'">
-    <v-app-bar-nav-icon v-if="!permanent" @click.stop="drawer = !drawer" class="btn-win-control"/>
+  <v-app-bar
+    app
+    dense
+    flat
+    clipped-left
+    class="windows-draggable"
+    :color="darkTheme ? '#303030' : 'rgba(250, 250, 250, 0)'"
+  >
+    <v-app-bar-nav-icon
+      v-if="!permanent"
+      class="btn-win-control"
+      @click.stop="drawer = !drawer"
+    />
     <v-toolbar-title class="ma-1">
-      <v-img :src="titleImage" width="108"/>
+      <v-img
+        :src="titleImage"
+        width="108"
+      />
     </v-toolbar-title>
-    <v-spacer/>
-    <v-btn text icon @click="toggleMinimize()" class="btn-win-control ma-0">
-      <v-icon small>minimize</v-icon>
+    <v-spacer />
+    <v-btn
+      text
+      icon
+      class="btn-win-control ma-0"
+      @click="toggleMinimize()"
+    >
+      <v-icon small>
+        minimize
+      </v-icon>
     </v-btn>
-    <v-btn text icon @click="toggleMaximized()" class="btn-win-control ma-0">
-      <v-icon small>web_asset</v-icon>
+    <v-btn
+      text
+      icon
+      class="btn-win-control ma-0"
+      @click="toggleMaximized()"
+    >
+      <v-icon small>
+        web_asset
+      </v-icon>
     </v-btn>
     <v-hover v-slot:default="{ hover }">
-      <v-btn text icon @click="appClose()" :color="hover ? 'error' : ''"
-             class="btn-win-control ma-0">
-        <v-icon small>close</v-icon>
+      <v-btn
+        text
+        icon
+        :color="hover ? 'error' : ''"
+        class="btn-win-control ma-0"
+        @click="appClose()"
+      >
+        <v-icon small>
+          close
+        </v-icon>
       </v-btn>
     </v-hover>
   </v-app-bar>

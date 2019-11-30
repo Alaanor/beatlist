@@ -1,11 +1,22 @@
 <template>
   <v-navigation-drawer
-          app clipped floating v-model="drawer" :permanent="permanent"
-          mini-variant-width="70" :expand-on-hover="miniVariant"
-          mobile-break-point="0" color="transparent">
+    v-model="drawer"
+    app
+    clipped
+    floating
+    :permanent="permanent"
+    mini-variant-width="70"
+    :expand-on-hover="miniVariant"
+    mobile-break-point="0"
+    color="transparent"
+  >
     <v-card class="ml-2">
       <v-list dense>
-        <MenuNavigationItem v-for="menu in this.menus" :key="menu.path" :item="menu"/>
+        <MenuNavigationItem
+          v-for="menu in menus"
+          :key="menu.path"
+          :item="menu"
+        />
         <v-list-item @click="openGithubRepo()">
           <v-list-item-icon>
             <v-icon>mdi-github-circle</v-icon>

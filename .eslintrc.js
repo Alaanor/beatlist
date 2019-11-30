@@ -4,7 +4,10 @@ module.exports = {
     es6: true,
   },
   extends: [
+    'plugin:vue/base',
     'plugin:vue/essential',
+    'plugin:vue/strongly-recommended',
+    'plugin:vue/recommended',
     'plugin:import/typescript',
     'airbnb-base',
   ],
@@ -23,6 +26,7 @@ module.exports = {
   ],
   rules: {
     'no-console': 'off',
+    'vue/html-closing-bracket-spacing': 'off',
   },
   settings: {
     'import/resolver': {
