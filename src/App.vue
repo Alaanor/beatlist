@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { get } from 'vuex-pathify';
 import AppMenu from './components/core/AppMenu.vue';
 import AppBar from './components/core/AppBar.vue';
 import AppContent from './components/core/AppContent.vue';
@@ -21,9 +22,17 @@ export default Vue.extend({
   components: {
     AppMenu, AppBar, AppContent, AppServices,
   },
-  data: () => ({
-
-  }),
+  computed: {
+    darkTheme: get('settings/darkTheme'),
+  },
+  watch: {
+    darkTheme() {
+      this.$vuetify.theme.dark = this.darkTheme;
+    },
+  },
+  created() {
+    this.$vuetify.theme.dark = this.darkTheme;
+  },
 });
 </script>
 

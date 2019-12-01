@@ -7,7 +7,7 @@ import VueRouter from 'vue-router';
 // import PlaylistEditor from '../pages/PlaylistEditor.vue';
 // import Settings from '../pages/Settings.vue';
 // import Beatmap from '../pages/Beatmap.vue';
-// import Home from '../pages/Home.vue';
+import Home from '../pages/Home.vue';
 // import FAQ from '../pages/FAQ.vue';
 import store from '../store';
 
@@ -15,11 +15,11 @@ Vue.use(VueRouter);
 
 const router = new VueRouter({
   routes: [
-    // {
-    //   path: '/',
-    //   name: 'home',
-    //   component: Home,
-    // },
+    {
+      path: '/',
+      name: 'home',
+      component: Home,
+    },
     // {
     //   path: '/songs/local',
     //   name: 'song-list-local',
