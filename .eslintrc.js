@@ -16,7 +16,7 @@ module.exports = {
     SharedArrayBuffer: 'readonly',
   },
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2019,
     parser: '@typescript-eslint/parser',
     sourceType: 'module',
   },
@@ -27,6 +27,10 @@ module.exports = {
   rules: {
     'no-console': 'off',
     'vue/html-closing-bracket-spacing': 'off',
+    'no-underscore-dangle': 'off',
+    '@typescript-eslint/no-unused-vars': 'error',
+    'no-unused-vars': 'off',
+    'vue/no-v-html': 'off',
   },
   settings: {
     'import/resolver': {

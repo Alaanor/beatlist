@@ -48,7 +48,6 @@ export default Vue.extend({
   }),
   mounted(): void {
     const st = this.$store as unknown as { _vm: { $root: Vue } };
-    // eslint-disable-next-line no-underscore-dangle
     st._vm.$root.$on('storageReady', () => {
       this.isReady = true;
       this.onReady();

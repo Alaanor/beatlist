@@ -10,7 +10,6 @@ Vue.use(Vuex);
 const vuexPersistEmitter = () => (store: any) => {
   store.subscribe((mutation: any) => {
     if (mutation.type === 'RESTORE_MUTATION') {
-      // eslint-disable-next-line no-underscore-dangle
       store._vm.$root.$emit('storageReady');
     }
   });

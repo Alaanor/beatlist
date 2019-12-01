@@ -53,6 +53,7 @@
     "@types/discord-rpc": "^3.0.2",
     "@types/fs-extra": "^8.0.1",
     "@types/jest": "^24.0.23",
+    "@types/marked": "^0.7.2",
     "@types/winreg": "^1.2.30",
     "@typescript-eslint/eslint-plugin": "^2.9.0",
     "@typescript-eslint/parser": "^2.9.0",
