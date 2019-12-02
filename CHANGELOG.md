@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.3 (02/12/2019)
+**Bug fixes:**
+ - Fixed  the search bar for online beatmap. Oops.
+
 ## v1.1.2 (24/11/2019)
 **Features:**
  - Discord Rich Presence added

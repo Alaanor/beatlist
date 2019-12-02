@@ -99,7 +99,7 @@
     methods: {
       updateSearch() {
         this.search = this.search === null ? '' : this.search;
-        this.$emit('updateSearch', );
+        this.$emit('updateSearch', this.search);
       },
     },
     filters: {
