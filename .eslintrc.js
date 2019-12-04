@@ -10,6 +10,7 @@ module.exports = {
     'plugin:vue/recommended',
     'plugin:import/typescript',
     'airbnb-base',
+    'plugin:jest/all',
   ],
   globals: {
     Atomics: 'readonly',
@@ -22,6 +23,7 @@ module.exports = {
   },
   plugins: [
     'vue',
+    'jest',
     '@typescript-eslint',
   ],
   rules: {
