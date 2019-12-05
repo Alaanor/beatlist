@@ -5,9 +5,9 @@ import VueRouter from 'vue-router';
 // import PlaylistsLocal from '../pages/PlaylistsLocal.vue';
 // import PlaylistsOnline from '../pages/PlaylistsOnline.vue';
 // import PlaylistEditor from '../pages/PlaylistEditor.vue';
-// import Settings from '../pages/Settings.vue';
+import Settings from '../pages/Settings';
 // import Beatmap from '../pages/Beatmap.vue';
-import Home from '../pages/Home.vue';
+import Home from '../pages/Home';
 // import FAQ from '../pages/FAQ.vue';
 import store from '../store';
 
@@ -50,11 +50,11 @@ const router = new VueRouter({
     //   component: PlaylistEditor,
     //   meta: {requireValidSettings: true},
     // },
-    // {
-    //   path: '/settings',
-    //   name: 'settings',
-    //   component: Settings,
-    // },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: Settings,
+    },
     // {
     //   path: '/beatmap/:key',
     //   name: 'beatmap',

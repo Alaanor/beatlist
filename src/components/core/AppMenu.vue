@@ -4,7 +4,7 @@
     app
     clipped
     floating
-    :permanent="permanent"
+    :permanent="true"
     mini-variant-width="70"
     :expand-on-hover="miniVariant"
     mobile-break-point="0"
@@ -109,7 +109,6 @@ export default Vue.extend({
   }),
   computed: {
     miniVariant: get('settings/miniVariant'),
-    permanent: get('settings/permanent'),
   },
   methods: {
     openGithubRepo() {

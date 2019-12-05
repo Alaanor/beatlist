@@ -6,7 +6,6 @@ const state = {
   configValid: false,
   darkTheme: true,
   miniVariant: true,
-  permanent: true,
   displayMode: 0,
   enableDiscordRichPresence: true,
 };

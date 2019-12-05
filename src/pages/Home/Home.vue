@@ -20,9 +20,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { remote } from 'electron';
-import ChangelogDisplayer from '../components/github/changelog/ChangelogDisplayer.vue';
+import ChangelogDisplayer from '../../components/github/changelog/ChangelogDisplayer.vue';
 
-const logo = require('../assets/logo.png');
+const logo = require('../../assets/logo.png');
 
 export default Vue.extend({
   name: 'Home',

@@ -7,11 +7,6 @@
     class="windows-draggable"
     :color="darkTheme ? '#303030' : 'rgba(250, 250, 250, 0)'"
   >
-    <v-app-bar-nav-icon
-      v-if="!permanent"
-      class="btn-win-control"
-      @click.stop="drawer = !drawer"
-    />
     <v-toolbar-title class="ma-1">
       <v-img
         :src="titleImage"
@@ -66,7 +61,6 @@ const titleDark = require('../../assets/title_dark.png');
 export default Vue.extend({
   name: 'AppBar',
   computed: {
-    permanent: get('settings/permanent'),
     darkTheme: get('settings/darkTheme'),
     titleImage() {
       return this.darkTheme ? titleDark : titleWhite;
