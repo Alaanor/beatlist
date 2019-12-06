@@ -33,6 +33,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'error',
     'no-unused-vars': 'off',
     'vue/no-v-html': 'off',
+    'jest/no-hooks': 'off',
   },
   settings: {
     'import/resolver': {

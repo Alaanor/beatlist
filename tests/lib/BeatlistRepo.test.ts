@@ -1,4 +1,4 @@
-import BeatlistRepo from './BeatlistRepo';
+import BeatlistRepo from '../../src/libraries/net/github/BeatlistRepo';
 
 describe('beatlist repo', () => {
   it('changelog content fetcher', async () => {
