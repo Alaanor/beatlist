@@ -1,6 +1,7 @@
 import electron, { app, protocol, BrowserWindow } from 'electron';
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib';
 import path from 'path';
+import registerIpc from './libraries/ipc';
 
 class Background {
   private static RegisterProtocol() {
@@ -60,8 +61,13 @@ class Background {
         }
       }
       this.InitiateWindow();
-      app.setAsDefaultProtocolClient('beatsaver');
+      Background.SetUpServices();
     });
+  }
+
+  private static SetUpServices() {
+    registerIpc();
+    app.setAsDefaultProtocolClient('beatsaver');
   }
 
   private OnDevMode() {
