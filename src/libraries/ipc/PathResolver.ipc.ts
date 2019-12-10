@@ -8,7 +8,7 @@ export default class PathResolver {
   public static register(): void {
     ipcMain.on(RESOLVE_INST_PATH_MSG, async (event: any) => {
       const installationPath = await BeatSaber.solveInstallationPath();
-      event.reply(RESOLVE_INST_PATH_REPLY, installationPath);
+      event.reply(RESOLVE_INST_PATH_REPLY, installationPath ?? '');
     });
   }
 

@@ -1,7 +1,7 @@
 import PathResolverForSteam from './PathResolverForSteam';
 import PathResolverForOculus from './PathResolverForOculus';
 
-export const resolveInstallPath = async () => {
+export const resolveInstallPath = async (): Promise<string | undefined> => {
   const steam = await PathResolverForSteam.findPath();
   if (steam !== undefined) {
     return steam;
@@ -12,7 +12,7 @@ export const resolveInstallPath = async () => {
     return oculus;
   }
 
-  return null;
+  return undefined;
 };
 
 export default resolveInstallPath;

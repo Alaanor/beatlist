@@ -66,7 +66,7 @@ export default Vue.extend({
 
       PathResolver.detectInstallationPath()
         .then((path: string) => {
-          if (!path) {
+          if (path === '') {
             this.snackbarType = 'error';
             this.snackbarText = 'Couldn\'t detect installation path :(';
           } else {
