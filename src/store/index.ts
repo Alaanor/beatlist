@@ -1,7 +1,7 @@
 import settings from './settings';
-import songs from './songs';
+import beatmap from './beatmap';
 
 export default {
   settings,
-  songs,
+  beatmap,
 };

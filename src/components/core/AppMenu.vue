@@ -56,19 +56,19 @@ export default Vue.extend({
         icon: 'home',
       },
       {
-        path: '/songs',
-        name: 'Song list',
+        path: '/beatmap',
+        name: 'Beatmap list',
         icon: 'library_music',
         requireValidConfig: true,
         items: [
           {
-            path: '/songs/online',
+            path: '/beatmaps/online',
             name: 'Online',
             icon: 'language',
             requireValidConfig: true,
           },
           {
-            path: '/songs/local',
+            path: '/beatmaps/local',
             name: 'Local',
             icon: 'computer',
             requireValidConfig: true,

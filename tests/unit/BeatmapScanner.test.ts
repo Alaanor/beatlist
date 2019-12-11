@@ -6,7 +6,7 @@ import BeatmapLoader from '../../src/libraries/beatmap/BeatmapLoader';
 
 describe('beatmap scanner', () => {
   it('should only scan the difference', async () => {
-    expect.assertions(2);
+    expect.assertions(4);
 
     jest.spyOn(BeatSaber, 'getAllSongFolderPath')
       .mockImplementation()
@@ -16,6 +16,7 @@ describe('beatmap scanner', () => {
       .mockImplementation()
       .mockReturnValue([
         { folderPath: 'foo' } as BeatmapLocal,
+        { folderPath: 'baz' } as BeatmapLocal,
       ]);
 
     jest.spyOn(BeatmapLoader.prototype, 'Load')
@@ -23,9 +24,15 @@ describe('beatmap scanner', () => {
         (path: string) => Promise.resolve({ folderPath: path } as BeatmapLocal),
       );
 
-    const [first, second] = await BeatmapScanner.ScanAll();
+    jest.spyOn(BeatmapLibrary, 'UpdateAllMaps')
+      .mockImplementation();
 
-    expect(first.folderPath).toBe('bar');
-    expect(second.folderPath).toBe('foobar');
+    const scanner = new BeatmapScanner();
+    await scanner.ScanAll();
+
+    expect(scanner.newBeatmaps[0].folderPath).toBe('bar');
+    expect(scanner.newBeatmaps[1].folderPath).toBe('foobar');
+    expect(scanner.removedBeatmaps).toBe(1);
+    expect(scanner.keptBeatmaps).toBe(1);
   });
 });

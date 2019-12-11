@@ -2,7 +2,7 @@ import { make } from 'vuex-pathify';
 
 const state = {
   lastScan: undefined,
-  songs: undefined,
+  beatmaps: undefined,
   playlists: [],
 };
 
