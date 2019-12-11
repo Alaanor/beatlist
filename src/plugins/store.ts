@@ -21,7 +21,7 @@ const vuexLocal = new VuexPersistence({
   strictMode: true,
 });
 
-export default new Vuex.Store<any>({
+export default new Vuex.Store({
   plugins: [
     vuexLocal.plugin,
     pathify.plugin,
