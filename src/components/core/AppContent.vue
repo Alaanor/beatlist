@@ -4,36 +4,21 @@
       fluid
       fill-height
     >
-      <v-layout v-if="isReady">
-        <v-flex
-          lg10
-          xs12
-          offset-lg1
-        >
-          <keep-alive>
-            <transition
-              appear
-              name="slide-x-transition"
-              mode="out-in"
-            >
-              <router-view/>
-            </transition>
-          </keep-alive>
-        </v-flex>
-      </v-layout>
-      <v-layout
-        v-else
-        justify-center
-        align-center
+      <v-flex
+        lg10
+        xs12
+        offset-lg1
       >
-        <v-flex shrink>
-          <v-progress-circular
-            :size="100"
-            :width="5"
-            indeterminate
-          />
-        </v-flex>
-      </v-layout>
+        <keep-alive>
+          <transition
+            appear
+            name="slide-x-transition"
+            mode="out-in"
+          >
+            <router-view/>
+          </transition>
+        </keep-alive>
+      </v-flex>
     </v-container>
   </v-content>
 </template>
@@ -46,13 +31,6 @@ export default Vue.extend({
   data: () => ({
     isReady: false,
   }),
-  mounted(): void {
-    const st = this.$store as unknown as { _vm: { $root: Vue } };
-    st._vm.$root.$on('storageReady', () => {
-      this.isReady = true;
-      this.onReady();
-    });
-  },
   methods: {
     onReady() {
       // TODO: CheckSettingsRequirement + RegisterBeatSaverLinkListener + DiscordRichPresence

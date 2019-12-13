@@ -9,7 +9,7 @@ import Settings from '../pages/settings';
 // import Beatmap from '../pages/Beatmap.vue';
 import Home from '../pages/home';
 // import FAQ from '../pages/FAQ.vue';
-import store from '../store';
+import store from './store';
 
 Vue.use(VueRouter);
 
@@ -69,7 +69,11 @@ const router = new VueRouter({
   ],
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+  // wait for the vuex-persist to be ready, restored is populated by doesn't have the definition
+  // @ts-ignore
+  await store.restored.then();
+
   if (to.matched.some((record) => record.meta.requireValidSettings)) {
     const st = store as unknown as { get: (path: string) => boolean };
     if (!st.get('settings/configValid')) {

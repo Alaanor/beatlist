@@ -1,4 +1,3 @@
-/* istanbul ignore file */
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
@@ -8,25 +7,16 @@ import modules from '../store';
 
 Vue.use(Vuex);
 
-const vuexPersistEmitter = () => (store: any) => {
-  store.subscribe((mutation: any) => {
-    if (mutation.type === 'RESTORE_MUTATION') {
-      store._vm.$root.$emit('storageReady');
-    }
-  });
-};
-
-const vuexLocal = new VuexPersistence({
+const vuexLocal = new VuexPersistence<any>({
   storage: localForage,
   asyncStorage: true,
   strictMode: true,
 });
 
-export default new Vuex.Store({
+const store = new Vuex.Store<any>({
   plugins: [
     vuexLocal.plugin,
     pathify.plugin,
-    vuexPersistEmitter(),
   ],
   modules,
   mutations: {
@@ -34,3 +24,5 @@ export default new Vuex.Store({
   },
   strict: true,
 });
+
+export default store;
