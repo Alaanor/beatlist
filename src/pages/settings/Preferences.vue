@@ -12,6 +12,7 @@
           v-model="darkTheme"
           color="primary"
           label="Dark theme"
+          inset
         />
       </v-col>
       <v-col
@@ -22,6 +23,7 @@
           v-model="miniVariant"
           color="primary"
           label="Mini sidebar"
+          inset
         />
       </v-col>
       <v-col
@@ -32,6 +34,7 @@
           v-model="enableDiscordRichPresence"
           color="primary"
           label="Enable Discord Rich Presence"
+          inset
         />
       </v-col>
     </v-row>
