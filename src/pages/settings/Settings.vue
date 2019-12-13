@@ -4,7 +4,7 @@
       Settings
     </p>
     <InstallationPathForm/>
-    <!-- Song Library + Scanner -->
+    <SongLibrary/>
     <Preferences/>
   </v-container>
 </template>
@@ -13,10 +13,11 @@
 import Vue from 'vue';
 import Preferences from './Preferences.vue';
 import InstallationPathForm from './InstallationPathForm.vue';
+import SongLibrary from './SongLibrary.vue';
 
 export default Vue.extend({
   name: 'Settings',
-  components: { InstallationPathForm, Preferences },
+  components: { InstallationPathForm, Preferences, SongLibrary },
 });
 </script>
 
