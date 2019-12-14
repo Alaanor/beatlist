@@ -1,36 +1,34 @@
 <template>
-  <v-container>
-    <v-dialog
-      v-model="open"
-      persistent
-      width="300"
-    >
-      <v-card>
-        <v-card-title>
-          {{ title }}
-        </v-card-title>
-        <v-card-text>
-          <slot/>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer/>
-          <v-btn
-            text
-            @click="closeDialog"
-          >
-            Cancel
-          </v-btn>
-          <v-btn
-            text
-            :color="actionColor"
-            @click="doAction()"
-          >
-            {{ actionText }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-container>
+  <v-dialog
+    v-model="open"
+    persistent
+    width="300"
+  >
+    <v-card>
+      <v-card-title>
+        {{ title }}
+      </v-card-title>
+      <v-card-text>
+        <slot/>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer/>
+        <v-btn
+          text
+          @click="closeDialog"
+        >
+          Cancel
+        </v-btn>
+        <v-btn
+          text
+          :color="actionColor"
+          @click="doAction()"
+        >
+          {{ actionText }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script lang="ts">
