@@ -22,7 +22,7 @@
             :disabled="scanning || !installationPathValid || songAvailable === 0"
             color="warning"
             class="my-2"
-            @click="clearCache()"
+            @click="openConfirmDialogCache()"
           >
             Clear cache
           </v-btn>
@@ -38,6 +38,15 @@
         </v-col>
       </v-row>
     </v-container>
+    <LoaderDialog v-model="scanning"/>
+    <ConfirmDialog
+      :open.sync="confirmDialog"
+      action-text="Clear"
+      action-color="error"
+      :on-action="clearCache"
+    >
+      <span>Are you sure you want to <strong class="error--text">clear</strong> the cache ?</span>
+    </ConfirmDialog>
   </v-container>
 </template>
 
@@ -46,12 +55,16 @@ import Vue from 'vue';
 import { get } from 'vuex-pathify';
 import BeatmapScanner from '../../libraries/beatmap/BeatmapScanner';
 import BeatmapLibrary from '../../libraries/beatmap/BeatmapLibrary';
+import LoaderDialog from '../../components/dialogs/LoaderDialog.vue';
+import ConfirmDialog from '../../components/dialogs/ConfirmDialog.vue';
 
 export default Vue.extend({
   name: 'SongLibrary',
+  components: { LoaderDialog, ConfirmDialog },
   data: () => ({
     scanning: false,
     scanner: {} as BeatmapScanner,
+    confirmDialog: false,
   }),
   computed: {
     installationPathValid: get('settings/installationPathValid'),
@@ -66,6 +79,9 @@ export default Vue.extend({
         .then(() => {
           this.scanning = false;
         });
+    },
+    openConfirmDialogCache() {
+      this.confirmDialog = true;
     },
     clearCache() {
       BeatmapLibrary.ClearCache();
