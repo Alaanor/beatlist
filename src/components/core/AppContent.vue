@@ -25,15 +25,27 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { get } from 'vuex-pathify';
 
 export default Vue.extend({
   name: 'AppContent',
   data: () => ({
     isReady: false,
   }),
+  computed: {
+    configValid: get('settings/configValid'),
+  },
+  mounted(): void {
+    this.onReady();
+  },
   methods: {
     onReady() {
-      // TODO: CheckSettingsRequirement + RegisterBeatSaverLinkListener + DiscordRichPresence
+      this.CheckForSettingsRequirement();
+    },
+    CheckForSettingsRequirement() {
+      if (!this.configValid) {
+        this.$router.push({ name: 'settings' });
+      }
     },
   },
 });

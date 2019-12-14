@@ -3,7 +3,6 @@ import { make } from 'vuex-pathify';
 const state = {
   installationPath: '',
   installationPathValid: false,
-  configValid: false,
   darkTheme: true,
   miniVariant: true,
   displayMode: 0,
@@ -16,6 +15,9 @@ const mutations = {
 
 const getters = {
   ...make.getters(state),
+  configValid(currentState: any) {
+    return currentState.installationPathValid;
+  },
 };
 
 export default {

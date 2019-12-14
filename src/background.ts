@@ -2,6 +2,7 @@ import electron, { app, protocol, BrowserWindow } from 'electron';
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib';
 import path from 'path';
 import registerIpc from './libraries/ipc';
+import DiscordRichPresence from './libraries/ipc/DiscordRichPresence';
 
 class Background {
   private static RegisterProtocol() {
@@ -67,7 +68,11 @@ class Background {
 
   private static SetUpServices() {
     registerIpc();
+
     app.setAsDefaultProtocolClient('beatsaver');
+
+    const richPresence = new DiscordRichPresence();
+    richPresence.Initiate();
   }
 
   private OnDevMode() {

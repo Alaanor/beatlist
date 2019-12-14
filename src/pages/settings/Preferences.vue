@@ -44,13 +44,20 @@
 <script lang="ts">
 import Vue from 'vue';
 import { sync } from 'vuex-pathify';
+import DiscordRichPresence from '../../libraries/ipc/DiscordRichPresence';
 
 export default Vue.extend({
   name: 'Preferences',
   computed: {
-    enableDiscordRichPresence: sync('settings/enableDiscordRichPresence'),
-    darkTheme: sync('settings/darkTheme'),
-    miniVariant: sync('settings/miniVariant'),
+    enableDiscordRichPresence: sync<boolean>('settings/enableDiscordRichPresence'),
+    darkTheme: sync<boolean>('settings/darkTheme'),
+    miniVariant: sync<boolean>('settings/miniVariant'),
+    installationPathValid: sync<boolean>('settings/installationPathValid'),
+  },
+  watch: {
+    enableDiscordRichPresence() {
+      DiscordRichPresence.SetVisibility(this.enableDiscordRichPresence);
+    },
   },
 });
 </script>

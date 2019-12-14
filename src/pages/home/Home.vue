@@ -21,6 +21,7 @@
 import Vue from 'vue';
 import { remote } from 'electron';
 import ChangelogDisplayer from '../../components/github/changelog/ChangelogDisplayer.vue';
+import DiscordRichPresence from '../../libraries/ipc/DiscordRichPresence';
 
 const logo = require('../../assets/logo.png');
 
@@ -32,6 +33,10 @@ export default Vue.extend({
     currentVersion() {
       return remote.app.getVersion();
     },
+  },
+  beforeRouteEnter(to, from, next) {
+    DiscordRichPresence.UpdateStatus('Home');
+    next();
   },
 });
 </script>

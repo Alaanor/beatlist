@@ -14,10 +14,15 @@ import Vue from 'vue';
 import Preferences from './Preferences.vue';
 import InstallationPathForm from './InstallationPathForm.vue';
 import SongLibrary from './SongLibrary.vue';
+import DiscordRichPresence from '../../libraries/ipc/DiscordRichPresence';
 
 export default Vue.extend({
   name: 'Settings',
   components: { InstallationPathForm, Preferences, SongLibrary },
+  beforeRouteEnter(to, from, next) {
+    DiscordRichPresence.UpdateStatus('Settings');
+    next();
+  },
 });
 </script>
 
