@@ -8,7 +8,7 @@
         v-model="installationPath"
         label="Installation path"
         append-icon="folder"
-        :color="installationPathValid ? '' : 'red'"
+        :color="installationPathValid ? 'primary' : 'red'"
         :prepend-icon="installationPathValid ? 'done' : 'warning'"
         :rules="rules.validInstallationPath"
         hint="The folder where Beat Saber is installed, must have a 'Beat Saber.exe' file there"
@@ -17,7 +17,7 @@
       />
       <v-btn
         text
-        color="success"
+        color="accent"
         class="mb-4"
         :disabled="installationPathValid"
         :loading="resolveBtnLoading"

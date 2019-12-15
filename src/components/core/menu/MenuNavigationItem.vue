@@ -1,44 +1,45 @@
 <template>
-  <div v-if="!(item.requireValidConfig && !settings.configValid)">
-    <v-list-group
-      v-if="('items' in item) && !(item.requireValidConfig && !settings.configValid)"
-      :prepend-icon="item.icon"
-      :no-action="!settings.miniVariant"
-      :group="item.path"
-    >
-      <template v-slot:activator>
-        <v-list>
-          <v-list-item-title>{{ item.name }}</v-list-item-title>
-        </v-list>
-      </template>
-      <MenuNavigationItem
-        v-for="entry in item.items"
-        :key="entry.path"
-        :item="entry"
-        :depth="depth+1"
-      />
-    </v-list-group>
-
+  <div v-if="configValid">
     <v-list-item
-      v-else-if="depth === 0 || settings.miniVariant"
+      v-if="menuRight"
       :to="item.path"
+      class="px-0 menu-item"
     >
-      <v-list-item-icon>
-        <v-icon>{{ item.icon }}</v-icon>
+      <v-list-item-content
+        v-if="!miniVariant"
+        class="px-2"
+      >
+        <v-list-item-title style="text-align: right;">
+          {{ item.name }}
+        </v-list-item-title>
+      </v-list-item-content>
+      <v-list-item-icon
+        class="mx-2 my-2"
+        style="left: 0;"
+        :title="item.name"
+      >
+        <v-icon>
+          {{ item.icon }}
+        </v-icon>
       </v-list-item-icon>
-      <v-list-item-content>
+    </v-list-item>
+    <v-list-item
+      v-else
+      :to="item.path"
+      class="pa-0 menu-item"
+    >
+      <v-list-item-icon
+        class="mx-2 my-2"
+        style="left: 0;"
+        :title="item.name"
+      >
+        <v-icon>
+          {{ item.icon }}
+        </v-icon>
+      </v-list-item-icon>
+      <v-list-item-content v-if="!miniVariant">
         <v-list-item-title>{{ item.name }}</v-list-item-title>
       </v-list-item-content>
-    </v-list-item>
-
-    <v-list-item
-      v-else-if="depth > 0"
-      :to="item.path"
-    >
-      <v-list-item-title>{{ item.name }}</v-list-item-title>
-      <v-list-item-icon>
-        <v-icon>{{ item.icon }}</v-icon>
-      </v-list-item-icon>
     </v-list-item>
   </div>
 </template>
@@ -50,10 +51,11 @@ export default {
   name: 'MenuNavigationItem',
   props: {
     item: { type: Object, required: true },
-    depth: { type: Number, default: 0 },
   },
   computed: {
-    settings: get('settings'),
+    miniVariant: get('settings/miniVariant'),
+    menuRight: get('settings/menuRight'),
+    configValid: get('settings/configValid'),
   },
 };
 </script>

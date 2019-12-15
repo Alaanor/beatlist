@@ -1,11 +1,9 @@
 <template>
-  <v-container>
+  <v-container class="py-0">
     <v-layout>
       <v-flex
         v-if="changelogRaw !== '' && !hasErr"
         id="markdown"
-        xs6
-        offset-xs3
         v-html="changelog"
       />
       <v-flex
@@ -64,26 +62,30 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-  #markdown >>> h1,
-  #markdown >>> h2,
-  #markdown >>> h3,
-  #markdown >>> h4,
-  #markdown >>> h5,
-  #markdown >>> h6 {
-    margin-bottom: 15px;
-    margin-top: 15px;
-  }
+#markdown:first-child {
+  margin-top: 0px !important;
+}
 
-  #markdown >>> p,
-  #markdown >>> li {
-    font-weight: 400;
-  }
+#markdown >>> h1,
+#markdown >>> h2,
+#markdown >>> h3,
+#markdown >>> h4,
+#markdown >>> h5,
+#markdown >>> h6 {
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
 
-  #markdown >>> ul {
-    margin-bottom: 15px;
-  }
+#markdown >>> p,
+#markdown >>> li {
+  font-weight: 400;
+}
 
-  #markdown >>> p {
-    margin-bottom: 5px;
-  }
+#markdown >>> ul {
+  margin-bottom: 15px;
+}
+
+#markdown >>> p {
+  margin-bottom: 5px;
+}
 </style>
