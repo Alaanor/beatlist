@@ -1,46 +1,62 @@
 <template>
   <v-navigation-drawer
-    v-model="drawer"
     app
     clipped
     floating
     :permanent="true"
-    mini-variant-width="70"
-    :expand-on-hover="miniVariant"
+    :mini-variant="miniVariant"
+    :right="menuRight"
+    mini-variant-width="40"
     mobile-break-point="0"
-    color="transparent"
+    width="120"
+    color="primary"
+    style="overflow: visible;"
   >
-    <v-card class="ml-2">
-      <v-list dense>
-        <MenuNavigationItem
-          v-for="menu in menus"
-          :key="menu.path"
-          :item="menu"
-        />
-        <v-list-item @click="openGithubRepo()">
-          <v-list-item-icon>
-            <v-icon>mdi-github-circle</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>Github repo</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item @click="openDiscordInvitation()">
-          <v-list-item-icon>
-            <v-icon>mdi-discord</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>Discord</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-card>
+    <v-list
+      dense
+      rounded
+      class="pa-0 menu"
+    >
+      <MenuNavigationItem
+        v-for="menu in menus"
+        :key="menu.name"
+        :item="menu"
+      />
+    </v-list>
+    <svg
+      id="curve"
+      viewBox="0 0 20 20"
+      :style="menuRight ? 'left: -20px;' : 'right: -20px;'"
+    >
+      <defs>
+        <mask id="curve-mask">
+          <rect
+            width="100%"
+            height="100%"
+            fill="white"
+          />
+          <circle
+            cy="10"
+            cx="10"
+            r="50%"
+            fill="black"
+          />
+        </mask>
+      </defs>
+      <rect
+        :x="menuRight ? 10 : 0"
+        y="0"
+        width="10"
+        height="10"
+        :fill="this.$vuetify.theme.currentTheme.primary"
+        mask="url(#curve-mask)"
+      />
+    </svg>
   </v-navigation-drawer>
 </template>
 
 <script>
 import Vue from 'vue';
-import { shell } from 'electron';
 import { get } from 'vuex-pathify';
 import MenuNavigationItem from './menu/MenuNavigationItem.vue';
 
@@ -57,48 +73,13 @@ export default Vue.extend({
       },
       {
         path: '/beatmap',
-        name: 'Beatmap list',
+        name: 'Beatmaps',
         icon: 'library_music',
-        requireValidConfig: true,
-        items: [
-          {
-            path: '/beatmaps/online',
-            name: 'Online',
-            icon: 'language',
-            requireValidConfig: true,
-          },
-          {
-            path: '/beatmaps/local',
-            name: 'Local',
-            icon: 'computer',
-            requireValidConfig: true,
-          },
-        ],
       },
       {
         path: '/playlists',
         name: 'Playlists',
         icon: 'playlist_play',
-        requireValidConfig: true,
-        items: [
-          {
-            path: '/playlists/online',
-            name: 'Online',
-            icon: 'language',
-            requireValidConfig: true,
-          },
-          {
-            path: '/playlists/local',
-            name: 'Local',
-            icon: 'computer',
-            requireValidConfig: true,
-          },
-        ],
-      },
-      {
-        path: '/faq',
-        name: 'Frequently asked questions',
-        icon: 'question_answer',
       },
       {
         path: '/settings',
@@ -109,18 +90,29 @@ export default Vue.extend({
   }),
   computed: {
     miniVariant: get('settings/miniVariant'),
-  },
-  methods: {
-    openGithubRepo() {
-      shell.openExternal('https://github.com/Alaanor/beatlist');
-    },
-    openDiscordInvitation() {
-      shell.openExternal('https://discord.gg/f5AmKSH');
-    },
+    menuRight: get('settings/menuRight'),
+    darkTheme: get('settings/darkTheme'),
   },
 });
 </script>
 
 <style scoped>
+.menu {
+  height: 100%;
+}
 
+.menu > div:last-child {
+  bottom: 0px;
+  width: 100%;
+  position: absolute;
+}
+
+#curve {
+  position: absolute;
+  top: 0px;
+  width: 20px;
+  height: 20px;
+  z-index: 100;
+  overflow: visible;
+}
 </style>
