@@ -1,7 +1,7 @@
-import BeatlistRepo from '../../src/libraries/net/github/BeatlistRepo';
-import AxiosCachedFactory from '../../src/libraries/net/AxiosCachedFactory';
+import BeatlistRepo from 'src/libraries/net/github/BeatlistRepo';
+import AxiosCachedFactory from 'src/libraries/net/AxiosCachedFactory';
 
-jest.mock('../../src/libraries/net/AxiosCachedFactory');
+jest.mock('src/libraries/net/AxiosCachedFactory');
 
 describe('beatlist repo', () => {
   it('should get the changelog content', async () => {

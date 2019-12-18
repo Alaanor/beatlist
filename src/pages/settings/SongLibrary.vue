@@ -53,10 +53,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import { get } from 'vuex-pathify';
-import BeatmapScanner from '../../libraries/beatmap/BeatmapScanner';
-import BeatmapLibrary from '../../libraries/beatmap/BeatmapLibrary';
-import LoaderDialog from '../../components/dialogs/LoaderDialog.vue';
-import ConfirmDialog from '../../components/dialogs/ConfirmDialog.vue';
+import BeatmapScanner from 'src/libraries/beatmap/BeatmapScanner';
+import BeatmapLibrary from 'src/libraries/beatmap/BeatmapLibrary';
+import LoaderDialog from 'src/components/dialogs/LoaderDialog.vue';
+import ConfirmDialog from 'src/components/dialogs/ConfirmDialog.vue';
 
 export default Vue.extend({
   name: 'SongLibrary',

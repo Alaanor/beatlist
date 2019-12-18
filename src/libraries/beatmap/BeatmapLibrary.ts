@@ -1,6 +1,6 @@
 /* istanbul ignore file */
-import store from '../../plugins/store';
-import { BeatmapLocal } from './BeatmapLocal';
+import store from 'src/plugins/store';
+import { BeatmapLocal } from 'src/libraries/beatmap/BeatmapLocal';
 
 export default class BeatmapLibrary {
   public static GetAllMaps(): BeatmapLocal[] {

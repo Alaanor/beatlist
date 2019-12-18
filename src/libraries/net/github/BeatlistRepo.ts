@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import AxiosCachedFactory from '../AxiosCachedFactory';
+import AxiosCachedFactory from 'src/libraries/net/AxiosCachedFactory';
 
 export default class BeatlistRepo {
   public static Singleton: BeatlistRepo = new BeatlistRepo();

@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { resolveInstallPath } from '../pathResolver/Resolve';
-import store from '../../../plugins/store';
+import { resolveInstallPath } from 'src/libraries/os/pathResolver/Resolve';
+import store from 'src/plugins/store';
 
 const BEAT_SABER_EXE = 'Beat Saber.exe';
 const BEAT_SABER_PLAYLIST = 'Playlists';

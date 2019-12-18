@@ -60,9 +60,8 @@
 <script>
 import Vue from 'vue';
 import { remote } from 'electron';
-import { get } from 'vuex-pathify';
 
-const logo = require('assets/logo.png');
+const logo = require('src/assets/logo.png');
 
 export default Vue.extend({
   name: 'AppBar',

@@ -49,6 +49,8 @@ export interface DifficultiesSimple {
   hard: boolean;
   expert: boolean;
   expertPlus: boolean;
+
+  [difficulty: string]: boolean;
 }
 
 export interface Stats {
@@ -58,4 +60,6 @@ export interface Stats {
   upVotes: number;
   heat: number;
   rating: number;
+
+  [stat: string]: number;
 }

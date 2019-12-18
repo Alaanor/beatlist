@@ -1,4 +1,4 @@
-import AxiosCachedFactory from '../../src/libraries/net/AxiosCachedFactory';
+import AxiosCachedFactory from 'src/libraries/net/AxiosCachedFactory';
 
 describe('axios cached', () => {
   it('should cache request', async () => {

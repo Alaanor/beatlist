@@ -1,5 +1,5 @@
 import path from 'path';
-import BeatmapHashComputer from '../../src/libraries/beatmap/BeatmapHashComputer';
+import BeatmapHashComputer from 'src/libraries/beatmap/BeatmapHashComputer';
 
 describe('compute beatmap hash from a folder', () => {
   it('should compute the correct hash', async () => {

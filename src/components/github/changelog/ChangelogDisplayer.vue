@@ -33,7 +33,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import marked from 'marked';
-import BeatlistRepo from '../../../libraries/net/github/BeatlistRepo';
+import BeatlistRepo from 'src/libraries/net/github/BeatlistRepo';
 
 export default Vue.extend({
   name: 'ChangelogDisplayer',

@@ -5,9 +5,9 @@ import VueRouter from 'vue-router';
 // import PlaylistsLocal from '../pages/PlaylistsLocal.vue';
 // import PlaylistsOnline from '../pages/PlaylistsOnline.vue';
 // import PlaylistEditor from '../pages/PlaylistEditor.vue';
-import Settings from '../pages/settings';
+import Settings from 'src/pages/settings';
 // import Beatmap from '../pages/Beatmap.vue';
-import Home from '../pages/home';
+import Home from 'src/pages/home';
 // import FAQ from '../pages/FAQ.vue';
 import store from './store';
 

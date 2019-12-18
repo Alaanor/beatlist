@@ -6,7 +6,6 @@ const state = {
   darkTheme: true,
   miniVariant: true,
   menuRight: false,
-  displayMode: 0,
   enableDiscordRichPresence: true,
 };
 

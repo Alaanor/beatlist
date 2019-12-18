@@ -1,4 +1,4 @@
-import BeatSaber from '../os/beatSaber/BeatSaber';
+import BeatSaber from 'src/libraries/os/beatSaber/BeatSaber';
 import BeatmapLibrary from './BeatmapLibrary';
 import BeatmapLoader from './BeatmapLoader';
 import { BeatmapLocal } from './BeatmapLocal';

@@ -42,6 +42,9 @@ module.exports = {
         paths: ['src'],
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
+      webpack: {
+        config: './node_modules/@vue/cli-service/webpack.config.js',
+      },
     },
   },
 };

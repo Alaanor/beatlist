@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import AxiosCachedFactory from '../AxiosCachedFactory';
+import AxiosCachedFactory from 'src/libraries/net/AxiosCachedFactory';
 import { BeatsaverBeatmap } from './BeatsaverBeatmap';
 
 const API_BASE_URL = 'https://beatsaver.com/api';

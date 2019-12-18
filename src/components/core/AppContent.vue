@@ -34,7 +34,7 @@
             <router-view/>
           </transition>
         </keep-alive>
-      </v-flex>
+      </v-layout>
     </v-container>
   </v-content>
 </template>

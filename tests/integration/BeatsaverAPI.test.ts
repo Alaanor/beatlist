@@ -1,4 +1,4 @@
-import BeatSaverAPI from '../../src/libraries/net/beatsaver/BeatSaverAPI';
+import BeatSaverAPI from 'src/libraries/net/beatsaver/BeatSaverAPI';
 
 describe('beatsaver api', () => {
   it('should compute the correct hash', async () => {
