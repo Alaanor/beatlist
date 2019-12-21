@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import DiscordRichPresence from 'src/libraries/ipc/DiscordRichPresence';
+import DiscordRichPresence from '@/libraries/ipc/DiscordRichPresence';
 import Preferences from './Preferences.vue';
 import InstallationPathForm from './InstallationPathForm.vue';
 import SongLibrary from './SongLibrary.vue';

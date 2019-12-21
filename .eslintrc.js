@@ -35,6 +35,14 @@ module.exports = {
     'vue/no-v-html': 'off',
     'jest/no-hooks': 'off',
     'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        ts: 'never',
+      },
+    ],
   },
   settings: {
     'import/resolver': {

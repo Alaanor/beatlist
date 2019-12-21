@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import BeatSaverAPI from 'src/libraries/net/beatsaver/BeatSaverAPI';
+import BeatSaverAPI from '@/libraries/net/beatsaver/BeatSaverAPI';
 import { BeatmapLocal } from './BeatmapLocal';
 import BeatmapLoadStateError from './BeatmapLoadStateError';
 import { BeatmapLoadState } from './BeatmapLoadState';

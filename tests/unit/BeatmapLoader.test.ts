@@ -1,8 +1,8 @@
 import path from 'path';
-import BeatmapLoader from 'src/libraries/beatmap/BeatmapLoader';
-import BeatSaverAPI from 'src/libraries/net/beatsaver/BeatSaverAPI';
-import BeatmapLoadStateError from 'src/libraries/beatmap/BeatmapLoadStateError';
-import BeatmapHashComputer from 'src/libraries/beatmap/BeatmapHashComputer';
+import BeatmapLoader from '@/libraries/beatmap/BeatmapLoader';
+import BeatSaverAPI from '@/libraries/net/beatsaver/BeatSaverAPI';
+import BeatmapLoadStateError from '@/libraries/beatmap/BeatmapLoadStateError';
+import BeatmapHashComputer from '@/libraries/beatmap/BeatmapHashComputer';
 
 describe('beatmap loader', () => {
   it('should load the map correctly', async () => {

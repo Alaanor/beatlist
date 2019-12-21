@@ -6,9 +6,9 @@
 import Vue from 'vue';
 import { ipcRenderer } from 'electron';
 import { get } from 'vuex-pathify';
-import DiscordRichPresence from 'src/libraries/ipc/DiscordRichPresence';
+import DiscordRichPresence from '@/libraries/ipc/DiscordRichPresence';
 import { ON_BEATSAVER_LINK_OPENER_COMPONENT_READY, OPEN_BEATSAVER_LINK }
-  from 'src/libraries/ipc/BeatsaverLinkOpener';
+  from '@/libraries/ipc/BeatsaverLinkOpener';
 
 export default Vue.extend({
   name: 'TypescriptServicesLauncher',

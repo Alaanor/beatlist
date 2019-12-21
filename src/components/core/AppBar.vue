@@ -61,7 +61,7 @@
 import Vue from 'vue';
 import { remote } from 'electron';
 
-const logo = require('src/assets/logo.png');
+const logo = require('@/assets/logo.png');
 
 export default Vue.extend({
   name: 'AppBar',

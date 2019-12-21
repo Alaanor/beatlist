@@ -1,8 +1,8 @@
 import electron, { app, protocol, BrowserWindow } from 'electron';
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib';
 import path from 'path';
-import registerIpc from './libraries/ipc';
-import DiscordRichPresence from './libraries/ipc/DiscordRichPresence';
+import registerIpc from '@/libraries/ipc';
+import DiscordRichPresence from '@/libraries/ipc/DiscordRichPresence';
 
 class Background {
   private static RegisterProtocol() {

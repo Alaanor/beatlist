@@ -58,7 +58,7 @@
 <script>
 import Vue from 'vue';
 import { get } from 'vuex-pathify';
-import MenuNavigationItem from './menu/MenuNavigationItem.vue';
+import MenuNavigationItem from '@/components/core/menu/MenuNavigationItem.vue';
 
 export default Vue.extend({
   name: 'AppMenu',

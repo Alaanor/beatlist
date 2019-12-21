@@ -1,8 +1,8 @@
-import BeatmapScanner from 'src/libraries/beatmap/BeatmapScanner';
-import BeatSaber from 'src/libraries/os/beatSaber/BeatSaber';
-import BeatmapLibrary from 'src/libraries/beatmap/BeatmapLibrary';
-import { BeatmapLocal } from 'src/libraries/beatmap/BeatmapLocal';
-import BeatmapLoader from 'src/libraries/beatmap/BeatmapLoader';
+import BeatmapScanner from '@/libraries/beatmap/BeatmapScanner';
+import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
+import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
+import { BeatmapLocal } from '@/libraries/beatmap/BeatmapLocal';
+import BeatmapLoader from '@/libraries/beatmap/BeatmapLoader';
 
 describe('beatmap scanner', () => {
   it('should only scan the difference', async () => {

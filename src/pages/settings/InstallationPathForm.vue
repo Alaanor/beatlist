@@ -36,8 +36,8 @@
 import Vue from 'vue';
 import { sync } from 'vuex-pathify';
 import { remote } from 'electron';
-import BeatSaber from 'src/libraries/os/beatSaber/BeatSaber';
-import PathResolver from 'src/libraries/ipc/PathResolver.ipc';
+import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
+import PathResolver from '@/libraries/ipc/PathResolver.ipc';
 
 export default Vue.extend({
   name: 'InstallationPathForm',

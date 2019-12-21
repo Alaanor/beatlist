@@ -1,8 +1,8 @@
 import Vue from 'vue';
-import App from './App.vue';
-import vuetify from './plugins/vuetify';
-import router from './plugins/router';
-import store from './plugins/store';
+import App from '@/App.vue';
+import vuetify from '@/plugins/vuetify';
+import router from '@/plugins/router';
+import store from '@/plugins/store';
 import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import '@fortawesome/fontawesome-free/css/all.css';

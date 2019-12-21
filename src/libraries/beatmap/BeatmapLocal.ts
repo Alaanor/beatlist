@@ -1,4 +1,4 @@
-import { BeatsaverBeatmap } from 'src/libraries/net/beatsaver/BeatsaverBeatmap';
+import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import { BeatmapLoadState } from './BeatmapLoadState';
 
 export interface BeatmapLocal {

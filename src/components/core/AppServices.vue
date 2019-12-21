@@ -4,7 +4,7 @@
 
 <script>
 import Vue from 'vue';
-import TypescriptServicesLauncher from 'src/components/services/TypescriptServicesLauncher.vue';
+import TypescriptServicesLauncher from '@/components/services/TypescriptServicesLauncher.vue';
 
 export default Vue.extend({
   name: 'AppServices',

@@ -1,9 +1,9 @@
 import path from 'path';
-import BeatSaber from 'src/libraries/os/beatSaber/BeatSaber';
-import resolver from 'src/libraries/os/pathResolver/Resolve';
+import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
+import resolver from '@/libraries/os/pathResolver/Resolve';
 
-jest.mock('src/libraries/os/pathResolver/Resolve');
-jest.mock('src/plugins/store', () => ({
+jest.mock('@/libraries/os/pathResolver/Resolve');
+jest.mock('@/plugins/store', () => ({
   getters: { 'settings/installationPath': path.join(__dirname, '../data/fakeInstallation') },
 }));
 

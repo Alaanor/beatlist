@@ -1,5 +1,5 @@
 import { ipcMain, ipcRenderer } from 'electron';
-import BeatSaber from 'src/libraries/os/beatSaber/BeatSaber';
+import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
 
 export const RESOLVE_INST_PATH_MSG = 'resolve_inst_path_msg';
 export const RESOLVE_INST_PATH_REPLY = 'resolve_inst_path_reply';

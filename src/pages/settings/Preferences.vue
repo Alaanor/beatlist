@@ -42,7 +42,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { sync } from 'vuex-pathify';
-import DiscordRichPresence from 'src/libraries/ipc/DiscordRichPresence';
+import DiscordRichPresence from '@/libraries/ipc/DiscordRichPresence';
 
 export default Vue.extend({
   name: 'Preferences',
