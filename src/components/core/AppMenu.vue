@@ -15,7 +15,7 @@
     <v-list
       dense
       rounded
-      class="pa-0 menu"
+      class="pa-0 py-1 menu"
     >
       <MenuNavigationItem
         v-for="menu in menus"
