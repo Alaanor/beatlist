@@ -14,6 +14,6 @@ module.exports = {
     '^.+\\.(js|jsx)$': '<rootDir>/node_modules/babel-jest',
   },
   transformIgnorePatterns: [
-    '/node_modules/(?!vue).+(js|jsx)$',
+    '/node_modules/(?!vue|blister.js).+(js|jsx)$',
   ],
 };

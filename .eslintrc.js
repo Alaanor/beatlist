@@ -34,6 +34,7 @@ module.exports = {
     'no-unused-vars': 'off',
     'vue/no-v-html': 'off',
     'jest/no-hooks': 'off',
+    'no-param-reassign': 'off',
     'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
     'import/extensions': [
       'error',
