@@ -4,6 +4,7 @@ import { BeatsaverBeatmap } from './BeatsaverBeatmap';
 
 const API_BASE_URL = 'https://beatsaver.com/api';
 const GET_BY_HASH = 'maps/by-hash/';
+const GET_BY_KEY = 'maps/detail/';
 
 export default class BeatSaverAPI {
   public static Singleton: BeatSaverAPI = new BeatSaverAPI();
@@ -16,6 +17,12 @@ export default class BeatSaverAPI {
 
   public async getBeatmapByHash(hash: string): Promise<BeatsaverBeatmap | undefined> {
     return this.http.get(`${GET_BY_HASH + hash}/`)
+      .then((answer) => answer.data as BeatsaverBeatmap)
+      .catch(() => undefined);
+  }
+
+  public async getBeatmapByKey(key: string): Promise<BeatsaverBeatmap | undefined> {
+    return this.http.get(`${GET_BY_KEY + key}/`)
       .then((answer) => answer.data as BeatsaverBeatmap)
       .catch(() => undefined);
   }
