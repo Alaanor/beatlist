@@ -17,15 +17,27 @@ export default class BeatSaber {
     return resolveInstallPath();
   }
 
-  public static getPlaylistPath() {
-    const installationPath = store.getters['settings/installationPath'];
-    return path.join(installationPath, BEAT_SABER_PLAYLIST);
-  }
-
-  public static async getAllSongFolderPath(): Promise<string[] | undefined> {
+  public static async getAllSongFolderPath(): Promise<string[]> {
     const installationPath = store.getters['settings/installationPath'];
     const pathSongList = path.join(installationPath, BEAT_SABER_CUSTOM_LEVEL);
     const directoryList = await fs.readdir(pathSongList);
     return directoryList.map((directory) => path.join(pathSongList, directory));
+  }
+
+  public static async getAllPlaylistsPath(): Promise<string[] | undefined> {
+    const installationPath = store.getters['settings/installationPath'];
+    const pathPlaylists = path.join(installationPath, BEAT_SABER_PLAYLIST);
+    const fileList = await fs.readdir(pathPlaylists);
+
+    const allFile = await Promise.all(fileList.map(async (file: string) => {
+      const filepath = path.join(pathPlaylists, file);
+      if ((await fs.stat(filepath)).isFile()) {
+        return filepath;
+      }
+      return undefined;
+    }));
+
+    const isString = (str: string | undefined): str is string => !!str;
+    return allFile.filter(isString);
   }
 }

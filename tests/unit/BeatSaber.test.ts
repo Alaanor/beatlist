@@ -33,14 +33,6 @@ describe('beatSaber', () => {
     expect(installationPath).toBe(resp);
   });
 
-  it('should get the playlist path', async () => {
-    expect.assertions(1);
-
-    const playlistPath = BeatSaber.getPlaylistPath();
-
-    expect(playlistPath).toBe(path.join(__dirname, '../data/fakeInstallation/Playlists'));
-  });
-
   it('should get all folder (supposed to be beatmap) in the folder', async () => {
     expect.assertions(2);
 
@@ -48,5 +40,15 @@ describe('beatSaber', () => {
 
     expect(first).toBe(path.join(__dirname, '../data/fakeInstallation/Beat Saber_Data/CustomLevels/bar'));
     expect(second).toBe(path.join(__dirname, '../data/fakeInstallation/Beat Saber_Data/CustomLevels/foo'));
+  });
+
+  it('should find all playlists file', async () => {
+    expect.assertions(3);
+
+    const [first, second, third] = await BeatSaber.getAllPlaylistsPath() ?? [];
+
+    expect(first).toBe(path.join(__dirname, '../data/fakeInstallation/Playlists/file1'));
+    expect(second).toBe(path.join(__dirname, '../data/fakeInstallation/Playlists/file2'));
+    expect(third).toBeUndefined();
   });
 });
