@@ -2,6 +2,7 @@ import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
 import BeatmapLibrary from './BeatmapLibrary';
 import BeatmapLoader from './BeatmapLoader';
 import { BeatmapLocal } from './BeatmapLocal';
+import { computeDifference, Differences } from '@/libraries/common/Differences';
 
 export default class BeatmapScanner {
   public newBeatmaps: BeatmapLocal[] = [];
@@ -13,53 +14,35 @@ export default class BeatmapScanner {
   public async ScanAll() {
     const diff = await BeatmapScanner.GetTheDifferenceInPath();
 
-    this.newBeatmaps = await Promise.all(diff.toAdd.map((path: string) => {
+    this.newBeatmaps = await Promise.all(diff.added.map((path: string) => {
       const loader = new BeatmapLoader();
       return loader.Load(path);
     }));
 
-    this.removedBeatmaps = diff.toRemove.length;
-    this.keptBeatmaps = diff.toKeep.length;
+    this.removedBeatmaps = diff.removed.length;
+    this.keptBeatmaps = diff.kept.length;
 
     const allBeatmaps = this.ReassembleAllBeatmap(diff);
     BeatmapLibrary.UpdateAllMaps(allBeatmaps);
   }
 
-  private static async GetTheDifferenceInPath(): Promise<DifferencesInPath> {
-    const difference = {} as DifferencesInPath;
-
+  private static async GetTheDifferenceInPath(): Promise<Differences<string>> {
     const currentPaths = (await BeatSaber.getAllSongFolderPath())
       ?.map((path: string) => path.toLowerCase());
 
     const oldPaths = BeatmapLibrary.GetAllMaps()
-      .map((beatmap: BeatmapLocal) => beatmap.folderPath)
-      .map((path: string) => path.toLowerCase());
+      .map((beatmap: BeatmapLocal) => beatmap.folderPath.toLowerCase());
 
-    difference.toAdd = currentPaths?.filter((currentPath: string) => !oldPaths
-      .find((oldPath: string) => oldPath === currentPath)) ?? [];
-
-    difference.toKeep = currentPaths?.filter((currentPath: string) => oldPaths
-      .find((oldPath: string) => oldPath === currentPath)) ?? [];
-
-    difference.toRemove = oldPaths.filter((oldPath: string) => !currentPaths
-      ?.find((currentPath: string) => currentPath === oldPath)) ?? [];
-
-    return difference;
+    return computeDifference(oldPaths, currentPaths);
   }
 
-  private ReassembleAllBeatmap(diff: DifferencesInPath): BeatmapLocal[] {
+  private ReassembleAllBeatmap(diff: Differences<string>): BeatmapLocal[] {
     const existingBeatmap = BeatmapLibrary.GetAllMaps().filter(
-      (beatmap: BeatmapLocal) => diff.toKeep.find(
+      (beatmap: BeatmapLocal) => diff.kept.find(
         (path: string) => beatmap.folderPath === path,
       ),
     );
 
     return this.newBeatmaps.concat(existingBeatmap);
   }
-}
-
-interface DifferencesInPath {
-  toRemove: string[],
-  toAdd: string[],
-  toKeep: string[],
 }
