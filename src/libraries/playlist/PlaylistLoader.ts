@@ -42,6 +42,8 @@ export default class PlaylistLoader {
       await PlaylistLoader.ConvertPlaylistFile(filepath, output);
     }
 
+    output.path = filepath;
+
     return output;
   }
 

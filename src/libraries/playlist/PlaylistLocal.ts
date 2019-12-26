@@ -1,6 +1,12 @@
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 
-export interface PlaylistLocal {
+export type PlaylistLocal = PlaylistStoredLocally & PlaylistWithBeatmapLocal;
+
+interface PlaylistStoredLocally {
+  path: string;
+}
+
+export interface PlaylistWithBeatmapLocal {
   title: string;
   author: string;
   description: string | null;
