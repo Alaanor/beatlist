@@ -1,5 +1,6 @@
 import axios, { AxiosAdapter, AxiosInstance } from 'axios';
 import { cacheAdapterEnhancer, throttleAdapterEnhancer } from 'axios-extensions';
+import axiosRetry, { exponentialDelay } from 'axios-retry';
 
 export default class AxiosCachedFactory {
   public static getAxios(apiBaseUrl: string): AxiosInstance {
@@ -7,10 +8,17 @@ export default class AxiosCachedFactory {
     axiosAdapter = cacheAdapterEnhancer(axiosAdapter);
     axiosAdapter = throttleAdapterEnhancer(axiosAdapter);
 
-    return axios.create({
+    const instance = axios.create({
       baseURL: apiBaseUrl,
-      timeout: 2500,
+      timeout: 10 * 1e3,
       adapter: axiosAdapter,
     });
+
+    axiosRetry(instance, {
+      retries: 3,
+      retryDelay: exponentialDelay,
+    });
+
+    return instance;
   }
 }

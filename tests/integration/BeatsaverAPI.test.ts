@@ -1,5 +1,7 @@
 import BeatSaverAPI from '@/libraries/net/beatsaver/BeatSaverAPI';
 
+jest.setTimeout(15 * 1e3);
+
 describe('beatsaver api', () => {
   it('should find the correct map by hash', async () => {
     expect.assertions(2);
