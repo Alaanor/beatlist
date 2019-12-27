@@ -7,7 +7,7 @@ import { BeatmapType, IBeatmap, IPlaylist } from 'blister.js/esm/spec';
 import { ILegacyPlaylist } from 'blister.js/esm/legacy';
 import { PlaylistLocal, PlaylistLocalMap, PlaylistMapImportError } from '@/libraries/playlist/PlaylistLocal';
 import BeatSaverAPI from '@/libraries/net/beatsaver/BeatSaverAPI';
-import Progress, { ProgressStatus } from '@/libraries/common/Progress';
+import Progress from '@/libraries/common/Progress';
 
 const PLAYLIST_EXTENSION_NAME = 'blist';
 
@@ -79,8 +79,7 @@ export default class PlaylistLoader {
     output.description = playlist.description;
     output.cover = playlist.cover;
 
-    progress.status = ProgressStatus.Running;
-    progress.total = playlist.maps.length;
+    progress.setTotal(playlist.maps.length);
 
     output.maps = await Promise.all(playlist.maps.map(async (mapToConvert: IBeatmap) => {
       const map = { dateAdded: mapToConvert.dateAdded } as PlaylistLocalMap;
@@ -109,12 +108,11 @@ export default class PlaylistLoader {
           break;
       }
 
-      progress.done += 1;
+      progress.plusOne();
 
       return map;
     }));
 
-    progress.status = ProgressStatus.Completed;
     return output;
   }
 

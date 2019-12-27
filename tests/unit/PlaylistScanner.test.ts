@@ -1,7 +1,7 @@
 import PlaylistScanner from '@/libraries/playlist/PlaylistScanner';
 import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
 import PlaylistLoader from '@/libraries/playlist/PlaylistLoader';
-import {PlaylistLocal} from '@/libraries/playlist/PlaylistLocal';
+import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
 
 describe('playlist scanner', () => {

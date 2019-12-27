@@ -3,6 +3,7 @@ import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import { computeDifference, Differences } from '@/libraries/common/Differences';
 import PlaylistLoader from '@/libraries/playlist/PlaylistLoader';
+import ProgressGroup from '@/libraries/common/ProgressGroup';
 
 export default class PlaylistScanner {
   public newPlaylists: PlaylistLocal[] = [];
@@ -11,11 +12,11 @@ export default class PlaylistScanner {
 
   public keptPlaylists: number = 0;
 
-  public async ScanAll() {
+  public async ScanAll(progressGroup: ProgressGroup = new ProgressGroup()) {
     const diff = await PlaylistScanner.GetTheDifferenceInPath();
 
     this.newPlaylists = (await Promise.all(
-      diff.added.map((path: string) => PlaylistLoader.Load(path)),
+      diff.added.map((path: string) => PlaylistLoader.Load(path, false, progressGroup.getNewOne())),
     )).filter((playlist: PlaylistLocal | undefined) => playlist !== undefined) as PlaylistLocal[];
 
     this.removedPlaylists = diff.removed.length;
