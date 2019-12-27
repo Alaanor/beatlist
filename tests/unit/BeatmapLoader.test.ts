@@ -16,7 +16,7 @@ describe('beatmap loader', () => {
     const beatmapFolder = path.join(__dirname, '../data/beatmap');
     const coverPath = path.join(__dirname, '../data/beatmap/cover.jpg');
     const songPath = path.join(__dirname, '../data/beatmap/song.egg');
-    const beatmap = await (new BeatmapLoader().Load(beatmapFolder));
+    const beatmap = await (BeatmapLoader.Load(beatmapFolder));
 
     expect(beatmap).toBeDefined();
     expect(beatmap.loadState.valid).toBe(true);
@@ -30,7 +30,7 @@ describe('beatmap loader', () => {
     expect.assertions(2);
 
     const beatmapFolder = path.join(__dirname, '../data/');
-    const beatmap = await (new BeatmapLoader().Load(beatmapFolder));
+    const beatmap = await (BeatmapLoader.Load(beatmapFolder));
 
     expect(beatmap.loadState.valid).toBe(false);
     expect(beatmap.loadState.errorType).toBe(BeatmapLoadStateError.NoInfoDatFileFound);
@@ -40,7 +40,7 @@ describe('beatmap loader', () => {
     expect.assertions(2);
 
     const beatmapFolder = path.join(__dirname, '../data/beatmapWithoutCover');
-    const beatmap = await (new BeatmapLoader().Load(beatmapFolder));
+    const beatmap = await (BeatmapLoader.Load(beatmapFolder));
 
     expect(beatmap.loadState.valid).toBe(false);
     expect(beatmap.loadState.errorType).toBe(BeatmapLoadStateError.NoCoverImageFound);
@@ -50,7 +50,7 @@ describe('beatmap loader', () => {
     expect.assertions(2);
 
     const beatmapFolder = path.join(__dirname, '../data/beatmapWithoutSong');
-    const beatmap = await (new BeatmapLoader().Load(beatmapFolder));
+    const beatmap = await (BeatmapLoader.Load(beatmapFolder));
 
     expect(beatmap.loadState.valid).toBe(false);
     expect(beatmap.loadState.errorType).toBe(BeatmapLoadStateError.NoSoundFileFound);
@@ -64,7 +64,7 @@ describe('beatmap loader', () => {
     BeatSaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
 
     const beatmapFolder = path.join(__dirname, '../data/beatmap');
-    const beatmap = await (new BeatmapLoader().Load(beatmapFolder));
+    const beatmap = await (BeatmapLoader.Load(beatmapFolder));
 
     expect(beatmap.loadState.valid).toBe(false);
     expect(beatmap.loadState.errorType).toBe(BeatmapLoadStateError.BeatmapNotOnBeatsaver);
@@ -78,7 +78,7 @@ describe('beatmap loader', () => {
     BeatmapHashComputer.Compute = mockHashCompute;
 
     const beatmapFolder = path.join(__dirname, '../data/beatmap');
-    const beatmap = await (new BeatmapLoader().Load(beatmapFolder));
+    const beatmap = await (BeatmapLoader.Load(beatmapFolder));
 
     expect(beatmap.loadState.valid).toBe(false);
     expect(beatmap.loadState.errorType).toBe(BeatmapLoadStateError.FailedToComputeHash);

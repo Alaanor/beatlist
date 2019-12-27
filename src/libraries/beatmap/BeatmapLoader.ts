@@ -13,12 +13,16 @@ export default class BeatmapLoader {
 
   private hash: string | undefined;
 
-  constructor() {
+  public static async Load(beatmapFolder: string): Promise<BeatmapLocal> {
+    return new BeatmapLoader().Load(beatmapFolder);
+  }
+
+  private constructor() {
     this.beatmap = {} as BeatmapLocal;
     this.beatmap.loadState = { valid: false } as BeatmapLoadState;
   }
 
-  public async Load(beatmapFolder: string): Promise<BeatmapLocal> {
+  private async Load(beatmapFolder: string): Promise<BeatmapLocal> {
     this.beatmapFolder = beatmapFolder;
     this.beatmap.folderPath = beatmapFolder;
 

@@ -14,10 +14,9 @@ export default class BeatmapScanner {
   public async ScanAll() {
     const diff = await BeatmapScanner.GetTheDifferenceInPath();
 
-    this.newBeatmaps = await Promise.all(diff.added.map((path: string) => {
-      const loader = new BeatmapLoader();
-      return loader.Load(path);
-    }));
+    this.newBeatmaps = await Promise.all(
+      diff.added.map((path: string) => BeatmapLoader.Load(path)),
+    );
 
     this.removedBeatmaps = diff.removed.length;
     this.keptBeatmaps = diff.kept.length;
