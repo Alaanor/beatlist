@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLoader from '@/libraries/playlist/PlaylistLoader';
 import BeatSaverAPI from '@/libraries/net/beatsaver/BeatSaverAPI';
-import Progress, { ProgressStatus } from '@/libraries/common/Progress';
+import Progress from '@/libraries/common/Progress';
 
 describe('playlist loader', () => {
   it('should fail if invalid path', async () => {
@@ -61,16 +61,15 @@ describe('playlist loader', () => {
   });
 
   it('should show a correct progress', async () => {
-    expect.assertions(4);
+    expect.assertions(3);
 
     const newFormatPlaylistFile = path.join(__dirname, '../data/playlist/newFormatFromBeatlist.blist');
     const progress = new Progress();
     await PlaylistLoader.Load(newFormatPlaylistFile, false, progress);
 
-    expect(progress.status).toBe(ProgressStatus.Completed);
     expect(progress.getRatio()).toBe(1);
-    expect(progress.total).toBe(1);
-    expect(progress.done).toBe(1);
+    expect(progress.get().total).toBe(1);
+    expect(progress.get().done).toBe(1);
   });
 
   it('should convert the old playlist to a new one', async () => {
