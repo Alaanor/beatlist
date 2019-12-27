@@ -1,6 +1,6 @@
-import Progress, { ON_PLUS_ONE, ON_TOTAL_CHANGE } from '@/libraries/common/Progress';
+import Progress, { ON_PLUS_ONE, ON_TOTAL_CHANGE, ProgressInterface } from '@/libraries/common/Progress';
 
-export default class ProgressGroup {
+export default class ProgressGroup implements ProgressInterface {
   private _progresses: Progress[] = [];
 
   private _done: number = 0;
