@@ -3,6 +3,7 @@ import BeatmapLibrary from './BeatmapLibrary';
 import BeatmapLoader from './BeatmapLoader';
 import { BeatmapLocal } from './BeatmapLocal';
 import { computeDifference, Differences } from '@/libraries/common/Differences';
+import Progress from '@/libraries/common/Progress';
 
 export default class BeatmapScanner {
   public newBeatmaps: BeatmapLocal[] = [];
@@ -11,11 +12,18 @@ export default class BeatmapScanner {
 
   public keptBeatmaps: number = 0;
 
-  public async ScanAll() {
+  public async ScanAll(progress: Progress = new Progress()) {
     const diff = await BeatmapScanner.GetTheDifferenceInPath();
 
+    progress.setTotal(diff.added.length);
+
     this.newBeatmaps = await Promise.all(
-      diff.added.map((path: string) => BeatmapLoader.Load(path)),
+      diff.added.map((path: string) => {
+        const beatmap = BeatmapLoader.Load(path);
+        progress.plusOne();
+
+        return beatmap;
+      }),
     );
 
     this.removedBeatmaps = diff.removed.length;
