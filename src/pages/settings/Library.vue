@@ -27,22 +27,30 @@
             Clear cache
           </v-btn>
         </v-col>
-        <v-col class="d-flex justify-center align-start flex-column">
+        <v-col class="d-flex justify-center align-start flex-column py-0">
           <span>
             <strong>{{ beatmapsCountValid }}</strong>
-            {{ beatmapsCountValid > 1 ? 'beatmaps are' : 'beatmap is' }} in the library.
+            {{ beatmapsCountValid > 1 ? 'beatmaps are' : 'beatmap is' }} loaded.
           </span>
           <span>
             <strong>{{ playlistsCount }}</strong>
-            {{ beatmapsCountValid > 1 ? 'playlists are' : 'playlist is' }} in the library.
+            {{ beatmapsCountValid > 1 ? 'playlists are' : 'playlist is' }} loaded.
           </span>
           <span class="py-1"/>
           <span
             v-if="beatmapsCountInvalid > 0"
-            class="grey--text"
+            class="grey--text d-flex align-center"
           >
-            <strong>{{ beatmapsCountInvalid }}</strong>
+            <strong class="pr-1">{{ beatmapsCountInvalid }}</strong>
             {{ beatmapsCountValid > 1 ? 'beatmaps are' : 'beatmap is' }} invalid.
+            <v-btn
+              icon
+              x-small
+              class="ml-1"
+              @click="invalidBeatmapDialog = true"
+            >
+              <v-icon x-small>mdi-help</v-icon>
+            </v-btn>
           </span>
           <span
             v-if="lastScan"
@@ -75,6 +83,7 @@
     >
       <span>Are you sure you want to <strong class="error--text">clear</strong> the cache ?</span>
     </ConfirmDialog>
+    <InvalidBeatmapDialog :open.sync="invalidBeatmapDialog"/>
   </v-container>
 </template>
 
@@ -89,15 +98,17 @@ import Progress from '@/libraries/common/Progress';
 import PlaylistScanner from '@/libraries/playlist/PlaylistScanner';
 import ProgressGroup from '@/libraries/common/ProgressGroup';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
+import InvalidBeatmapDialog from '@/components/dialogs/InvalidBeatmapDialog.vue';
 
 export default Vue.extend({
   name: 'SongLibrary',
-  components: { LoaderDialog, ConfirmDialog },
+  components: { LoaderDialog, ConfirmDialog, InvalidBeatmapDialog },
   data: () => ({
     scanning: { global: false, beatmap: false, playlist: false },
     beatmapScanner: {} as BeatmapScanner,
     playlistScanner: {} as PlaylistScanner,
     confirmDialog: false,
+    invalidBeatmapDialog: false,
     progress: { beatmap: new Progress(), playlist: new ProgressGroup() },
   }),
   computed: {
