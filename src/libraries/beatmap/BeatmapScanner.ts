@@ -18,12 +18,12 @@ export default class BeatmapScanner {
     progress.setTotal(diff.added.length);
 
     this.newBeatmaps = await Promise.all(
-      diff.added.map((path: string) => {
-        const beatmap = BeatmapLoader.Load(path);
-        progress.plusOne();
-
-        return beatmap;
-      }),
+      diff.added.map((path: string) => BeatmapLoader
+        .Load(path)
+        .then((beatmap: BeatmapLocal) => {
+          progress.plusOne();
+          return beatmap;
+        })),
     );
 
     this.removedBeatmaps = diff.removed.length;

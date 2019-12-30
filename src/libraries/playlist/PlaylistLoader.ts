@@ -1,10 +1,9 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { deserialize, serialize } from 'blister.js/esm/serialize';
-import { convertLegacyPlaylist } from 'blister.js/esm/convert';
-import { validateMagicNumber } from 'blister.js/esm/magic';
-import { BeatmapType, IBeatmap, IPlaylist } from 'blister.js/esm/spec';
-import { ILegacyPlaylist } from 'blister.js/esm/legacy';
+import {
+  BeatmapType, magicNumber, deserialize,
+  serialize, IPlaylist, IBeatmap, convertLegacyPlaylist,
+} from 'blister.js';
 import { PlaylistLocal, PlaylistLocalMap, PlaylistMapImportError } from '@/libraries/playlist/PlaylistLocal';
 import BeatSaverAPI from '@/libraries/net/beatsaver/BeatSaverAPI';
 import Progress from '@/libraries/common/Progress';
@@ -27,7 +26,7 @@ export default class PlaylistLoader {
 
     if (oldFormat) {
       try {
-        const legacyPlaylist = JSON.parse(buffer.toString()) as ILegacyPlaylist;
+        const legacyPlaylist = JSON.parse(buffer.toString());
         playlist = convertLegacyPlaylist(legacyPlaylist);
       } catch (e) {
         return undefined;
@@ -60,12 +59,7 @@ export default class PlaylistLoader {
   }
 
   private static async IsOldFormat(buffer: Buffer) {
-    try {
-      validateMagicNumber(buffer);
-      return false;
-    } catch (e) {
-      return true;
-    }
+    return buffer.slice(0, magicNumber.length).toString() !== magicNumber.toString();
   }
 
   private static async ConvertToPlaylistLocal(

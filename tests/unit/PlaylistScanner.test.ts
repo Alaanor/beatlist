@@ -4,7 +4,7 @@ import PlaylistLoader from '@/libraries/playlist/PlaylistLoader';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
 
-describe('playlist scanner', () => {
+describe('playlist beatmapScanner', () => {
   it('should only scan the difference', async () => {
     expect.assertions(4);
 

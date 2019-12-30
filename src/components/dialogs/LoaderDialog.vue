@@ -5,19 +5,29 @@
     width="300"
     @input="$emit('input', $event.target.value)"
   >
-    <v-card>
+    <v-card :color="color">
       <v-list-item>
         <v-list-item-icon>
-          <v-icon>search</v-icon>
+          <v-icon>{{ icon }}</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title>Scanning song</v-list-item-title>
+          <v-list-item-title v-if="progress === undefined">
+            {{ text }}
+          </v-list-item-title>
+          <v-list-item-title v-else>
+            {{ `${text} (${progress.get().done}/${progress.get().total})` }}
+          </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       <v-card-text>
         <v-progress-linear
+          v-if="progress === undefined"
           :indeterminate="true"
           class="mb-0"
+        />
+        <v-progress-linear
+          v-else
+          :value="progress.getRatio() * 100"
         />
       </v-card-text>
     </v-card>
@@ -25,14 +35,17 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
+import { ProgressInterface } from '@/libraries/common/Progress';
 
 export default Vue.extend({
   name: 'LoaderDialog',
   props: {
     value: { type: Boolean, required: true },
+    progress: { type: Object as PropType<ProgressInterface>, default: undefined },
     icon: { type: String, default: 'load' },
     text: { type: String, default: 'loading' },
+    color: { type: String, default: undefined },
   },
 });
 </script>

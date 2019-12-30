@@ -10,7 +10,7 @@ export interface PlaylistWithBeatmapLocal {
   title: string;
   author: string;
   description: string | null;
-  cover: Buffer;
+  cover: Buffer | null;
   maps: PlaylistLocalMap[];
 }
 

@@ -7,7 +7,17 @@ export default class BeatmapLibrary {
     return store.getters['beatmap/beatmaps'] as BeatmapLocal[];
   }
 
-  public static GetLastScan(): Date {
+  public static GetAllValidMap(): BeatmapLocal[] {
+    return this.GetAllMaps()
+      .filter((beatmap: BeatmapLocal) => beatmap.loadState.valid);
+  }
+
+  public static GetAllInvalidMap(): BeatmapLocal[] {
+    return this.GetAllMaps()
+      .filter((beatmap: BeatmapLocal) => !beatmap.loadState.valid);
+  }
+
+  public static GetLastScanDate(): Date {
     return store.getters['beatmap/lastScan'];
   }
 

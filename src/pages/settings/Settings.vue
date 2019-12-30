@@ -4,7 +4,7 @@
       Settings
     </p>
     <InstallationPathForm/>
-    <SongLibrary/>
+    <Library/>
     <Preferences/>
   </v-container>
 </template>
@@ -14,11 +14,11 @@ import Vue from 'vue';
 import DiscordRichPresence from '@/libraries/ipc/DiscordRichPresence';
 import Preferences from './Preferences.vue';
 import InstallationPathForm from './InstallationPathForm.vue';
-import SongLibrary from './SongLibrary.vue';
+import Library from './Library.vue';
 
 export default Vue.extend({
   name: 'Settings',
-  components: { InstallationPathForm, Preferences, SongLibrary },
+  components: { InstallationPathForm, Preferences, Library },
   beforeRouteEnter(to, from, next) {
     DiscordRichPresence.UpdateStatus('Settings');
     next();
