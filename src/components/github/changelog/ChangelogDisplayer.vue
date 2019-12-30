@@ -22,6 +22,7 @@
             <a
               href="https://github.com/Alaanor/beatlist"
               target="_blank"
+              class="warning--text"
             >Github repo</a>.
           </span>
         </v-alert>

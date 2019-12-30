@@ -10,52 +10,29 @@
       >
         Current version: {{ currentVersion }}
       </div>
-    </div>
-    <v-container class="py-0">
-      <h1>External links</h1>
-      <v-row rows="2">
-        <v-col
-          cols="3"
-          class="pa-0"
+      <div class="pt-2">
+        <v-btn
+          icon
+          color="rgb(114, 137, 218)"
+          @click="openDiscordInvitation()"
         >
-          <v-btn
-            text
-            color="link"
-            @click="openDiscordInvitation()"
+          <v-icon
+            class="mx-2"
           >
-            <v-icon
-              class="mx-2"
-            >
-              mdi-discord
-            </v-icon>
-            <span
-              v-once
-              style="text-decoration: underline;"
-            >
-              Discord
-            </span>
-          </v-btn>
-          <v-btn
-            text
-            color="link"
-            @click="openGithubRepo()"
-          >
-            <v-icon
-              class="mx-2"
-            >
-              mdi-github-circle
-            </v-icon>
-            <span
-              v-once
-              style="text-decoration: underline;"
-            >
-              Github
-            </span>
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
-    <ChangelogDisplayer />
+            mdi-discord
+          </v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          @click="openGithubRepo()"
+        >
+          <v-icon>
+            mdi-github-circle
+          </v-icon>
+        </v-btn>
+      </div>
+    </div>
+    <ChangelogDisplayer/>
   </v-container>
 </template>
 
