@@ -99,6 +99,7 @@ import PlaylistScanner from '@/libraries/playlist/PlaylistScanner';
 import ProgressGroup from '@/libraries/common/ProgressGroup';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
 import InvalidBeatmapDialog from '@/components/dialogs/InvalidBeatmapDialog.vue';
+import NotificationService from '@/libraries/notification/NotificationService';
 
 export default Vue.extend({
   name: 'SongLibrary',
@@ -143,6 +144,13 @@ export default Vue.extend({
             this.scanning.playlist = false;
             this.scanning.global = false;
           });
+        })
+        .then(() => {
+          NotificationService.NotifyMessage(
+            `<strong>${this.beatmapsCountValid}</strong> beatmaps and
+            <strong>${this.playlistsCount}</strong> playlists are now in the library.`,
+            'success',
+          );
         })
         .catch((e: Error) => {
           this.scanning.beatmap = false;
