@@ -13,21 +13,21 @@ export type BeatSaverAPIResponse<T> = BeatSaverAPIResponseBase & (
   BeatSaverAPIResponseDataInvalid
 );
 
-interface BeatSaverAPIResponseBase {
+export interface BeatSaverAPIResponseBase {
   status: BeatSaverAPIResponseStatus,
 }
 
-interface BeatSaverAPIResponseDataFound<T> {
+export interface BeatSaverAPIResponseDataFound<T> {
   status: BeatSaverAPIResponseStatus.ResourceFound;
   data: T;
 }
 
-interface BeatSaverAPIResponseDataInvalid {
+export interface BeatSaverAPIResponseDataInvalid {
   status: BeatSaverAPIResponseStatus.ResourceFoundButInvalidData,
   rawData: string;
 }
 
-interface BeatSaverAPIResponseDataInexistent {
+export interface BeatSaverAPIResponseDataInexistent {
   status: (
     BeatSaverAPIResponseStatus.ResourceNotFound |
     BeatSaverAPIResponseStatus.ServerNotAvailable
