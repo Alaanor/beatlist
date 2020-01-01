@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import BeatSaverAPI from '@/libraries/net/beatsaver/BeatSaverAPI';
+import BeatSaverAPI, { BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatSaverAPI';
 import { BeatmapLocal } from './BeatmapLocal';
 import BeatmapLoadStateError from './BeatmapLoadStateError';
 import { BeatmapLoadState } from './BeatmapLoadState';
@@ -83,11 +83,28 @@ export default class BeatmapLoader {
     }
 
     if (this.hash !== undefined) {
-      const onlineData = await BeatSaverAPI.Singleton.getBeatmapByHash(this.hash);
-      if (onlineData) {
-        this.beatmap.onlineData = onlineData;
-      } else {
-        this.beatmap.loadState.errorType = BeatmapLoadStateError.BeatmapNotOnBeatsaver;
+      const response = await BeatSaverAPI.Singleton.getBeatmapByHash(this.hash);
+
+      switch (response.status) {
+        case BeatSaverAPIResponseStatus.ResourceFound:
+          this.beatmap.onlineData = response.data;
+          break;
+
+        case BeatSaverAPIResponseStatus.ResourceNotFound:
+          this.beatmap.loadState.errorType = BeatmapLoadStateError.BeatmapNotOnBeatsaver;
+          this.beatmap.loadState.errorMessage = `${response.statusCode}: ${response.statusMessage}`;
+          break;
+
+        case BeatSaverAPIResponseStatus.ResourceFoundButInvalidData:
+          this.beatmap.loadState.errorType = BeatmapLoadStateError.InvalidDataReceivedFromBeatsaver;
+          this.beatmap.loadState.errorMessage = `Failed to parse as a BeatsaverBeatmap: ${response.rawData}`;
+          break;
+
+        case BeatSaverAPIResponseStatus.ServerNotAvailable:
+        default:
+          this.beatmap.loadState.errorType = BeatmapLoadStateError.BeatsaverServerNotAvailable;
+          this.beatmap.loadState.errorMessage = `${response.statusCode}: ${response.statusMessage}`;
+          break;
       }
     }
   }

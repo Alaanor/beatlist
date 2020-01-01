@@ -63,3 +63,14 @@ export interface Stats {
 
   [stat: string]: number;
 }
+
+// Dumb and quick check if the object is kinda what we expect, doesn't fully validate it
+export function BeatsaverBeatmapValidation(beatmap: any): beatmap is BeatsaverBeatmap {
+  return (
+    'metadata' in beatmap
+    && 'stats' in beatmap
+    && 'key' in beatmap
+    && 'hash' in beatmap
+    && 'name' in beatmap
+  );
+}
