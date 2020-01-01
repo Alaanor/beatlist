@@ -1,3 +1,4 @@
+import http from 'http';
 import { AxiosError, AxiosInstance } from 'axios';
 import AxiosCachedFactory from '@/libraries/net/AxiosCachedFactory';
 import { BeatsaverBeatmap, BeatsaverBeatmapValidation } from './BeatsaverBeatmap';
@@ -83,7 +84,7 @@ export default class BeatSaverAPI {
           ? BeatSaverAPIResponseStatus.ResourceNotFound
           : BeatSaverAPIResponseStatus.ServerNotAvailable,
         statusCode: error.response?.status,
-        statusMessage: error.response?.statusText,
+        statusMessage: error.response ? http.STATUS_CODES[error.response.status] : '',
       } as BeatSaverAPIResponse<T>));
   }
 }

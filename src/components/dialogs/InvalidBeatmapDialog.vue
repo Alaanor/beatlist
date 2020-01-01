@@ -21,6 +21,9 @@
                 <th class="text-left">
                   Reason
                 </th>
+                <th class="text-left">
+                  More info
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -31,6 +34,9 @@
                 <td>{{ item.folderPath }}</td>
                 <td class="error--text">
                   {{ item.loadState.errorType | errorTranslated }}
+                </td>
+                <td>
+                  {{ item.loadState.errorMessage }}
                 </td>
               </tr>
             </tbody>
@@ -70,6 +76,10 @@ export default Vue.extend({
           return 'No cover image found';
         case BeatmapLoadStateError.NoSoundFileFound:
           return 'No music file found';
+        case BeatmapLoadStateError.BeatsaverServerNotAvailable:
+          return 'Beatsaver server was unavailable';
+        case BeatmapLoadStateError.InvalidDataReceivedFromBeatsaver:
+          return 'Unexpected answer gotten from beatsaver';
         default:
           return 'Unknown error';
       }
