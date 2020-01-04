@@ -3,6 +3,7 @@ import BeatmapLoader from '@/libraries/beatmap/BeatmapLoader';
 import BeatSaverAPI, { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatSaverAPI';
 import BeatmapLoadStateError from '@/libraries/beatmap/BeatmapLoadStateError';
 import BeatmapHashComputer from '@/libraries/beatmap/BeatmapHashComputer';
+import { mockResponseSuccess } from './helper/BeatsaverAPIResponseMocking';
 
 describe('beatmap loader', () => {
   it('should load the map correctly', async () => {
@@ -10,10 +11,7 @@ describe('beatmap loader', () => {
 
     const mockGetBeatmapByHash = jest.fn();
     const mockedAnswer = { foo: 'bar' };
-    const mockedValue = {
-      data: mockedAnswer,
-      status: BeatSaverAPIResponseStatus.ResourceFound,
-    } as BeatSaverAPIResponse<Object>;
+    const mockedValue = mockResponseSuccess(mockedAnswer);
 
     mockGetBeatmapByHash.mockReturnValue(mockedValue);
     BeatSaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;

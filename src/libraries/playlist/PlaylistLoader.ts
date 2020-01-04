@@ -1,11 +1,16 @@
 import fs from 'fs-extra';
 import path from 'path';
 import {
-  BeatmapType, magicNumber, deserialize,
-  serialize, IPlaylist, IBeatmap, convertLegacyPlaylist,
+  BeatmapType,
+  convertLegacyPlaylist,
+  deserialize,
+  IBeatmap,
+  IPlaylist,
+  magicNumber,
+  serialize,
 } from 'blister.js';
 import { PlaylistLocal, PlaylistLocalMap, PlaylistMapImportError } from '@/libraries/playlist/PlaylistLocal';
-import BeatSaverAPI from '@/libraries/net/beatsaver/BeatSaverAPI';
+import BeatSaverAPI, { BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatSaverAPI';
 import Progress from '@/libraries/common/Progress';
 
 const PLAYLIST_EXTENSION_NAME = 'blist';
@@ -80,13 +85,11 @@ export default class PlaylistLoader {
 
       switch (mapToConvert.type) {
         case BeatmapType.Key:
-          map.online = await BeatSaverAPI.Singleton.getBeatmapByKey(mapToConvert.key.toString(16))
-            || null;
+          await PlaylistLoader.HandleBeatmapKey(map, mapToConvert.key.toString(16));
           break;
 
         case BeatmapType.Hash:
-          map.online = await BeatSaverAPI.Singleton.getBeatmapByHash(mapToConvert.hash.toString('hex'))
-            || null;
+          await PlaylistLoader.HandleBeatmapHash(map, mapToConvert.hash.toString('hex'));
           break;
 
         case BeatmapType.Zip:
@@ -108,6 +111,26 @@ export default class PlaylistLoader {
     }));
 
     return output;
+  }
+
+  private static async HandleBeatmapKey(map: PlaylistLocalMap, key: string) {
+    const beatmap = await BeatSaverAPI.Singleton.getBeatmapByKey(key);
+
+    if (beatmap.status === BeatSaverAPIResponseStatus.ResourceFound) {
+      map.online = beatmap.data;
+    } else {
+      map.error = PlaylistMapImportError.BeatsaverRequestError;
+    }
+  }
+
+  private static async HandleBeatmapHash(map: PlaylistLocalMap, hash: string) {
+    const beatmap = await BeatSaverAPI.Singleton.getBeatmapByHash(hash);
+
+    if (beatmap.status === BeatSaverAPIResponseStatus.ResourceFound) {
+      map.online = beatmap.data;
+    } else {
+      map.error = PlaylistMapImportError.BeatsaverRequestError;
+    }
   }
 
   private static async ConvertToPlaylistBlister(playlist: PlaylistLocal): Promise<IPlaylist> {

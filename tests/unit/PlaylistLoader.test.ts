@@ -4,6 +4,7 @@ import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLoader from '@/libraries/playlist/PlaylistLoader';
 import BeatSaverAPI from '@/libraries/net/beatsaver/BeatSaverAPI';
 import Progress from '@/libraries/common/Progress';
+import { mockResponseSuccess } from './helper/BeatsaverAPIResponseMocking';
 
 describe('playlist loader', () => {
   it('should fail if invalid path', async () => {
@@ -24,10 +25,10 @@ describe('playlist loader', () => {
     expect.assertions(4);
 
     const mockGetBeatmapByHash = jest.fn();
-    const mockedValueForBeatlist = { key: '75f1' };
-    const mockedValueForPeepee = { key: '765d' };
-    mockGetBeatmapByHash.mockReturnValueOnce(mockedValueForBeatlist);
-    mockGetBeatmapByHash.mockReturnValueOnce(mockedValueForPeepee);
+
+    mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '75f1' }));
+    mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '765d' }));
+
     BeatSaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
 
     const oldFormatBeatlist = path.join(__dirname, '../data/playlist/oldFormatFromBeatlist.json');
@@ -48,7 +49,7 @@ describe('playlist loader', () => {
 
     const mockGetBeatmapByHash = jest.fn();
     const mockedValue = { key: '75f1' };
-    mockGetBeatmapByHash.mockReturnValue(mockedValue);
+    mockGetBeatmapByHash.mockReturnValue(mockResponseSuccess(mockedValue));
     BeatSaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
 
     const newFormatPlaylistFile = path.join(__dirname, '../data/playlist/newFormatFromBeatlist.blist');
@@ -77,7 +78,7 @@ describe('playlist loader', () => {
 
     const mockGetBeatmapByHash = jest.fn();
     const mockedValue = { key: '75f1' };
-    mockGetBeatmapByHash.mockReturnValue(mockedValue);
+    mockGetBeatmapByHash.mockReturnValue(mockResponseSuccess(mockedValue));
     BeatSaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
 
     const sourcePlaylist = path.join(__dirname, '../data/playlist/oldFormatFromBeatlist.json');
@@ -107,7 +108,7 @@ describe('playlist loader', () => {
 
     const mockGetBeatmapByHash = jest.fn();
     const mockedValue = { key: '75f1' };
-    mockGetBeatmapByHash.mockReturnValue(mockedValue);
+    mockGetBeatmapByHash.mockReturnValue(mockResponseSuccess(mockedValue));
     BeatSaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
 
     const playlistPath = path.join(__dirname, '../data/playlist/testPlaylistLoaderSaveFunction.blist');

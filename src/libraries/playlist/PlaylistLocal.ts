@@ -24,4 +24,5 @@ export enum PlaylistMapImportError {
   BeatmapTypeZipNotSupported = 0,
   BeatmapTypeLevelIdNotSupported = 1,
   BeatmapTypeUnknown = 2,
+  BeatsaverRequestError = 3,
 }
