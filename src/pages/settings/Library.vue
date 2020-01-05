@@ -165,6 +165,7 @@ export default Vue.extend({
     },
     clearCache() {
       BeatmapLibrary.ClearCache();
+      PlaylistLibrary.ClearCache();
     },
   },
 });
