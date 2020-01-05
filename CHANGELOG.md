@@ -4,7 +4,7 @@
 **Quick change:**
  - Changed the way beatlist download beatmap on the background to help the beatsaver server.
 
-An quite huge update should come soon (I hope I can do it within 2-4 weeks) with a lot of fixes and improvements. :)
+A quite huge update should come soon (I hope I can do it within 2-4 weeks) with a lot of fixes and improvements. :)
 
 ## v1.1.3 (02/12/2019)
 **Bug fixes:**
