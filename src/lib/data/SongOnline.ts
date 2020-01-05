@@ -24,6 +24,7 @@ export default class SongOnline extends Song implements ISongOnline {
   public downloadURL: string;
   public stats: IStats;
   public uploaded: Date;
+  public directDownload: string;
 
   constructor(song: ISongOnline) {
     super(song);
@@ -32,6 +33,7 @@ export default class SongOnline extends Song implements ISongOnline {
     this.downloadURL = song.downloadURL;
     this.stats = song.stats;
     this.uploaded = song.uploaded;
+    this.directDownload = song.directDownload;
   }
 
   public async getImage(): Promise<string> {
@@ -53,4 +55,5 @@ export default class SongOnline extends Song implements ISongOnline {
 
     await localBeatMap.deleteIt();
   }
+
 }

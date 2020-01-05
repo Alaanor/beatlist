@@ -6,5 +6,6 @@ export default interface ISongOnline extends ISongInfo {
   description: string;
   uploaded: Date;
   downloadURL: string;
+  directDownload: string;
   coverURL: string;
 }

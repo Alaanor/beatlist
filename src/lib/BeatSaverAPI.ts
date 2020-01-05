@@ -24,7 +24,7 @@ export default class BeatSaverAPI {
   }
 
   public static getDownloadUrlFor(beatmap: ISongOnline) {
-    return WEBSITE_BASE_URL + beatmap.downloadURL;
+    return WEBSITE_BASE_URL + (beatmap.directDownload || beatmap.downloadURL);
   }
 
   public http: AxiosInstance;
