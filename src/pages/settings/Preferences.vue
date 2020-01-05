@@ -20,14 +20,6 @@
       inset
     />
     <v-switch
-      v-model="menuRight"
-      color="accent"
-      label="Right menu."
-      messages="Place the menu on the right hand side of the application."
-      dense
-      inset
-    />
-    <v-switch
       v-model="enableDiscordRichPresence"
       color="accent"
       label="Enable Discord Rich Presence"
@@ -50,7 +42,6 @@ export default Vue.extend({
     enableDiscordRichPresence: sync<boolean>('settings/enableDiscordRichPresence'),
     darkTheme: sync<boolean>('settings/darkTheme'),
     miniVariant: sync<boolean>('settings/miniVariant'),
-    menuRight: sync<boolean>('settings/menuRight'),
     installationPathValid: sync<boolean>('settings/installationPathValid'),
   },
   watch: {

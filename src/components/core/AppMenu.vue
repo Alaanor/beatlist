@@ -1,68 +1,58 @@
 <template>
-  <v-navigation-drawer
-    app
-    clipped
-    floating
-    :permanent="true"
-    :mini-variant="miniVariant"
-    :right="menuRight"
-    mini-variant-width="40"
-    mobile-break-point="0"
-    width="120"
-    color="primary"
-    style="overflow: visible;"
-  >
-    <v-list
-      dense
-      rounded
-      class="pa-0 py-1 menu"
+  <div>
+    <!-- 1 column nav bar -->
+    <AppMenuNavBar
+      v-if="subNav.length === 0"
+      :menus="menus"
+      :mini-variant="miniVariant"
+      main
+    />
+
+    <!-- 2 column nav bar -->
+    <v-navigation-drawer
+      v-else
+      app
+      floating
+      clipped
+      permanent
+      :mini-variant="miniVariant"
+      mini-variant-width="80"
+      width="240"
     >
-      <MenuNavigationItem
-        v-for="menu in menus"
-        :key="menu.name"
-        :item="menu"
-      />
-    </v-list>
-    <svg
-      id="curve"
-      viewBox="0 0 20 20"
-      :style="menuRight ? 'left: -20px;' : 'right: -20px;'"
-    >
-      <defs>
-        <mask id="curve-mask">
-          <rect
-            width="100%"
-            height="100%"
-            fill="white"
+      <v-row
+        class="fill-height"
+        no-gutters
+      >
+        <AppMenuNavBar
+          :menus="menus"
+          :mini-variant="miniVariant"
+        />
+        <v-list
+          v-if="subNav.length !== 0"
+          dense
+          rounded
+          class="grow pa-0 py-1"
+        >
+          <MenuNavigationItem
+            v-for="menu in subNav"
+            :key="menu.name"
+            :item="menu"
           />
-          <circle
-            cy="10"
-            cx="10"
-            r="50%"
-            fill="black"
-          />
-        </mask>
-      </defs>
-      <rect
-        :x="menuRight ? 10 : 0"
-        y="0"
-        width="10"
-        height="10"
-        :fill="this.$vuetify.theme.currentTheme.primary"
-        mask="url(#curve-mask)"
-      />
-    </svg>
-  </v-navigation-drawer>
+        </v-list>
+      </v-row>
+    </v-navigation-drawer>
+  </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue';
 import { get } from 'vuex-pathify';
 import MenuNavigationItem from '@/components/core/menu/MenuNavigationItem.vue';
+import AppMenuNavBar from '@/components/core/menu/AppMenuNavBar.vue';
 
 export default Vue.extend({
   name: 'AppMenu',
-  components: { MenuNavigationItem },
+  components: { AppMenuNavBar, MenuNavigationItem },
   data: () => ({
     drawer: null,
     menus: [
@@ -72,7 +62,7 @@ export default Vue.extend({
         icon: 'home',
       },
       {
-        path: '/beatmap',
+        path: '/beatmaps',
         name: 'Beatmaps',
         icon: 'library_music',
       },
@@ -89,30 +79,25 @@ export default Vue.extend({
     ],
   }),
   computed: {
-    miniVariant: get('settings/miniVariant'),
-    menuRight: get('settings/menuRight'),
-    darkTheme: get('settings/darkTheme'),
+    miniVariant: get<boolean>('settings/miniVariant'),
+    darkTheme: get<boolean>('settings/darkTheme'),
+    subNav: get<object[]>('appState/subNav'),
   },
 });
 </script>
 
 <style scoped>
-.menu {
-  height: 100%;
-}
 
-.menu > div:last-child {
+  .menu > div:last-child {
   bottom: 0px;
   width: 100%;
   position: absolute;
 }
 
-#curve {
-  position: absolute;
-  top: 0px;
-  width: 20px;
-  height: 20px;
-  z-index: 100;
-  overflow: visible;
-}
+</style>
+
+<style>
+  .v-navigation-drawer__border {
+    width: 0 !important;
+  }
 </style>

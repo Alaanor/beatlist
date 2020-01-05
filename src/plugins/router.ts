@@ -1,15 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-// import SongListLocal from '../pages/SongListLocal.vue';
-// import SongListOnline from '../pages/SongListOnline.vue';
-// import PlaylistsLocal from '../pages/PlaylistsLocal.vue';
-// import PlaylistsOnline from '../pages/PlaylistsOnline.vue';
-// import PlaylistEditor from '../pages/PlaylistEditor.vue';
-import Settings from '@/pages/settings';
-// import Beatmap from '../pages/Beatmap.vue';
-import Home from '@/pages/home';
-// import FAQ from '../pages/FAQ.vue';
 import store from './store';
+
+import Settings from '@/pages/settings';
+import Home from '@/pages/home';
+import Beatmap, { BeatmapLocal, BeatmapOnline } from '@/pages/beatmap';
 
 Vue.use(VueRouter);
 
@@ -20,70 +15,58 @@ const router = new VueRouter({
       name: 'home',
       component: Home,
     },
-    // {
-    //   path: '/songs/local',
-    //   name: 'song-list-local',
-    //   component: SongListLocal,
-    //   meta: {requireValidSettings: true},
-    // },
-    // {
-    //   path: '/songs/online',
-    //   name: 'song-list-online',
-    //   component: SongListOnline,
-    //   meta: {requireValidSettings: true},
-    // },
-    // {
-    //   path: '/playlists/online',
-    //   name: 'playlists-online',
-    //   component: PlaylistsOnline,
-    //   meta: {requireValidSettings: true},
-    // },
-    // {
-    //   path: '/playlists/local',
-    //   name: 'playlists-local',
-    //   component: PlaylistsLocal,
-    //   meta: {requireValidSettings: true},
-    // },
-    // {
-    //   path: '/playlist/local/edit/:hash',
-    //   name: 'playlist-editor',
-    //   component: PlaylistEditor,
-    //   meta: {requireValidSettings: true},
-    // },
+    {
+      path: '/beatmaps',
+      name: 'beatmaps',
+      component: Beatmap,
+      meta: {
+        subNav: [
+          {
+            name: 'local',
+            path: { name: 'beatmaps-local' },
+            icon: 'computer',
+          },
+          {
+            name: 'online',
+            path: { name: 'beatmaps-online' },
+            icon: 'language',
+          },
+        ],
+      },
+      children: [
+        {
+          path: 'local',
+          name: 'beatmaps-local',
+          component: BeatmapLocal,
+        },
+        {
+          path: 'online',
+          name: 'beatmaps-online',
+          component: BeatmapOnline,
+        },
+      ],
+    },
     {
       path: '/settings',
       name: 'settings',
       component: Settings,
     },
-    // {
-    //   path: '/beatmap/:key',
-    //   name: 'beatmap',
-    //   component: Beatmap,
-    // },
-    // {
-    //   path: '/faq',
-    //   name: 'faq',
-    //   component: FAQ,
-    // },
-    // {path: '*', redirect: '/'},
+    { path: '*', redirect: '/' },
   ],
 });
 
 router.beforeEach(async (to, from, next) => {
-  // wait for the vuex-persist to be ready, restored is populated by doesn't have the definition
+  // wait for the vuex-persist to be ready, restored exists but isn't defined.
   // @ts-ignore
   await store.restored.then();
 
-  if (to.matched.some((record) => record.meta.requireValidSettings)) {
-    const st = store as unknown as { get: (path: string) => boolean };
-    if (!st.get('settings/configValid')) {
-      next();
-    } else {
-      next();
-    }
-  } else {
-    next();
-  }
+  const subNav = to.matched
+    .find((record) => record.meta.subNav)
+    ?.meta.subNav ?? [];
+
+  store.commit('appState/SET_SUB_NAV', subNav);
+
+  next();
 });
 
 export default router;
