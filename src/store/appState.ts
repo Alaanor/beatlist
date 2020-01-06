@@ -1,5 +1,9 @@
 import { make } from 'vuex-pathify';
 
+export interface AppStateStoreState {
+  subNav: Object[],
+}
+
 const state = {
   subNav: [],
 };

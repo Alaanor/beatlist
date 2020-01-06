@@ -1,4 +1,10 @@
 import { make } from 'vuex-pathify';
+import { BeatmapLocal } from '@/libraries/beatmap/BeatmapLocal';
+
+export interface BeatmapStoreState {
+  lastScan: Date,
+  beatmaps: BeatmapLocal[],
+}
 
 const state = {
   lastScan: undefined,

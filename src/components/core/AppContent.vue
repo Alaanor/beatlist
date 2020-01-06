@@ -14,9 +14,7 @@
             name="slide-x-transition"
             mode="out-in"
           >
-            <keep-alive>
-              <router-view />
-            </keep-alive>
+            <router-view />
           </transition>
         </v-flex>
       </v-layout>

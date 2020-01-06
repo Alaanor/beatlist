@@ -1,5 +1,13 @@
 import { make } from 'vuex-pathify';
 
+export interface SettingsStoreState {
+  installationPath: string,
+  installationPathValid: boolean,
+  darkTheme: boolean,
+  miniVariant: boolean,
+  enableDiscordRichPresence: boolean,
+}
+
 const state = {
   installationPath: '',
   installationPathValid: false,

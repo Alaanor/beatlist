@@ -1,6 +1,10 @@
 import { make } from 'vuex-pathify';
 import { INotification, NotificationState } from '@/libraries/notification/Notification';
 
+export interface NotificationStoreState {
+  notifications: INotification[],
+}
+
 const state = {
   notifications: [],
 };

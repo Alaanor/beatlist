@@ -3,24 +3,42 @@ import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
 import pathify from 'vuex-pathify';
 import localForage from 'localforage';
-import modules from '@/store';
+import modules, { StoreState } from '@/store';
 
 Vue.use(Vuex);
 
-const vuexLocal = new VuexPersistence<any>({
+const vuexLocalCachedData = new VuexPersistence<StoreState>({
+  key: 'vuex-cached-data',
   storage: localForage,
   asyncStorage: true,
   strictMode: true,
+  reducer: (state) => ({
+    beatmap: state.beatmap,
+    playlist: state.playlist,
+  }),
+});
+
+const vuexLocalMain = new VuexPersistence<StoreState>({
+  key: 'vuex-main',
+  storage: localForage,
+  asyncStorage: true,
+  strictMode: true,
+  reducer: (state) => ({
+    settings: state.settings,
+    notification: state.notification,
+    appState: state.appState,
+  }),
 });
 
 const store = new Vuex.Store<any>({
   plugins: [
-    vuexLocal.plugin,
+    vuexLocalMain.plugin,
+    vuexLocalCachedData.plugin,
     pathify.plugin,
   ],
   modules,
   mutations: {
-    RESTORE_MUTATION: vuexLocal.RESTORE_MUTATION,
+    RESTORE_MUTATION: vuexLocalMain.RESTORE_MUTATION,
   },
   strict: true,
 });
