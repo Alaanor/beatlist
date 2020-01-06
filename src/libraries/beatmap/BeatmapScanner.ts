@@ -1,3 +1,4 @@
+import * as Throttle from 'promise-parallel-throttle';
 import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
 import BeatmapLibrary from './BeatmapLibrary';
 import BeatmapLoader from './BeatmapLoader';
@@ -17,13 +18,14 @@ export default class BeatmapScanner {
 
     progress.setTotal(diff.added.length);
 
-    this.newBeatmaps = await Promise.all(
-      diff.added.map((path: string) => BeatmapLoader
+    this.newBeatmaps = await Throttle.all(
+      diff.added.map((path: string) => () => BeatmapLoader
         .Load(path)
         .then((beatmap: BeatmapLocal) => {
           progress.plusOne();
           return beatmap;
         })),
+      { maxInProgress: 25 },
     );
 
     this.removedBeatmaps = diff.removed.length;

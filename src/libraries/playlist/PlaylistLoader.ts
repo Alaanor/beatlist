@@ -9,6 +9,7 @@ import {
   magicNumber,
   serialize,
 } from 'blister.js';
+import * as Throttle from 'promise-parallel-throttle';
 import { PlaylistLocal, PlaylistLocalMap, PlaylistMapImportError } from '@/libraries/playlist/PlaylistLocal';
 import BeatSaverAPI, { BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatSaverAPI';
 import Progress from '@/libraries/common/Progress';
@@ -80,7 +81,7 @@ export default class PlaylistLoader {
 
     progress.setTotal(playlist.maps.length);
 
-    output.maps = await Promise.all(playlist.maps.map(async (mapToConvert: IBeatmap) => {
+    output.maps = await Throttle.all(playlist.maps.map((mapToConvert: IBeatmap) => async () => {
       const map = { dateAdded: mapToConvert.dateAdded } as PlaylistLocalMap;
 
       switch (mapToConvert.type) {
@@ -108,7 +109,7 @@ export default class PlaylistLoader {
       progress.plusOne();
 
       return map;
-    }));
+    }), { maxInProgress: 25 });
 
     return output;
   }

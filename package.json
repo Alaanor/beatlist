@@ -37,6 +37,7 @@
     "marked": "^0.8.0",
     "material-design-icons-iconfont": "^5.0.1",
     "mem": "^6.0.1",
+    "promise-parallel-throttle": "^3.3.0",
     "request": "^2.88.0",
     "rimraf": "^3.0.0",
     "roboto-fontface": "*",
