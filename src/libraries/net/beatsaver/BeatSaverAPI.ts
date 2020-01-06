@@ -1,7 +1,7 @@
 import http from 'http';
 import { AxiosError, AxiosInstance } from 'axios';
 import AxiosCachedFactory from '@/libraries/net/AxiosCachedFactory';
-import { BeatsaverBeatmap, BeatsaverBeatmapValidation } from './BeatsaverBeatmap';
+import { BeatsaverBeatmap, isBeatsaverBeatmap } from './BeatsaverBeatmap';
 
 const API_BASE_URL = 'https://beatsaver.com/api';
 const GET_BY_HASH = 'maps/by-hash/';
@@ -65,7 +65,7 @@ export default class BeatSaverAPI {
       validateStatus: (status: number) => status === 200,
     })
       .then((answer) => {
-        const valid = BeatsaverBeatmapValidation(answer.data);
+        const valid = isBeatsaverBeatmap(answer.data);
 
         if (valid) {
           return {

@@ -17,6 +17,15 @@ export default class BeatmapLoader {
     return new BeatmapLoader().Load(beatmapFolder);
   }
 
+  public static async LoadCover(beatmap: BeatmapLocal): Promise<string | undefined> {
+    if (!await fs.pathExists(beatmap.coverPath)) {
+      return undefined;
+    }
+
+    const rawImage = await fs.readFile(beatmap.coverPath);
+    return `data:image/jpg;base64,${rawImage.toString('base64')}`;
+  }
+
   private constructor() {
     this.beatmap = {} as BeatmapLocal;
     this.beatmap.loadState = { valid: false } as BeatmapLoadState;

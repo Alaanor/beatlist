@@ -7,14 +7,20 @@
   >
     <v-card :color="color">
       <v-list-item>
-        <v-list-item-icon>
+        <v-list-item-icon class="mr-2">
           <v-icon>{{ icon }}</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title v-if="progress === undefined">
+          <v-list-item-title
+            v-if="progress === undefined"
+            class="body-2"
+          >
             {{ text }}
           </v-list-item-title>
-          <v-list-item-title v-else>
+          <v-list-item-title
+            v-else
+            class="body-2"
+          >
             {{ `${text} (${progress.get().done}/${progress.get().total})` }}
           </v-list-item-title>
         </v-list-item-content>

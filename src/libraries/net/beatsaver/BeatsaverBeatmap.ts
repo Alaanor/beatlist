@@ -65,7 +65,7 @@ export interface Stats {
 }
 
 // Dumb and quick check if the object is kinda what we expect, doesn't fully validate it
-export function BeatsaverBeatmapValidation(beatmap: any): beatmap is BeatsaverBeatmap {
+export function isBeatsaverBeatmap(beatmap: any): beatmap is BeatsaverBeatmap {
   return (
     'metadata' in beatmap
     && 'stats' in beatmap
