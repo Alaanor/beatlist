@@ -77,7 +77,7 @@ import BeatmapLoader from '@/libraries/beatmap/BeatmapLoader';
 export default Vue.extend({
   name: 'BeatmapCover',
   props: {
-    beatmap: { type: Object as PropType<BeatsaverBeatmap | BeatmapLocal>, default: {} },
+    beatmap: { type: Object as PropType<BeatsaverBeatmap | BeatmapLocal | string>, default: {} },
     avatarSize: { type: Number, default: undefined },
     iconExpandSize: { type: Number, default: undefined },
   },

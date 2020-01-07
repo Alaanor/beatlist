@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0">
+  <v-container class="pa-0 pl-3">
     <v-tooltip
       v-for="value in difficulties"
       :key="value.key"
@@ -44,7 +44,7 @@ export default Vue.extend({
     computeDifficulties() {
       this.difficulties = Object.entries(this.diff)
         .map(([key, value]) => ({
-          name: key,
+          name: this.getNameFor(key),
           enabled: value,
           chipName: this.short ? '' : key,
           color: this.getColorFor(key),
@@ -79,6 +79,16 @@ export default Vue.extend({
         case 'hard': return 3;
         case 'expert': return 4;
         case 'expertPlus': return 5;
+        default: return undefined;
+      }
+    },
+    getNameFor: (name: string) => {
+      switch (name) {
+        case 'easy': return 'Easy';
+        case 'normal': return 'Normal';
+        case 'hard': return 'Hard';
+        case 'expert': return 'Expert';
+        case 'expertPlus': return 'Expert+';
         default: return undefined;
       }
     },
