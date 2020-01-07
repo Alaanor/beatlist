@@ -34,6 +34,7 @@
             >
               <v-progress-circular
                 indeterminate
+                :size="avatarSize"
                 color="grey"
               />
             </v-row>
