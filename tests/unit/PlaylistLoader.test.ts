@@ -4,7 +4,7 @@ import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLoader from '@/libraries/playlist/PlaylistLoader';
 import BeatSaverAPI from '@/libraries/net/beatsaver/BeatSaverAPI';
 import Progress from '@/libraries/common/Progress';
-import { mockResponseSuccess } from './helper/BeatsaverAPIResponseMocking';
+import mockResponseSuccess from './helper/BeatsaverAPIResponseMocking';
 
 describe('playlist loader', () => {
   it('should fail if invalid path', async () => {
