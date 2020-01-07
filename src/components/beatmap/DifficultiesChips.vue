@@ -2,7 +2,7 @@
   <v-container class="pa-0">
     <v-tooltip
       v-for="value in difficulties"
-      :key="value.name"
+      :key="value.key"
       top
     >
       <template #activator="{ on }">
@@ -16,6 +16,8 @@
         </v-chip>
       </template>
       <span>{{ value.name }}</span>
+
+      {{ difficulties }}
     </v-tooltip>
   </v-container>
 </template>
@@ -31,20 +33,37 @@ export default Vue.extend({
     small: { type: Boolean, default: false },
     short: { type: Boolean, default: false },
   },
-  computed: {
-    difficulties() {
-      return Object.entries(this.diff).map(([key, value]) => ({
-        name: key,
-        enabled: value,
-        chipName: this.short ? '' : key,
-        color: this.getColorFor(key),
-        weight: this.getWeightFor(key),
-      }))
-        .filter((d) => d.enabled)
-        .sort((a: any, b: any) => a.weight - b.weight);
+  data: () => ({
+    difficulties: [] as any,
+  }),
+  watch: {
+    diff: {
+      handler() { this.computeDifficulties(); },
+      immediate: true,
     },
   },
   methods: {
+    computeDifficulties() {
+      this.difficulties = Object.entries(this.diff)
+        .map(([key, value]) => ({
+          name: key,
+          enabled: value,
+          chipName: this.short ? '' : key,
+          color: this.getColorFor(key),
+          weight: this.getWeightFor(key),
+        }))
+        .sort((a: any, b: any) => a.weight - b.weight);
+
+      // to force the v-for to re-render on different state, we create an unique key
+      const keyBase = Object.values(this.difficulties)
+        .map((d: any) => d.enabled)
+        .join();
+
+      this.difficulties = this.difficulties.map((d: any) => {
+        d.key = `${keyBase} - ${d.name}`;
+        return d;
+      }).filter((d: any) => d.enabled);
+    },
     getColorFor: (name: string) => {
       switch (name) {
         case 'easy': return 'green';
