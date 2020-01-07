@@ -16,8 +16,6 @@
         </v-chip>
       </template>
       <span>{{ value.name }}</span>
-
-      {{ difficulties }}
     </v-tooltip>
   </v-container>
 </template>
