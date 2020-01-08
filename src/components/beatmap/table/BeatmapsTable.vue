@@ -1,24 +1,21 @@
 <template>
   <v-container>
-    <div class="d-flex align-center">
-      <span class="mr-3 body-2">Column to show:</span>
-      <v-chip-group
-        v-model="selectedColumn"
-        mandatory
-        multiple
+    <v-chip-group
+      v-model="selectedColumn"
+      mandatory
+      multiple
+    >
+      <v-chip
+        v-for="column in availableColumn"
+        :key="column.value"
+        :value="column.value"
+        class="success--text"
+        outlined
+        small
       >
-        <v-chip
-          v-for="column in availableColumn"
-          :key="column.value"
-          :value="column.value"
-          class="success--text"
-          outlined
-          small
-        >
-          {{ column.name }}
-        </v-chip>
-      </v-chip-group>
-    </div>
+        {{ column.name }}
+      </v-chip>
+    </v-chip-group>
     <v-data-table
       :headers="getHeaders()"
       :items="beatmaps"
@@ -67,6 +64,23 @@
           </span>
         </Tooltip>
       </template>
+
+      <template #item.dl="{ item }">
+        {{ item.data.stats.downloads }}
+      </template>
+
+      <template #item.plays="{ item }">
+        {{ item.data.stats.plays }}
+      </template>
+
+      <template #item.upvotes="{ item }">
+        {{ item.data.stats.upVotes }}
+      </template>
+
+      <template #item.downvotes="{ item }">
+        {{ item.data.stats.downVotes }}
+      </template>
+
     </v-data-table>
   </v-container>
 </template>
@@ -92,6 +106,10 @@ export default Vue.extend({
       { name: 'Artist', value: 'artist' },
       { name: 'Mapper', value: 'mapper' },
       { name: 'Difficulties', value: 'difficulties' },
+      { name: 'Downloads', value: 'dl' },
+      { name: 'Plays', value: 'plays' },
+      { name: 'Up votes', value: 'upvotes' },
+      { name: 'Down votes', value: 'downvotes' },
     ],
     headers: [
       {
@@ -123,6 +141,30 @@ export default Vue.extend({
         text: 'Difficulties',
         value: 'difficulties',
         align: 'left',
+        sortable: true,
+      },
+      {
+        text: 'Downloads',
+        value: 'dl',
+        align: 'center',
+        sortable: true,
+      },
+      {
+        text: 'Plays',
+        value: 'plays',
+        align: 'center',
+        sortable: true,
+      },
+      {
+        text: 'Up votes',
+        value: 'upvotes',
+        align: 'center',
+        sortable: true,
+      },
+      {
+        text: 'Down votes',
+        value: 'downvotes',
+        align: 'center',
         sortable: true,
       },
     ],
