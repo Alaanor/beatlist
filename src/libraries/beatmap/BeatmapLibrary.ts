@@ -23,7 +23,10 @@ export default class BeatmapLibrary {
 
   public static UpdateAllMaps(beatmaps: BeatmapLocal[]) {
     store.commit('beatmap/SET_LAST_SCAN', new Date());
-    store.commit('beatmap/SET_BEATMAPS', beatmaps);
+    store.commit(
+      'beatmap/SET_BEATMAPS',
+      beatmaps.map((beatmap) => Object.freeze(beatmap)),
+    );
   }
 
   public static ClearCache() {

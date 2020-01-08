@@ -6,6 +6,11 @@ export interface SettingsStoreState {
   darkTheme: boolean,
   miniVariant: boolean,
   enableDiscordRichPresence: boolean,
+  beatmapsTable: BeatmapTableStoreState;
+}
+
+export interface BeatmapTableStoreState {
+  shownColumn: string[],
 }
 
 const state = {
@@ -14,6 +19,9 @@ const state = {
   darkTheme: true,
   miniVariant: true,
   enableDiscordRichPresence: true,
+  beatmapsTable: {
+    shownColumn: ['cover', 'name', 'mapper', 'difficulties'],
+  },
 };
 
 const mutations = {

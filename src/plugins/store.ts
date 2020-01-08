@@ -26,11 +26,10 @@ const vuexLocalMain = new VuexPersistence<StoreState>({
   reducer: (state) => ({
     settings: state.settings,
     notification: state.notification,
-    appState: state.appState,
   }),
 });
 
-const store = new Vuex.Store<any>({
+const store = new Vuex.Store<StoreState>({
   plugins: [
     vuexLocalMain.plugin,
     vuexLocalCachedData.plugin,

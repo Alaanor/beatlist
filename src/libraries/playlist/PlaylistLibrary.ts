@@ -12,7 +12,12 @@ export default class PlaylistLibrary {
 
   public static UpdateAllPlaylist(playlists: PlaylistLocal[]) {
     store.commit('playlist/SET_LAST_SCAN', new Date());
-    store.commit('playlist/SET_PLAYLISTS', playlists);
+    store.commit(
+      'playlist/SET_PLAYLISTS',
+      playlists
+        .map((playlist) => playlist.maps
+          .map((beatmap) => Object.freeze(beatmap))),
+    );
   }
 
   public static ClearCache() {

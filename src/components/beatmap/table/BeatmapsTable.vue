@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-chip-group
-      v-model="selectedColumn"
+      v-model="shownColumn"
       mandatory
       multiple
     >
@@ -80,13 +80,13 @@
       <template #item.downvotes="{ item }">
         {{ item.data.stats.downVotes }}
       </template>
-
     </v-data-table>
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
+import { sync } from 'vuex-pathify';
 import BeatmapCover from '@/components/beatmap/BeatmapCover.vue';
 import DifficultiesChips from '@/components/beatmap/DifficultiesChips.vue';
 import Tooltip from '@/components/helper/Tooltip.vue';
@@ -99,7 +99,6 @@ export default Vue.extend({
     beatmaps: { type: Array as PropType<BeatmapsTableDataUnit[]>, required: true },
   },
   data: () => ({
-    selectedColumn: ['cover', 'name', 'mapper', 'difficulties'],
     availableColumn: [
       { name: 'Beatmap cover', value: 'cover' },
       { name: 'Song name', value: 'name' },
@@ -169,9 +168,12 @@ export default Vue.extend({
       },
     ],
   }),
+  computed: {
+    shownColumn: sync<string[]>('settings/beatmapsTable@shownColumn'),
+  },
   methods: {
     getHeaders() {
-      return this.headers.filter((header) => this.selectedColumn.includes(header.value));
+      return this.headers.filter((header) => this.shownColumn.includes(header.value));
     },
   },
 });
