@@ -25,6 +25,7 @@ module.exports = {
     'vue',
     'jest',
     '@typescript-eslint',
+    'vuetify',
   ],
   rules: {
     'no-console': 'off',
@@ -44,6 +45,9 @@ module.exports = {
         ts: 'never',
       },
     ],
+    'vuetify/no-deprecated-classes': 'error',
+    'vuetify/grid-unknown-attributes': 'error',
+    'vuetify/no-legacy-grid': 'error',
   },
   settings: {
     'import/resolver': {

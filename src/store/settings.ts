@@ -11,6 +11,7 @@ export interface SettingsStoreState {
 
 export interface BeatmapTableStoreState {
   shownColumn: string[],
+  itemsPerPage: number,
 }
 
 const state = {
@@ -21,6 +22,7 @@ const state = {
   enableDiscordRichPresence: true,
   beatmapsTable: {
     shownColumn: ['cover', 'name', 'mapper', 'difficulties'],
+    itemsPerPage: 10,
   },
 };
 

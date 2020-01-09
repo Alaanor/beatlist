@@ -1,14 +1,11 @@
 <template>
   <v-content>
-    <v-container
-      fluid
-      fill-height
-    >
-      <v-layout v-if="isReady">
-        <v-flex
-          lg10
-          xs12
-          offset-lg1
+    <v-container fluid>
+      <v-row v-if="isReady">
+        <v-col
+          lg="10"
+          cols="12"
+          offset-lg="1"
         >
           <transition
             name="slide-x-transition"
@@ -16,15 +13,15 @@
           >
             <router-view />
           </transition>
-        </v-flex>
-      </v-layout>
-      <v-layout
+        </v-col>
+      </v-row>
+      <v-row
         v-else
       >
-        <v-flex
-          lg10
-          xs12
-          offset-lg1
+        <v-col
+          lg="10"
+          cols="12"
+          offset-lg="1"
         >
           <div class="d-flex justify-center align-center flex-column fill-height">
             <v-progress-circular
@@ -43,8 +40,8 @@
               </span>
             </transition>
           </div>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
   </v-content>
 </template>

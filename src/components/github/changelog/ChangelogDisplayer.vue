@@ -1,12 +1,12 @@
 <template>
   <v-container class="py-0">
-    <v-layout>
-      <v-flex
+    <v-row>
+      <v-col
         v-if="changelogRaw !== '' && !hasErr"
         id="markdown"
         v-html="changelog"
       />
-      <v-flex
+      <v-col
         v-if="hasErr"
       >
         <v-alert
@@ -26,8 +26,8 @@
             >Github repo</a>.
           </span>
         </v-alert>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
