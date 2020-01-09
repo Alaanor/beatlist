@@ -1,5 +1,5 @@
 <template>
-  <Tooltip :text="`${item.data.metadata.songName} - ${item.data.metadata.songSubName}`">
+  <Tooltip :text="tooltipText(item)">
     <span>
       {{ item.data.metadata.songName }}
       <span class="caption grey--text">
@@ -18,6 +18,11 @@ export default Vue.extend({
   components: { Tooltip },
   props: {
     item: { type: Object, required: true },
+  },
+  methods: {
+    tooltipText(item: any) {
+      return `${item.data.metadata.songName}${item.data.metadata.songSubName ? ' - ' : ''}${item.data.metadata.songSubName}`;
+    },
   },
 });
 </script>
