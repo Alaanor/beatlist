@@ -1,3 +1,5 @@
+import { sortNumber, sortText, sortDateFromString } from '@/components/beatmap/table/function/BeatmapsTableSortFunctions';
+
 enum BeatmapsTableHeadersTemplate {
   Text = 'Text',
   Cover = 'Cover',
@@ -5,6 +7,7 @@ enum BeatmapsTableHeadersTemplate {
   StrToDate = 'StrToDate',
   TextTooltip = 'TextTooltip',
   BeatmapName = 'BeatmapName',
+  Rating = 'Rating',
 }
 
 export interface BeatmapsTableHeader {
@@ -16,7 +19,7 @@ export interface BeatmapsTableHeader {
   sortable?: boolean,
   filterable?: boolean,
   sort?: (a: any, b: any) => number,
-  filter?: (idName: any, search: string, item: any) => boolean,
+  filter?: (value: any, search: string, item: any) => boolean,
   templateItemAccess?: string,
 }
 
@@ -35,6 +38,7 @@ export const headers = [
     template: BeatmapsTableHeadersTemplate.BeatmapName,
     align: 'left',
     sortable: true,
+    sort: sortText,
   },
   {
     value: 'artist',
@@ -43,6 +47,7 @@ export const headers = [
     templateItemAccess: 'metadata.songAuthorName',
     align: 'left',
     sortable: true,
+    sort: sortText,
   },
   {
     value: 'mapper',
@@ -51,6 +56,7 @@ export const headers = [
     templateItemAccess: 'metadata.levelAuthorName',
     align: 'left',
     sortable: true,
+    sort: sortText,
   },
   {
     value: 'difficulties',
@@ -58,7 +64,7 @@ export const headers = [
     template: BeatmapsTableHeadersTemplate.Difficulties,
     templateItemAccess: 'metadata.difficulties',
     align: 'left',
-    sortable: true,
+    sortable: false,
   },
   {
     value: 'dl',
@@ -67,6 +73,7 @@ export const headers = [
     templateItemAccess: 'stats.downloads',
     align: 'center',
     sortable: true,
+    sort: sortNumber,
   },
   {
     value: 'plays',
@@ -75,6 +82,7 @@ export const headers = [
     templateItemAccess: 'stats.plays',
     align: 'center',
     sortable: true,
+    sort: sortNumber,
   },
   {
     value: 'upvotes',
@@ -83,6 +91,7 @@ export const headers = [
     templateItemAccess: 'stats.upVotes',
     align: 'center',
     sortable: true,
+    sort: sortNumber,
   },
   {
     value: 'downvotes',
@@ -91,6 +100,16 @@ export const headers = [
     templateItemAccess: 'stats.downVotes',
     align: 'center',
     sortable: true,
+    sort: sortNumber,
+  },
+  {
+    value: 'rating',
+    text: 'Rating',
+    template: BeatmapsTableHeadersTemplate.Rating,
+    templateItemAccess: 'stats.rating',
+    align: 'center',
+    sortable: true,
+    sort: sortNumber,
   },
   {
     value: 'uploaded',
@@ -99,6 +118,7 @@ export const headers = [
     templateItemAccess: 'uploaded',
     align: 'center',
     sortable: true,
+    sort: sortDateFromString,
   },
   {
     value: 'key',
@@ -106,7 +126,8 @@ export const headers = [
     template: BeatmapsTableHeadersTemplate.Text,
     templateItemAccess: 'key',
     align: 'center',
-    sortable: true,
+    sortable: false,
+    sort: sortNumber,
   },
   {
     value: 'hash',
@@ -114,6 +135,7 @@ export const headers = [
     template: BeatmapsTableHeadersTemplate.Text,
     templateItemAccess: 'hash',
     align: 'center',
-    sortable: true,
+    sortable: false,
+    sort: sortNumber,
   },
 ] as BeatmapsTableHeader[];
