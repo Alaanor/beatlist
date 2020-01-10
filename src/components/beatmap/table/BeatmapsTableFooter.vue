@@ -32,7 +32,19 @@
         icon
         small
         class="ml-2 mr-1"
-        @click="options.page--"
+        :disabled="isFirstPage"
+        @click="pageStart"
+      >
+        <v-icon small>
+          first_page
+        </v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        small
+        class="mx-1"
+        :disabled="isFirstPage"
+        @click="pagePrevious"
       >
         <v-icon small>
           chevron_left
@@ -41,11 +53,23 @@
       <v-btn
         icon
         small
-        class="ml-1 mr-5"
-        @click="options.page++"
+        class="mx-1"
+        :disabled="isLastPage"
+        @click="pageNext"
       >
         <v-icon small>
           chevron_right
+        </v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        small
+        class="ml-1 mr-5"
+        :disabled="isLastPage"
+        @click="pageEnd"
+      >
+        <v-icon small>
+          last_page
         </v-icon>
       </v-btn>
     </div>
@@ -53,13 +77,14 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import { sync } from 'vuex-pathify';
 
-export default {
+export default Vue.extend({
   name: 'BeatmapsTableFooter',
   filters: {
     withAll(item: number): string {
-      return item === -1 ? 'All' : item.toString();
+      return item === -1 ? 'all' : item.toString();
     },
   },
   props: {
@@ -73,8 +98,32 @@ export default {
   }),
   computed: {
     itemsPerPage: sync<number>('settings/beatmapsTable@itemsPerPage'),
+    isFirstPage() {
+      return this.options.page === 1;
+    },
+    isLastPage() {
+      return this.options.page === this.pagination.pageCount;
+    },
   },
-};
+  methods: {
+    pagePrevious() {
+      if (this.options.page > 0) {
+        this.options.page -= 1;
+      }
+    },
+    pageNext() {
+      if (this.options.page < this.pagination.pageCount) {
+        this.options.page += 1;
+      }
+    },
+    pageStart() {
+      this.options.page = 1;
+    },
+    pageEnd() {
+      this.options.page = this.pagination.pageCount;
+    },
+  },
+});
 </script>
 <style scoped>
   .small-font {
