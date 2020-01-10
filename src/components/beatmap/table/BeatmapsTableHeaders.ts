@@ -43,7 +43,7 @@ export const headers = [
   {
     value: 'artist',
     text: 'Artist',
-    template: BeatmapsTableHeadersTemplate.TextTooltip,
+    template: BeatmapsTableHeadersTemplate.Text,
     templateItemAccess: 'metadata.songAuthorName',
     align: 'left',
     sortable: true,
@@ -52,7 +52,7 @@ export const headers = [
   {
     value: 'mapper',
     text: 'Mapper',
-    template: BeatmapsTableHeadersTemplate.TextTooltip,
+    template: BeatmapsTableHeadersTemplate.Text,
     templateItemAccess: 'metadata.levelAuthorName',
     align: 'left',
     sortable: true,

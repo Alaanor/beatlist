@@ -1,50 +1,69 @@
 <template>
   <v-container>
-    <v-chip-group
-      v-model="shownColumn"
-      mandatory
-      multiple
-    >
-      <v-chip
-        v-for="column in availableColumn"
-        :key="column.value"
-        :value="column.value"
-        class="success--text"
-        outlined
-        small
-      >
-        {{ column.name }}
-      </v-chip>
-    </v-chip-group>
-    <v-data-table
-      :headers="getHeaders()"
-      :items="beatmapAsTableData"
-      :options="{...options, itemsPerPage}"
-      item-key="hash"
-      hide-default-footer
-      fixed-header
-      dense
-    >
-      <template #footer="{ props: { pagination } }">
-        <BeatmapTableFooter
-          :items-per-page="itemsPerPage"
-          :options="options"
-          :pagination="pagination"
+    <v-row justify="end">
+      <v-col sm="10">
+        <v-chip-group
+          v-model="shownColumn"
+          mandatory
+          multiple
+          show-arrows
+        >
+          <v-chip
+            v-for="column in availableColumn"
+            :key="column.value"
+            :value="column.value"
+            class="success--text"
+            outlined
+            small
+          >
+            {{ column.name }}
+          </v-chip>
+        </v-chip-group>
+      </v-col>
+      <v-col>
+        <v-text-field
+          v-model="search"
+          append-icon="search"
+          placeholder="Search"
+          single-line
+          hide-details
+          dense
         />
-      </template>
+      </v-col>
+    </v-row>
 
-      <template
-        v-for="header in headers"
-        v-slot:[headerToSlotName(header)]="{ item }"
+    <v-card>
+      <v-data-table
+        :headers="getHeaders()"
+        :items="beatmapAsTableData"
+        :options="{...options, itemsPerPage}"
+        :search="search"
+        item-key="hash"
+        hide-default-footer
+        fixed-header
+        dense
       >
-        <component
-          :is="`BeatmapTableTemplate${header.template}`"
-          :key="header.value"
-          :item="item.raw"
-          :header="header"
-        />
-      </template>
-    </v-data-table>
+        <template #footer="{ props: { pagination } }">
+          <BeatmapTableFooter
+            :items-per-page="itemsPerPage"
+            :options="options"
+            :pagination="pagination"
+          />
+        </template>
+
+        <template
+          v-for="header in headers"
+          v-slot:[headerToSlotName(header)]="{ item }"
+        >
+          <component
+            :is="`BeatmapTableTemplate${header.template}`"
+            :key="header.value"
+            :item="item.raw"
+            :header="header"
+          />
+        </template>
+      </v-data-table>
+    </v-card>
   </v-container>
 </template>
 
@@ -80,6 +99,7 @@ export default Vue.extend({
     beatmaps: { type: Array as PropType<BeatmapsTableDataUnit[]>, required: true },
   },
   data: () => ({
+    search: '',
     options: {
       page: 1,
     },
@@ -98,7 +118,7 @@ export default Vue.extend({
     beatmapAsTableData() {
       return this.beatmaps.map((entry: BeatmapsTableDataUnit) => ({
         raw: entry,
-        name: entry.data.metadata.songName,
+        name: `${entry.data.metadata.songName} - ${entry.data.metadata.songSubName}`,
         artist: entry.data.metadata.songAuthorName,
         mapper: entry.data.metadata.levelAuthorName,
         difficulties: entry.data.metadata.difficulties,
