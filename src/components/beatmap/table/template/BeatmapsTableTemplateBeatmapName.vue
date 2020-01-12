@@ -11,7 +11,7 @@
 import Vue from 'vue';
 
 export default Vue.extend({
-  name: 'BeatmapTableTemplateBeatmapName',
+  name: 'BeatmapsTableTemplateBeatmapName',
   props: {
     item: { type: Object, required: true },
   },

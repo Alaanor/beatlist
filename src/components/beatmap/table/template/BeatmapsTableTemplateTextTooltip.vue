@@ -1,15 +1,19 @@
 <template>
-  <span>
-    {{ data }}
-  </span>
+  <Tooltip :text="data">
+    <span>
+      {{ data }}
+    </span>
+  </Tooltip>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Utilities from '@/libraries/helper/Utilities';
+import Tooltip from '@/components/helper/Tooltip.vue';
 
 export default Vue.extend({
-  name: 'BeatmapTableTemplateText',
+  name: 'BeatmapsTableTemplateDefault',
+  components: { Tooltip },
   props: {
     item: { type: Object, required: true },
     header: { type: Object, required: true },

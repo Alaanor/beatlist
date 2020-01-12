@@ -1,6 +1,5 @@
 <template>
   <div>
-    <v-divider/>
     <div class="d-flex justify-end align-center small-font py-1">
       <span>Rows per page:</span>
       <v-menu>

@@ -1,4 +1,4 @@
-import { headers } from '@/components/beatmap/table/BeatmapsTableHeaders';
+import { headers, headersFilterValue } from '@/components/beatmap/table/BeatmapsTableHeaders';
 import Utilities from '@/libraries/helper/Utilities';
 
 function customSort(
@@ -32,4 +32,4 @@ function customSort(
   return items;
 }
 
-export { headers, customSort };
+export { headers, headersFilterValue, customSort };

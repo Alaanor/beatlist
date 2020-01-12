@@ -1,4 +1,8 @@
 import { sortNumber, sortText, sortDateFromString } from '@/components/beatmap/table/function/BeatmapsTableSortFunctions';
+import {
+  Range, IsIn, DateRange, IsInDate,
+} from '@/libraries/common/Range';
+import { DifficultiesSimple } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 
 enum BeatmapsTableHeadersTemplate {
   Text = 'Text',
@@ -10,26 +14,53 @@ enum BeatmapsTableHeadersTemplate {
   Rating = 'Rating',
 }
 
+export enum BeatmapsTableFilterType {
+  RangeInt = 'Range',
+  Text = 'Text',
+  Difficulties = 'Difficulties',
+  Date = 'Date',
+}
+
 export interface BeatmapsTableHeader {
   value: string,
   text: string,
-  template: BeatmapsTableHeadersTemplate,
   align?: 'start' | 'center' | 'end',
   width?: number,
+
   sortable?: boolean,
   filterable?: boolean,
+
   sort?: (a: any, b: any) => number,
   filter?: (value: any, search: string, item: any) => boolean,
+  filterType?: BeatmapsTableFilterType,
+
+  template: BeatmapsTableHeadersTemplate,
   templateItemAccess?: string,
 }
 
-export const headers = [
+const headersFilterValue = {
+  name: '',
+  artist: '',
+  mapper: '',
+  dl: {} as Range,
+  plays: {} as Range,
+  upvotes: {} as Range,
+  downvotes: {} as Range,
+  rating: {} as Range,
+  difficulties: ['easy', 'normal', 'hard', 'expert', 'expertPlus'],
+  uploaded: {} as DateRange,
+  key: '',
+  hash: '',
+};
+
+const headers = [
   {
     value: 'cover',
     text: 'Cover',
     template: BeatmapsTableHeadersTemplate.Cover,
     align: 'left',
     sortable: false,
+    filterable: false,
     width: 48,
   },
   {
@@ -38,6 +69,11 @@ export const headers = [
     template: BeatmapsTableHeadersTemplate.BeatmapName,
     align: 'left',
     sortable: true,
+    filterable: true,
+    filter: (value: string) => value
+      .toLowerCase()
+      .includes(headersFilterValue.name.toLowerCase()),
+    filterType: BeatmapsTableFilterType.Text,
     sort: sortText,
   },
   {
@@ -47,6 +83,11 @@ export const headers = [
     templateItemAccess: 'metadata.songAuthorName',
     align: 'left',
     sortable: true,
+    filterable: true,
+    filter: (value: string) => value
+      .toLowerCase()
+      .includes(headersFilterValue.artist.toLowerCase()),
+    filterType: BeatmapsTableFilterType.Text,
     sort: sortText,
   },
   {
@@ -56,6 +97,11 @@ export const headers = [
     templateItemAccess: 'metadata.levelAuthorName',
     align: 'left',
     sortable: true,
+    filterable: true,
+    filter: (value: string) => value
+      .toLowerCase()
+      .includes(headersFilterValue.mapper.toLowerCase()),
+    filterType: BeatmapsTableFilterType.Text,
     sort: sortText,
   },
   {
@@ -65,6 +111,10 @@ export const headers = [
     templateItemAccess: 'metadata.difficulties',
     align: 'left',
     sortable: false,
+    filterType: BeatmapsTableFilterType.Difficulties,
+    filterable: true,
+    filter: (value: DifficultiesSimple) => headersFilterValue.difficulties
+      .some((diff: string) => value[diff]),
   },
   {
     value: 'dl',
@@ -73,6 +123,9 @@ export const headers = [
     templateItemAccess: 'stats.downloads',
     align: 'center',
     sortable: true,
+    filterable: true,
+    filterType: BeatmapsTableFilterType.RangeInt,
+    filter: (value: number) => IsIn(value, headersFilterValue.dl),
     sort: sortNumber,
   },
   {
@@ -82,6 +135,9 @@ export const headers = [
     templateItemAccess: 'stats.plays',
     align: 'center',
     sortable: true,
+    filterable: true,
+    filterType: BeatmapsTableFilterType.RangeInt,
+    filter: (value: number) => IsIn(value, headersFilterValue.plays),
     sort: sortNumber,
   },
   {
@@ -91,6 +147,9 @@ export const headers = [
     templateItemAccess: 'stats.upVotes',
     align: 'center',
     sortable: true,
+    filterable: true,
+    filterType: BeatmapsTableFilterType.RangeInt,
+    filter: (value: number) => IsIn(value, headersFilterValue.upvotes),
     sort: sortNumber,
   },
   {
@@ -100,6 +159,9 @@ export const headers = [
     templateItemAccess: 'stats.downVotes',
     align: 'center',
     sortable: true,
+    filterable: true,
+    filterType: BeatmapsTableFilterType.RangeInt,
+    filter: (value: number) => IsIn(value, headersFilterValue.downvotes),
     sort: sortNumber,
   },
   {
@@ -109,6 +171,9 @@ export const headers = [
     templateItemAccess: 'stats.rating',
     align: 'center',
     sortable: true,
+    filterable: true,
+    filterType: BeatmapsTableFilterType.RangeInt,
+    filter: (value: number) => IsIn(value, headersFilterValue.rating),
     sort: sortNumber,
   },
   {
@@ -118,6 +183,9 @@ export const headers = [
     templateItemAccess: 'uploaded',
     align: 'center',
     sortable: true,
+    filterable: true,
+    filterType: BeatmapsTableFilterType.Date,
+    filter: (value: string) => IsInDate(new Date(value), headersFilterValue.uploaded),
     sort: sortDateFromString,
   },
   {
@@ -127,6 +195,11 @@ export const headers = [
     templateItemAccess: 'key',
     align: 'center',
     sortable: false,
+    filterable: true,
+    filterType: BeatmapsTableFilterType.Text,
+    filter: (value: string) => value
+      .toLowerCase()
+      .includes(headersFilterValue.key.toLowerCase()),
     sort: sortNumber,
   },
   {
@@ -136,6 +209,13 @@ export const headers = [
     templateItemAccess: 'hash',
     align: 'center',
     sortable: false,
+    filterable: true,
+    filterType: BeatmapsTableFilterType.Text,
+    filter: (value: string) => value
+      .toLowerCase()
+      .includes(headersFilterValue.hash.toLowerCase()),
     sort: sortNumber,
   },
 ] as BeatmapsTableHeader[];
+
+export { headers, headersFilterValue };

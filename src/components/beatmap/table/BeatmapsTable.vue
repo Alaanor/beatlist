@@ -1,50 +1,35 @@
 <template>
   <v-container>
-    <v-row justify="end">
-      <v-col sm="10">
-        <v-chip-group
-          v-model="shownColumn"
-          mandatory
-          multiple
-          show-arrows
-        >
-          <v-chip
-            v-for="column in availableColumn"
-            :key="column.value"
-            :value="column.value"
-            class="success--text"
-            outlined
-            small
-          >
-            {{ column.name }}
-          </v-chip>
-        </v-chip-group>
-      </v-col>
-      <v-col>
-        <v-text-field
-          v-model="search"
-          append-icon="search"
-          placeholder="Search"
-          single-line
-          hide-details
-          dense
-        />
-      </v-col>
-    </v-row>
+    <v-chip-group
+      v-model="shownColumn"
+      mandatory
+      multiple
+      show-arrows
+    >
+      <v-chip
+        v-for="column in availableColumn"
+        :key="column.value"
+        :value="column.value"
+        class="success--text"
+        outlined
+        small
+      >
+        {{ column.name }}
+      </v-chip>
+    </v-chip-group>
 
     <v-card>
       <v-data-table
         :headers="getHeaders()"
         :items="beatmapAsTableData"
         :options="{...options, itemsPerPage}"
-        :search="search"
         item-key="hash"
         hide-default-footer
         fixed-header
         dense
       >
         <template #footer="{ props: { pagination } }">
-          <BeatmapTableFooter
+          <BeatmapsTableFooter
             :items-per-page="itemsPerPage"
             :options="options"
             :pagination="pagination"
@@ -56,10 +41,17 @@
           v-slot:[headerToSlotName(header)]="{ item }"
         >
           <component
-            :is="`BeatmapTableTemplate${header.template}`"
+            :is="`BeatmapsTableTemplate${header.template}`"
             :key="header.value"
             :item="item.raw"
             :header="header"
+          />
+        </template>
+
+        <template #body.append>
+          <BeatmapsTableFilterRow
+            :headers="getHeaders()"
+            @forceUpdate="forceUpdate"
           />
         </template>
       </v-data-table>
@@ -71,41 +63,45 @@
 import Vue, { PropType } from 'vue';
 import { sync } from 'vuex-pathify';
 import { BeatmapsTableDataUnit } from '@/components/beatmap/table/BeatmapsTableDataUnit';
-import BeatmapTableFooter from '@/components/beatmap/table/BeatmapsTableFooter.vue';
-import { headers, customSort } from '@/components/beatmap/table/BeatmapsTable';
+import { headers, headersFilterValue, customSort } from '@/components/beatmap/table/BeatmapsTable';
+import BeatmapsTableFooter from '@/components/beatmap/table/BeatmapsTableFooter.vue';
+import BeatmapsTableFilterRow from '@/components/beatmap/table/BeatmapsTableFilterRow.vue';
 
 // Template
-import BeatmapTableTemplateCover from '@/components/beatmap/table/template/BeatmapTableTemplateCover.vue';
-import BeatmapTableTemplateText from '@/components/beatmap/table/template/BeatmapTableTemplateText.vue';
-import BeatmapTableTemplateTextTooltip from '@/components/beatmap/table/template/BeatmapTableTemplateTextTooltip.vue';
-import BeatmapTableTemplateBeatmapName from '@/components/beatmap/table/template/BeatmapTableTemplateBeatmapName.vue';
-import BeatmapTableTemplateStrToDate from '@/components/beatmap/table/template/BeatmapTableTemplateStrToDate.vue';
-import BeatmapTableTemplateDifficulties from '@/components/beatmap/table/template/BeatmapTableTemplateDifficulties.vue';
-import BeatmapTableTemplateRating from '@/components/beatmap/table/template/BeatmapTableTemplateRating.vue';
+import BeatmapsTableTemplateCover from '@/components/beatmap/table/template/BeatmapsTableTemplateCover.vue';
+import BeatmapsTableTemplateText from '@/components/beatmap/table/template/BeatmapsTableTemplateText.vue';
+import BeatmapsTableTemplateTextTooltip from '@/components/beatmap/table/template/BeatmapsTableTemplateTextTooltip.vue';
+import BeatmapsTableTemplateBeatmapName from '@/components/beatmap/table/template/BeatmapsTableTemplateBeatmapName.vue';
+import BeatmapsTableTemplateStrToDate from '@/components/beatmap/table/template/BeatmapsTableTemplateStrToDate.vue';
+import BeatmapsTableTemplateDifficulties from '@/components/beatmap/table/template/BeatmapsTableTemplateDifficulties.vue';
+import BeatmapsTableTemplateRating from '@/components/beatmap/table/template/BeatmapsTableTemplateRating.vue';
 
 export default Vue.extend({
   name: 'BeatmapLocal',
   components: {
-    BeatmapTableFooter,
-    BeatmapTableTemplateCover,
-    BeatmapTableTemplateText,
-    BeatmapTableTemplateDifficulties,
-    BeatmapTableTemplateTextTooltip,
-    BeatmapTableTemplateBeatmapName,
-    BeatmapTableTemplateStrToDate,
-    BeatmapTableTemplateRating,
+    BeatmapsTableFooter,
+    BeatmapsTableFilterRow,
+    BeatmapsTableTemplateCover,
+    BeatmapsTableTemplateText,
+    BeatmapsTableTemplateDifficulties,
+    BeatmapsTableTemplateTextTooltip,
+    BeatmapsTableTemplateBeatmapName,
+    BeatmapsTableTemplateStrToDate,
+    BeatmapsTableTemplateRating,
   },
   props: {
     beatmaps: { type: Array as PropType<BeatmapsTableDataUnit[]>, required: true },
   },
   data: () => ({
     search: '',
+    test: '',
     options: {
       page: 1,
     },
   }),
   computed: {
     headers: () => headers,
+    headersFilterValue: () => headersFilterValue,
     customSort: () => customSort,
     shownColumn: sync<string[]>('settings/beatmapsTable@shownColumn'),
     itemsPerPage: sync<number>('settings/beatmapsTable@itemsPerPage'),
@@ -139,6 +135,11 @@ export default Vue.extend({
     },
     headerToSlotName(header: any): string {
       return `item.${header.value}`;
+    },
+    forceUpdate() {
+      // dumb workaround to trigger an update event on the table
+      this.options.page += 1;
+      this.options.page -= 1;
     },
   },
 });

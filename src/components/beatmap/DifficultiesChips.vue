@@ -23,6 +23,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import { DifficultiesSimple } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import { getColorFor, getNameFor, getWeightFor } from '@/components/helper/DifficultiesHelper';
 
 export default Vue.extend({
   name: 'DifficultiesChips',
@@ -44,11 +45,11 @@ export default Vue.extend({
     computeDifficulties() {
       this.difficulties = Object.entries(this.diff)
         .map(([key, value]) => ({
-          name: this.getNameFor(key),
+          name: getNameFor(key),
           enabled: value,
           chipName: this.short ? '' : key,
-          color: this.getColorFor(key),
-          weight: this.getWeightFor(key),
+          color: getColorFor(key),
+          weight: getWeightFor(key),
         }))
         .sort((a: any, b: any) => a.weight - b.weight);
 
@@ -61,36 +62,6 @@ export default Vue.extend({
         d.key = `${keyBase} - ${d.name}`;
         return d;
       }).filter((d: any) => d.enabled);
-    },
-    getColorFor: (name: string) => {
-      switch (name) {
-        case 'easy': return 'green';
-        case 'normal': return 'blue';
-        case 'hard': return 'orange';
-        case 'expert': return 'red';
-        case 'expertPlus': return 'purple';
-        default: return undefined;
-      }
-    },
-    getWeightFor: (name: string) => {
-      switch (name) {
-        case 'easy': return 1;
-        case 'normal': return 2;
-        case 'hard': return 3;
-        case 'expert': return 4;
-        case 'expertPlus': return 5;
-        default: return undefined;
-      }
-    },
-    getNameFor: (name: string) => {
-      switch (name) {
-        case 'easy': return 'Easy';
-        case 'normal': return 'Normal';
-        case 'hard': return 'Hard';
-        case 'expert': return 'Expert';
-        case 'expertPlus': return 'Expert+';
-        default: return undefined;
-      }
     },
   },
 });

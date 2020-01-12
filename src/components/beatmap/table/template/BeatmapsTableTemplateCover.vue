@@ -11,7 +11,7 @@ import Vue from 'vue';
 import BeatmapCover from '@/components/beatmap/BeatmapCover.vue';
 
 export default Vue.extend({
-  name: 'BeatmapTableTemplateCover',
+  name: 'BeatmapsTableTemplateCover',
   components: { BeatmapCover },
   props: {
     item: { type: Object, required: true },
