@@ -16,7 +16,7 @@ export default class PlaylistLibrary {
       'playlist/SET_PLAYLISTS',
       playlists
         .map((playlist) => playlist.maps
-          .map((beatmap) => Object.freeze(beatmap))),
+          ?.map((beatmap) => Object.freeze(beatmap))),
     );
   }
 
