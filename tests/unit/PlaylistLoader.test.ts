@@ -5,24 +5,44 @@ import PlaylistLoader from '@/libraries/playlist/PlaylistLoader';
 import BeatSaverAPI from '@/libraries/net/beatsaver/BeatSaverAPI';
 import Progress from '@/libraries/common/Progress';
 import mockResponseSuccess from './helper/BeatsaverAPIResponseMocking';
+import PlaylistLoadStateError from '@/libraries/playlist/PlaylistLoadStateError';
+import { PlaylistLoadStateInvalid } from '@/libraries/playlist/PlaylistLoadState';
 
 describe('playlist loader', () => {
   it('should fail if invalid path', async () => {
-    expect.assertions(1);
-    expect(await PlaylistLoader.Load('')).toBeUndefined();
+    expect.assertions(2);
+
+    const playlist = await PlaylistLoader.Load('');
+
+    expect(playlist.loadState.valid).toBe(false);
+    expect((playlist.loadState as PlaylistLoadStateInvalid).errorType)
+      .toBe(PlaylistLoadStateError.PathDoesntExist);
   });
 
-  it('should not load a playlist', async () => {
-    expect.assertions(1);
+  it('should not load an invalid playlist using the old format', async () => {
+    expect.assertions(2);
 
     const oldFormatInvalid = path.join(__dirname, '../data/playlist/oldFormatInvalid.json');
     const playlist = await PlaylistLoader.Load(oldFormatInvalid);
 
-    expect(playlist).toBeUndefined();
+    expect(playlist.loadState.valid).toBe(false);
+    expect((playlist.loadState as PlaylistLoadStateInvalid).errorType)
+      .toBe(PlaylistLoadStateError.FailedToParseOldFormat);
+  });
+
+  it('should not load an invalid playlist using the new format', async () => {
+    expect.assertions(2);
+
+    const newFormatInvalid = path.join(__dirname, '../data/playlist/newFormatInvalid.blist');
+    const playlist = await PlaylistLoader.Load(newFormatInvalid);
+
+    expect(playlist.loadState.valid).toBe(false);
+    expect((playlist.loadState as PlaylistLoadStateInvalid).errorType)
+      .toBe(PlaylistLoadStateError.FailedToParseNewFormat);
   });
 
   it('should load old format playlist', async () => {
-    expect.assertions(4);
+    expect.assertions(6);
 
     const mockGetBeatmapByHash = jest.fn();
 
@@ -37,11 +57,13 @@ describe('playlist loader', () => {
     const playlistBeatlist = await PlaylistLoader.Load(oldFormatBeatlist);
     const playlistPeepee = await PlaylistLoader.Load(oldFormatPeepee);
 
-    expect(playlistBeatlist?.title).toBe('Test');
-    expect(playlistBeatlist?.maps[0].online?.key).toBe('75f1');
+    expect(playlistBeatlist.loadState.valid).toBe(true);
+    expect(playlistBeatlist.title).toBe('Test');
+    expect(playlistBeatlist.maps[0].online?.key).toBe('75f1');
 
-    expect(playlistPeepee?.title).toBe('Not played (2019-12-22)');
-    expect(playlistPeepee?.maps[0].online?.key).toBe('765d');
+    expect(playlistPeepee.loadState.valid).toBe(true);
+    expect(playlistPeepee.title).toBe('Not played (2019-12-22)');
+    expect(playlistPeepee.maps[0].online?.key).toBe('765d');
   });
 
   it('should load new format playlist', async () => {
@@ -55,10 +77,10 @@ describe('playlist loader', () => {
     const newFormatPlaylistFile = path.join(__dirname, '../data/playlist/newFormatFromBeatlist.blist');
     const playlist = await PlaylistLoader.Load(newFormatPlaylistFile);
 
-    expect(playlist).toBeDefined();
-    expect(playlist?.title).toBe('Test');
-    expect(playlist?.author).toBe('Alaanor');
-    expect(playlist?.maps[0].online?.key).toBe('75f1');
+    expect(playlist.loadState.valid).toBe(true);
+    expect(playlist.title).toBe('Test');
+    expect(playlist.author).toBe('Alaanor');
+    expect(playlist.maps[0].online?.key).toBe('75f1');
   });
 
   it('should show a correct progress', async () => {
@@ -74,7 +96,7 @@ describe('playlist loader', () => {
   });
 
   it('should convert the old playlist to a new one', async () => {
-    expect.assertions(8);
+    expect.assertions(10);
 
     const mockGetBeatmapByHash = jest.fn();
     const mockedValue = { key: '75f1' };
@@ -88,15 +110,17 @@ describe('playlist loader', () => {
 
     const playlist = await PlaylistLoader.Load(targetPlaylist, true);
 
-    expect(playlist?.title).toBe('Test');
-    expect(playlist?.maps[0].online?.key).toBe('75f1');
+    expect(playlist.loadState.valid).toBe(true);
+    expect(playlist.title).toBe('Test');
+    expect(playlist.maps[0].online?.key).toBe('75f1');
     expect(await fs.pathExists(convertedPlaylist)).toBe(true);
     expect(await fs.pathExists(targetPlaylist)).toBe(false);
 
     const loadedPlaylist = await PlaylistLoader.Load(convertedPlaylist, true);
 
-    expect(loadedPlaylist?.title).toBe('Test');
-    expect(loadedPlaylist?.maps[0].online?.key).toBe('75f1');
+    expect(loadedPlaylist.loadState.valid).toBe(true);
+    expect(loadedPlaylist.title).toBe('Test');
+    expect(loadedPlaylist.maps[0].online?.key).toBe('75f1');
     expect(await fs.pathExists(convertedPlaylist)).toBe(true);
     expect(await fs.pathExists(targetPlaylist)).toBe(false);
 
@@ -133,9 +157,9 @@ describe('playlist loader', () => {
 
     const playlist = await PlaylistLoader.Load(playlistPath);
 
-    expect(playlist).toBeDefined();
-    expect(playlist?.title).toBe('test');
-    expect(playlist?.maps[0].online?.key).toBe('75f1');
+    expect(playlist.loadState.valid).toBe(true);
+    expect(playlist.title).toBe('test');
+    expect(playlist.maps[0].online?.key).toBe('75f1');
 
     await fs.unlink(playlistPath);
   });

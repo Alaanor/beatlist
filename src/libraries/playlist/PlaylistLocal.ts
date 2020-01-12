@@ -1,4 +1,5 @@
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import { PlaylistLoadState } from '@/libraries/playlist/PlaylistLoadState';
 
 export type PlaylistLocal = PlaylistStoredLocally & PlaylistWithBeatmapLocal;
 
@@ -12,6 +13,7 @@ export interface PlaylistWithBeatmapLocal {
   description: string | null;
   cover: Buffer | null;
   maps: PlaylistLocalMap[];
+  loadState: PlaylistLoadState;
 }
 
 export interface PlaylistLocalMap {

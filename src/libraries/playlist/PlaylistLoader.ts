@@ -13,6 +13,7 @@ import * as Throttle from 'promise-parallel-throttle';
 import { PlaylistLocal, PlaylistLocalMap, PlaylistMapImportError } from '@/libraries/playlist/PlaylistLocal';
 import BeatSaverAPI, { BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatSaverAPI';
 import Progress from '@/libraries/common/Progress';
+import PlaylistLoadStateError from '@/libraries/playlist/PlaylistLoadStateError';
 
 const PLAYLIST_EXTENSION_NAME = 'blist';
 
@@ -21,9 +22,13 @@ export default class PlaylistLoader {
     filepath: string,
     forceConvertIfNeeded: boolean = false,
     progress?: Progress,
-  ) : Promise<PlaylistLocal | undefined> {
+  ) : Promise<PlaylistLocal> {
     if (!await fs.pathExists(filepath)) {
-      return undefined;
+      return this.buildEmptyPlaylist(
+        filepath,
+        'The path doesn\'t exist',
+        PlaylistLoadStateError.PathDoesntExist,
+      );
     }
 
     const buffer = await fs.readFile(filepath);
@@ -35,16 +40,33 @@ export default class PlaylistLoader {
         const legacyPlaylist = JSON.parse(buffer.toString());
         playlist = convertLegacyPlaylist(legacyPlaylist);
       } catch (e) {
-        return undefined;
+        return this.buildEmptyPlaylist(
+          filepath,
+          e.message,
+          PlaylistLoadStateError.FailedToParseOldFormat,
+        );
       }
     } else {
-      playlist = await deserialize(buffer);
+      try {
+        playlist = await deserialize(buffer);
+      } catch (e) {
+        return this.buildEmptyPlaylist(
+          filepath,
+          e.message,
+          PlaylistLoadStateError.FailedToParseNewFormat,
+        );
+      }
     }
 
     const output = await PlaylistLoader.ConvertToPlaylistLocal(playlist, progress);
+    output.loadState = { valid: true, hasBeenConverted: false };
 
     if (oldFormat && forceConvertIfNeeded) {
-      await PlaylistLoader.ConvertPlaylistFile(filepath, output);
+      const newFilePath = await PlaylistLoader.ConvertPlaylistFile(filepath, output);
+      if (newFilePath) {
+        filepath = newFilePath;
+        output.loadState.hasBeenConverted = true;
+      }
     }
 
     output.path = filepath;
@@ -158,13 +180,37 @@ export default class PlaylistLoader {
     return output;
   }
 
-  private static async ConvertPlaylistFile(filepath: string, playlist: PlaylistLocal) {
+  private static async ConvertPlaylistFile(filepath: string, playlist: PlaylistLocal)
+    : Promise<string | undefined> {
     const filename = `${path.parse(filepath).name}.${PLAYLIST_EXTENSION_NAME}`;
     const newFilepath = path.join(path.parse(filepath).dir, filename);
     const done = await this.Save(newFilepath, playlist);
 
     if (done) {
       await fs.unlink(filepath);
+      return newFilepath;
     }
+
+    return undefined;
+  }
+
+  private static buildEmptyPlaylist(
+    filepath: string,
+    message: string,
+    errorType: PlaylistLoadStateError,
+  ): PlaylistLocal {
+    return {
+      author: '',
+      cover: null,
+      description: null,
+      maps: [],
+      title: '',
+      path: filepath,
+      loadState: {
+        valid: false,
+        errorMessage: message,
+        errorType,
+      },
+    } as PlaylistLocal;
   }
 }

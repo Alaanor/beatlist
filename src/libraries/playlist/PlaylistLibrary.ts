@@ -6,6 +6,16 @@ export default class PlaylistLibrary {
     return store.getters['playlist/playlists'];
   }
 
+  public static GetAllValidPlaylists(): PlaylistLocal[] {
+    return this.GetAllPlaylists()
+      .filter((playlist: PlaylistLocal) => playlist.loadState.valid);
+  }
+
+  public static GetAllInvalidPlaylists(): PlaylistLocal[] {
+    return this.GetAllPlaylists()
+      .filter((playlist: PlaylistLocal) => !playlist.loadState.valid);
+  }
+
   public static GetLastScan(): Date {
     return store.getters['playlist/lastScan'];
   }
