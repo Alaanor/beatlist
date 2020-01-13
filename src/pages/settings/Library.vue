@@ -33,7 +33,7 @@
             {{ beatmapsCountValid > 1 ? 'beatmaps are' : 'beatmap is' }} loaded.
           </span>
           <span>
-            <strong>{{ playlistsCount }}</strong>
+            <strong>{{ playlistsCountValid }}</strong>
             {{ beatmapsCountValid > 1 ? 'playlists are' : 'playlist is' }} loaded.
           </span>
           <span class="py-1"/>
@@ -48,6 +48,21 @@
               x-small
               class="ml-1"
               @click="invalidBeatmapDialog = true"
+            >
+              <v-icon x-small>mdi-help</v-icon>
+            </v-btn>
+          </span>
+          <span
+            v-if="playlistsCountInvalid > 0"
+            class="grey--text d-flex align-center"
+          >
+            <strong class="pr-1">{{ playlistsCountInvalid }}</strong>
+            {{ playlistsCountInvalid > 1 ? 'playlists are' : 'playlist is' }} invalid.
+            <v-btn
+              icon
+              x-small
+              class="ml-1"
+              @click="invalidPlaylistDialog = true"
             >
               <v-icon x-small>mdi-help</v-icon>
             </v-btn>
@@ -84,6 +99,7 @@
       <span>Are you sure you want to <strong class="error--text">clear</strong> the cache ?</span>
     </ConfirmDialog>
     <InvalidBeatmapDialog :open.sync="invalidBeatmapDialog"/>
+    <InvalidPlaylistDialog :open.sync="invalidPlaylistDialog"/>
   </v-container>
 </template>
 
@@ -100,23 +116,28 @@ import ProgressGroup from '@/libraries/common/ProgressGroup';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
 import InvalidBeatmapDialog from '@/components/dialogs/InvalidBeatmapDialog.vue';
 import NotificationService from '@/libraries/notification/NotificationService';
+import InvalidPlaylistDialog from '@/components/dialogs/InvalidPlaylistDialog.vue';
 
 export default Vue.extend({
   name: 'SongLibrary',
-  components: { LoaderDialog, ConfirmDialog, InvalidBeatmapDialog },
+  components: {
+    LoaderDialog, ConfirmDialog, InvalidBeatmapDialog, InvalidPlaylistDialog,
+  },
   data: () => ({
     scanning: { global: false, beatmap: false, playlist: false },
     beatmapScanner: {} as BeatmapScanner,
     playlistScanner: {} as PlaylistScanner,
     confirmDialog: false,
     invalidBeatmapDialog: false,
+    invalidPlaylistDialog: false,
     progress: { beatmap: new Progress(), playlist: new ProgressGroup() },
   }),
   computed: {
     installationPathValid: get('settings/installationPathValid'),
     beatmapsCountValid: () => BeatmapLibrary.GetAllValidMap().length,
     beatmapsCountInvalid: () => BeatmapLibrary.GetAllInvalidMap().length,
-    playlistsCount: () => PlaylistLibrary.GetAllPlaylists().length,
+    playlistsCountValid: () => PlaylistLibrary.GetAllValidPlaylists().length,
+    playlistsCountInvalid: () => PlaylistLibrary.GetAllInvalidPlaylists().length,
     lastScan: () => BeatmapLibrary.GetLastScanDate()?.toLocaleString() ?? undefined,
   },
   methods: {
@@ -148,7 +169,7 @@ export default Vue.extend({
         .then(() => {
           NotificationService.NotifyMessage(
             `<strong>${this.beatmapsCountValid}</strong> beatmaps and
-            <strong>${this.playlistsCount}</strong> playlists are now in the library.`,
+            <strong>${this.playlistsCountValid}</strong> playlists are now in the library.`,
             'success',
           );
         })
