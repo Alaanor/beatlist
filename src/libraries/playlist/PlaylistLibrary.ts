@@ -3,10 +3,11 @@ import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 
 export default class PlaylistLibrary {
   public static GetAllPlaylists(): PlaylistLocal[] {
-    return store.getters['playlist/playlists'];
+    return store.getters['playlist/playlists'] ?? [];
   }
 
   public static GetAllValidPlaylists(): PlaylistLocal[] {
+    console.log(this.GetAllPlaylists());
     return this.GetAllPlaylists()
       .filter((playlist: PlaylistLocal) => playlist.loadState.valid);
   }
@@ -22,12 +23,7 @@ export default class PlaylistLibrary {
 
   public static UpdateAllPlaylist(playlists: PlaylistLocal[]) {
     store.commit('playlist/SET_LAST_SCAN', new Date());
-    store.commit(
-      'playlist/SET_PLAYLISTS',
-      playlists
-        .map((playlist) => playlist.maps
-          ?.map((beatmap) => Object.freeze(beatmap))),
-    );
+    store.commit('playlist/SET_PLAYLISTS', playlists);
   }
 
   public static ClearCache() {

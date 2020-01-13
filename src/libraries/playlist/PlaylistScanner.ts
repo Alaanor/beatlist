@@ -16,13 +16,17 @@ export default class PlaylistScanner {
     const diff = await PlaylistScanner.GetTheDifferenceInPath();
 
     this.newPlaylists = (await Promise.all(
-      diff.added.map((path: string) => PlaylistLoader.Load(path, false, progressGroup.getNewOne())),
-    )).filter((playlist: PlaylistLocal | undefined) => playlist !== undefined) as PlaylistLocal[];
+      diff.added.map(async (path: string) => {
+        const p = await PlaylistLoader.Load(path, false, progressGroup.getNewOne());
+        console.log(p);
+        return p;
+      }),
+    ));
 
     this.removedPlaylists = diff.removed.length;
     this.keptPlaylists = diff.kept.length;
 
-    const allPlaylists = this.ReassembleAllPlaylist(diff);
+    const allPlaylists = this.MergeWithExistingPlaylists(diff);
     PlaylistLibrary.UpdateAllPlaylist(allPlaylists);
   }
 
@@ -36,11 +40,9 @@ export default class PlaylistScanner {
     return computeDifference(oldPaths, currentPaths);
   }
 
-  private ReassembleAllPlaylist(diff: Differences<string>): PlaylistLocal[] {
+  private MergeWithExistingPlaylists(diff: Differences<string>): PlaylistLocal[] {
     const existingPlaylist = PlaylistLibrary.GetAllPlaylists().filter(
-      (beatmap: PlaylistLocal) => diff.kept.find(
-        (path: string) => beatmap.path === path,
-      ),
+      (playlist: PlaylistLocal) => diff.kept.find((path: string) => playlist.path === path),
     );
 
     return this.newPlaylists.concat(existingPlaylist);

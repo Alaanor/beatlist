@@ -69,7 +69,7 @@ export default class BeatSaverAPI {
 
         if (valid) {
           return {
-            data: answer.data as T,
+            data: Object.freeze(answer.data as T),
             status: BeatSaverAPIResponseStatus.ResourceFound,
           } as BeatSaverAPIResponse<T>;
         }
