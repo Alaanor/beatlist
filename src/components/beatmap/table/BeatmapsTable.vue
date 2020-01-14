@@ -65,7 +65,7 @@ import BeatmapsTableTemplateBeatmapName from '@/components/beatmap/table/core/te
 import BeatmapsTableTemplateStrToDate from '@/components/beatmap/table/core/template/BeatmapsTableTemplateStrToDate.vue';
 import BeatmapsTableTemplateDifficulties from '@/components/beatmap/table/core/template/BeatmapsTableTemplateDifficulties.vue';
 import BeatmapsTableTemplateRating from '@/components/beatmap/table/core/template/BeatmapsTableTemplateRating.vue';
-import BeatmapsTableColumnSelector from '@/components/beatmap/table/BeatmapsTableColumnSelector.vue';
+import BeatmapsTableColumnSelector from '@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue';
 import BeatmapsTableFooter from '@/components/beatmap/table/core/BeatmapsTableFooter.vue';
 import BeatmapsTableFilterRow from '@/components/beatmap/table/core/BeatmapsTableFilterRow.vue';
 
