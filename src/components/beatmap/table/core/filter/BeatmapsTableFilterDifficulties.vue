@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { BeatmapsTableHeader } from '@/components/beatmap/table/BeatmapsTableHeaders';
+import { BeatmapsTableHeader } from '@/components/beatmap/table/core/BeatmapsTableHeaders';
 import { getNameFor, getColorFor, listOfDifficulties } from '@/components/helper/DifficultiesHelper';
 
 export default Vue.extend({

@@ -3,19 +3,19 @@
     <p class="display-2">
       Beatmap Local
     </p>
-    <BeatmapsTable :beatmaps="beatmaps"/>
+    <BeatmapsTableLocal :beatmaps="beatmaps"/>
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
-import BeatmapsTable from '@/components/beatmap/table/BeatmapsTable.vue';
-import { BeatmapsTableDataUnit } from '@/components/beatmap/table/BeatmapsTableDataUnit';
+import BeatmapsTableLocal from '@/components/beatmap/table/BeatmapsTableLocal.vue';
+import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
 
 export default Vue.extend({
   name: 'BeatmapLocal',
-  components: { BeatmapsTable },
+  components: { BeatmapsTableLocal },
   computed: {
     beatmaps: () => BeatmapLibrary.GetAllValidMap()
       .map((beatmap): BeatmapsTableDataUnit => ({

@@ -64,6 +64,14 @@ export interface Stats {
   [stat: string]: number;
 }
 
+export interface BeatsaverPage {
+  docs: BeatsaverBeatmap[],
+  totalDocs: number,
+  lastPage: number,
+  prevPage: number | null,
+  nextPage: number | null,
+}
+
 // Dumb and quick check if the object is kinda what we expect, doesn't fully validate it
 export function isBeatsaverBeatmap(beatmap: any): beatmap is BeatsaverBeatmap {
   return (

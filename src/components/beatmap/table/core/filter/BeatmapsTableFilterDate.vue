@@ -54,7 +54,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { BeatmapsTableHeader } from '@/components/beatmap/table/BeatmapsTableHeaders';
+import { BeatmapsTableHeader } from '@/components/beatmap/table/core/BeatmapsTableHeaders';
 import { DateRange } from '@/libraries/common/Range';
 
 export default Vue.extend({

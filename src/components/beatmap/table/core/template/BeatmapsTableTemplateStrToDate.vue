@@ -17,10 +17,10 @@ export default Vue.extend({
     header: { type: Object, required: true },
   },
   computed: {
-    date() {
+    date(): Date {
       return new Date(this.data);
     },
-    data() {
+    data(): string {
       return Utilities.byIndex(this.item.data, this.header.templateItemAccess);
     },
   },

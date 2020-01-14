@@ -3,7 +3,7 @@
     <v-btn
       icon
       small
-      :color="(min === undefined || max === undefined) ? '' : 'success'"
+      :color="(min === undefined && max === undefined) ? '' : 'success'"
     >
       <v-icon>filter_list</v-icon>
     </v-btn>
@@ -15,6 +15,8 @@
         label="from"
         outlined
         class="mt-6"
+        clearable
+        @click:clear="clearMin"
         @change="update"
       />
       <v-text-field
@@ -23,6 +25,8 @@
         type="number"
         label="to"
         outlined
+        clearable
+        @click:clear="clearMax"
         @change="update"
       />
     </template>
@@ -31,7 +35,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { BeatmapsTableHeader } from '@/components/beatmap/table/BeatmapsTableHeaders';
+import { BeatmapsTableHeader } from '@/components/beatmap/table/core/BeatmapsTableHeaders';
 import { Range } from '@/libraries/common/Range';
 
 export default Vue.extend({
@@ -50,14 +54,9 @@ export default Vue.extend({
   },
   methods: {
     update() {
-      this.checkForValidMinMax();
       this.setEmptyAsUndefined();
+      this.convertNullToUndefined();
       this.$emit('input', { min: this.min, max: this.max } as Range);
-    },
-    checkForValidMinMax() {
-      if (this.min !== undefined && this.max !== undefined && this.min > this.max) {
-        this.max = this.min;
-      }
     },
     setEmptyAsUndefined() {
       if ((this.min as unknown as string) === '') {
@@ -67,6 +66,21 @@ export default Vue.extend({
       if ((this.max as unknown as string) === '') {
         this.max = undefined;
       }
+    },
+    convertNullToUndefined() {
+      if (this.min === null) {
+        this.min = undefined;
+      }
+
+      if (this.max === null) {
+        this.max = undefined;
+      }
+    },
+    clearMin() {
+      this.min = undefined;
+    },
+    clearMax() {
+      this.max = undefined;
     },
   },
 });

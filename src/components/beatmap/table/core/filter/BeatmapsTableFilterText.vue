@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { BeatmapsTableHeader } from '@/components/beatmap/table/BeatmapsTableHeaders';
+import { BeatmapsTableHeader } from '@/components/beatmap/table/core/BeatmapsTableHeaders';
 
 export default Vue.extend({
   name: 'BeatmapsTableFilterText',
