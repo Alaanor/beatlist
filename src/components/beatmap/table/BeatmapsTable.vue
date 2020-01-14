@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="getHeaders()"
-    :items="items"
+    :items="beatmapAsTableData"
     :options="{...options, itemsPerPage}"
     item-key="hash"
     hide-default-footer
@@ -44,15 +44,14 @@
 import Vue, { PropType } from 'vue';
 import { sync } from 'vuex-pathify';
 import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
+import { DifficultiesSimple } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import {
   BeatmapsTableFilterType,
   BeatmapsTableHeader,
   BeatmapsTableHeadersTemplate,
 } from '@/components/beatmap/table/core/BeatmapsTableHeaders';
 import {
-  sortDateFromString,
-  sortNumber,
-  sortText,
+  sortDateFromString, sortNumber, sortText,
 } from '@/components/beatmap/table/core/function/BeatmapsTableSortFunctions';
 import {
   Range, DateRange, IsIn, IsInDate,
@@ -69,7 +68,6 @@ import BeatmapsTableTemplateRating from '@/components/beatmap/table/core/templat
 import BeatmapsTableColumnSelector from '@/components/beatmap/table/BeatmapsTableColumnSelector.vue';
 import BeatmapsTableFooter from '@/components/beatmap/table/core/BeatmapsTableFooter.vue';
 import BeatmapsTableFilterRow from '@/components/beatmap/table/core/BeatmapsTableFilterRow.vue';
-import { DifficultiesSimple } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 
 export default Vue.extend({
   name: 'BeatmapsTable',
@@ -276,6 +274,23 @@ export default Vue.extend({
           sort: sortNumber,
         },
       ] as BeatmapsTableHeader[];
+    },
+    beatmapAsTableData(): any[] {
+      return this.items.map((entry: BeatmapsTableDataUnit) => ({
+        raw: entry,
+        name: `${entry.data.metadata.songName} - ${entry.data.metadata.songSubName}`,
+        artist: entry.data.metadata.songAuthorName,
+        mapper: entry.data.metadata.levelAuthorName,
+        difficulties: entry.data.metadata.difficulties,
+        dl: entry.data.stats.downloads,
+        plays: entry.data.stats.plays,
+        upvotes: entry.data.stats.upVotes,
+        downvotes: entry.data.stats.downVotes,
+        rating: entry.data.stats.rating,
+        uploaded: entry.data.uploaded,
+        key: entry.data.key,
+        hash: entry.data.hash,
+      }));
     },
   },
   methods: {
