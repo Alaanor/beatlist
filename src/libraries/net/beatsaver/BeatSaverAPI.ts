@@ -1,11 +1,12 @@
 import http from 'http';
-import { AxiosError, AxiosInstance } from 'axios';
+import { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import AxiosCachedFactory from '@/libraries/net/AxiosCachedFactory';
-import { BeatsaverBeatmap, isBeatsaverBeatmap } from './BeatsaverBeatmap';
+import { BeatsaverBeatmap, BeatsaverPage, isBeatsaverBeatmap } from './BeatsaverBeatmap';
 
 const API_BASE_URL = 'https://beatsaver.com/api';
-const GET_BY_HASH = 'maps/by-hash/';
-const GET_BY_KEY = 'maps/detail/';
+const GET_BY_HASH = 'maps/by-hash';
+const GET_BY_KEY = 'maps/detail';
+const SEARCH = 'search/text';
 
 export type BeatSaverAPIResponse<T> = BeatSaverAPIResponseBase & (
   BeatSaverAPIResponseDataFound<T> |
@@ -24,7 +25,7 @@ export interface BeatSaverAPIResponseDataFound<T> {
 
 export interface BeatSaverAPIResponseDataInvalid {
   status: BeatSaverAPIResponseStatus.ResourceFoundButInvalidData,
-  rawData: string;
+  rawData: any;
 }
 
 export interface BeatSaverAPIResponseDataInexistent {
@@ -52,39 +53,59 @@ export default class BeatSaverAPI {
     this.http = AxiosCachedFactory.getAxios(API_BASE_URL);
   }
 
-  public async getBeatmapByHash(hash: string): Promise<BeatSaverAPIResponse<BeatsaverBeatmap>> {
-    return this.makeRequest<BeatsaverBeatmap>(`${GET_BY_HASH + hash}/`);
+  public async getBeatmapByHash(hash: string)
+    : Promise<BeatSaverAPIResponse<BeatsaverBeatmap>> {
+    return this.makeRequest<BeatsaverBeatmap>(`${GET_BY_HASH}/${hash}/`, isBeatsaverBeatmap);
   }
 
-  public async getBeatmapByKey(key: string): Promise<BeatSaverAPIResponse<BeatsaverBeatmap>> {
-    return this.makeRequest<BeatsaverBeatmap>(`${GET_BY_KEY + key}/`);
+  public async getBeatmapByKey(key: string)
+    : Promise<BeatSaverAPIResponse<BeatsaverBeatmap>> {
+    return this.makeRequest<BeatsaverBeatmap>(`${GET_BY_KEY}/${key}/`, isBeatsaverBeatmap);
   }
 
-  private async makeRequest<T>(apiPath: string): Promise<BeatSaverAPIResponse<T>> {
+  public async searchBeatmaps(search: string, page: number = 0)
+    : Promise<BeatSaverAPIResponse<BeatsaverPage>> {
+    return this.makeRequest<BeatsaverPage>(`${SEARCH}/${page}?q=${search}`);
+  }
+
+  private async makeRequest<T>(apiPath: string, validation?: (data: any) => boolean)
+    : Promise<BeatSaverAPIResponse<T>> {
     return this.http.get(apiPath, {
       validateStatus: (status: number) => status === 200,
     })
-      .then((answer) => {
-        const valid = isBeatsaverBeatmap(answer.data);
+      .then((answer) => BeatSaverAPI.handleResourceFoundCase<T>(validation, answer))
+      .catch((error: AxiosError) => BeatSaverAPI.handleResourceNotFoundCase<T>(error));
+  }
 
-        if (valid) {
-          return {
-            data: Object.freeze(answer.data as T),
-            status: BeatSaverAPIResponseStatus.ResourceFound,
-          } as BeatSaverAPIResponse<T>;
-        }
+  private static handleResourceFoundCase<T>(
+    validation: ((data: any) => boolean) | undefined,
+    answer: AxiosResponse<T>,
+  ) {
+    let valid = true;
+    if (validation !== undefined) {
+      valid = validation(answer.data);
+    }
 
-        return {
-          status: BeatSaverAPIResponseStatus.ResourceFoundButInvalidData,
-          rawData: answer.data.toString(),
-        } as BeatSaverAPIResponse<T>;
-      })
-      .catch((error: AxiosError) => ({
-        status: error.response?.status === 404
-          ? BeatSaverAPIResponseStatus.ResourceNotFound
-          : BeatSaverAPIResponseStatus.ServerNotAvailable,
-        statusCode: error.response?.status,
-        statusMessage: error.response ? http.STATUS_CODES[error.response.status] : '',
-      } as BeatSaverAPIResponse<T>));
+    if (valid) {
+      return {
+        data: Object.freeze(answer.data as T),
+        status: BeatSaverAPIResponseStatus.ResourceFound,
+      } as BeatSaverAPIResponse<T>;
+    }
+
+    return {
+      status: BeatSaverAPIResponseStatus.ResourceFoundButInvalidData,
+      rawData: answer.data,
+    } as BeatSaverAPIResponse<T>;
+  }
+
+  private static handleResourceNotFoundCase<T>(error: AxiosError) {
+    return ({
+      status: error.response?.status === 404
+        ? BeatSaverAPIResponseStatus.ResourceNotFound
+        : BeatSaverAPIResponseStatus.ServerNotAvailable,
+      statusCode: error.response?.status,
+      statusMessage: error.response ? http.STATUS_CODES[error.response.status] : '',
+    } as BeatSaverAPIResponse<T>);
   }
 }

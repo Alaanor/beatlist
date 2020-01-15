@@ -106,7 +106,7 @@ export default class BeatmapLoader {
 
         case BeatSaverAPIResponseStatus.ResourceFoundButInvalidData:
           this.beatmap.loadState.errorType = BeatmapLoadStateError.InvalidDataReceivedFromBeatsaver;
-          this.beatmap.loadState.errorMessage = `Failed to parse as a BeatsaverBeatmap: ${response.rawData}`;
+          this.beatmap.loadState.errorMessage = `Failed to parse as a BeatsaverBeatmap: ${response.rawData?.toString()}`;
           break;
 
         case BeatSaverAPIResponseStatus.ServerNotAvailable:

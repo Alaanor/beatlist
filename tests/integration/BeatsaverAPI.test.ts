@@ -2,7 +2,7 @@ import BeatSaverAPI, {
   BeatSaverAPIResponseDataFound,
   BeatSaverAPIResponseStatus,
 } from '@/libraries/net/beatsaver/BeatSaverAPI';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import { BeatsaverBeatmap, BeatsaverPage } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 
 jest.setTimeout(15 * 1e3);
 
@@ -42,5 +42,18 @@ describe('beatsaver api', () => {
     const beatmap = await BeatSaverAPI.Singleton.getBeatmapByKey('');
 
     expect(beatmap.status).toBe(BeatSaverAPIResponseStatus.ResourceNotFound);
+  });
+
+  it('should search at page 2 for the given search value', async () => {
+    expect.assertions(5);
+
+    const searchResult = await BeatSaverAPI.Singleton
+      .searchBeatmaps('speed', 2) as BeatSaverAPIResponseDataFound<BeatsaverPage>;
+
+    expect(searchResult.status).toBe(BeatSaverAPIResponseStatus.ResourceFound);
+    expect(searchResult.data.prevPage).toBe(1);
+    expect(searchResult.data.nextPage).toBe(3);
+    expect(searchResult.data.totalDocs).toBeGreaterThanOrEqual(10);
+    expect(searchResult.data.docs).toHaveLength(10);
   });
 });
