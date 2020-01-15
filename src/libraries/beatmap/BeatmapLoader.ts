@@ -109,11 +109,18 @@ export default class BeatmapLoader {
           this.beatmap.loadState.errorMessage = `Failed to parse as a BeatsaverBeatmap: ${response.rawData?.toString()}`;
           break;
 
+        case BeatSaverAPIResponseStatus.RateLimited:
+          this.beatmap.loadState.errorType = BeatmapLoadStateError.BeatsaverRateLimited;
+          this.beatmap.loadState.errorMessage = `We got rate limited: (${response.remaining}/${response.total}) reset at: ${response.resetAt?.toLocaleString()}`;
+          break;
+
         case BeatSaverAPIResponseStatus.ServerNotAvailable:
-        default:
           this.beatmap.loadState.errorType = BeatmapLoadStateError.BeatsaverServerNotAvailable;
           this.beatmap.loadState.errorMessage = `${response.statusCode}: ${response.statusMessage}`;
           break;
+
+        default:
+          this.beatmap.loadState.errorType = BeatmapLoadStateError.Unknown;
       }
     }
   }

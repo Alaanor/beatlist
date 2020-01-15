@@ -6,6 +6,8 @@ enum BeatmapLoadStateError{
   NoSoundFileFound = 4,
   BeatsaverServerNotAvailable = 6,
   InvalidDataReceivedFromBeatsaver = 7,
+  BeatsaverRateLimited = 8,
+  Unknown = 9,
 }
 
 export default BeatmapLoadStateError;

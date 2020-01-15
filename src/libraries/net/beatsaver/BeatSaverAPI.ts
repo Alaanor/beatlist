@@ -8,15 +8,12 @@ const GET_BY_HASH = 'maps/by-hash';
 const GET_BY_KEY = 'maps/detail';
 const SEARCH = 'search/text';
 
-export type BeatSaverAPIResponse<T> = BeatSaverAPIResponseBase & (
+export type BeatSaverAPIResponse<T> = (
   BeatSaverAPIResponseDataFound<T> |
-  BeatSaverAPIResponseDataInexistent |
-  BeatSaverAPIResponseDataInvalid
+  BeatSaverAPIResponseDataInvalid |
+  BeatSaverAPIResponseDataRateLimited |
+  BeatSaverAPIResponseDataInexistent
 );
-
-export interface BeatSaverAPIResponseBase {
-  status: BeatSaverAPIResponseStatus,
-}
 
 export interface BeatSaverAPIResponseDataFound<T> {
   status: BeatSaverAPIResponseStatus.ResourceFound;
@@ -24,8 +21,15 @@ export interface BeatSaverAPIResponseDataFound<T> {
 }
 
 export interface BeatSaverAPIResponseDataInvalid {
-  status: BeatSaverAPIResponseStatus.ResourceFoundButInvalidData,
+  status: BeatSaverAPIResponseStatus.ResourceFoundButInvalidData;
   rawData: any;
+}
+
+export interface BeatSaverAPIResponseDataRateLimited {
+  status: BeatSaverAPIResponseStatus.RateLimited;
+  remaining: number | undefined;
+  resetAt: Date | undefined;
+  total: number | undefined;
 }
 
 export interface BeatSaverAPIResponseDataInexistent {
@@ -40,8 +44,9 @@ export interface BeatSaverAPIResponseDataInexistent {
 export enum BeatSaverAPIResponseStatus {
   ResourceFound = 0, // 200
   ResourceNotFound = 1, // 404
-  ResourceFoundButInvalidData = 3, // 200 but data is not what we expected
-  ServerNotAvailable = 2, // the rest
+  ResourceFoundButInvalidData = 2, // 200 but data is not what we expected
+  ServerNotAvailable = 3, // the rest
+  RateLimited = 4, // rate-limit-remaining headers is at 0
 }
 
 export default class BeatSaverAPI {
@@ -100,12 +105,33 @@ export default class BeatSaverAPI {
   }
 
   private static handleResourceNotFoundCase<T>(error: AxiosError) {
-    return ({
+    if (error.response?.headers['rate-limit-remaining'] === 0) {
+      return BeatSaverAPI.handleRateLimitedCase<T>(error);
+    }
+
+    return {
       status: error.response?.status === 404
         ? BeatSaverAPIResponseStatus.ResourceNotFound
         : BeatSaverAPIResponseStatus.ServerNotAvailable,
       statusCode: error.response?.status,
       statusMessage: error.response ? http.STATUS_CODES[error.response.status] : '',
-    } as BeatSaverAPIResponse<T>);
+    } as BeatSaverAPIResponse<T>;
+  }
+
+  private static handleRateLimitedCase<T>(error: AxiosError) {
+    const remainingHeader = error.response?.headers['rate-limit-remaining'];
+    const totalHeader = error.response?.headers['rate-limit-total'];
+    let resetHeader = error.response?.headers['rate-limit-reset'];
+
+    if (resetHeader !== undefined) {
+      resetHeader = new Date(resetHeader);
+    }
+
+    return {
+      status: BeatSaverAPIResponseStatus.RateLimited,
+      remaining: remainingHeader,
+      resetAt: resetHeader,
+      total: totalHeader,
+    } as BeatSaverAPIResponse<T>;
   }
 }

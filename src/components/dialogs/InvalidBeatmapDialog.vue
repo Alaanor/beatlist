@@ -80,6 +80,8 @@ export default Vue.extend({
           return 'Beatsaver server was unavailable';
         case BeatmapLoadStateError.InvalidDataReceivedFromBeatsaver:
           return 'Unexpected answer gotten from beatsaver';
+        case BeatmapLoadStateError.BeatsaverRateLimited:
+          return "Got rate limited by the beatsaver's server";
         default:
           return 'Unknown error';
       }
