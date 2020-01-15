@@ -41,7 +41,7 @@ describe('download unit', () => {
         case '/timeout': routing.timeout(res); break;
         default: throw new Error('wrong routing');
       }
-    }).listen('8080');
+    }).listen('8085');
 
     if (!fs.pathExistsSync(tmpFolder)) {
       fs.mkdir(tmpFolder);
