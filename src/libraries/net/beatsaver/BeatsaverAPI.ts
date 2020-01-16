@@ -7,6 +7,11 @@ const API_BASE_URL = 'https://beatsaver.com/api';
 const GET_BY_HASH = 'maps/by-hash';
 const GET_BY_KEY = 'maps/detail';
 const SEARCH = 'search/text';
+const GET_BY_HOT = 'maps/hot';
+const GET_BY_PLAYS = 'maps/plays';
+const GET_BY_DOWNLOADS = 'maps/downloads';
+const GET_BY_LATEST = 'maps/latest';
+const GET_BY_RATING = 'maps/rating';
 
 export type BeatSaverAPIResponse<T> = (
   BeatSaverAPIResponseDataFound<T> |
@@ -71,6 +76,26 @@ export default class BeatsaverAPI {
   public async searchBeatmaps(search: string, page: number = 0)
     : Promise<BeatSaverAPIResponse<BeatsaverPage>> {
     return this.makeRequest<BeatsaverPage>(`${SEARCH}/${page}?q=${search}`);
+  }
+
+  public async getByHot(page: number = 0) : Promise<BeatSaverAPIResponse<BeatsaverPage>> {
+    return this.makeRequest<BeatsaverPage>(`${GET_BY_HOT}/${page}`);
+  }
+
+  public async getByPlays(page: number = 0) : Promise<BeatSaverAPIResponse<BeatsaverPage>> {
+    return this.makeRequest<BeatsaverPage>(`${GET_BY_PLAYS}/${page}`);
+  }
+
+  public async getByDownloads(page: number = 0) : Promise<BeatSaverAPIResponse<BeatsaverPage>> {
+    return this.makeRequest<BeatsaverPage>(`${GET_BY_DOWNLOADS}/${page}`);
+  }
+
+  public async getByLatest(page: number = 0) : Promise<BeatSaverAPIResponse<BeatsaverPage>> {
+    return this.makeRequest<BeatsaverPage>(`${GET_BY_LATEST}/${page}`);
+  }
+
+  public async getByRating(page: number = 0) : Promise<BeatSaverAPIResponse<BeatsaverPage>> {
+    return this.makeRequest<BeatsaverPage>(`${GET_BY_RATING}/${page}`);
   }
 
   private async makeRequest<T>(apiPath: string, validation?: (data: any) => boolean)

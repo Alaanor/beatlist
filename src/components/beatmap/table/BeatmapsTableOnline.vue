@@ -36,7 +36,6 @@
           append-icon="search"
           height="20px"
           class="pa-0"
-          :loading="loading"
           single-line
           hide-details
           filled
@@ -61,6 +60,13 @@
         @update:page="updatePagination"
       />
     </v-card>
+    <v-alert
+      v-if="error"
+      text
+      type="warning"
+    >
+      {{ error }}
+    </v-alert>
   </v-container>
 </template>
 
@@ -70,15 +76,16 @@ import { sync } from 'vuex-pathify';
 import BeatmapsTable from '@/components/beatmap/table/BeatmapsTable.vue';
 import BeatmapsTableColumnSelector from '@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue';
 import Tooltip from '@/components/helper/Tooltip.vue';
-import BeatsaverAPI, { BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
+import BeatsaverAPI, { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
 import { BeatsaverPage } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
+import BeatsaverUtilities from '@/libraries/net/beatsaver/BeatsaverUtilities';
 
 export default Vue.extend({
   name: 'BeatmapTableLocal',
   components: { BeatmapsTableColumnSelector, BeatmapsTable, Tooltip },
   data: () => ({
-    selectedMode: 'search',
+    selectedMode: 'hot',
     modes: [
       { name: 'search', value: 'Search', icon: 'search' },
       { name: 'hot', value: 'Hot', icon: 'whatshot' },
@@ -94,6 +101,7 @@ export default Vue.extend({
     totalDocs: 0,
     currentPage: 1,
     loading: false,
+    error: undefined as string | undefined,
   }),
   computed: {
     shownColumn: sync<string[]>('settings/beatmapsTable@shownColumn'),
@@ -108,17 +116,67 @@ export default Vue.extend({
     beatsaverPage(): void {
       this.totalDocs = this.beatsaverPage?.totalDocs ?? 0;
     },
+    selectedMode(): void {
+      if (['hot', 'rating', 'latest', 'download', 'plays'].indexOf(this.selectedMode) !== -1) {
+        this.fetchData();
+      }
+    },
+  },
+  mounted(): void {
+    this.fetchData();
   },
   methods: {
     fetchData(): void {
       this.loading = true;
-      BeatsaverAPI.Singleton.searchBeatmaps(this.search, this.currentPage - 1)
+      let request = undefined as Promise<BeatSaverAPIResponse<BeatsaverPage>> | undefined;
+
+      switch (this.selectedMode) {
+        case 'search':
+          request = BeatsaverAPI.Singleton.searchBeatmaps(this.search, this.currentPage - 1);
+          break;
+
+        case 'hot':
+          request = BeatsaverAPI.Singleton.getByHot(this.currentPage - 1);
+          break;
+
+        case 'rating':
+          request = BeatsaverAPI.Singleton.getByRating(this.currentPage - 1);
+          break;
+
+        case 'latest':
+          request = BeatsaverAPI.Singleton.getByLatest(this.currentPage - 1);
+          break;
+
+        case 'download':
+          request = BeatsaverAPI.Singleton.getByDownloads(this.currentPage - 1);
+          break;
+
+        case 'plays':
+          request = BeatsaverAPI.Singleton.getByPlays(this.currentPage - 1);
+          break;
+
+        case 'key':
+        case 'hash':
+          break;
+
+        default: break;
+      }
+
+      if (request) {
+        this.handleBeatsaverPageResponse(request);
+      }
+    },
+    handleBeatsaverPageResponse(response: Promise<BeatSaverAPIResponse<BeatsaverPage>>): void {
+      response
         .then((value) => {
+          this.error = BeatsaverUtilities.ErrorToMessage(value);
+
           if (value.status === BeatSaverAPIResponseStatus.ResourceFound) {
             this.beatsaverPage = value.data;
+          } else {
+            this.beatsaverPage = undefined;
           }
-        })
-        .finally(() => {
+        }).finally(() => {
           this.loading = false;
         });
     },
