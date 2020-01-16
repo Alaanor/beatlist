@@ -1,3 +1,4 @@
+import { BeatSaverAPIResponseStatus } from '../../../libraries/net/beatsaver/BeatsaverAPI';
 <template>
   <v-container>
     <v-row>
@@ -62,8 +63,10 @@
     </v-card>
     <v-alert
       v-if="error"
-      text
       type="warning"
+      border="left"
+      class="mt-3"
+      text
     >
       {{ error }}
     </v-alert>
@@ -77,7 +80,7 @@ import BeatmapsTable from '@/components/beatmap/table/BeatmapsTable.vue';
 import BeatmapsTableColumnSelector from '@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue';
 import Tooltip from '@/components/helper/Tooltip.vue';
 import BeatsaverAPI, { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
-import { BeatsaverPage } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import { BeatsaverBeatmap, BeatsaverPage } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
 import BeatsaverUtilities from '@/libraries/net/beatsaver/BeatsaverUtilities';
 
@@ -117,9 +120,11 @@ export default Vue.extend({
       this.totalDocs = this.beatsaverPage?.totalDocs ?? 0;
     },
     selectedMode(): void {
-      if (['hot', 'rating', 'latest', 'download', 'plays'].indexOf(this.selectedMode) !== -1) {
+      if (['hot', 'rating', 'latest', 'download', 'plays'].includes(this.selectedMode)) {
         this.fetchData();
       }
+
+      this.beatsaverPage = undefined;
     },
   },
   mounted(): void {
@@ -128,42 +133,51 @@ export default Vue.extend({
   methods: {
     fetchData(): void {
       this.loading = true;
-      let request = undefined as Promise<BeatSaverAPIResponse<BeatsaverPage>> | undefined;
+      let requestPage = undefined as Promise<BeatSaverAPIResponse<BeatsaverPage>> | undefined;
+      let requestMap = undefined as Promise<BeatSaverAPIResponse<BeatsaverBeatmap>> | undefined;
 
       switch (this.selectedMode) {
         case 'search':
-          request = BeatsaverAPI.Singleton.searchBeatmaps(this.search, this.currentPage - 1);
+          requestPage = BeatsaverAPI.Singleton.searchBeatmaps(this.search, this.currentPage - 1);
           break;
 
         case 'hot':
-          request = BeatsaverAPI.Singleton.getByHot(this.currentPage - 1);
+          requestPage = BeatsaverAPI.Singleton.getByHot(this.currentPage - 1);
           break;
 
         case 'rating':
-          request = BeatsaverAPI.Singleton.getByRating(this.currentPage - 1);
+          requestPage = BeatsaverAPI.Singleton.getByRating(this.currentPage - 1);
           break;
 
         case 'latest':
-          request = BeatsaverAPI.Singleton.getByLatest(this.currentPage - 1);
+          requestPage = BeatsaverAPI.Singleton.getByLatest(this.currentPage - 1);
           break;
 
         case 'download':
-          request = BeatsaverAPI.Singleton.getByDownloads(this.currentPage - 1);
+          requestPage = BeatsaverAPI.Singleton.getByDownloads(this.currentPage - 1);
           break;
 
         case 'plays':
-          request = BeatsaverAPI.Singleton.getByPlays(this.currentPage - 1);
+          requestPage = BeatsaverAPI.Singleton.getByPlays(this.currentPage - 1);
           break;
 
         case 'key':
+          requestMap = BeatsaverAPI.Singleton.getBeatmapByKey(this.search);
+          break;
+
         case 'hash':
+          requestMap = BeatsaverAPI.Singleton.getBeatmapByHash(this.search);
           break;
 
         default: break;
       }
 
-      if (request) {
-        this.handleBeatsaverPageResponse(request);
+      if (requestPage) {
+        this.handleBeatsaverPageResponse(requestPage);
+      }
+
+      if (requestMap) {
+        this.handleBeatsaverBeatmapResponse(requestMap);
       }
     },
     handleBeatsaverPageResponse(response: Promise<BeatSaverAPIResponse<BeatsaverPage>>): void {
@@ -180,9 +194,30 @@ export default Vue.extend({
           this.loading = false;
         });
     },
+    handleBeatsaverBeatmapResponse(response: Promise<BeatSaverAPIResponse<BeatsaverBeatmap>>) {
+      response
+        .then((value) => {
+          this.error = BeatsaverUtilities.ErrorToMessage(value);
+
+          if (value.status === BeatSaverAPIResponseStatus.ResourceFound) {
+            this.beatsaverPage = BeatsaverUtilities.WrapInPage(value.data);
+          } else if (value.status === BeatSaverAPIResponseStatus.ResourceNotFound) {
+            this.beatsaverPage = BeatsaverUtilities.GetEmptyPage();
+            this.error = 'No beatmap was found with this search (you are in Key or Hash mode !). Result must be exact in this mode.';
+          } else {
+            this.beatsaverPage = undefined;
+          }
+        }).finally(() => {
+          this.loading = false;
+        });
+    },
     performSearch(): void {
-      if (this.selectedMode !== 'search') {
+      if (!['search', 'key', 'hash'].includes(this.selectedMode)) {
         this.selectedMode = 'search';
+      }
+
+      if (this.search === '') {
+        return;
       }
 
       this.fetchData();

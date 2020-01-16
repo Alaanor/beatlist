@@ -1,5 +1,5 @@
 import url from 'url';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import { BeatsaverBeatmap, BeatsaverPage } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
 
 const BEATSAVER_DOMAIN = 'https://beatsaver.com/';
@@ -22,5 +22,25 @@ export default class BeatsaverUtilities {
       default:
         return undefined;
     }
+  }
+
+  public static WrapInPage(beatmap: BeatsaverBeatmap): BeatsaverPage {
+    return {
+      docs: [beatmap],
+      totalDocs: 1,
+      prevPage: null,
+      nextPage: null,
+      lastPage: 1,
+    } as BeatsaverPage;
+  }
+
+  public static GetEmptyPage(): BeatsaverPage {
+    return {
+      docs: [],
+      totalDocs: 0,
+      prevPage: null,
+      nextPage: null,
+      lastPage: 0,
+    } as BeatsaverPage;
   }
 }
