@@ -48,7 +48,6 @@
       <v-progress-linear
         color="success"
         indeterminate
-        :value="true"
       />
     </template>
   </v-data-table>
