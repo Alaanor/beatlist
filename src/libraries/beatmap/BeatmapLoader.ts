@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import BeatSaverAPI, { BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatSaverAPI';
+import BeatsaverAPI, { BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
 import { BeatmapLocal } from './BeatmapLocal';
 import BeatmapLoadStateError from './BeatmapLoadStateError';
 import { BeatmapLoadState } from './BeatmapLoadState';
@@ -92,7 +92,7 @@ export default class BeatmapLoader {
     }
 
     if (this.hash !== undefined) {
-      const response = await BeatSaverAPI.Singleton.getBeatmapByHash(this.hash);
+      const response = await BeatsaverAPI.Singleton.getBeatmapByHash(this.hash);
 
       switch (response.status) {
         case BeatSaverAPIResponseStatus.ResourceFound:

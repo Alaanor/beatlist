@@ -11,7 +11,7 @@ import {
 } from 'blister.js';
 import * as Throttle from 'promise-parallel-throttle';
 import { PlaylistLocal, PlaylistLocalMap, PlaylistMapImportError } from '@/libraries/playlist/PlaylistLocal';
-import BeatSaverAPI, { BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatSaverAPI';
+import BeatsaverAPI, { BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
 import Progress from '@/libraries/common/Progress';
 import PlaylistLoadStateError from '@/libraries/playlist/PlaylistLoadStateError';
 
@@ -137,7 +137,7 @@ export default class PlaylistLoader {
   }
 
   private static async HandleBeatmapKey(map: PlaylistLocalMap, key: string) {
-    const beatmap = await BeatSaverAPI.Singleton.getBeatmapByKey(key);
+    const beatmap = await BeatsaverAPI.Singleton.getBeatmapByKey(key);
 
     if (beatmap.status === BeatSaverAPIResponseStatus.ResourceFound) {
       map.online = beatmap.data;
@@ -147,7 +147,7 @@ export default class PlaylistLoader {
   }
 
   private static async HandleBeatmapHash(map: PlaylistLocalMap, hash: string) {
-    const beatmap = await BeatSaverAPI.Singleton.getBeatmapByHash(hash);
+    const beatmap = await BeatsaverAPI.Singleton.getBeatmapByHash(hash);
 
     if (beatmap.status === BeatSaverAPIResponseStatus.ResourceFound) {
       map.online = beatmap.data;

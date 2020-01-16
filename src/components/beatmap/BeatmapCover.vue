@@ -5,9 +5,14 @@
         :size="avatarSize"
         class="my-1"
       >
+        <v-icon v-if="imageSrc === 'error'">
+          not_interested
+        </v-icon>
         <v-img
-          :src="imageData || beatmap.coverURL"
+          v-else
+          :src="imageSrc"
           alt="Beatmap cover"
+          @error="imageSrc = 'error'"
         >
           <transition name="slide-y-transition">
             <div
@@ -49,7 +54,7 @@
       @click="imageOverlay = false"
     >
       <v-img
-        :src="imageData || beatmap.coverURL"
+        :src="imageSrc"
         alt="Beatmap cover"
         max-width="512"
         max-height="512"
@@ -70,19 +75,20 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import { BeatsaverBeatmap, isBeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import { BeatmapLocal, isBeatmapLocal } from '@/libraries/beatmap/BeatmapLocal';
 import BeatmapLoader from '@/libraries/beatmap/BeatmapLoader';
+import BeatsaverUtilities from '@/libraries/net/beatsaver/BeatsaverUtilities';
 
 export default Vue.extend({
   name: 'BeatmapCover',
   props: {
-    beatmap: { type: Object as PropType<BeatsaverBeatmap | BeatmapLocal | string>, default: {} },
+    beatmap: { type: Object as PropType<BeatsaverBeatmap | BeatmapLocal>, default: {} },
     avatarSize: { type: Number, default: undefined },
     iconExpandSize: { type: Number, default: undefined },
   },
   data: () => ({
-    imageData: undefined as string | undefined,
+    imageSrc: undefined as string | undefined,
     imageOverlay: false,
   }),
   watch: {
@@ -95,10 +101,14 @@ export default Vue.extend({
   },
   methods: {
     async UpdateCover() {
-      this.imageData = undefined;
+      this.imageSrc = undefined;
 
       if (isBeatmapLocal(this.beatmap)) {
-        this.imageData = await BeatmapLoader.LoadCover(this.beatmap);
+        this.imageSrc = await BeatmapLoader.LoadCover(this.beatmap);
+      }
+
+      if (isBeatsaverBeatmap(this.beatmap)) {
+        this.imageSrc = BeatsaverUtilities.GetImageSrcFrom(this.beatmap);
       }
     },
   },

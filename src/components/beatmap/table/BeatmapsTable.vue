@@ -3,14 +3,20 @@
     :headers="getHeaders()"
     :items="beatmapAsTableData"
     :options="{...options, itemsPerPage}"
+    :server-items-length="serverItemsLength"
+    :loading="loading"
+    loading-text="Loading contents ..."
     item-key="hash"
     hide-default-footer
     fixed-header
     dense
+    @update:page="updatePage"
   >
     <template #footer="{ props: { pagination } }">
       <BeatmapsTableFooter
         :items-per-page="itemsPerPage"
+        :items-per-page-list="itemsPerPageList"
+        :no-item-per-page-choice="noItemPerPageChoice"
         :options="options"
         :pagination="pagination"
       />
@@ -35,6 +41,14 @@
       <BeatmapsTableFilterRow
         :headers="getHeaders()"
         :filters-value="filtersValue"
+      />
+    </template>
+
+    <template #progress>
+      <v-progress-linear
+        color="success"
+        indeterminate
+        :value="true"
       />
     </template>
   </v-data-table>
@@ -87,6 +101,10 @@ export default Vue.extend({
     items: { type: Array as PropType<BeatmapsTableDataUnit[]>, required: true },
     shownColumn: { type: Array as PropType<string[]>, required: true },
     noFilter: { type: Boolean, default: false },
+    itemsPerPageList: { type: Array as PropType<number[]>, default: undefined },
+    noItemPerPageChoice: { type: Boolean, default: false },
+    serverItemsLength: { type: Number, default: undefined },
+    loading: { type: Boolean, default: false },
   },
   data: () => ({
     options: {
@@ -299,6 +317,9 @@ export default Vue.extend({
     },
     getHeaders() {
       return this.headers.filter((header) => this.shownColumn.includes(header.value));
+    },
+    updatePage(page: number) {
+      this.$emit('update:page', page);
     },
   },
 });

@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="d-flex justify-end align-center small-font py-1">
-      <span>Rows per page:</span>
-      <v-menu>
+      <span v-if="!noItemPerPageChoice">Rows per page:</span>
+      <v-menu v-if="!noItemPerPageChoice">
         <template #activator="{ on }">
           <v-btn
             small
@@ -16,7 +16,7 @@
         </template>
         <v-list>
           <v-list-item
-            v-for="item in footerOptions.itemPerPageList"
+            v-for="item in itemsPerPageList"
             :key="item"
             @click="itemsPerPage = item"
           >
@@ -76,7 +76,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { sync } from 'vuex-pathify';
 
 export default Vue.extend({
@@ -89,12 +89,12 @@ export default Vue.extend({
   props: {
     options: { type: Object, required: true },
     pagination: { type: Object, required: true },
-  },
-  data: () => ({
-    footerOptions: {
-      itemPerPageList: [5, 10, 15, 20, 25, 50, 100, -1],
+    itemsPerPageList: {
+      type: Array as PropType<number[]>,
+      default: () => [5, 10, 15, 20, 25, 50, 100, -1],
     },
-  }),
+    noItemPerPageChoice: { type: Boolean, default: false },
+  },
   computed: {
     itemsPerPage: sync<number>('settings/beatmapsTable@itemsPerPage'),
     isFirstPage() {

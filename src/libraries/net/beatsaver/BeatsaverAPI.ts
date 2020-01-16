@@ -49,8 +49,8 @@ export enum BeatSaverAPIResponseStatus {
   RateLimited = 4, // rate-limit-remaining headers is at 0
 }
 
-export default class BeatSaverAPI {
-  public static Singleton: BeatSaverAPI = new BeatSaverAPI();
+export default class BeatsaverAPI {
+  public static Singleton: BeatsaverAPI = new BeatsaverAPI();
 
   public http: AxiosInstance;
 
@@ -78,8 +78,8 @@ export default class BeatSaverAPI {
     return this.http.get(apiPath, {
       validateStatus: (status: number) => status === 200,
     })
-      .then((answer) => BeatSaverAPI.handleResourceFoundCase<T>(validation, answer))
-      .catch((error: AxiosError) => BeatSaverAPI.handleResourceNotFoundCase<T>(error));
+      .then((answer) => BeatsaverAPI.handleResourceFoundCase<T>(validation, answer))
+      .catch((error: AxiosError) => BeatsaverAPI.handleResourceNotFoundCase<T>(error));
   }
 
   private static handleResourceFoundCase<T>(
@@ -106,7 +106,7 @@ export default class BeatSaverAPI {
 
   private static handleResourceNotFoundCase<T>(error: AxiosError) {
     if (error.response?.headers['rate-limit-remaining'] === 0) {
-      return BeatSaverAPI.handleRateLimitedCase<T>(error);
+      return BeatsaverAPI.handleRateLimitedCase<T>(error);
     }
 
     return {

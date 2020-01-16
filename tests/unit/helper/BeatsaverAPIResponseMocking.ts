@@ -1,4 +1,4 @@
-import { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatSaverAPI';
+import { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
 
 export default function mockResponseSuccess<T>(obj: T): BeatSaverAPIResponse<T> {
   return {

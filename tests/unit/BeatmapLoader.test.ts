@@ -1,6 +1,6 @@
 import path from 'path';
 import BeatmapLoader from '@/libraries/beatmap/BeatmapLoader';
-import BeatSaverAPI, { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatSaverAPI';
+import BeatsaverAPI, { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
 import BeatmapLoadStateError from '@/libraries/beatmap/BeatmapLoadStateError';
 import BeatmapHashComputer from '@/libraries/beatmap/BeatmapHashComputer';
 import mockResponseSuccess from './helper/BeatsaverAPIResponseMocking';
@@ -14,7 +14,7 @@ describe('beatmap loader', () => {
     const mockedValue = mockResponseSuccess(mockedAnswer);
 
     mockGetBeatmapByHash.mockReturnValue(mockedValue);
-    BeatSaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
+    BeatsaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
 
     const beatmapFolder = path.join(__dirname, '../data/beatmap');
     const coverPath = path.join(__dirname, '../data/beatmap/cover.jpg');
@@ -69,7 +69,7 @@ describe('beatmap loader', () => {
       statusMessage: 'Not Found',
     } as BeatSaverAPIResponse<Object>;
     mockGetBeatmapByHash.mockReturnValue(mockedValue);
-    BeatSaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
+    BeatsaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
 
     const beatmapFolder = path.join(__dirname, '../data/beatmap');
     const beatmap = await (BeatmapLoader.Load(beatmapFolder));
