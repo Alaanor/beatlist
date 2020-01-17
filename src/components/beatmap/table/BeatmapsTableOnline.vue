@@ -56,6 +56,7 @@ import { BeatSaverAPIResponseStatus } from '../../../libraries/net/beatsaver/Bea
         :shown-column="shownColumn"
         :server-items-length="totalDocs"
         :loading="loading"
+        see-more-route-name="beatmaps-online-unit"
         no-item-per-page-choice
         no-filter
         @update:page="updatePagination"

@@ -5,6 +5,7 @@
       <BeatmapsTable
         :items="beatmaps"
         :shown-column="shownColumn"
+        see-more-route-name="beatmaps-local-unit"
       />
     </v-card>
   </v-container>

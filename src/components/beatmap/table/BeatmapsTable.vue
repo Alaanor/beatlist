@@ -28,10 +28,28 @@
     >
       <component
         :is="`BeatmapsTableTemplate${header.template}`"
+        v-if="header.value !== 'actions'"
         :key="header.value"
         :item="item.raw"
         :header="header"
       />
+
+      <span
+        v-else-if="!noActions"
+        :key="header.value"
+      >
+        <slot name="actions"/>
+        <Tooltip text="See more">
+          <v-btn
+            :to="{ name: seeMoreRouteName, params: { key: item.raw.data.key } }"
+            icon
+            small
+            exact
+          >
+            <v-icon small>chevron_right</v-icon>
+          </v-btn>
+        </Tooltip>
+      </span>
     </template>
 
     <template
@@ -58,29 +76,42 @@ import Vue, { PropType } from 'vue';
 import { sync } from 'vuex-pathify';
 import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
 import { DifficultiesSimple } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import Tooltip from '@/components/helper/Tooltip.vue';
 import {
   BeatmapsTableFilterType,
   BeatmapsTableHeader,
   BeatmapsTableHeadersTemplate,
 } from '@/components/beatmap/table/core/BeatmapsTableHeaders';
 import {
-  sortDateFromString, sortNumber, sortText,
+  sortDateFromString,
+  sortNumber,
+  sortText,
 } from '@/components/beatmap/table/core/function/BeatmapsTableSortFunctions';
 import {
-  Range, DateRange, IsIn, IsInDate,
+  DateRange, IsIn, IsInDate, Range,
 } from '@/libraries/common/Range';
 
 // Template
-import BeatmapsTableTemplateCover from '@/components/beatmap/table/core/template/BeatmapsTableTemplateCover.vue';
-import BeatmapsTableTemplateText from '@/components/beatmap/table/core/template/BeatmapsTableTemplateText.vue';
-import BeatmapsTableTemplateTextTooltip from '@/components/beatmap/table/core/template/BeatmapsTableTemplateTextTooltip.vue';
-import BeatmapsTableTemplateBeatmapName from '@/components/beatmap/table/core/template/BeatmapsTableTemplateBeatmapName.vue';
-import BeatmapsTableTemplateStrToDate from '@/components/beatmap/table/core/template/BeatmapsTableTemplateStrToDate.vue';
-import BeatmapsTableTemplateDifficulties from '@/components/beatmap/table/core/template/BeatmapsTableTemplateDifficulties.vue';
-import BeatmapsTableTemplateRating from '@/components/beatmap/table/core/template/BeatmapsTableTemplateRating.vue';
-import BeatmapsTableColumnSelector from '@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue';
-import BeatmapsTableFooter from '@/components/beatmap/table/core/BeatmapsTableFooter.vue';
-import BeatmapsTableFilterRow from '@/components/beatmap/table/core/BeatmapsTableFilterRow.vue';
+import BeatmapsTableTemplateCover
+  from '@/components/beatmap/table/core/template/BeatmapsTableTemplateCover.vue';
+import BeatmapsTableTemplateText
+  from '@/components/beatmap/table/core/template/BeatmapsTableTemplateText.vue';
+import BeatmapsTableTemplateTextTooltip
+  from '@/components/beatmap/table/core/template/BeatmapsTableTemplateTextTooltip.vue';
+import BeatmapsTableTemplateBeatmapName
+  from '@/components/beatmap/table/core/template/BeatmapsTableTemplateBeatmapName.vue';
+import BeatmapsTableTemplateStrToDate
+  from '@/components/beatmap/table/core/template/BeatmapsTableTemplateStrToDate.vue';
+import BeatmapsTableTemplateDifficulties
+  from '@/components/beatmap/table/core/template/BeatmapsTableTemplateDifficulties.vue';
+import BeatmapsTableTemplateRating
+  from '@/components/beatmap/table/core/template/BeatmapsTableTemplateRating.vue';
+import BeatmapsTableColumnSelector
+  from '@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue';
+import BeatmapsTableFooter
+  from '@/components/beatmap/table/core/BeatmapsTableFooter.vue';
+import BeatmapsTableFilterRow
+  from '@/components/beatmap/table/core/BeatmapsTableFilterRow.vue';
 
 export default Vue.extend({
   name: 'BeatmapsTable',
@@ -95,6 +126,7 @@ export default Vue.extend({
     BeatmapsTableTemplateBeatmapName,
     BeatmapsTableTemplateStrToDate,
     BeatmapsTableTemplateRating,
+    Tooltip,
   },
   props: {
     items: { type: Array as PropType<BeatmapsTableDataUnit[]>, required: true },
@@ -104,6 +136,8 @@ export default Vue.extend({
     noItemPerPageChoice: { type: Boolean, default: false },
     serverItemsLength: { type: Number, default: undefined },
     loading: { type: Boolean, default: false },
+    seeMoreRouteName: { type: String, default: undefined },
+    noActions: { type: Boolean, default: false },
   },
   data: () => ({
     options: {
@@ -135,7 +169,7 @@ export default Vue.extend({
           align: 'left',
           sortable: false,
           filterable: false,
-          width: 48,
+          width: 50,
         },
         {
           value: 'name',
@@ -189,6 +223,7 @@ export default Vue.extend({
           filterable: true,
           filter: (value: DifficultiesSimple) => this.filtersValue.difficulties
             .some((diff: string) => value[diff]),
+          width: 125,
         },
         {
           value: 'dl',
@@ -275,6 +310,7 @@ export default Vue.extend({
             .toLowerCase()
             .includes(this.filtersValue.key.toLowerCase()),
           sort: sortNumber,
+          width: 50,
         },
         {
           value: 'hash',
@@ -289,6 +325,14 @@ export default Vue.extend({
             .toLowerCase()
             .includes(this.filtersValue.hash.toLowerCase()),
           sort: sortNumber,
+        },
+        {
+          value: 'actions',
+          text: 'Actions',
+          align: 'center',
+          sortable: false,
+          filterable: false,
+          width: 50,
         },
       ] as BeatmapsTableHeader[];
     },
@@ -314,10 +358,10 @@ export default Vue.extend({
     headerToSlotName(header: any): string {
       return `item.${header.value}`;
     },
-    getHeaders() {
-      return this.headers.filter((header) => this.shownColumn.includes(header.value));
+    getHeaders(): BeatmapsTableHeader[] {
+      return this.headers.filter((header) => this.shownColumn.includes(header.value) || header.value === 'actions');
     },
-    updatePage(page: number) {
+    updatePage(page: number): void {
       this.$emit('update:page', page);
     },
   },

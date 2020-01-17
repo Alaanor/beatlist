@@ -4,7 +4,10 @@ import store from './store';
 
 import Settings from '@/pages/settings';
 import Home from '@/pages/home';
-import Beatmap, { BeatmapLocal, BeatmapOnline } from '@/pages/beatmap';
+import Beatmap, {
+  BeatmapLocal, BeatmapLocalUnit,
+  BeatmapOnline, BeatmapOnlineUnit,
+} from '@/pages/beatmap';
 
 Vue.use(VueRouter);
 
@@ -18,6 +21,7 @@ const router = new VueRouter({
     {
       path: '/beatmaps',
       name: 'beatmaps',
+      redirect: { name: 'beatmaps-local' },
       component: Beatmap,
       meta: {
         subNav: [
@@ -40,9 +44,19 @@ const router = new VueRouter({
           component: BeatmapLocal,
         },
         {
+          path: 'local/:key',
+          name: 'beatmaps-local-unit',
+          component: BeatmapLocalUnit,
+        },
+        {
           path: 'online',
           name: 'beatmaps-online',
           component: BeatmapOnline,
+        },
+        {
+          path: 'online/:key',
+          name: 'beatmaps-online-unit',
+          component: BeatmapOnlineUnit,
         },
       ],
     },
