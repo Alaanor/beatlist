@@ -9,7 +9,7 @@
           name="slide-x-transition"
           mode="out-in"
         >
-          <router-view />
+          <router-view style="z-index: 1"/>
         </transition>
       </v-row>
     </v-container>

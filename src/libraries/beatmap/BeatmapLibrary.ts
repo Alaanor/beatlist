@@ -17,6 +17,11 @@ export default class BeatmapLibrary {
       .filter((beatmap: BeatmapLocal) => !beatmap.loadState.valid);
   }
 
+  public static GetMapByKey(key: string): BeatmapLocal | undefined {
+    return this.GetAllValidMap()
+      .find((beatmap: BeatmapLocal) => beatmap.onlineData.key === key);
+  }
+
   public static GetLastScanDate(): Date {
     return store.getters['beatmap/lastScan'];
   }

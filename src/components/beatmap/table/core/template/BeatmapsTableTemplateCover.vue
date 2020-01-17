@@ -1,5 +1,5 @@
 <template>
-  <BeatmapCover
+  <BeatmapCoverAvatar
     :beatmap="item.local || item.data"
     :avatar-size="24"
     :icon-expand-size="16"
@@ -8,11 +8,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import BeatmapCover from '@/components/beatmap/BeatmapCover.vue';
+import BeatmapCoverAvatar from '@/components/beatmap/cover/BeatmapCoverAvatar.vue';
 
 export default Vue.extend({
   name: 'BeatmapsTableTemplateCover',
-  components: { BeatmapCover },
+  components: { BeatmapCoverAvatar },
   props: {
     item: { type: Object, required: true },
   },
