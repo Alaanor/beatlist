@@ -3,6 +3,7 @@
     <v-hover #default="{ hover }">
       <v-avatar
         :size="avatarSize"
+        :tile="tile"
         class="my-1"
       >
         <BeatmapCover
@@ -34,7 +35,11 @@
       opacity="0.7"
       @click="imageOverlay = false"
     >
-      <BeatmapCover :beatmap="beatmap"/>
+      <BeatmapCover
+        :beatmap="beatmap"
+        max-height="512"
+        contain
+      />
       <v-btn
         icon
         large
@@ -62,6 +67,7 @@ export default Vue.extend({
     beatmap: { type: Object as PropType<BeatsaverBeatmap | BeatmapLocal>, default: {} },
     avatarSize: { type: Number, default: undefined },
     iconExpandSize: { type: Number, default: undefined },
+    tile: { type: Boolean, default: undefined },
   },
   data: () => ({
     imageOverlay: false,

@@ -7,6 +7,13 @@
     :src="imageSrc"
     :gradient="gradient"
     alt="Beatmap cover"
+    :contain="contain"
+    :width="width"
+    :height="height"
+    :min-width="minWidth"
+    :min-height="minHeight"
+    :max-width="maxWidth"
+    :max-height="maxHeight"
     @error="imageSrc = 'error'"
   >
     <slot/>
@@ -39,6 +46,13 @@ export default Vue.extend({
     beatmap: { type: Object as PropType<BeatsaverBeatmap | BeatmapLocal>, default: {} },
     progressSize: { type: Number, default: undefined },
     gradient: { type: String, default: undefined },
+    contain: { type: Boolean, default: undefined },
+    width: { type: String, default: undefined },
+    height: { type: String, default: undefined },
+    minWidth: { type: String, default: undefined },
+    minHeight: { type: String, default: undefined },
+    maxWidth: { type: String, default: undefined },
+    maxHeight: { type: String, default: undefined },
   },
   data: () => ({
     imageSrc: undefined as string | undefined,

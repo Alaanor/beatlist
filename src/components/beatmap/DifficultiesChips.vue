@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0 pl-3">
+  <v-container :class="short ? 'pa-0 pl-3' : 'pa-1 ml-n2'">
     <v-tooltip
       v-for="value in difficulties"
       :key="value.key"
@@ -9,7 +9,7 @@
         <v-chip
           :color="value.color"
           :small="small"
-          class="ml-n3"
+          :class="short ? 'ml-n3' : 'ma-1'"
           v-on="on"
         >
           {{ value.chipName }}
