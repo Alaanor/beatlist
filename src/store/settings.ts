@@ -4,7 +4,6 @@ export interface SettingsStoreState {
   installationPath: string,
   installationPathValid: boolean,
   darkTheme: boolean,
-  miniVariant: boolean,
   enableDiscordRichPresence: boolean,
   beatmapsTable: BeatmapTableStoreState;
 }
@@ -18,7 +17,6 @@ const state = {
   installationPath: '',
   installationPathValid: false,
   darkTheme: true,
-  miniVariant: true,
   enableDiscordRichPresence: true,
   beatmapsTable: {
     shownColumn: ['cover', 'name', 'mapper', 'difficulties'],

@@ -26,12 +26,12 @@ const router = new VueRouter({
       meta: {
         subNav: [
           {
-            name: 'local',
+            name: 'Local',
             path: { name: 'beatmaps-local' },
             icon: 'computer',
           },
           {
-            name: 'online',
+            name: 'Online',
             path: { name: 'beatmaps-online' },
             icon: 'language',
           },

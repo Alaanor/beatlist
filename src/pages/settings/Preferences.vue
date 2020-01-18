@@ -12,14 +12,6 @@
       inset
     />
     <v-switch
-      v-model="miniVariant"
-      color="accent"
-      label="Mini sidebar"
-      messages="Use the miniature variant of the sidebar."
-      dense
-      inset
-    />
-    <v-switch
       v-model="enableDiscordRichPresence"
       color="accent"
       label="Enable Discord Rich Presence"
@@ -41,7 +33,6 @@ export default Vue.extend({
   computed: {
     enableDiscordRichPresence: sync<boolean>('settings/enableDiscordRichPresence'),
     darkTheme: sync<boolean>('settings/darkTheme'),
-    miniVariant: sync<boolean>('settings/miniVariant'),
     installationPathValid: sync<boolean>('settings/installationPathValid'),
   },
   watch: {

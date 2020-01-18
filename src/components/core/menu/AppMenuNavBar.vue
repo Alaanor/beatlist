@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer
-    :mini-variant="miniVariant"
-    mini-variant-width="40"
+    :mini-variant="true"
+    mini-variant-width="44"
     mobile-break-point="0"
     width="120"
     color="primary"
@@ -11,17 +11,18 @@
     :clipped="main"
     :app="main"
   >
-    <v-list
-      dense
-      rounded
-      class="pa-0 py-1 menu"
-    >
-      <MenuNavigationItem
+    <div class="pa-1 fill-height d-flex flex-column">
+      <div
         v-for="menu in menus"
         :key="menu.name"
-        :item="menu"
-      />
-    </v-list>
+        :class="menu.type === 'spacer' ? 'mt-auto' : ''"
+      >
+        <MenuNavigationItem
+          v-if="menu.type === 'entry'"
+          :item="menu"
+        />
+      </div>
+    </div>
     <svg
       id="curve"
       viewBox="0 0 20 20"
@@ -62,25 +63,14 @@ export default {
   components: { MenuNavigationItem },
   props: {
     menus: { type: Array, required: true },
-    miniVariant: { type: Boolean, required: true },
     main: { type: Boolean, default: false },
   },
 };
 </script>
 <style scoped>
-  .menu {
-    height: 100%;
-  }
-
-  .menu > div:last-child {
-    bottom: 0px;
-    width: 100%;
-    position: absolute;
-  }
-
   #curve {
     position: absolute;
-    top: 0px;
+    top: 0;
     width: 20px;
     height: 20px;
     z-index: 100;

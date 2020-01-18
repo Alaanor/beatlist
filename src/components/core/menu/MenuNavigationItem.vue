@@ -1,38 +1,36 @@
 <template>
   <div v-if="configValid">
-    <v-list-item
-      :to="item.path"
-      class="pa-0 menu-item"
+    <Tooltip
+      :text="item.name"
+      right
     >
-      <v-list-item-icon
-        class="mx-2 my-2"
-        style="left: 0;"
-        :title="item.name"
+      <v-btn
+        :to="item.path"
+        icon
       >
         <v-icon>
           {{ item.icon }}
         </v-icon>
-      </v-list-item-icon>
-      <v-list-item-content v-if="!miniVariant">
-        <v-list-item-title>{{ item.name }}</v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
+      </v-btn>
+    </Tooltip>
   </div>
 </template>
 
 <script>
+import Vue from 'vue';
 import { get } from 'vuex-pathify';
+import Tooltip from '@/components/helper/Tooltip.vue';
 
-export default {
+export default Vue.extend({
   name: 'MenuNavigationItem',
+  components: { Tooltip },
   props: {
     item: { type: Object, required: true },
   },
   computed: {
-    miniVariant: get('settings/miniVariant'),
     configValid: get('settings/configValid'),
   },
-};
+});
 </script>
 
 <style scoped>

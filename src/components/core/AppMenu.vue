@@ -4,7 +4,7 @@
     <AppMenuNavBar
       v-if="subNav.length === 0"
       :menus="menus"
-      :mini-variant="miniVariant"
+      :mini-variant="true"
       main
     />
 
@@ -15,9 +15,8 @@
       floating
       clipped
       permanent
-      :mini-variant="miniVariant"
-      mini-variant-width="80"
-      width="240"
+      :mini-variant="true"
+      mini-variant-width="88"
     >
       <v-row
         class="fill-height"
@@ -25,13 +24,13 @@
       >
         <AppMenuNavBar
           :menus="menus"
-          :mini-variant="miniVariant"
+          :mini-variant="true"
         />
         <v-list
           v-if="subNav.length !== 0"
           dense
           rounded
-          class="grow pa-0 py-1"
+          class="grow pa-1 py-1"
         >
           <MenuNavigationItem
             v-for="menu in subNav"
@@ -57,21 +56,28 @@ export default Vue.extend({
     drawer: null,
     menus: [
       {
+        type: 'entry',
         path: '/',
         name: 'Home',
         icon: 'home',
       },
       {
+        type: 'entry',
         path: '/beatmaps',
         name: 'Beatmaps',
         icon: 'library_music',
       },
       {
+        type: 'entry',
         path: '/playlists',
         name: 'Playlists',
         icon: 'playlist_play',
       },
       {
+        type: 'spacer',
+      },
+      {
+        type: 'entry',
         path: '/settings',
         name: 'Settings',
         icon: 'settings',
@@ -79,7 +85,6 @@ export default Vue.extend({
     ],
   }),
   computed: {
-    miniVariant: get<boolean>('settings/miniVariant'),
     darkTheme: get<boolean>('settings/darkTheme'),
     subNav: get<object[]>('appState/subNav'),
   },
