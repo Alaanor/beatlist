@@ -23,7 +23,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import { DifficultiesSimple } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import { getColorFor, getNameFor, getWeightFor } from '@/components/helper/DifficultiesHelper';
+import { getColorFor, getNameFor, getWeightFor } from '@/libraries/helper/DifficultiesHelper';
 
 export default Vue.extend({
   name: 'DifficultiesChips',

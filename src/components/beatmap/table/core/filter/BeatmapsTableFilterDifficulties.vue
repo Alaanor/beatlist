@@ -28,7 +28,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import { BeatmapsTableHeader } from '@/components/beatmap/table/core/BeatmapsTableHeaders';
-import { getNameFor, getColorFor, listOfDifficulties } from '@/components/helper/DifficultiesHelper';
+import { getNameFor, getColorFor, listOfDifficulties } from '@/libraries/helper/DifficultiesHelper';
 
 export default Vue.extend({
   name: 'BeatmapsTableFilterDifficulties',
