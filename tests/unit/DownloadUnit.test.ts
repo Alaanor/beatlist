@@ -3,9 +3,11 @@ import path from 'path';
 import fs from 'fs-extra';
 import DownloadUnit from '@/libraries/net/downloader/DownloadUnit';
 
+const SERVER_PORT = 8085;
+const SERVER_URL = `http://localhost:${SERVER_PORT}`;
+
 const downloadFolder = path.join(__dirname, '../data/download/');
 const tmpFolder = path.join(downloadFolder, 'tmp');
-
 const pathToHelloZip = path.join(downloadFolder, 'hello.zip');
 
 const routing = {
@@ -41,7 +43,7 @@ describe('download unit', () => {
         case '/timeout': routing.timeout(res); break;
         default: throw new Error('wrong routing');
       }
-    }).listen('8085');
+    }).listen(SERVER_PORT);
 
     if (!fs.pathExistsSync(tmpFolder)) {
       fs.mkdir(tmpFolder);
@@ -56,7 +58,7 @@ describe('download unit', () => {
     expect.assertions(6);
 
     await new Promise((done) => {
-      const input = 'http://localhost:8080/dl_item';
+      const input = `${SERVER_URL}/dl_item`;
       const output = path.join(tmpFolder, 'hello.zip');
 
       const download = new DownloadUnit(input, fs.createWriteStream(output));
@@ -78,7 +80,7 @@ describe('download unit', () => {
     expect.assertions(2);
 
     await new Promise((done) => {
-      const input = 'http://localhost:8080/dl_item_no_header';
+      const input = `${SERVER_URL}/dl_item_no_header`;
       const output = path.join(tmpFolder, 'hello_no_header.zip');
 
       const download = new DownloadUnit(input, fs.createWriteStream(output));
@@ -108,7 +110,7 @@ describe('download unit', () => {
       const oldTimeout = DownloadUnit.TimeoutMs;
       DownloadUnit.TimeoutMs = 50;
 
-      const input = 'http://localhost:8080/timeout';
+      const input = `${SERVER_URL}/timeout`;
       const output = path.join(tmpFolder, 'no_url.zip');
 
       const download = new DownloadUnit(input, fs.createWriteStream(output));
