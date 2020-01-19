@@ -4,12 +4,12 @@
     mandatory
     multiple
     show-arrows
+    color="success"
   >
     <v-chip
       v-for="column in availableColumn"
       :key="column.value"
       :value="column.value"
-      class="success--text"
       outlined
       small
     >
