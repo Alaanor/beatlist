@@ -19,10 +19,5 @@ export default Vue.extend({
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
   },
-  computed: {
-    gradientColor(): string {
-      return this.$vuetify.theme.dark ? '48, 48, 48' : '255, 255, 255';
-    },
-  },
 });
 </script>

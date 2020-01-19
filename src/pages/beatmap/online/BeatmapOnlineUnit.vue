@@ -30,7 +30,11 @@
     >
       {{ error }}
     </v-alert>
-    <LoadingPage v-else/>
+    <LoadingPage v-else>
+      <p class="grey--text mt-5">
+        Loading beatmap info ...
+      </p>
+    </LoadingPage>
   </v-container>
 </template>
 

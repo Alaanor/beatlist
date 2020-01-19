@@ -45,9 +45,9 @@ export default Vue.extend({
     computeDifficulties() {
       this.difficulties = Object.entries(this.diff)
         .map(([key, value]) => ({
-          name: getNameFor(key),
+          name: key,
           enabled: value,
-          chipName: this.short ? '' : key,
+          chipName: this.short ? '' : getNameFor(key),
           color: getColorFor(key),
           weight: getWeightFor(key),
         }))

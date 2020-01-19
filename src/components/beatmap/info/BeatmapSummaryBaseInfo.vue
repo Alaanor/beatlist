@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row align="center">
       <v-col cols="6">
         <table>
           <tr>
@@ -162,14 +162,18 @@
         </table>
       </v-col>
       <v-col cols="12">
-        <p class="body-1">
-          Description:
-        </p>
-        <p
+        <v-expansion-panels
           v-if="beatmap.description"
-          class="body-2"
-          v-html="Linkify(FormatNewLine(beatmap.description))"
-        />
+          flat
+          popout
+        >
+          <v-expansion-panel>
+            <v-expansion-panel-header>Description</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <span v-html="Linkify(FormatNewLine(beatmap.description))"/>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
         <p
           v-else
           class="grey--text font-italic"
@@ -209,8 +213,8 @@ export default Vue.extend({
     Linkify(str: string): string {
       return linkifyHtml(str);
     },
-    FormatNewLine(x: string): string {
-      return x
+    FormatNewLine(str: string): string {
+      return str
         .replace(/\r\n/g, '<br>')
         .replace(/\n/g, '<br>');
     },
@@ -219,7 +223,7 @@ export default Vue.extend({
 </script>
 
 <style>
-a.linkified {
-  color: cornflowerblue;
-}
+ a.linkified {
+  color: cornflowerblue !important;
+ }
 </style>
