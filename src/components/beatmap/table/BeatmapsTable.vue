@@ -5,6 +5,7 @@
     :options="{...options, itemsPerPage}"
     :server-items-length="serverItemsLength"
     :loading="loading"
+    :disable-sort="noSort"
     loading-text="Loading contents ..."
     item-key="hash"
     hide-default-footer
@@ -138,6 +139,7 @@ export default Vue.extend({
     loading: { type: Boolean, default: false },
     seeMoreRouteName: { type: String, default: undefined },
     noActions: { type: Boolean, default: false },
+    noSort: { type: Boolean, default: false },
   },
   data: () => ({
     options: {

@@ -59,6 +59,7 @@ import { BeatSaverAPIResponseStatus } from '../../../libraries/net/beatsaver/Bea
         see-more-route-name="beatmaps-online-unit"
         no-item-per-page-choice
         no-filter
+        no-sort
         @update:page="updatePagination"
       />
     </v-card>
