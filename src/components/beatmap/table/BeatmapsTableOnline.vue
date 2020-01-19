@@ -1,4 +1,3 @@
-import { BeatSaverAPIResponseStatus } from '../../../libraries/net/beatsaver/BeatsaverAPI';
 <template>
   <v-container>
     <v-row>
