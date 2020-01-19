@@ -1,6 +1,10 @@
 <template>
   <div>
-    <v-tabs v-model="tab">
+    <v-tabs
+      v-model="tab"
+      height="32"
+      grow
+    >
       <v-tab
         v-for="entry in characteristicFiltered"
         :key="entry.name"
@@ -14,7 +18,6 @@
       <v-tab-item
         v-for="entry in characteristicFiltered"
         :key="entry.name"
-        eager
       >
         <v-card
           flat

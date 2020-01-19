@@ -10,7 +10,12 @@
             Duration
           </td>
           <td class="body-1 pl-2">
-            {{ difficulty.duration }}
+            <Tooltip
+              :text="difficulty.duration.toString()"
+              right
+            >
+              {{ difficulty.duration.toFixed(2) }}
+            </Tooltip>
           </td>
         </tr>
         <tr>
@@ -91,9 +96,11 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import { Difficulty } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import Tooltip from '@/components/helper/Tooltip.vue';
 
 export default Vue.extend({
   name: 'BeatmapSummaryDifficulty',
+  components: { Tooltip },
   props: {
     difficulty: { type: Object as PropType<Difficulty>, required: true },
   },

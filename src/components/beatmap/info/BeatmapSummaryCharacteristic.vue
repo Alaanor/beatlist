@@ -1,6 +1,10 @@
 <template>
   <v-card flat>
-    <v-tabs v-model="tab">
+    <v-tabs
+      v-model="tab"
+      height="32"
+      grow
+    >
       <v-tab
         v-for="characteristic in beatmap.metadata.characteristics"
         :key="characteristic.name"
