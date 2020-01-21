@@ -9,6 +9,10 @@ export default class BeatsaverUtilities {
     return url.resolve(BEATSAVER_DOMAIN, beatmap.coverURL);
   }
 
+  public static GetDownloadUrl(beatmap: BeatsaverBeatmap) {
+    return url.resolve(BEATSAVER_DOMAIN, beatmap.directDownload);
+  }
+
   public static ErrorToMessage<T>(response: BeatSaverAPIResponse<T>): string | undefined {
     switch (response.status) {
       case BeatSaverAPIResponseStatus.ResourceFoundButInvalidData:

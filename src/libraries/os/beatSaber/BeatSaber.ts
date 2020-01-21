@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { resolveInstallPath } from '@/libraries/os/pathResolver/Resolve';
 import store from '@/plugins/store';
+import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 
 const BEAT_SABER_EXE = 'Beat Saber.exe';
 const BEAT_SABER_PLAYLIST = 'Playlists';
@@ -39,5 +40,15 @@ export default class BeatSaber {
 
     const isString = (str: string | undefined): str is string => !!str;
     return allFile.filter(isString);
+  }
+
+  public static GetFolderPathFor(beatmap: BeatsaverBeatmap): string {
+    const installationPath = store.getters['settings/installationPath'];
+    const beatmapFolder = `${beatmap.key} (${beatmap.metadata.songName} - ${beatmap.metadata.levelAuthorName})`
+      .replace(/[?|&:*;$%@"<>()+,]/g, '')
+      .replace('\\', '_')
+      .replace('/', '_');
+
+    return path.join(installationPath, BEAT_SABER_CUSTOM_LEVEL, beatmapFolder);
   }
 }

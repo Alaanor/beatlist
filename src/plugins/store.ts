@@ -26,6 +26,7 @@ const vuexLocalMain = new VuexPersistence<StoreState>({
   reducer: (state) => ({
     settings: state.settings,
     notification: state.notification,
+    download: state.download,
   }),
 });
 
