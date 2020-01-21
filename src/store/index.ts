@@ -3,7 +3,6 @@ import beatmap, { BeatmapStoreState } from './beatmap';
 import playlist, { PlaylistStoreState } from './playlist';
 import notification, { NotificationStoreState } from './notification';
 import appState, { AppStateStoreState } from './appState';
-import download, { DownloadStoreState } from '@/store/download';
 
 export interface StoreState {
   settings: SettingsStoreState,
@@ -11,7 +10,6 @@ export interface StoreState {
   playlist: PlaylistStoreState,
   notification: NotificationStoreState,
   appState: AppStateStoreState,
-  download: DownloadStoreState,
 }
 
 export default {
@@ -20,5 +18,4 @@ export default {
   playlist,
   notification,
   appState,
-  download,
 };

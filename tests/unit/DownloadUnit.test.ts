@@ -114,7 +114,11 @@ describe('download unit', () => {
       const output = path.join(tmpFolder, 'no_url.zip');
 
       const download = new DownloadUnit(input, fs.createWriteStream(output));
-      download.onError();
+      download.onError((err: Error) => {
+        expect(err.message).toBe('ESOCKETTIMEDOUT');
+
+        done();
+      });
 
       DownloadUnit.TimeoutMs = oldTimeout;
     });

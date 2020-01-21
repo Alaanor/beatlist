@@ -55,6 +55,8 @@ export default class DownloadOperationBeatmap implements DownloadOperation {
 
   public result: DownloadOperationBeatmapResult = {} as DownloadOperationBeatmapResult;
 
+  public isCompleted: boolean = false;
+
   private tempFolder: string | undefined;
 
   private readonly beatmap: BeatsaverBeatmap;
@@ -136,6 +138,7 @@ export default class DownloadOperationBeatmap implements DownloadOperation {
   }
 
   OnCompleted(callback: (result: DownloadOperationBeatmapResult) => void): void {
+    this.isCompleted = true;
     this._eventEmitter.on(ON_COMPLETED, () => callback(this.result));
   }
 
