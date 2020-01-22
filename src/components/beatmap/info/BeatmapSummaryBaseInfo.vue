@@ -164,6 +164,7 @@
       <v-col cols="12">
         <v-expansion-panels
           v-if="beatmap.description"
+          v-model="descriptionPanel"
           flat
           popout
         >
@@ -209,6 +210,9 @@ export default Vue.extend({
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
   },
+  data: () => ({
+    descriptionPanel: 0,
+  }),
   methods: {
     Linkify(str: string): string {
       return linkifyHtml(str);
