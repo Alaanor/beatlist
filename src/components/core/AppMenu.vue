@@ -78,6 +78,12 @@ export default Vue.extend({
       },
       {
         type: 'entry',
+        path: '/downloads',
+        name: 'Downloads',
+        icon: 'cloud_download',
+      },
+      {
+        type: 'entry',
         path: '/settings',
         name: 'Settings',
         icon: 'settings',

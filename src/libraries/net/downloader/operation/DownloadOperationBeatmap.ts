@@ -2,9 +2,9 @@ import fs from 'fs-extra';
 import path from 'path';
 import AdmZip from 'adm-zip';
 import events from 'events';
-import { DownloadOperation } from '@/libraries/net/downloader/operation/DownloadOperation';
-import DownloadUnit from '@/libraries/net/downloader/DownloadUnit';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import {DownloadOperation, DownloadOperationType} from '@/libraries/net/downloader/operation/DownloadOperation';
+import DownloadUnit, {DownloadUnitProgress} from '@/libraries/net/downloader/DownloadUnit';
+import {BeatsaverBeatmap} from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import BeatsaverUtilities from '@/libraries/net/beatsaver/BeatsaverUtilities';
 import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
 
@@ -51,11 +51,17 @@ export interface DownloadOperationBeatmapResultError {
 }
 
 export default class DownloadOperationBeatmap implements DownloadOperation {
+  public type: DownloadOperationType = DownloadOperationType.Beatmap;
+
   public download: DownloadUnit | undefined;
 
   public result: DownloadOperationBeatmapResult = {} as DownloadOperationBeatmapResult;
 
   public isCompleted: boolean = false;
+
+  public get progress(): DownloadUnitProgress | undefined {
+    return this.download?.progress;
+  }
 
   private tempFolder: string | undefined;
 

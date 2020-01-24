@@ -21,7 +21,7 @@ export default class DownloadManager {
 
   private _completedOperation: DownloadOperation[] = [];
 
-  public Singleton = new DownloadManager();
+  public static Singleton = new DownloadManager();
 
   public AddQueue(operation: DownloadOperation) {
     this._queuedOperation.push(operation);

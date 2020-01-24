@@ -4,6 +4,7 @@ import store from './store';
 
 import Settings from '@/pages/settings';
 import Home from '@/pages/home';
+import Downloads from '@/pages/downloads/';
 import Beatmap, {
   BeatmapLocal, BeatmapLocalUnit,
   BeatmapOnline, BeatmapOnlineUnit,
@@ -59,6 +60,11 @@ const router = new VueRouter({
           component: BeatmapOnlineUnit,
         },
       ],
+    },
+    {
+      path: '/downloads',
+      name: 'downloads',
+      component: Downloads,
     },
     {
       path: '/settings',
