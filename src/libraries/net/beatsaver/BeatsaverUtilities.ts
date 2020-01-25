@@ -5,12 +5,16 @@ import { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/ne
 const BEATSAVER_DOMAIN = 'https://beatsaver.com/';
 
 export default class BeatsaverUtilities {
-  public static GetImageSrcFrom(beatmap: BeatsaverBeatmap) {
+  public static GetImageSrcFrom(beatmap: BeatsaverBeatmap): string {
     return url.resolve(BEATSAVER_DOMAIN, beatmap.coverURL);
   }
 
-  public static GetDownloadUrl(beatmap: BeatsaverBeatmap) {
+  public static GetDownloadUrl(beatmap: BeatsaverBeatmap): string {
     return url.resolve(BEATSAVER_DOMAIN, beatmap.directDownload);
+  }
+
+  public static GetPageUrl(beatmap: BeatsaverBeatmap): string {
+    return url.resolve(BEATSAVER_DOMAIN, `beatmap/${beatmap.key}`);
   }
 
   public static ErrorToMessage<T>(response: BeatSaverAPIResponse<T>): string | undefined {
