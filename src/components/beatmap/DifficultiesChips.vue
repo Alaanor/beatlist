@@ -12,10 +12,10 @@
           :class="short ? 'ml-n3' : 'ma-1'"
           v-on="on"
         >
-          {{ value.chipName }}
+          {{ short ? '' : value.chipName }}
         </v-chip>
       </template>
-      <span>{{ value.name }}</span>
+      <span>{{ value.chipName }}</span>
     </v-tooltip>
   </v-container>
 </template>
@@ -47,7 +47,7 @@ export default Vue.extend({
         .map(([key, value]) => ({
           name: key,
           enabled: value,
-          chipName: this.short ? '' : getNameFor(key),
+          chipName: getNameFor(key),
           color: getColorFor(key),
           weight: getWeightFor(key),
         }))
