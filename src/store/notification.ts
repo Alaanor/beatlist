@@ -15,10 +15,10 @@ const getters = {
 
 const mutations = {
   ...make.mutations(state),
-  add(context: any, payload: { notification: INotification }) {
+  add(context: NotificationStoreState, payload: { notification: INotification }) {
     context.notifications.push(payload.notification);
   },
-  setAsNotified(context: any, payload: { notification: INotification }) {
+  setAsNotified(context: NotificationStoreState, payload: { notification: INotification }) {
     const notif = context.notifications
       .find((notification: INotification) => notification === payload.notification);
 

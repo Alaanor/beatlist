@@ -30,7 +30,7 @@ const mutations = {
 
 const getters = {
   ...make.getters(state),
-  configValid(currentState: any) {
+  configValid(currentState: SettingsStoreState) {
     return currentState.installationPathValid;
   },
 };
