@@ -2,6 +2,7 @@
   <Tooltip text="Refresh the data">
     <v-btn
       icon
+      :loading="loading"
       @click="refreshData"
     >
       <v-icon>refresh</v-icon>
@@ -22,13 +23,21 @@ export default Vue.extend({
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
   },
+  data: () => ({
+    loading: false,
+  }),
   methods: {
     async refreshData() {
+      this.loading = true;
       const { error } = await BeatmapLocalUtilities.UpdateOnlineDataFor(this.beatmap);
 
       if (error) {
         NotificationService.NotifyMessage(error, 'error');
+      } else {
+        NotificationService.NotifyMessage('The data has been refreshed', 'success');
       }
+
+      this.loading = false;
     },
   },
 });
