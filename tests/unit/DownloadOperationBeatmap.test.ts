@@ -1,11 +1,12 @@
 import fs from 'fs-extra';
 import path from 'path';
-import DownloadOperationBeatmap, {
-  DownloadOperationBeatmapResult,
-  DownloadOperationBeatmapResultStatus,
-} from '@/libraries/net/downloader/operation/DownloadOperationBeatmap';
+import DownloadOperationBeatmap from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmap';
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
+import {
+  DownloadOperationBeatmapResult,
+  DownloadOperationBeatmapResultStatus,
+} from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
 
 const fakeInstallationPath = path.join(__dirname, '../data/fakeInstallation');
 const fakeInstallationLevelsPath = path.join(fakeInstallationPath, 'Beat Saber_Data\\CustomLevels');

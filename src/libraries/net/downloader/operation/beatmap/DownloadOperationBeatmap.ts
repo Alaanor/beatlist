@@ -2,56 +2,25 @@ import fs from 'fs-extra';
 import path from 'path';
 import AdmZip from 'adm-zip';
 import events from 'events';
-import {DownloadOperation, DownloadOperationType} from '@/libraries/net/downloader/operation/DownloadOperation';
-import DownloadUnit, {DownloadUnitProgress} from '@/libraries/net/downloader/DownloadUnit';
-import {BeatsaverBeatmap} from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import {
+  DownloadOperationBase,
+  DownloadOperationType, DownloadOperationTypeBeatmap,
+} from '@/libraries/net/downloader/operation/DownloadOperation';
+import DownloadUnit, { DownloadUnitProgress } from '@/libraries/net/downloader/DownloadUnit';
+import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import BeatsaverUtilities from '@/libraries/net/beatsaver/BeatsaverUtilities';
 import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
+import {
+  DownloadOperationBeatmapResult,
+  DownloadOperationBeatmapResultStatus,
+} from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
 
 const ON_COMPLETED: string = 'completed';
 
-export enum DownloadOperationBeatmapResultStatus {
-  Init = 0,
-  Downloading = 1,
-  Extracting = 2,
-  Success = 3,
-  DownloadError = 4,
-  ExtractionError = 5,
-}
 
-export type DownloadOperationBeatmapResult = DownloadOperationBeatmapResultBase & (
-    DownloadOperationBeatmapResultInProgress
-  | DownloadOperationBeatmapResultDone
-  | DownloadOperationBeatmapResultError
-)
-
-export interface DownloadOperationBeatmapResultBase {
-  beatmap: BeatsaverBeatmap;
-  status: DownloadOperationBeatmapResultStatus;
-}
-
-export interface DownloadOperationBeatmapResultInProgress {
-  status: (
-      DownloadOperationBeatmapResultStatus.Init
-    | DownloadOperationBeatmapResultStatus.Downloading
-    | DownloadOperationBeatmapResultStatus.Extracting
-  );
-}
-
-export interface DownloadOperationBeatmapResultDone {
-  status: DownloadOperationBeatmapResultStatus.Success;
-}
-
-export interface DownloadOperationBeatmapResultError {
-  status: (
-      DownloadOperationBeatmapResultStatus.ExtractionError
-    | DownloadOperationBeatmapResultStatus.DownloadError
-  );
-  errorWritten: string,
-}
-
-export default class DownloadOperationBeatmap implements DownloadOperation {
-  public type: DownloadOperationType = DownloadOperationType.Beatmap;
+export default class DownloadOperationBeatmap
+implements DownloadOperationBase, DownloadOperationTypeBeatmap {
+  public type: DownloadOperationType.Beatmap = DownloadOperationType.Beatmap;
 
   public download: DownloadUnit | undefined;
 
@@ -63,9 +32,9 @@ export default class DownloadOperationBeatmap implements DownloadOperation {
     return this.download?.progress;
   }
 
-  private tempFolder: string | undefined;
+  public readonly beatmap: BeatsaverBeatmap;
 
-  private readonly beatmap: BeatsaverBeatmap;
+  private tempFolder: string | undefined;
 
   private _eventEmitter: events.EventEmitter = new events.EventEmitter();
 

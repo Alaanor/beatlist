@@ -1,14 +1,26 @@
 import { DownloadUnitProgress } from '@/libraries/net/downloader/DownloadUnit';
+import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import { DownloadOperationBeatmapResult } from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
 
 export enum DownloadOperationType {
   Beatmap = 'Beatmap',
   Playlist = 'Playlist',
 }
 
-export interface DownloadOperation {
+export type DownloadOperation = DownloadOperationBase & (
+  DownloadOperationTypeBeatmap
+)
+
+export interface DownloadOperationBase {
+  type: DownloadOperationType;
   Start(): Promise<void>;
   OnCompleted(callback: (result: any) => void): void;
-  progress: DownloadUnitProgress | undefined;
   isCompleted: boolean;
-  type: DownloadOperationType;
+}
+
+export interface DownloadOperationTypeBeatmap {
+  type: DownloadOperationType.Beatmap;
+  result: DownloadOperationBeatmapResult;
+  progress: DownloadUnitProgress | undefined;
+  beatmap: BeatsaverBeatmap;
 }
