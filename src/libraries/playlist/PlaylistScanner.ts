@@ -18,7 +18,6 @@ export default class PlaylistScanner {
     this.newPlaylists = (await Promise.all(
       diff.added.map(async (path: string) => {
         const p = await PlaylistLoader.Load(path, false, progressGroup.getNewOne());
-        console.log(p);
         return p;
       }),
     ));

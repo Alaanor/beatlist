@@ -7,7 +7,6 @@ export default class PlaylistLibrary {
   }
 
   public static GetAllValidPlaylists(): PlaylistLocal[] {
-    console.log(this.GetAllPlaylists());
     return this.GetAllPlaylists()
       .filter((playlist: PlaylistLocal) => playlist.loadState.valid);
   }
