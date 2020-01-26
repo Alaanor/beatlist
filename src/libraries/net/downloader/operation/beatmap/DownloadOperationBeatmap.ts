@@ -2,9 +2,11 @@ import fs from 'fs-extra';
 import path from 'path';
 import AdmZip from 'adm-zip';
 import events from 'events';
+import { remote } from 'electron';
 import {
   DownloadOperationBase,
-  DownloadOperationType, DownloadOperationTypeBeatmap,
+  DownloadOperationType,
+  DownloadOperationTypeBeatmap,
 } from '@/libraries/net/downloader/operation/DownloadOperation';
 import DownloadUnit, { DownloadUnitProgress } from '@/libraries/net/downloader/DownloadUnit';
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
@@ -50,27 +52,30 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
   }
 
   public async Start(): Promise<void> {
-    this.tempFolder = await fs.mkdtemp('beatlist-');
-
-    const url = BeatsaverUtilities.GetDownloadUrl(this.beatmap);
-    const zipPath = path.join(this.tempFolder, `${this.beatmap.key}.zip`);
-    const stream = fs.createWriteStream(zipPath);
-
     try {
-      this.result = { ...this.result, status: DownloadOperationBeatmapResultStatus.Downloading };
-      this.download = new DownloadUnit(url, stream);
-      this.download.onError(this.onDownloadError);
-      this.download.onCompleted(() => {
-        try {
-          this.handleExtraction(zipPath);
-          this.onSuccess();
-          this._eventEmitter.emit(ON_COMPLETED);
-        } catch (e) {
-          this.onExtractError(e);
-        }
-      });
+      this.tempFolder = await fs.mkdtemp(path.join(remote.app.getPath('temp'), 'beatlist-'));
+
+      const url = BeatsaverUtilities.GetDownloadUrl(this.beatmap);
+      const zipPath = path.join(this.tempFolder, `${this.beatmap.key}.zip`);
+      const stream = fs.createWriteStream(zipPath);
+
+      try {
+        this.result = { ...this.result, status: DownloadOperationBeatmapResultStatus.Downloading };
+        this.download = new DownloadUnit(url, stream);
+        this.download.onError(this.onDownloadError);
+        this.download.onCompleted(() => {
+          try {
+            this.handleExtraction(zipPath);
+            this.onSuccess();
+          } catch (e) {
+            this.onExtractError(e);
+          }
+        });
+      } catch (e) {
+        this.onDownloadError(e);
+      }
     } catch (e) {
-      this.onDownloadError(e);
+      this.onIOError(e);
     }
   }
 
@@ -78,6 +83,23 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
     if (this.tempFolder) {
       await fs.unlink(this.tempFolder);
     }
+  }
+
+  private handleExtraction(zipPath: string) {
+    this.result = {
+      ...this.result,
+      status: DownloadOperationBeatmapResultStatus.Extracting,
+    };
+
+    const zip = new AdmZip(zipPath);
+    const extractPath = BeatSaber.GetFolderPathFor(this.beatmap);
+
+    zip.extractAllTo(extractPath, true);
+  }
+
+  OnCompleted(callback: (result: DownloadOperationBeatmapResult) => void): void {
+    this.isCompleted = true;
+    this._eventEmitter.on(ON_COMPLETED, () => callback(this.result));
   }
 
   private onDownloadError(error: Error) {
@@ -100,21 +122,14 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
     this._eventEmitter.emit(ON_COMPLETED);
   }
 
-  private handleExtraction(zipPath: string) {
+  private onIOError(error: Error) {
     this.result = {
       ...this.result,
-      status: DownloadOperationBeatmapResultStatus.Extracting,
+      status: DownloadOperationBeatmapResultStatus.IOError,
+      errorWritten: `Couldn't make the temporary folder to download. [${error.name}]: ${error.message}`,
     };
 
-    const zip = new AdmZip(zipPath);
-    const extractPath = BeatSaber.GetFolderPathFor(this.beatmap);
-
-    zip.extractAllTo(extractPath, true);
-  }
-
-  OnCompleted(callback: (result: DownloadOperationBeatmapResult) => void): void {
-    this.isCompleted = true;
-    this._eventEmitter.on(ON_COMPLETED, () => callback(this.result));
+    this._eventEmitter.emit(ON_COMPLETED);
   }
 
   private onSuccess() {
@@ -122,5 +137,7 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
       ...this.result,
       status: DownloadOperationBeatmapResultStatus.Success,
     };
+
+    this._eventEmitter.emit(ON_COMPLETED);
   }
 }

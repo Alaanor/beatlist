@@ -7,6 +7,7 @@ export enum DownloadOperationBeatmapResultStatus {
   Success = 3,
   DownloadError = 4,
   ExtractionError = 5,
+  IOError = 6,
 }
 
 export type DownloadOperationBeatmapResult = DownloadOperationBeatmapResultBase & (
@@ -36,6 +37,7 @@ export interface DownloadOperationBeatmapResultError {
   status: (
     DownloadOperationBeatmapResultStatus.ExtractionError
     | DownloadOperationBeatmapResultStatus.DownloadError
+    | DownloadOperationBeatmapResultStatus.IOError
     );
   errorWritten: string,
 }
