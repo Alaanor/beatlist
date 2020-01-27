@@ -15,7 +15,7 @@
         <v-progress-circular
           v-if="operation"
           color="success"
-          :value="progressPercent()"
+          :value="progressPercent.toString()"
         />
       </template>
     </v-btn>
@@ -53,6 +53,10 @@ export default Vue.extend({
 
       return `${this.progress.bytes.received}/${this.progress.bytes.total}bytes, ${this.progress.time.remaining}s remaining`; // TODO create an helper to format the message here in better form
     },
+    progressPercent(): number {
+      const percent = this.progress.bytes.percent * 100;
+      return Math.ceil(percent / 5) * 5; // less update, the UI react faster
+    },
   },
   mounted(): void {
     DownloadManager.Singleton.OnQueueUpdated(this.updateDownloadData);
@@ -64,9 +68,6 @@ export default Vue.extend({
       const operation = new DownloadOperationBeatmap(this.beatmap, this.progress);
       operation.OnCompleted(() => this.notifyResult(operation));
       DownloadManager.Singleton.AddQueue(operation);
-    },
-    progressPercent(): string {
-      return (this.progress.bytes.percent * 100).toString();
     },
     updateDownloadData(): void {
       this.isDownloaded = BeatmapLibrary.HasBeatmap(this.beatmap);
