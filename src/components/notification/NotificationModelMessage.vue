@@ -25,7 +25,7 @@ import {
 import NotificationLibrary from '@/libraries/notification/NotificationLibrary';
 
 export default Vue.extend({
-  name: NotificationType.Message,
+  name: `NotificationModel${NotificationType.Message}`,
   props: {
     notification: {
       type: Object as PropType<ICommonNotification & IMessageNotification>,

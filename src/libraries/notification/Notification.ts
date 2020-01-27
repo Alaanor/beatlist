@@ -1,4 +1,4 @@
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import { DownloadOperationBeatmapResult } from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
 
 export const enum NotificationState {
   ReadyToBeSend = 0,
@@ -28,7 +28,7 @@ export interface IMessageNotification extends INotificationType {
 
 export interface IBeatmapDownloadNotification extends INotificationType {
   type: NotificationType.BeatmapDownload;
-  beatmap: BeatsaverBeatmap;
+  result: DownloadOperationBeatmapResult;
 }
 
 export type INotification = ICommonNotification & (

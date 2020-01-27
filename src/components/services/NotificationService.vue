@@ -13,10 +13,11 @@
 import Vue from 'vue';
 import NotificationLibrary from '@/libraries/notification/NotificationLibrary';
 import NotificationModelMessage from '@/components/notification/NotificationModelMessage.vue';
+import NotificationModelBeatmapDownload from '@/components/notification/NotificationModelBeatmapDownload.vue';
 
 export default Vue.extend({
   name: 'NotificationService',
-  components: { NotificationModelMessage },
+  components: { NotificationModelMessage, NotificationModelBeatmapDownload },
   computed: {
     toNotify: () => NotificationLibrary.GetAllUnnotified(),
   },

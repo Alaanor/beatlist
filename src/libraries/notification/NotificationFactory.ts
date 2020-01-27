@@ -1,18 +1,34 @@
 import {
+  IBeatmapDownloadNotification,
   ICommonNotification,
   IMessageNotification,
   INotificationType,
   NotificationState,
   NotificationType,
 } from '@/libraries/notification/Notification';
+import {
+  DownloadOperationBeatmapResult,
+} from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
 
 export default class NotificationFactory {
   public static CreateMessage(content: string, color: string | undefined)
     : ICommonNotification & IMessageNotification {
     const notification = this.Make<IMessageNotification>();
+
     notification.type = NotificationType.Message;
     notification.content = content;
     notification.color = color;
+
+    return notification;
+  }
+
+  public static CreateBeatmapDownload(operationResult: DownloadOperationBeatmapResult)
+    : ICommonNotification & IBeatmapDownloadNotification {
+    const notification = this.Make<IBeatmapDownloadNotification>();
+
+    notification.type = NotificationType.BeatmapDownload;
+    notification.result = operationResult;
+
     return notification;
   }
 

@@ -30,6 +30,7 @@ import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
 import Tooltip from '@/components/helper/Tooltip.vue';
 import DownloadOperationBeatmap from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmap';
 import { DownloadOperation } from '@/libraries/net/downloader/operation/DownloadOperation';
+import NotificationService from '@/libraries/notification/NotificationService';
 
 export default Vue.extend({
   name: 'BeatmapDownloadButton',
@@ -58,6 +59,7 @@ export default Vue.extend({
   methods: {
     downloadIt(): void {
       const operation = new DownloadOperationBeatmap(this.beatmap);
+      operation.OnCompleted(() => this.notifyResult(operation));
       DownloadManager.Singleton.AddQueue(operation);
     },
     updateDownloadData() {
@@ -69,6 +71,9 @@ export default Vue.extend({
       } else {
         this.operation = undefined;
       }
+    },
+    notifyResult(operation: DownloadOperationBeatmap) {
+      NotificationService.NotifyBeatmapDownload(operation.result);
     },
   },
 });
