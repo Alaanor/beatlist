@@ -8,7 +8,7 @@ import {
   DownloadOperationType,
   DownloadOperationTypeBeatmap,
 } from '@/libraries/net/downloader/operation/DownloadOperation';
-import DownloadUnit, { DownloadUnitProgress, DownloadUnitProgressFactory } from '@/libraries/net/downloader/DownloadUnit';
+import DownloadUnit from '@/libraries/net/downloader/DownloadUnit';
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import BeatsaverUtilities from '@/libraries/net/beatsaver/BeatsaverUtilities';
 import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
@@ -16,6 +16,7 @@ import {
   DownloadOperationBeatmapResult,
   DownloadOperationBeatmapResultStatus,
 } from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
+import { DownloadUnitProgress, DownloadUnitProgressFactory } from '@/libraries/net/downloader/DownloadUnitProgress';
 
 const ON_COMPLETED: string = 'completed';
 

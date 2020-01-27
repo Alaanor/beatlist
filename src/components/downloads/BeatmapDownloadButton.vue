@@ -29,6 +29,7 @@ import { DownloadOperation } from '@/libraries/net/downloader/operation/Download
 import NotificationService from '@/libraries/notification/NotificationService';
 import DownloadLibrary from '@/libraries/net/downloader/DownloadLibrary';
 import DownloadProgressCircular from '@/components/downloads/DownloadProgressCircular.vue';
+import { FormatProgressAllInOne } from '@/libraries/net/downloader/DownloadUnitProgress';
 
 export default Vue.extend({
   name: 'BeatmapDownloadButton',
@@ -43,11 +44,11 @@ export default Vue.extend({
   }),
   computed: {
     tooltipText(): string {
-      if (!this.isDownloading) {
-        return 'Download';
+      if (this.isDownloading && this.operation) {
+        return FormatProgressAllInOne(this.operation.progress);
       }
 
-      return `${this.operation?.progress.bytes.received}/${this.operation?.progress.bytes.total}bytes, ${this.operation?.progress.time.remaining}s remaining`; // TODO create an helper to format the message here in better form
+      return 'Download';
     },
   },
   mounted(): void {

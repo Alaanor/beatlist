@@ -8,7 +8,10 @@
         v-for="operation in operations"
         :key="operation.type"
       >
-        <component :is="`DownloadListTemplate${operation.type}`"/>
+        <component
+          :is="`DownloadsListTemplate${operation.type}`"
+          :operation="operation"
+        />
       </v-list-item>
     </v-list-item-group>
   </div>
@@ -17,9 +20,11 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import { DownloadOperation } from '@/libraries/net/downloader/operation/DownloadOperation';
+import DownloadsListTemplateBeatmap from '@/components/downloads/list/template/DownloadsListTemplateBeatmap.vue';
 
 export default Vue.extend({
   name: 'DownloadsListGroup',
+  components: { DownloadsListTemplateBeatmap },
   props: {
     operations: { type: Array as PropType<DownloadOperation[]>, required: true },
     subHeader: { type: String, default: undefined },

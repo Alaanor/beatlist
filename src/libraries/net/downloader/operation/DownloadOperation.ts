@@ -1,6 +1,6 @@
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import { DownloadOperationBeatmapResult } from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
-import { DownloadUnitProgress } from '@/libraries/net/downloader/DownloadUnit';
+import { DownloadUnitProgress } from '@/libraries/net/downloader/DownloadUnitProgress';
 
 export enum DownloadOperationType {
   Beatmap = 'Beatmap',

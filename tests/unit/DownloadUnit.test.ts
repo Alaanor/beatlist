@@ -1,7 +1,8 @@
 import http from 'http';
 import path from 'path';
 import fs from 'fs-extra';
-import DownloadUnit, { DownloadUnitProgressFactory } from '@/libraries/net/downloader/DownloadUnit';
+import DownloadUnit from '@/libraries/net/downloader/DownloadUnit';
+import { DownloadUnitProgressFactory } from '@/libraries/net/downloader/DownloadUnitProgress';
 
 const SERVER_PORT = 8085;
 const SERVER_URL = `http://localhost:${SERVER_PORT}`;

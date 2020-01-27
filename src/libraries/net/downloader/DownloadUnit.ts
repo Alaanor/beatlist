@@ -1,32 +1,5 @@
 import request from 'request';
-
-export interface DownloadUnitProgress {
-  bytes: {
-    total: number;
-    received: number;
-    percent: number; // 0 to 1
-    speed: number; // bytes per second
-  },
-  time: {
-    startedAt: Date;
-    remaining: number; // in seconds
-  },
-}
-
-export function DownloadUnitProgressFactory(): DownloadUnitProgress {
-  return {
-    bytes: {
-      total: 0,
-      received: 0,
-      percent: 0,
-      speed: 0,
-    },
-    time: {
-      startedAt: new Date(),
-      remaining: 0,
-    },
-  } as DownloadUnitProgress;
-}
+import { DownloadUnitProgress, DownloadUnitProgressFactory } from '@/libraries/net/downloader/DownloadUnitProgress';
 
 export default class DownloadUnit {
   public static TimeoutMs = 10 * 1e3;
@@ -49,6 +22,7 @@ export default class DownloadUnit {
 
     this._request.on('response', (response: request.Response) => {
       this.SetProgressTotalHeader(response);
+      this.SetProgressStartAt();
       response.on('data', (chunk: any) => {
         if (this.progress) {
           this.progress.bytes.received += chunk.length;
@@ -80,6 +54,10 @@ export default class DownloadUnit {
     }
   }
 
+  private SetProgressStartAt() {
+    this.progress.time.startedAt = new Date().getTime();
+  }
+
   private UpdateProgress() {
     if (!this.progress) {
       return;
@@ -89,7 +67,7 @@ export default class DownloadUnit {
       this.progress.bytes.percent = this.progress.bytes.received / this.progress.bytes.total;
     }
 
-    const elapsedTimeMs = (new Date().getTime() - this.progress.time.startedAt.getTime());
+    const elapsedTimeMs = (new Date().getTime() - this.progress.time.startedAt);
     this.progress.bytes.speed = this.progress.bytes.received / elapsedTimeMs;
 
     const missingBytesAmount = this.progress.bytes.total - this.progress.bytes.received;
