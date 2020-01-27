@@ -3,20 +3,26 @@
     <p class="display-2">
       Downloads
     </p>
-    <v-list rounded>
-      <DownloadsListGroup
-        sub-header="On going"
-        :operations="ongoing"
-      />
-      <DownloadsListGroup
-        sub-header="Queued"
-        :operations="queued"
-      />
-      <DownloadsListGroup
-        sub-header="Completed"
-        :operations="completed"
-      />
-    </v-list>
+
+    <v-card>
+      <v-card-text>
+        <DownloadsListGroup
+          sub-header="On going"
+          type="ongoing"
+          :operations="ongoing"
+        />
+        <DownloadsListGroup
+          sub-header="Queued"
+          type="queued"
+          :operations="queued"
+        />
+        <DownloadsListGroup
+          sub-header="Completed"
+          type="completed"
+          :operations="completed"
+        />
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
@@ -24,14 +30,30 @@
 import Vue from 'vue';
 import DownloadsListGroup from '@/components/downloads/list/DownloadsListGroup.vue';
 import DownloadLibrary from '@/libraries/net/downloader/DownloadLibrary';
+import DownloadManager from '@/libraries/net/downloader/DownloadManager';
+import { DownloadOperation } from '@/libraries/net/downloader/operation/DownloadOperation';
 
 export default Vue.extend({
   name: 'Downloads',
   components: { DownloadsListGroup },
-  computed: {
-    queued: () => DownloadLibrary.queuedOperation,
-    ongoing: () => DownloadLibrary.ongoingOperation,
-    completed: () => DownloadLibrary.completedOperation,
+  data: () => ({
+    queued: [] as DownloadOperation[],
+    ongoing: [] as DownloadOperation[],
+    completed: [] as DownloadOperation[],
+  }),
+  mounted(): void {
+    DownloadManager.OnQueueUpdated(this.updateDownloadData);
+    this.updateDownloadData();
+  },
+  beforeDestroy(): void {
+    DownloadManager.RemoveOnQueueUpdatedListener(this.updateDownloadData);
+  },
+  methods: {
+    updateDownloadData() {
+      this.queued = DownloadLibrary.queuedOperation;
+      this.ongoing = DownloadLibrary.ongoingOperation;
+      this.completed = DownloadLibrary.completedOperation;
+    },
   },
 });
 </script>

@@ -3,17 +3,23 @@
     <v-subheader v-if="subHeader">
       {{ `${subHeader} - ${operations.length}` }}
     </v-subheader>
-    <v-list-item-group v-if="operations.length !== 0">
-      <v-list-item
+    <v-list
+      v-if="operations.length !== 0"
+      rounded
+      dense
+    >
+      <div
         v-for="operation in operations"
-        :key="operation.type"
+        :key="operation.beatmap.key + operation.progress.time.startedAt"
+        dense
       >
         <component
           :is="`DownloadsListTemplate${operation.type}`"
           :operation="operation"
+          :type="type"
         />
-      </v-list-item>
-    </v-list-item-group>
+      </div>
+    </v-list>
   </div>
 </template>
 
@@ -28,6 +34,7 @@ export default Vue.extend({
   props: {
     operations: { type: Array as PropType<DownloadOperation[]>, required: true },
     subHeader: { type: String, default: undefined },
+    type: { type: String as PropType<'queued' | 'ongoing' | 'completed'>, required: true },
   },
 });
 </script>

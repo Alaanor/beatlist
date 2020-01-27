@@ -42,9 +42,17 @@ export function FormatProgressSpeed(progress: DownloadUnitProgress): string {
   return `${formatBytes(progress.bytes.speed * 1000)}/s`;
 }
 
+export function FormatProgressReceived(progress: DownloadUnitProgress): string {
+  return formatBytes(progress.bytes.received);
+}
+
+export function FormatProgressTotal(progress: DownloadUnitProgress): string {
+  return formatBytes(progress.bytes.total);
+}
+
 export function FormatProgressState(progress: DownloadUnitProgress): string {
-  const received = formatBytes(progress.bytes.received);
-  const total = formatBytes(progress.bytes.total);
+  const received = FormatProgressReceived(progress);
+  const total = FormatProgressTotal(progress);
 
   return `${received} of ${total}`;
 }
