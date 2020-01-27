@@ -10,14 +10,14 @@
         color="success"
       >
         mdi-download
-        <template #loader>
-          <v-progress-circular
-            v-if="operation"
-            color="success"
-            :value="operation.progress.bytes.percent * 100"
-          />
-        </template>
       </v-icon>
+      <template #loader>
+        <v-progress-circular
+          v-if="operation"
+          color="success"
+          :value="progressPercent()"
+        />
+      </template>
     </v-btn>
   </Tooltip>
 </template>
@@ -31,6 +31,7 @@ import Tooltip from '@/components/helper/Tooltip.vue';
 import DownloadOperationBeatmap from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmap';
 import { DownloadOperation } from '@/libraries/net/downloader/operation/DownloadOperation';
 import NotificationService from '@/libraries/notification/NotificationService';
+import { DownloadUnitProgress, DownloadUnitProgressFactory } from '@/libraries/net/downloader/DownloadUnit';
 
 export default Vue.extend({
   name: 'BeatmapDownloadButton',
@@ -40,16 +41,17 @@ export default Vue.extend({
   },
   data: () => ({
     operation: undefined as DownloadOperation | undefined,
+    progress: {} as DownloadUnitProgress,
     isDownloaded: false,
     isDownloading: false,
   }),
   computed: {
     tooltipText(): string {
-      if (!this.operation?.progress) {
+      if (!this.isDownloading) {
         return 'Download';
       }
 
-      return `${this.operation?.progress.bytes.received}/${this.operation?.progress.bytes.total}bytes, ${this.operation?.progress.time.remaining}s remaining`; // TODO create an helper to format the message here in better form
+      return `${this.progress.bytes.received}/${this.progress.bytes.total}bytes, ${this.progress.time.remaining}s remaining`; // TODO create an helper to format the message here in better form
     },
   },
   mounted(): void {
@@ -58,11 +60,15 @@ export default Vue.extend({
   },
   methods: {
     downloadIt(): void {
-      const operation = new DownloadOperationBeatmap(this.beatmap);
+      this.progress = DownloadUnitProgressFactory();
+      const operation = new DownloadOperationBeatmap(this.beatmap, this.progress);
       operation.OnCompleted(() => this.notifyResult(operation));
       DownloadManager.Singleton.AddQueue(operation);
     },
-    updateDownloadData() {
+    progressPercent(): string {
+      return (this.progress.bytes.percent * 100).toString();
+    },
+    updateDownloadData(): void {
       this.isDownloaded = BeatmapLibrary.HasBeatmap(this.beatmap);
       this.isDownloading = DownloadManager.Singleton.HasBeatmapScheduled(this.beatmap);
 
@@ -72,7 +78,7 @@ export default Vue.extend({
         this.operation = undefined;
       }
     },
-    notifyResult(operation: DownloadOperationBeatmap) {
+    notifyResult(operation: DownloadOperationBeatmap): void {
       NotificationService.NotifyBeatmapDownload(operation.result);
     },
   },

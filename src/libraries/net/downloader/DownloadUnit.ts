@@ -1,5 +1,4 @@
 import request from 'request';
-import throttle from 'throttleit';
 
 export interface DownloadUnitProgress {
   bytes: {
@@ -53,9 +52,9 @@ export default class DownloadUnit {
       response.on('data', (chunk: any) => {
         if (this.progress) {
           this.progress.bytes.received += chunk.length;
+          this.UpdateProgress();
         }
       });
-      response.on('data', throttle(this.UpdateProgress, 50));
     });
 
     this._request.on('complete', this.UpdateProgress);
@@ -95,7 +94,5 @@ export default class DownloadUnit {
 
     const missingBytesAmount = this.progress.bytes.total - this.progress.bytes.received;
     this.progress.time.remaining = missingBytesAmount / this.progress.bytes.speed;
-
-    console.log(this.progress);
   }
 }
