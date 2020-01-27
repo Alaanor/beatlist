@@ -1,79 +1,47 @@
 import events from 'events';
-import { DownloadOperation, DownloadOperationType } from '@/libraries/net/downloader/operation/DownloadOperation';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import { DownloadOperation } from '@/libraries/net/downloader/operation/DownloadOperation';
+import DownloadLibrary from '@/libraries/net/downloader/DownloadLibrary';
 
 const maxOperationInParallel = 3;
 const ON_QUEUE_UPDATED = 'on_queue_updated';
 
 export default class DownloadManager {
-  get queuedOperation(): DownloadOperation[] {
-    return this._queuedOperation;
+  private static EventEmitter = new events.EventEmitter();
+
+  public static AddQueue(operation: DownloadOperation) {
+    DownloadLibrary.queuedOperation.push(operation);
+    DownloadManager.UpdateQueue();
   }
 
-  get ongoingOperation(): DownloadOperation[] {
-    return this._ongoingOperation;
+  public static OnQueueUpdated(callback: () => void) {
+    DownloadManager.EventEmitter.on(ON_QUEUE_UPDATED, () => callback());
   }
 
-  get completedOperation(): DownloadOperation[] {
-    return this._completedOperation;
+  public static RemoveOnQueueUpdatedListener(callback: () => void) {
+    DownloadManager.EventEmitter.removeListener(ON_QUEUE_UPDATED, callback);
   }
 
-  private _queuedOperation: DownloadOperation[] = [];
-
-  private _ongoingOperation: DownloadOperation[] = [];
-
-  private _completedOperation: DownloadOperation[] = [];
-
-  private _eventEmitter = new events.EventEmitter();
-
-  public static Singleton = new DownloadManager();
-
-  public AddQueue(operation: DownloadOperation) {
-    this._queuedOperation.push(operation);
-    this.UpdateQueue();
-  }
-
-  public HasBeatmapScheduled(beatmap: BeatsaverBeatmap): boolean {
-    return this.GetOperationFor(beatmap) !== undefined;
-  }
-
-  public GetOperationFor(beatmap: BeatsaverBeatmap): DownloadOperation | undefined {
-    return this._queuedOperation.concat(this._ongoingOperation).find(
-      (value: DownloadOperation) => {
-        if (value.type === DownloadOperationType.Beatmap) {
-          return value.beatmap.key === beatmap.key;
-        }
-
-        return false;
-      },
-    );
-  }
-
-  public OnQueueUpdated(callback: () => void) {
-    this._eventEmitter.on(ON_QUEUE_UPDATED, () => callback());
-  }
-
-  private UpdateQueue() {
-    this._completedOperation
-      .push(...this._ongoingOperation
+  private static UpdateQueue() {
+    DownloadLibrary.completedOperation
+      .push(...DownloadLibrary.ongoingOperation
         .filter((value: DownloadOperation) => value.isCompleted));
 
-    this._ongoingOperation = this._ongoingOperation
+    DownloadLibrary.ongoingOperation = DownloadLibrary.ongoingOperation
       .filter((value: DownloadOperation) => !value.isCompleted);
 
     while (
-      this._ongoingOperation.length < maxOperationInParallel
-      && this._queuedOperation.length !== 0
+      DownloadLibrary.ongoingOperation.length < maxOperationInParallel
+      && DownloadLibrary.queuedOperation.length !== 0
     ) {
-      const operation = this._queuedOperation.pop();
+      const operation = DownloadLibrary.queuedOperation.pop();
 
       if (operation) {
-        operation.OnCompleted(() => DownloadManager.Singleton.UpdateQueue());
+        operation.OnCompleted(DownloadManager.UpdateQueue);
         operation.Start().then();
-        this._ongoingOperation.push(operation);
+        DownloadLibrary.ongoingOperation.push(operation);
       }
     }
 
-    this._eventEmitter.emit(ON_QUEUE_UPDATED);
+    DownloadManager.EventEmitter.emit(ON_QUEUE_UPDATED);
   }
 }

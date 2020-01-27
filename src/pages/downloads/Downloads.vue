@@ -22,18 +22,17 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import DownloadManager from '@/libraries/net/downloader/DownloadManager';
 import DownloadsListGroup from '@/components/downloads/list/DownloadsListGroup.vue';
+import DownloadLibrary from '@/libraries/net/downloader/DownloadLibrary';
 
 export default Vue.extend({
   name: 'Downloads',
   components: { DownloadsListGroup },
   computed: {
-    queued: () => DownloadManager.Singleton.queuedOperation,
-    ongoing: () => DownloadManager.Singleton.ongoingOperation,
-    completed: () => DownloadManager.Singleton.completedOperation,
+    queued: () => DownloadLibrary.queuedOperation,
+    ongoing: () => DownloadLibrary.ongoingOperation,
+    completed: () => DownloadLibrary.completedOperation,
   },
-
 });
 </script>
 

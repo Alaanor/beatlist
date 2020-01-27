@@ -12,11 +12,7 @@
         mdi-download
       </v-icon>
       <template #loader>
-        <v-progress-circular
-          v-if="operation"
-          color="success"
-          :value="progressPercent.toString()"
-        />
+        <DownloadProgressCircular :operation="operation"/>
       </template>
     </v-btn>
   </Tooltip>
@@ -31,17 +27,17 @@ import Tooltip from '@/components/helper/Tooltip.vue';
 import DownloadOperationBeatmap from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmap';
 import { DownloadOperation } from '@/libraries/net/downloader/operation/DownloadOperation';
 import NotificationService from '@/libraries/notification/NotificationService';
-import { DownloadUnitProgress, DownloadUnitProgressFactory } from '@/libraries/net/downloader/DownloadUnit';
+import DownloadLibrary from '@/libraries/net/downloader/DownloadLibrary';
+import DownloadProgressCircular from '@/components/downloads/DownloadProgressCircular.vue';
 
 export default Vue.extend({
   name: 'BeatmapDownloadButton',
-  components: { Tooltip },
+  components: { Tooltip, DownloadProgressCircular },
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
   },
   data: () => ({
     operation: undefined as DownloadOperation | undefined,
-    progress: {} as DownloadUnitProgress,
     isDownloaded: false,
     isDownloading: false,
   }),
@@ -51,30 +47,28 @@ export default Vue.extend({
         return 'Download';
       }
 
-      return `${this.progress.bytes.received}/${this.progress.bytes.total}bytes, ${this.progress.time.remaining}s remaining`; // TODO create an helper to format the message here in better form
-    },
-    progressPercent(): number {
-      const percent = this.progress.bytes.percent * 100;
-      return Math.ceil(percent / 5) * 5; // less update, the UI react faster
+      return `${this.operation?.progress.bytes.received}/${this.operation?.progress.bytes.total}bytes, ${this.operation?.progress.time.remaining}s remaining`; // TODO create an helper to format the message here in better form
     },
   },
   mounted(): void {
-    DownloadManager.Singleton.OnQueueUpdated(this.updateDownloadData);
+    DownloadManager.OnQueueUpdated(this.updateDownloadData);
     this.updateDownloadData();
+  },
+  beforeDestroy(): void {
+    DownloadManager.RemoveOnQueueUpdatedListener(this.updateDownloadData);
   },
   methods: {
     downloadIt(): void {
-      this.progress = DownloadUnitProgressFactory();
-      const operation = new DownloadOperationBeatmap(this.beatmap, this.progress);
+      const operation = new DownloadOperationBeatmap(this.beatmap);
       operation.OnCompleted(() => this.notifyResult(operation));
-      DownloadManager.Singleton.AddQueue(operation);
+      DownloadManager.AddQueue(operation);
     },
     updateDownloadData(): void {
       this.isDownloaded = BeatmapLibrary.HasBeatmap(this.beatmap);
-      this.isDownloading = DownloadManager.Singleton.HasBeatmapScheduled(this.beatmap);
+      this.isDownloading = DownloadLibrary.HasBeatmapScheduled(this.beatmap);
 
       if (this.isDownloading) {
-        this.operation = DownloadManager.Singleton.GetOperationFor(this.beatmap);
+        this.operation = DownloadLibrary.GetOperationFor(this.beatmap);
       } else {
         this.operation = undefined;
       }

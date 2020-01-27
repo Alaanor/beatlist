@@ -8,7 +8,7 @@ import {
   DownloadOperationType,
   DownloadOperationTypeBeatmap,
 } from '@/libraries/net/downloader/operation/DownloadOperation';
-import DownloadUnit, { DownloadUnitProgress } from '@/libraries/net/downloader/DownloadUnit';
+import DownloadUnit, { DownloadUnitProgress, DownloadUnitProgressFactory } from '@/libraries/net/downloader/DownloadUnit';
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import BeatsaverUtilities from '@/libraries/net/beatsaver/BeatsaverUtilities';
 import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
@@ -36,9 +36,12 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
 
   private _eventEmitter: events.EventEmitter = new events.EventEmitter();
 
-  private readonly progress: DownloadUnitProgress | undefined;
+  public readonly progress: DownloadUnitProgress;
 
-  constructor(beatmap: BeatsaverBeatmap, progress?: DownloadUnitProgress) {
+  constructor(
+    beatmap: BeatsaverBeatmap,
+    progress: DownloadUnitProgress = DownloadUnitProgressFactory(),
+  ) {
     this.beatmap = beatmap;
     this.progress = progress;
 
