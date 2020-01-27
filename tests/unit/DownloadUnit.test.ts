@@ -1,7 +1,7 @@
 import http from 'http';
 import path from 'path';
 import fs from 'fs-extra';
-import DownloadUnit from '@/libraries/net/downloader/DownloadUnit';
+import DownloadUnit, { DownloadUnitProgressFactory } from '@/libraries/net/downloader/DownloadUnit';
 
 const SERVER_PORT = 8085;
 const SERVER_URL = `http://localhost:${SERVER_PORT}`;
@@ -61,33 +61,36 @@ describe('download unit', () => {
       const input = `${SERVER_URL}/dl_item`;
       const output = path.join(tmpFolder, 'hello.zip');
 
-      const download = new DownloadUnit(input, fs.createWriteStream(output));
+      const progress = DownloadUnitProgressFactory();
+      const download = new DownloadUnit(input, fs.createWriteStream(output), progress);
 
       download.onCompleted(() => {
         expect(fs.pathExistsSync(output)).toBe(true);
-        expect(download.progress).toBeDefined();
-        expect(download.progress?.bytes.total).toBe(156);
-        expect(download.progress?.bytes.percent).toBe(1);
-        expect(download.progress?.time.remaining).toBe(0);
-        expect(download.progress?.bytes.speed).not.toBe(0);
+        expect(progress).toBeDefined();
+        expect(progress.bytes.total).toBe(156);
+        expect(progress.bytes.percent).toBe(1);
+        expect(progress.time.remaining).toBe(0);
+        expect(progress.bytes.speed).not.toBe(0);
 
         done();
       });
     });
   });
 
-  it("should have an undefined progress if there's not content-length header", async () => {
-    expect.assertions(2);
+  it("should have a progress of 0 if there's not content-length header", async () => {
+    expect.assertions(3);
 
     await new Promise((done) => {
       const input = `${SERVER_URL}/dl_item_no_header`;
       const output = path.join(tmpFolder, 'hello_no_header.zip');
 
+      const progress = DownloadUnitProgressFactory();
       const download = new DownloadUnit(input, fs.createWriteStream(output));
 
       download.onCompleted(() => {
         expect(fs.pathExistsSync(output)).toBe(true);
-        expect(download.progress).toBeUndefined();
+        expect(progress.bytes.percent).toBe(0);
+        expect(progress.bytes.total).toBe(0);
         done();
       });
     });

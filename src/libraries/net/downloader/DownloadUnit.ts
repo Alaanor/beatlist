@@ -14,14 +14,34 @@ export interface DownloadUnitProgress {
   },
 }
 
+export function DownloadUnitProgressFactory(): DownloadUnitProgress {
+  return {
+    bytes: {
+      total: 0,
+      received: 0,
+      percent: 0,
+      speed: 0,
+    },
+    time: {
+      startedAt: new Date(),
+      remaining: 0,
+    },
+  } as DownloadUnitProgress;
+}
+
 export default class DownloadUnit {
   public static TimeoutMs = 10 * 1e3;
 
   private _request: request.Request;
 
-  public progress: DownloadUnitProgress | undefined;
+  private readonly progress: DownloadUnitProgress;
 
-  public constructor(url: string, writableStream: NodeJS.WritableStream) {
+  public constructor(
+    url: string,
+    writableStream: NodeJS.WritableStream,
+    progress?: DownloadUnitProgress,
+  ) {
+    this.progress = progress ?? DownloadUnitProgressFactory();
     this._request = request(url, {
       timeout: DownloadUnit.TimeoutMs,
     });
@@ -29,13 +49,13 @@ export default class DownloadUnit {
     this._request.pipe(writableStream);
 
     this._request.on('response', (response: request.Response) => {
-      this.progress = DownloadUnit.InitiateProgress(response);
+      this.SetProgressTotalHeader(response);
       response.on('data', (chunk: any) => {
         if (this.progress) {
           this.progress.bytes.received += chunk.length;
         }
       });
-      response.on('data', throttle(this.UpdateProgress, 250));
+      response.on('data', throttle(this.UpdateProgress, 50));
     });
 
     this._request.on('complete', this.UpdateProgress);
@@ -53,26 +73,12 @@ export default class DownloadUnit {
     this._request.on('error', listener);
   }
 
-  private static InitiateProgress(response: request.Response)
-    : DownloadUnitProgress | undefined {
+  private SetProgressTotalHeader(response: request.Response) {
     const total = Number(response.headers['content-length']) || undefined;
 
-    if (total === undefined) {
-      return undefined;
+    if (total) {
+      this.progress.bytes.total = total;
     }
-
-    return {
-      bytes: {
-        total,
-        received: 0,
-        percent: 0,
-        speed: 0,
-      },
-      time: {
-        startedAt: new Date(),
-        remaining: 0,
-      },
-    } as DownloadUnitProgress;
   }
 
   private UpdateProgress() {
@@ -89,5 +95,7 @@ export default class DownloadUnit {
 
     const missingBytesAmount = this.progress.bytes.total - this.progress.bytes.received;
     this.progress.time.remaining = missingBytesAmount / this.progress.bytes.speed;
+
+    console.log(this.progress);
   }
 }

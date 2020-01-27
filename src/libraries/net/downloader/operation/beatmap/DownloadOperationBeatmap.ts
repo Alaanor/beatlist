@@ -30,18 +30,17 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
 
   public isCompleted: boolean = false;
 
-  public get progress(): DownloadUnitProgress | undefined {
-    return this.download?.progress;
-  }
-
   public readonly beatmap: BeatsaverBeatmap;
 
   private tempFolder: string | undefined;
 
   private _eventEmitter: events.EventEmitter = new events.EventEmitter();
 
-  constructor(beatmap: BeatsaverBeatmap) {
+  private readonly progress: DownloadUnitProgress | undefined;
+
+  constructor(beatmap: BeatsaverBeatmap, progress?: DownloadUnitProgress) {
     this.beatmap = beatmap;
+    this.progress = progress;
 
     this.result = {
       beatmap: this.beatmap,
@@ -61,7 +60,7 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
 
       try {
         this.result = { ...this.result, status: DownloadOperationBeatmapResultStatus.Downloading };
-        this.download = new DownloadUnit(url, stream);
+        this.download = new DownloadUnit(url, stream, this.progress);
         this.download.onError(this.onDownloadError);
         this.download.onCompleted(() => {
           try {
