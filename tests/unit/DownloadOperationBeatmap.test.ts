@@ -31,6 +31,14 @@ jest.mock('@/libraries/net/downloader/DownloadUnit', () => jest.fn()
     onCompleted: (callback: () => void) => callback(),
   })));
 
+jest.mock('electron', () => ({
+  remote: {
+    app: {
+      getPath: () => fakeInstallationLevelsPath,
+    },
+  },
+}));
+
 describe('download operation beatmap', () => {
   afterEach(async () => {
     await fs.unlink(destinationFooZipPath);
