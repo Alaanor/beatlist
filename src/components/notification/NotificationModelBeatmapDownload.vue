@@ -6,8 +6,9 @@
     @input="checkForDismissed()"
   >
     <v-list
+      v-if="isSuccess"
+      style="background: none"
       class="pa-0"
-      :color="snackbarColor"
     >
       <v-list-item class="pa-0">
         <v-list-item-avatar class="my-0">
@@ -17,9 +18,11 @@
           <v-list-item-title>{{ beatmap.metadata.songName }}</v-list-item-title>
           <v-list-item-subtitle>The beatmap has successfully been downloaded.</v-list-item-subtitle>
         </v-list-item-content>
-        <v-list-item-action>
+        <v-list-item-action class="ma-0">
           <v-btn
             text
+            color=""
+            class="ma-0"
             @click="close()"
           >
             Close
@@ -27,6 +30,9 @@
         </v-list-item-action>
       </v-list-item>
     </v-list>
+    <span v-else>
+      {{ errorText }}
+    </span>
   </v-snackbar>
 </template>
 
@@ -38,7 +44,10 @@ import {
   IBeatmapDownloadNotification,
 } from '@/libraries/notification/Notification';
 import NotificationLibrary from '@/libraries/notification/NotificationLibrary';
-import { DownloadOperationBeatmapResultStatus } from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
+import {
+  DownloadOperationBeatmapResult,
+  DownloadOperationBeatmapResultStatus,
+} from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
 import BeatmapCover from '@/components/beatmap/cover/BeatmapCover.vue';
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 
@@ -60,13 +69,27 @@ export default Vue.extend({
     },
     snackbarColor(): string {
       switch (this.notification.result.status as DownloadOperationBeatmapResultStatus) {
-        case DownloadOperationBeatmapResultStatus.Success:
-          return 'success';
-
         case DownloadOperationBeatmapResultStatus.DownloadError:
         case DownloadOperationBeatmapResultStatus.ExtractionError:
         case DownloadOperationBeatmapResultStatus.IOError:
           return 'error';
+
+        case DownloadOperationBeatmapResultStatus.Success:
+        default:
+          return '';
+      }
+    },
+    isSuccess(): boolean {
+      const status = this.notification.result.status as DownloadOperationBeatmapResultStatus;
+      return status === DownloadOperationBeatmapResultStatus.Success;
+    },
+    errorText(): string {
+      const result = this.notification.result as DownloadOperationBeatmapResult;
+      switch (result.status) {
+        case DownloadOperationBeatmapResultStatus.DownloadError:
+        case DownloadOperationBeatmapResultStatus.ExtractionError:
+        case DownloadOperationBeatmapResultStatus.IOError:
+          return result.errorWritten;
 
         default:
           return '';
