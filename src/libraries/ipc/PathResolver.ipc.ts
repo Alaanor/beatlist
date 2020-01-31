@@ -15,8 +15,8 @@ export default class PathResolver {
   public static async detectInstallationPath() : Promise<string> {
     ipcRenderer.send(RESOLVE_INST_PATH_MSG);
 
-    return new Promise(((resolve) => {
+    return new Promise((resolve) => {
       ipcRenderer.on(RESOLVE_INST_PATH_REPLY, (event: any, arg: string) => resolve(arg));
-    }));
+    });
   }
 }
