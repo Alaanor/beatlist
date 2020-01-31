@@ -5,10 +5,17 @@ import store from './store';
 import Settings from '@/pages/settings';
 import Home from '@/pages/home';
 import Downloads from '@/pages/downloads/';
+
 import Beatmap, {
   BeatmapLocal, BeatmapLocalUnit,
   BeatmapOnline, BeatmapOnlineUnit,
 } from '@/pages/beatmap';
+
+import Playlists, {
+  PlaylistsLocal,
+  PlaylistsLocalUnit,
+  PlaylistsBsaber,
+} from '@/pages/playlists';
 
 Vue.use(VueRouter);
 
@@ -32,7 +39,7 @@ const router = new VueRouter({
             icon: 'computer',
           },
           {
-            name: 'Online',
+            name: 'Online - Beatsaver',
             path: { name: 'beatmaps-online' },
             icon: 'language',
           },
@@ -58,6 +65,43 @@ const router = new VueRouter({
           path: 'online/:key',
           name: 'beatmaps-online-unit',
           component: BeatmapOnlineUnit,
+        },
+      ],
+    },
+    {
+      path: '/playlists',
+      name: 'playlists',
+      redirect: { name: 'playlists-local' },
+      component: Playlists,
+      meta: {
+        subNav: [
+          {
+            name: 'Local',
+            path: { name: 'playlists-local' },
+            icon: 'computer',
+          },
+          {
+            name: 'Online - BSaber.com',
+            path: { name: 'playlists-bsaber' },
+            icon: 'language',
+          },
+        ],
+      },
+      children: [
+        {
+          path: 'local',
+          name: 'playlists-local',
+          component: PlaylistsLocal,
+        },
+        {
+          path: 'local/:key',
+          name: 'playlists-local-unit',
+          component: PlaylistsLocalUnit,
+        },
+        {
+          path: 'bsaber',
+          name: 'playlists-bsaber',
+          component: PlaylistsBsaber,
         },
       ],
     },

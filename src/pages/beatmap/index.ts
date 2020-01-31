@@ -10,4 +10,5 @@ export {
   BeatmapLocalUnit,
   BeatmapOnlineUnit,
 };
+
 export default Beatmap;
