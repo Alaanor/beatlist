@@ -5,6 +5,7 @@ export type PlaylistLocal = PlaylistStoredLocally & PlaylistWithBeatmapLocal;
 
 interface PlaylistStoredLocally {
   path: string;
+  hash: string;
 }
 
 export interface PlaylistWithBeatmapLocal {

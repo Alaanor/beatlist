@@ -1,5 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
+import * as Throttle from 'promise-parallel-throttle';
+import crypto from 'crypto';
 import {
   BeatmapType,
   convertLegacyPlaylist,
@@ -9,7 +11,6 @@ import {
   magicNumber,
   serialize,
 } from 'blister.js';
-import * as Throttle from 'promise-parallel-throttle';
 import { PlaylistLocal, PlaylistLocalMap, PlaylistMapImportError } from '@/libraries/playlist/PlaylistLocal';
 import BeatsaverAPI, { BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
 import Progress from '@/libraries/common/Progress';
@@ -70,6 +71,7 @@ export default class PlaylistLoader {
     }
 
     output.path = filepath;
+    output.hash = PlaylistLoader.getPlaylistHash(output.path);
 
     return output;
   }
@@ -88,6 +90,14 @@ export default class PlaylistLoader {
 
   private static async IsOldFormat(buffer: Buffer) {
     return buffer.slice(0, magicNumber.length).toString() !== magicNumber.toString();
+  }
+
+  private static getPlaylistHash(playlistPath: string): string {
+    return crypto
+      .createHash('sha1')
+      .update(playlistPath)
+      .digest('hex')
+      .substr(0, 5);
   }
 
   private static async ConvertToPlaylistLocal(
@@ -206,6 +216,7 @@ export default class PlaylistLoader {
       maps: [],
       title: '',
       path: filepath,
+      hash: this.getPlaylistHash(filepath),
       loadState: {
         valid: false,
         errorMessage: message,
