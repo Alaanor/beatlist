@@ -14,8 +14,9 @@
 
       <v-list-item-content>
         <v-list-item-title>
-          <span>{{ playlist.title }}</span>
-          <span class="grey--text ml-1">{{ playlist.author ? ` - ${playlist.author}` : '' }}</span>
+          <span class="mr-1">{{ playlist.title }}</span>
+          <span class="grey--text">{{ playlist.author ? ` - ${playlist.author}` : '' }}</span>
+          <span class="grey--text">{{ ` - ${playlist.maps.length} maps` }}</span>
         </v-list-item-title>
         <v-list-item-subtitle class="text-no-wrap">
           {{ playlist.description }}
