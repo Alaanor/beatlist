@@ -26,6 +26,13 @@ const mutations = {
       localBeatmap.onlineData = payload.onlineData;
     }
   },
+  addBeatmap(context: BeatmapStoreState, payload: { beatmap: BeatmapLocal }) {
+    context.beatmaps.push(payload.beatmap);
+  },
+  removeBeatmap(context: BeatmapStoreState, payload: { beatmap: BeatmapLocal }) {
+    context.beatmaps = context.beatmaps
+      .filter((value: BeatmapLocal) => value.onlineData?.key !== payload.beatmap.onlineData.key);
+  },
 };
 
 export default {

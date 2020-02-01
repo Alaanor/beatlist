@@ -30,6 +30,7 @@ import NotificationService from '@/libraries/notification/NotificationService';
 import DownloadLibrary from '@/libraries/net/downloader/DownloadLibrary';
 import DownloadProgressCircular from '@/components/downloads/DownloadProgressCircular.vue';
 import { FormatProgressAllInOne } from '@/libraries/net/downloader/DownloadUnitProgress';
+import BeatmapInstaller from '@/libraries/os/beatSaber/installer/BeatmapInstaller';
 
 export default Vue.extend({
   name: 'BeatmapDownloadButton',
@@ -60,9 +61,7 @@ export default Vue.extend({
   },
   methods: {
     downloadIt(): void {
-      const operation = new DownloadOperationBeatmap(this.beatmap);
-      operation.OnCompleted(() => this.notifyResult(operation));
-      DownloadManager.AddQueue(operation);
+      BeatmapInstaller.Install(this.beatmap, this.notifyResult);
     },
     updateDownloadData(): void {
       this.isDownloaded = BeatmapLibrary.HasBeatmap(this.beatmap);

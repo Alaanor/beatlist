@@ -44,4 +44,12 @@ export default class BeatmapLibrary {
     store.commit('beatmap/SET_LAST_SCAN', undefined);
     store.commit('beatmap/SET_BEATMAPS', []);
   }
+
+  public static AddBeatmap(beatmap: BeatmapLocal) {
+    store.commit('beatmap/addBeatmap', { beatmap });
+  }
+
+  public static RemoveBeatmap(beatmap: BeatmapLocal) {
+    store.commit('beatmap/removeBeatmap', { beatmap });
+  }
 }
