@@ -94,7 +94,7 @@ const router = new VueRouter({
           component: PlaylistsLocal,
         },
         {
-          path: 'local/:key',
+          path: 'local/:hash',
           name: 'playlists-local-unit',
           component: PlaylistsLocalUnit,
         },

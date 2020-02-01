@@ -20,6 +20,11 @@ export default class PlaylistLibrary {
     return store.getters['playlist/lastScan'];
   }
 
+  public static GetByHash(hash: string): PlaylistLocal | undefined {
+    return this.GetAllPlaylists()
+      .find((playlist: PlaylistLocal) => playlist.hash === hash);
+  }
+
   public static UpdateAllPlaylist(playlists: PlaylistLocal[]) {
     store.commit('playlist/SET_LAST_SCAN', new Date());
     store.commit('playlist/SET_PLAYLISTS', playlists);
@@ -28,5 +33,13 @@ export default class PlaylistLibrary {
   public static ClearCache() {
     store.commit('playlist/SET_LAST_SCAN', undefined);
     store.commit('playlist/SET_PLAYLISTS', []);
+  }
+
+  public static AddPlaylist(playlist: PlaylistLocal) {
+    store.commit('playlist/addPlaylist', { playlist });
+  }
+
+  public static RemovePlaylist(playlist: PlaylistLocal) {
+    store.commit('playlist/removePlaylist', { playlist });
   }
 }

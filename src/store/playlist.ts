@@ -17,6 +17,13 @@ const getters = {
 
 const mutations = {
   ...make.mutations(state),
+  addPlaylist(context: PlaylistStoreState, payload: { playlist: PlaylistLocal }) {
+    context.playlists.push(payload.playlist);
+  },
+  removePlaylist(context: PlaylistStoreState, payload: { playlist: PlaylistLocal }) {
+    context.playlists = context.playlists
+      .filter((value: PlaylistLocal) => value.hash !== payload.playlist.hash);
+  },
 };
 
 export default {

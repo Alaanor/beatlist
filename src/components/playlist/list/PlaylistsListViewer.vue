@@ -24,7 +24,10 @@
       </v-list-item-content>
 
       <v-list-item-action>
-        <slot name="actions"/>
+        <slot
+          name="actions"
+          :playlist="playlist"
+        />
       </v-list-item-action>
     </v-list-item>
   </v-list>

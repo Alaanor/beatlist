@@ -2,7 +2,11 @@
   <v-img
     v-if="playlist.cover"
     :src="coverSrc"
-  />
+    :max-height="maxHeight"
+    :contain="contain"
+  >
+    <slot/>
+  </v-img>
 </template>
 
 <script lang="ts">
@@ -13,6 +17,8 @@ export default Vue.extend({
   name: 'PlaylistCover',
   props: {
     playlist: { type: Object as PropType<PlaylistLocal>, required: true },
+    maxHeight: { type: Number, default: undefined },
+    contain: { type: Boolean, default: undefined },
   },
   computed: {
     coverSrc(): string {
