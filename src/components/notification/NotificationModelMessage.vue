@@ -5,6 +5,9 @@
     :timeout="notification.timeout"
     @input="checkForDismissed()"
   >
+    <v-icon v-if="notification.icon">
+      {{ notification.icon }}
+    </v-icon>
     <span v-html="notification.content"/>
     <v-btn
       text

@@ -11,13 +11,14 @@ import {
 } from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
 
 export default class NotificationFactory {
-  public static CreateMessage(content: string, color: string | undefined)
+  public static CreateMessage(content: string, color?: string, icon?: string)
     : ICommonNotification & IMessageNotification {
     const notification = this.Make<IMessageNotification>();
 
     notification.type = NotificationType.Message;
     notification.content = content;
     notification.color = color;
+    notification.icon = icon;
 
     return notification;
   }

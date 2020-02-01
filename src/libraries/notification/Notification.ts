@@ -24,6 +24,7 @@ export interface IMessageNotification extends INotificationType {
   type: NotificationType.Message;
   content: string;
   color: string | undefined;
+  icon: string | undefined;
 }
 
 export interface IBeatmapDownloadNotification extends INotificationType {
