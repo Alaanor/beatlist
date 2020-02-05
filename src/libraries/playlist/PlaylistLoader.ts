@@ -11,12 +11,17 @@ import {
   magicNumber,
   serialize,
 } from 'blister.js';
-import { PlaylistLocal, PlaylistLocalMap, PlaylistMapImportError } from '@/libraries/playlist/PlaylistLocal';
+import {
+  PlaylistBase,
+  PlaylistLocal,
+  PlaylistLocalMap,
+  PlaylistMapImportError, PlaylistOnlineMap,
+} from '@/libraries/playlist/PlaylistLocal';
 import BeatsaverAPI, { BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
 import Progress from '@/libraries/common/Progress';
 import PlaylistLoadStateError from '@/libraries/playlist/PlaylistLoadStateError';
 
-const PLAYLIST_EXTENSION_NAME = 'blist';
+export const PLAYLIST_EXTENSION_NAME: string = 'blist';
 
 export default class PlaylistLoader {
   public static async Load(
@@ -76,11 +81,19 @@ export default class PlaylistLoader {
     return output;
   }
 
-  public static async Save(filepath: string, playlist: PlaylistLocal): Promise<boolean> {
+  public static async Save(playlist: PlaylistLocal): Promise<void> {
+    await this.SaveAt(playlist.path, playlist);
+  }
+
+  public static async SaveAt(filepath: string, playlist: PlaylistBase): Promise<void> {
+    const blisterPlaylist = await PlaylistLoader.ConvertToPlaylistBlister(playlist);
+    const buffer = await serialize(blisterPlaylist);
+    await fs.writeFile(filepath, buffer);
+  }
+
+  private static async SaveAtBool(filepath: string, playlist: PlaylistLocal): Promise<boolean> {
     try {
-      const blisterPlaylist = await PlaylistLoader.ConvertToPlaylistBlister(playlist);
-      const buffer = await serialize(blisterPlaylist);
-      await fs.writeFile(filepath, buffer);
+      await this.SaveAt(filepath, playlist);
     } catch (e) {
       return false;
     }
@@ -166,7 +179,7 @@ export default class PlaylistLoader {
     }
   }
 
-  private static async ConvertToPlaylistBlister(playlist: PlaylistLocal): Promise<IPlaylist> {
+  private static async ConvertToPlaylistBlister(playlist: PlaylistBase): Promise<IPlaylist> {
     const output = {} as IPlaylist;
 
     output.title = playlist.title;
@@ -174,7 +187,7 @@ export default class PlaylistLoader {
     output.description = playlist.description;
     output.cover = playlist.cover;
 
-    output.maps = playlist.maps.map((map: PlaylistLocalMap) => {
+    output.maps = playlist.maps.map((map: PlaylistLocalMap | PlaylistOnlineMap) => {
       if (map.online === undefined) {
         return undefined;
       }
@@ -194,7 +207,7 @@ export default class PlaylistLoader {
     : Promise<string | undefined> {
     const filename = `${path.parse(filepath).name}.${PLAYLIST_EXTENSION_NAME}`;
     const newFilepath = path.join(path.parse(filepath).dir, filename);
-    const done = await this.Save(newFilepath, playlist);
+    const done = await this.SaveAtBool(newFilepath, playlist);
 
     if (done) {
       await fs.unlink(filepath);

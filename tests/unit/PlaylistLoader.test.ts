@@ -128,7 +128,7 @@ describe('playlist loader', () => {
   });
 
   it('should save the playlist correctly', async () => {
-    expect.assertions(5);
+    expect.assertions(4);
 
     const mockGetBeatmapByHash = jest.fn();
     const mockedValue = { key: '75f1' };
@@ -150,9 +150,8 @@ describe('playlist loader', () => {
       ],
     } as PlaylistLocal;
 
-    const done = await PlaylistLoader.Save(playlistPath, playlistData);
+    await PlaylistLoader.SaveAt(playlistPath, playlistData);
 
-    expect(done).toBe(true);
     expect(await fs.pathExists(playlistPath)).toBe(true);
 
     const playlist = await PlaylistLoader.Load(playlistPath);

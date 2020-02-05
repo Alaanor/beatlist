@@ -5,6 +5,7 @@ import { BeatmapLocal } from './BeatmapLocal';
 import BeatmapLoadStateError from './BeatmapLoadStateError';
 import { BeatmapLoadState } from './BeatmapLoadState';
 import BeatmapHashComputer from './BeatmapHashComputer';
+import Base64SrcLoader from '@/libraries/os/utils/Base64SrcLoader';
 
 export default class BeatmapLoader {
   private readonly beatmap: BeatmapLocal;
@@ -22,8 +23,7 @@ export default class BeatmapLoader {
       return undefined;
     }
 
-    const rawImage = await fs.readFile(beatmap.coverPath);
-    return `data:image/jpg;base64,${rawImage.toString('base64')}`;
+    return Base64SrcLoader.FromFile(beatmap.coverPath);
   }
 
   private constructor() {

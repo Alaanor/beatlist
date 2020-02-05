@@ -18,6 +18,11 @@ export default class BeatSaber {
     return resolveInstallPath();
   }
 
+  public static getPlaylistFolder(): string {
+    const installationPath = store.getters['settings/installationPath'];
+    return path.join(installationPath, BEAT_SABER_PLAYLIST);
+  }
+
   public static async getAllSongFolderPath(): Promise<string[]> {
     const installationPath = store.getters['settings/installationPath'];
     const pathSongList = path.join(installationPath, BEAT_SABER_CUSTOM_LEVEL);
@@ -26,8 +31,7 @@ export default class BeatSaber {
   }
 
   public static async getAllPlaylistsPath(): Promise<string[] | undefined> {
-    const installationPath = store.getters['settings/installationPath'];
-    const pathPlaylists = path.join(installationPath, BEAT_SABER_PLAYLIST);
+    const pathPlaylists = this.getPlaylistFolder();
     const fileList = await fs.readdir(pathPlaylists);
 
     const allFile = await Promise.all(fileList.map(async (file: string) => {

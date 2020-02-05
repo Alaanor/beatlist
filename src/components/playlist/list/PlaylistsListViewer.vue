@@ -1,5 +1,6 @@
 <template>
   <v-list
+    v-if="playlists.length > 0"
     dense
     rounded
   >
@@ -31,6 +32,12 @@
       </v-list-item-action>
     </v-list-item>
   </v-list>
+  <v-alert
+    v-else
+    type="warning"
+  >
+    There's no playlist available yet. Create a new one !
+  </v-alert>
 </template>
 
 <script lang="ts">
