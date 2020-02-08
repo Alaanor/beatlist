@@ -43,8 +43,8 @@ export default Vue.extend({
     async deletePlaylist() {
       await PlaylistInstaller.Uninstall(this.playlist);
       NotificationService.NotifyMessage(
-        'Playlist the playlist has been deleted',
-        'success',
+        'The playlist has been deleted',
+        '',
         NOTIFICATION_ICON_DELETE,
       );
     },
