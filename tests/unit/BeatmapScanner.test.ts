@@ -32,10 +32,10 @@ describe('beatmap beatmapScanner', () => {
     const scanner = new BeatmapScanner();
     await scanner.scanAll(progress);
 
-    expect(scanner.newItems[0].folderPath).toBe('bar');
-    expect(scanner.newItems[1].folderPath).toBe('foobar');
-    expect(scanner.removedItems).toBe(1);
-    expect(scanner.keptItems).toBe(1);
+    expect(scanner.result.newItems[0].folderPath).toBe('bar');
+    expect(scanner.result.newItems[1].folderPath).toBe('foobar');
+    expect(scanner.result.removedItems).toBe(1);
+    expect(scanner.result.keptItems).toBe(1);
     expect(progress.get().done).toBe(2);
     expect(progress.get().total).toBe(2);
     expect(progress.getRatio()).toBe(1);
