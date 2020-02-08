@@ -14,11 +14,11 @@ export default class BeatmapScannerResult implements ScannerResultInterface {
       : '';
 
     const removeItemStr: string = this.removedItems > 0
-      ? `${this.newItems.length} beatmap${this.newItems.length > 1 ? 's' : ''} has been removed`
+      ? `${this.removedItems} beatmap${this.removedItems > 1 ? 's' : ''} has been removed`
       : '';
 
     const keptItemStr: string = this.keptItems > 0
-      ? `${this.newItems.length} beatmap${this.newItems.length > 1 ? 's' : ''} has been kept`
+      ? `${this.keptItems} beatmap${this.keptItems ? 's' : ''} has been kept`
       : '';
 
     return [newItemStr, removeItemStr, keptItemStr]
