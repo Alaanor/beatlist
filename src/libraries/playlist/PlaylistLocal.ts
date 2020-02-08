@@ -10,8 +10,8 @@ export interface PlaylistBase {
 }
 
 export interface PlaylistLocal extends PlaylistBase {
-  path: string;
-  hash: string;
+  path: string | undefined;
+  hash: string | undefined;
   maps: PlaylistLocalMap[];
   loadState: PlaylistLoadState;
 }

@@ -31,7 +31,7 @@ export default class PlaylistLoader {
   ) : Promise<PlaylistLocal> {
     if (!await fs.pathExists(filepath)) {
       return this.buildEmptyPlaylist(
-        filepath,
+        undefined,
         'The path doesn\'t exist',
         PlaylistLoadStateError.PathDoesntExist,
       );
@@ -76,12 +76,16 @@ export default class PlaylistLoader {
     }
 
     output.path = filepath;
-    output.hash = PlaylistLoader.getPlaylistHash(output.path);
+    output.hash = await PlaylistLoader.getPlaylistHash(output.path);
 
     return output;
   }
 
   public static async Save(playlist: PlaylistLocal): Promise<void> {
+    if (playlist.path === undefined) {
+      throw new Error("this playlist doesn't contain a path");
+    }
+
     await this.SaveAt(playlist.path, playlist);
   }
 
@@ -105,10 +109,10 @@ export default class PlaylistLoader {
     return buffer.slice(0, magicNumber.length).toString() !== magicNumber.toString();
   }
 
-  private static getPlaylistHash(playlistPath: string): string {
+  private static async getPlaylistHash(playlistPath: string): Promise<string> {
     return crypto
       .createHash('sha1')
-      .update(playlistPath)
+      .update((await fs.readFile(playlistPath)).toString() + playlistPath)
       .digest('hex')
       .substr(0, 5);
   }
@@ -218,7 +222,7 @@ export default class PlaylistLoader {
   }
 
   private static buildEmptyPlaylist(
-    filepath: string,
+    filepath: string | undefined,
     message: string,
     errorType: PlaylistLoadStateError,
   ): PlaylistLocal {
@@ -229,7 +233,7 @@ export default class PlaylistLoader {
       maps: [],
       title: '',
       path: filepath,
-      hash: this.getPlaylistHash(filepath),
+      hash: undefined,
       loadState: {
         valid: false,
         errorMessage: message,

@@ -38,7 +38,7 @@ export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> 
       ?.map((path: string) => path.toLowerCase()) ?? [];
 
     const oldPaths = PlaylistLibrary.GetAllPlaylists()
-      .map((playlist: PlaylistLocal) => playlist.path.toLowerCase());
+      .map((playlist: PlaylistLocal) => playlist.path?.toLowerCase() ?? '');
 
     return computeDifference(oldPaths, currentPaths);
   }

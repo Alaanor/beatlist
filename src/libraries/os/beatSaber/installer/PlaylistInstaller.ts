@@ -33,7 +33,10 @@ export default class PlaylistInstaller {
   }
 
   public static async Uninstall(playlist: PlaylistLocal): Promise<void> {
-    await fs.unlink(playlist.path);
+    if (playlist.path) {
+      await fs.unlink(playlist.path);
+    }
+
     PlaylistLibrary.RemovePlaylist(playlist);
   }
 }
