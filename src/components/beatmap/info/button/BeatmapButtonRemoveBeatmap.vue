@@ -1,6 +1,6 @@
 <template>
   <div v-if="localBeatmap">
-    <Tooltip text="Refresh the data">
+    <Tooltip text="Delete the beatmap">
       <v-btn
         icon
         color="error"
@@ -11,7 +11,7 @@
       </v-btn>
     </Tooltip>
     <ConfirmDialog
-      :open="dialog"
+      :open.sync="dialog"
       title="Delete beatmap"
       action-text="Delete"
       action-color="error"

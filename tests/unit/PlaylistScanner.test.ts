@@ -1,8 +1,8 @@
-import PlaylistScanner from '@/libraries/playlist/PlaylistScanner';
 import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
 import PlaylistLoader from '@/libraries/playlist/PlaylistLoader';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
+import PlaylistScanner from '@/libraries/scanner/playlist/PlaylistScannerResult';
 
 describe('playlist beatmapScanner', () => {
   it('should only scan the difference', async () => {
@@ -24,9 +24,9 @@ describe('playlist beatmapScanner', () => {
     const scanner = new PlaylistScanner();
     await scanner.ScanAll();
 
-    expect(scanner.newPlaylists[0].path).toBe('foo');
-    expect(scanner.newPlaylists[1].path).toBe('foobar');
-    expect(scanner.keptPlaylists).toBe(1);
-    expect(scanner.removedPlaylists).toBe(1);
+    expect(scanner.newItems[0].path).toBe('foo');
+    expect(scanner.newItems[1].path).toBe('foobar');
+    expect(scanner.keptItems).toBe(1);
+    expect(scanner.removedItems).toBe(1);
   });
 });

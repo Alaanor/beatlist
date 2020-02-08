@@ -4,7 +4,8 @@ import DownloadOperationBeatmap from '@/libraries/net/downloader/operation/beatm
 import DownloadManager from '@/libraries/net/downloader/DownloadManager';
 import { BeatmapLocal } from '@/libraries/beatmap/BeatmapLocal';
 import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
-import BeatmapScanner from '@/libraries/beatmap/BeatmapScanner';
+import BeatmapScanner from '@/libraries/scanner/beatmap/BeatmapScanner';
+import { DownloadOperationBeatmapResultStatus } from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
 
 export default class BeatmapInstaller {
   public static Install(
@@ -14,7 +15,12 @@ export default class BeatmapInstaller {
     const operation = new DownloadOperationBeatmap(beatmap);
 
     if (onCompleted) {
-      operation.OnCompleted(() => new BeatmapScanner().ScanAll());
+      operation.OnCompleted(async () => {
+        if (operation.result.status === DownloadOperationBeatmapResultStatus.Success) {
+          await new BeatmapScanner().scanOne(operation.result.path);
+        }
+      });
+
       operation.OnCompleted(() => onCompleted(operation));
     }
 

@@ -139,6 +139,7 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
     this.result = {
       ...this.result,
       status: DownloadOperationBeatmapResultStatus.Success,
+      path: BeatSaber.GetFolderPathFor(this.beatmap),
     };
 
     this._eventEmitter.emit(ON_COMPLETED);

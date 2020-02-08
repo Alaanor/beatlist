@@ -31,6 +31,7 @@ export interface DownloadOperationBeatmapResultInProgress {
 
 export interface DownloadOperationBeatmapResultDone {
   status: DownloadOperationBeatmapResultStatus.Success;
+  path: string;
 }
 
 export interface DownloadOperationBeatmapResultError {

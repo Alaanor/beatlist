@@ -1,24 +1,22 @@
 import * as Throttle from 'promise-parallel-throttle';
 import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
-import BeatmapLibrary from './BeatmapLibrary';
-import BeatmapLoader from './BeatmapLoader';
-import { BeatmapLocal } from './BeatmapLocal';
+import BeatmapLibrary from '../../beatmap/BeatmapLibrary';
+import BeatmapLoader from '../../beatmap/BeatmapLoader';
+import { BeatmapLocal } from '../../beatmap/BeatmapLocal';
 import { computeDifference, Differences } from '@/libraries/common/Differences';
 import Progress from '@/libraries/common/Progress';
+import { ScannerInterface } from '@/libraries/scanner/ScannerService';
+import BeatmapScannerResult from '@/libraries/scanner/beatmap/BeatmapScannerResult';
 
-export default class BeatmapScanner {
-  public newBeatmaps: BeatmapLocal[] = [];
+export default class BeatmapScanner implements ScannerInterface<BeatmapLocal> {
+  public result: BeatmapScannerResult = new BeatmapScannerResult();
 
-  public removedBeatmaps: number = 0;
-
-  public keptBeatmaps: number = 0;
-
-  public async ScanAll(progress: Progress = new Progress()) {
+  public async scanAll(progress: Progress = new Progress()): Promise<void> {
     const diff = await BeatmapScanner.GetTheDifferenceInPath();
 
     progress.setTotal(diff.added.length);
 
-    this.newBeatmaps = await Throttle.all(
+    this.result.newItems = await Throttle.all(
       diff.added.map((path: string) => () => BeatmapLoader
         .Load(path)
         .then((beatmap: BeatmapLocal) => {
@@ -28,11 +26,19 @@ export default class BeatmapScanner {
       { maxInProgress: 25 },
     );
 
-    this.removedBeatmaps = diff.removed.length;
-    this.keptBeatmaps = diff.kept.length;
+    this.result.removedItems = diff.removed.length;
+    this.result.keptItems = diff.kept.length;
 
     const allBeatmaps = this.ReassembleAllBeatmap(diff);
     BeatmapLibrary.UpdateAllMaps(allBeatmaps);
+  }
+
+  public async scanOne(path: string): Promise<BeatmapLocal> {
+    const beatmap = await BeatmapLoader.Load(path);
+    BeatmapLibrary.AddBeatmap(beatmap);
+
+    this.result.newItems = [beatmap];
+    return beatmap;
   }
 
   private static async GetTheDifferenceInPath(): Promise<Differences<string>> {
@@ -52,6 +58,6 @@ export default class BeatmapScanner {
       ),
     );
 
-    return this.newBeatmaps.concat(existingBeatmap);
+    return this.result.newItems.concat(existingBeatmap);
   }
 }

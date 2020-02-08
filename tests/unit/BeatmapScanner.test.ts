@@ -1,4 +1,4 @@
-import BeatmapScanner from '@/libraries/beatmap/BeatmapScanner';
+import BeatmapScanner from '@/libraries/scanner/beatmap/BeatmapScanner';
 import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
 import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
 import { BeatmapLocal } from '@/libraries/beatmap/BeatmapLocal';
@@ -30,12 +30,12 @@ describe('beatmap beatmapScanner', () => {
 
     const progress = new Progress();
     const scanner = new BeatmapScanner();
-    await scanner.ScanAll(progress);
+    await scanner.scanAll(progress);
 
-    expect(scanner.newBeatmaps[0].folderPath).toBe('bar');
-    expect(scanner.newBeatmaps[1].folderPath).toBe('foobar');
-    expect(scanner.removedBeatmaps).toBe(1);
-    expect(scanner.keptBeatmaps).toBe(1);
+    expect(scanner.newItems[0].folderPath).toBe('bar');
+    expect(scanner.newItems[1].folderPath).toBe('foobar');
+    expect(scanner.removedItems).toBe(1);
+    expect(scanner.keptItems).toBe(1);
     expect(progress.get().done).toBe(2);
     expect(progress.get().total).toBe(2);
     expect(progress.getRatio()).toBe(1);

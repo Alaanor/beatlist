@@ -106,17 +106,17 @@
 <script lang="ts">
 import Vue from 'vue';
 import { get } from 'vuex-pathify';
-import BeatmapScanner from '@/libraries/beatmap/BeatmapScanner';
+import BeatmapScanner from '@/libraries/scanner/beatmap/BeatmapScanner';
 import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
 import LoaderDialog from '@/components/dialogs/LoaderDialog.vue';
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog.vue';
 import Progress from '@/libraries/common/Progress';
-import PlaylistScanner from '@/libraries/playlist/PlaylistScanner';
 import ProgressGroup from '@/libraries/common/ProgressGroup';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
 import InvalidBeatmapDialog from '@/components/dialogs/InvalidBeatmapDialog.vue';
 import NotificationService from '@/libraries/notification/NotificationService';
 import InvalidPlaylistDialog from '@/components/dialogs/InvalidPlaylistDialog.vue';
+import PlaylistScanner from '@/libraries/scanner/playlist/PlaylistScanner';
 
 export default Vue.extend({
   name: 'SongLibrary',
@@ -151,14 +151,14 @@ export default Vue.extend({
       this.playlistScanner = new PlaylistScanner();
       this.beatmapScanner = new BeatmapScanner();
 
-      this.beatmapScanner.ScanAll(this.progress.beatmap)
+      this.beatmapScanner.scanAll(this.progress.beatmap)
         .then(() => {
           setTimeout(() => {
             this.scanning.beatmap = false;
           }, 200);
 
           this.scanning.playlist = true;
-          return this.playlistScanner.ScanAll(this.progress.playlist);
+          return this.playlistScanner.scanAll(this.progress.playlist);
         })
         .then(() => {
           setTimeout(() => {
