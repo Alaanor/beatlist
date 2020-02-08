@@ -5,7 +5,10 @@
     :timeout="notification.timeout"
     @input="checkForDismissed()"
   >
-    <v-icon v-if="notification.icon">
+    <v-icon
+      v-if="notification.icon"
+      class="pr-2"
+    >
       {{ notification.icon }}
     </v-icon>
     <span v-html="notification.content"/>
