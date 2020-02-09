@@ -77,6 +77,10 @@ export default Vue.extend({
         type: 'spacer',
       },
       {
+        type: 'component',
+        component: 'ScannerStatusService',
+      },
+      {
         type: 'entry',
         path: '/downloads',
         name: 'Downloads',

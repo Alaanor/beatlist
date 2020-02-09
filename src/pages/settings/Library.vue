@@ -10,8 +10,8 @@
           class="d-flex align-center justify-center flex-column py-0"
         >
           <v-btn
-            :disabled="scanning.global || !installationPathValid"
-            :loading="scanning.global"
+            :disabled="isScanning || !installationPathValid"
+            :loading="isScanning"
             color="success"
             class="my-2"
             @click="scan()"
@@ -19,7 +19,7 @@
             Update library
           </v-btn>
           <v-btn
-            :disabled="scanning.global || !installationPathValid || beatmapsCountValid === 0"
+            :disabled="isScanning || !installationPathValid || beatmapsCountValid === 0"
             color="warning"
             class="my-2"
             @click="openConfirmDialogCache()"
@@ -76,20 +76,6 @@
         </v-col>
       </v-row>
     </v-container>
-    <LoaderDialog
-      v-model="scanning.beatmap"
-      icon="search"
-      text="Scanning beatmap"
-      color="success"
-      :progress="progress.beatmap"
-    />
-    <LoaderDialog
-      v-model="scanning.playlist"
-      icon="search"
-      text="Scanning playlist"
-      color="success"
-      :progress="progress.playlist"
-    />
     <ConfirmDialog
       :open.sync="confirmDialog"
       action-text="Clear"
@@ -106,31 +92,22 @@
 <script lang="ts">
 import Vue from 'vue';
 import { get } from 'vuex-pathify';
-import BeatmapScanner from '@/libraries/scanner/beatmap/BeatmapScanner';
 import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
-import LoaderDialog from '@/components/dialogs/LoaderDialog.vue';
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog.vue';
-import Progress from '@/libraries/common/Progress';
-import ProgressGroup from '@/libraries/common/ProgressGroup';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
 import InvalidBeatmapDialog from '@/components/dialogs/InvalidBeatmapDialog.vue';
-import NotificationService from '@/libraries/notification/NotificationService';
 import InvalidPlaylistDialog from '@/components/dialogs/InvalidPlaylistDialog.vue';
-import PlaylistScanner from '@/libraries/scanner/playlist/PlaylistScanner';
+import ScannerService from '@/libraries/scanner/ScannerService';
 
 export default Vue.extend({
   name: 'SongLibrary',
   components: {
-    LoaderDialog, ConfirmDialog, InvalidBeatmapDialog, InvalidPlaylistDialog,
+    ConfirmDialog, InvalidBeatmapDialog, InvalidPlaylistDialog,
   },
   data: () => ({
-    scanning: { global: false, beatmap: false, playlist: false },
-    beatmapScanner: {} as BeatmapScanner,
-    playlistScanner: {} as PlaylistScanner,
     confirmDialog: false,
     invalidBeatmapDialog: false,
     invalidPlaylistDialog: false,
-    progress: { beatmap: new Progress(), playlist: new ProgressGroup() },
   }),
   computed: {
     installationPathValid: get('settings/installationPathValid'),
@@ -139,47 +116,12 @@ export default Vue.extend({
     playlistsCountValid: () => PlaylistLibrary.GetAllValidPlaylists().length,
     playlistsCountInvalid: () => PlaylistLibrary.GetAllInvalidPlaylists().length,
     lastScan: () => BeatmapLibrary.GetLastScanDate()?.toLocaleString() ?? undefined,
+    isScanning: () => ScannerService.isScanning,
   },
   methods: {
     scan() {
-      this.progress = { beatmap: new Progress(), playlist: new ProgressGroup() };
-
-      this.scanning.global = true;
-      this.scanning.beatmap = true;
-      this.scanning.playlist = false;
-
-      this.playlistScanner = new PlaylistScanner();
-      this.beatmapScanner = new BeatmapScanner();
-
-      this.beatmapScanner.scanAll(this.progress.beatmap)
-        .then(() => {
-          setTimeout(() => {
-            this.scanning.beatmap = false;
-          }, 200);
-
-          this.scanning.playlist = true;
-          return this.playlistScanner.scanAll(this.progress.playlist);
-        })
-        .then(() => {
-          setTimeout(() => {
-            this.scanning.playlist = false;
-            this.scanning.global = false;
-          });
-        })
-        .then(() => {
-          NotificationService.NotifyMessage(
-            `<strong>${this.beatmapsCountValid}</strong> beatmaps and
-            <strong>${this.playlistsCountValid}</strong> playlists are now in the library.`,
-            'success',
-          );
-        })
-        .catch((e: Error) => {
-          this.scanning.beatmap = false;
-          this.scanning.playlist = false;
-          this.scanning.global = false;
-
-          console.error(e);
-        });
+      ScannerService.ScanAll();
+      ScannerService.requestDialogToBeOpened();
     },
     openConfirmDialogCache() {
       this.confirmDialog = true;

@@ -11,9 +11,9 @@ import {
 } from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
 
 export default class NotificationFactory {
-  public static CreateMessage(content: string, color?: string, icon?: string)
+  public static CreateMessage(content: string, color?: string, icon?: string, timeout?: number)
     : ICommonNotification & IMessageNotification {
-    const notification = this.Make<IMessageNotification>();
+    const notification = this.Make<IMessageNotification>(timeout);
 
     notification.type = NotificationType.Message;
     notification.content = content;
@@ -33,9 +33,10 @@ export default class NotificationFactory {
     return notification;
   }
 
-  private static Make<T extends INotificationType>(): ICommonNotification & T {
+  private static Make<T extends INotificationType>(timeout: number = 5000)
+    : ICommonNotification & T {
     return {
-      timeout: 5000,
+      timeout,
       date: new Date(),
       state: NotificationState.ReadyToBeSend,
     } as ICommonNotification & T;

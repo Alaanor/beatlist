@@ -21,6 +21,10 @@
           v-if="menu.type === 'entry'"
           :item="menu"
         />
+        <component
+          :is="menu.component"
+          v-if="menu.type === 'component'"
+        />
       </div>
     </div>
     <svg
@@ -57,10 +61,11 @@
 
 <script lang="ts">
 import MenuNavigationItem from '@/components/core/menu/MenuNavigationItem.vue';
+import ScannerStatusService from '@/components/services/ScannerStatusService.vue';
 
 export default {
   name: 'AppMenuNavBar',
-  components: { MenuNavigationItem },
+  components: { MenuNavigationItem, ScannerStatusService },
   props: {
     menus: { type: Array, required: true },
     main: { type: Boolean, default: false },

@@ -1,5 +1,5 @@
-import { ScannerResultInterface } from '@/libraries/scanner/ScannerService';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
+import { ScannerResultInterface } from '@/libraries/scanner/ScannerInterface';
 
 export default class PlaylistScannerResult implements ScannerResultInterface {
   public newItems: PlaylistLocal[] = [];
@@ -30,5 +30,12 @@ export default class PlaylistScannerResult implements ScannerResultInterface {
     return [newItemsStr, removedItemsStr, keptItemsStr, updatedItemsStr]
       .filter((s: string) => s !== '')
       .join(' and ');
+  }
+
+  public anyChange(): boolean {
+    return this.newItems.length !== 0
+      || this.removedItems !== 0
+      || this.keptItems !== 0
+      || this.updatedItems !== 0;
   }
 }

@@ -4,13 +4,14 @@ import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import { computeDifference, Differences } from '@/libraries/common/Differences';
 import PlaylistLoader from '@/libraries/playlist/PlaylistLoader';
 import ProgressGroup from '@/libraries/common/ProgressGroup';
-import { ScannerInterface } from '@/libraries/scanner/ScannerService';
 import PlaylistScannerResult from '@/libraries/scanner/playlist/PlaylistScannerResult';
+import { ScannerInterface } from '@/libraries/scanner/ScannerInterface';
 
 export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> {
   public result: PlaylistScannerResult = new PlaylistScannerResult();
 
-  public async scanAll(progressGroup: ProgressGroup = new ProgressGroup()) {
+  public async scanAll(progressGroup: ProgressGroup = new ProgressGroup())
+    : Promise<PlaylistScannerResult> {
     const diff = await PlaylistScanner.GetTheDifferenceInPath();
 
     this.result.newItems = (await Promise.all(
@@ -24,6 +25,8 @@ export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> 
 
     const allPlaylists = this.MergeWithExistingPlaylists(diff);
     PlaylistLibrary.UpdateAllPlaylist(allPlaylists);
+
+    return this.result;
   }
 
   public async scanOne(path: string): Promise<PlaylistLocal> {

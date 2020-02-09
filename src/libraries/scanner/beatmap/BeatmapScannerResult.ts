@@ -1,5 +1,5 @@
-import { ScannerResultInterface } from '@/libraries/scanner/ScannerService';
 import { BeatmapLocal } from '@/libraries/beatmap/BeatmapLocal';
+import { ScannerResultInterface } from '@/libraries/scanner/ScannerInterface';
 
 export default class BeatmapScannerResult implements ScannerResultInterface {
   public newItems: BeatmapLocal[] = [];
@@ -24,5 +24,9 @@ export default class BeatmapScannerResult implements ScannerResultInterface {
     return [newItemStr, removeItemStr, keptItemStr]
       .filter((s: string) => s !== '')
       .join(' and ');
+  }
+
+  public anyChange(): boolean {
+    return this.newItems.length !== 0 || this.removedItems !== 0 || this.keptItems !== 0;
   }
 }

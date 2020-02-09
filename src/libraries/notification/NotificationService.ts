@@ -11,8 +11,8 @@ export default class NotificationService {
     this.SendNotification(notification);
   }
 
-  public static NotifyMessage(content: string, color?: string, icon?: string) {
-    const notification = NotificationFactory.CreateMessage(content, color, icon);
+  public static NotifyMessage(content: string, color?: string, icon?: string, timeout?: number) {
+    const notification = NotificationFactory.CreateMessage(content, color, icon, timeout);
     this.SendNotification(notification);
   }
 
