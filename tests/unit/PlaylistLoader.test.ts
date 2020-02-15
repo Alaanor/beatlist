@@ -5,8 +5,8 @@ import PlaylistLoader from '@/libraries/playlist/loader/PlaylistLoader';
 import BeatsaverAPI from '@/libraries/net/beatsaver/BeatsaverAPI';
 import Progress from '@/libraries/common/Progress';
 import mockResponseSuccess from './helper/BeatsaverAPIResponseMocking';
-import PlaylistLoadStateError from '@/libraries/playlist/PlaylistLoadStateError';
-import { PlaylistLoadStateInvalid } from '@/libraries/playlist/PlaylistLoadState';
+import PlaylistLoadStateError from '@/libraries/playlist/loader/PlaylistLoadStateError';
+import { PlaylistLoadStateInvalid } from '@/libraries/playlist/loader/PlaylistLoadState';
 
 describe('playlist loader', () => {
   it('should fail if invalid path', async () => {
@@ -164,7 +164,7 @@ describe('playlist loader', () => {
   });
 
   it('should update the playlist', async () => {
-    expect.assertions(7);
+    expect.assertions(9);
 
     const mockGetBeatmapByHash = jest.fn();
     mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '1f90', hash: '2fddb136bda7f9e29b4cb6621d6d8e0f8a43b126' }));
@@ -175,8 +175,9 @@ describe('playlist loader', () => {
     const toBeUpdatedPath = path.join(__dirname, '../data/playlist/update/toBeUpdated.blist');
     const toBeUpdated = await PlaylistLoader.Load(toBeUpdatedPath);
 
+    const progress = new Progress();
     const updatedPath = path.join(__dirname, '../data/playlist/update/updated.blist');
-    const updated = await PlaylistLoader.update(toBeUpdated, updatedPath);
+    const updated = await PlaylistLoader.update(toBeUpdated, updatedPath, progress);
 
     expect(updated.hash).not.toBe(toBeUpdated.hash);
     expect(updated.path).toBe(updatedPath);
@@ -185,5 +186,7 @@ describe('playlist loader', () => {
     expect(updated.maps).toHaveLength(2);
     expect(updated.maps[0].online?.key).toBe('1db6');
     expect(updated.maps[1].online?.key).toBe('1a33');
+    expect(progress.get().total).toBe(2);
+    expect(progress.get().done).toBe(2);
   });
 });

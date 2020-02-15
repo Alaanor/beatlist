@@ -11,7 +11,7 @@ import {
 } from '@/libraries/playlist/PlaylistLocal';
 import BeatsaverAPI, { BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
 import Progress from '@/libraries/common/Progress';
-import PlaylistLoadStateError from '@/libraries/playlist/PlaylistLoadStateError';
+import PlaylistLoadStateError from '@/libraries/playlist/loader/PlaylistLoadStateError';
 import PlaylistBlisterLoader, {
   FILE_NOT_FOUND,
   INVALID_BLISTER_FORMAT,
@@ -59,7 +59,6 @@ export default class PlaylistLoader {
     await PlaylistBlisterLoader.write(blisterPlaylist, filepath);
   }
 
-  // TODO add progress
   public static async update(oldPlaylist: PlaylistLocal, filepath: string, progress?: Progress)
     : Promise<PlaylistLocal> {
     try {

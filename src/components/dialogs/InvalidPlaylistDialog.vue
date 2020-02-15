@@ -59,7 +59,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
-import PlaylistLoadStateError from '@/libraries/playlist/PlaylistLoadStateError';
+import PlaylistLoadStateError from '@/libraries/playlist/loader/PlaylistLoadStateError';
 
 export default Vue.extend({
   name: 'InvalidBeatmapDialog',

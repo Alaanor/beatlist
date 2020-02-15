@@ -1,5 +1,5 @@
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import { PlaylistLoadState } from '@/libraries/playlist/PlaylistLoadState';
+import { PlaylistLoadState } from '@/libraries/playlist/loader/PlaylistLoadState';
 
 export interface PlaylistBase {
   title: string;

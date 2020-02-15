@@ -1,4 +1,4 @@
-import PlaylistLoadStateError from '@/libraries/playlist/PlaylistLoadStateError';
+import PlaylistLoadStateError from '@/libraries/playlist/loader/PlaylistLoadStateError';
 
 export type PlaylistLoadState = PlaylistLoadStateBase
   & (PlaylistLoadStateValid | PlaylistLoadStateInvalid);
