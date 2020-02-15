@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs-extra';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
-import PlaylistLoader from '@/libraries/playlist/PlaylistLoader';
+import PlaylistLoader from '@/libraries/playlist/loader/PlaylistLoader';
 import BeatsaverAPI from '@/libraries/net/beatsaver/BeatsaverAPI';
 import Progress from '@/libraries/common/Progress';
 import mockResponseSuccess from './helper/BeatsaverAPIResponseMocking';
@@ -161,5 +161,29 @@ describe('playlist loader', () => {
     expect(playlist.maps[0].online?.key).toBe('75f1');
 
     await fs.unlink(playlistPath);
+  });
+
+  it('should update the playlist', async () => {
+    expect.assertions(7);
+
+    const mockGetBeatmapByHash = jest.fn();
+    mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '1f90', hash: '2fddb136bda7f9e29b4cb6621d6d8e0f8a43b126' }));
+    mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '1db6', hash: '196d1061eac3cd4bc586e5afcaea07c35f1d69d0' }));
+    mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '1a33' }));
+    BeatsaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
+
+    const toBeUpdatedPath = path.join(__dirname, '../data/playlist/update/toBeUpdated.blist');
+    const toBeUpdated = await PlaylistLoader.Load(toBeUpdatedPath);
+
+    const updatedPath = path.join(__dirname, '../data/playlist/update/updated.blist');
+    const updated = await PlaylistLoader.update(toBeUpdated, updatedPath);
+
+    expect(updated.hash).not.toBe(toBeUpdated.hash);
+    expect(updated.path).toBe(updatedPath);
+    expect(updated.loadState.valid).toBe(true);
+    expect(updated.author).toBe('bar');
+    expect(updated.maps).toHaveLength(2);
+    expect(updated.maps[0].online?.key).toBe('1db6');
+    expect(updated.maps[1].online?.key).toBe('1a33');
   });
 });

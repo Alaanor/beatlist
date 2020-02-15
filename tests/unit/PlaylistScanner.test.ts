@@ -1,5 +1,5 @@
 import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
-import PlaylistLoader from '@/libraries/playlist/PlaylistLoader';
+import PlaylistLoader from '@/libraries/playlist/loader/PlaylistLoader';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
 import PlaylistScanner from '@/libraries/scanner/playlist/PlaylistScanner';
