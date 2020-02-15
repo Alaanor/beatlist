@@ -25,6 +25,11 @@ export default class PlaylistLibrary {
       .find((playlist: PlaylistLocal) => playlist.hash === hash);
   }
 
+  public static GetFromPath(path: string): PlaylistLocal | undefined {
+    return this.GetAllPlaylists()
+      .find((playlist: PlaylistLocal) => playlist.path === path);
+  }
+
   public static UpdateAllPlaylist(playlists: PlaylistLocal[]) {
     store.commit('playlist/SET_LAST_SCAN', new Date());
     store.commit('playlist/SET_PLAYLISTS', playlists);

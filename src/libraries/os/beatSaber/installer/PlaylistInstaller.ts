@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { PlaylistBase, PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
-import PlaylistLoader, { PLAYLIST_EXTENSION_NAME } from '@/libraries/playlist/PlaylistLoader';
+import PlaylistLoader, { PLAYLIST_EXTENSION_NAME } from '@/libraries/playlist/loader/PlaylistLoader';
 import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
 import PlaylistScanner from '@/libraries/scanner/playlist/PlaylistScanner';
 

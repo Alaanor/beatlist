@@ -2,10 +2,11 @@ import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import { computeDifference, Differences } from '@/libraries/common/Differences';
-import PlaylistLoader from '@/libraries/playlist/PlaylistLoader';
+import PlaylistLoader from '@/libraries/playlist/loader/PlaylistLoader';
 import ProgressGroup from '@/libraries/common/ProgressGroup';
 import PlaylistScannerResult from '@/libraries/scanner/playlist/PlaylistScannerResult';
 import { ScannerInterface } from '@/libraries/scanner/ScannerInterface';
+import PlaylistBlisterLoader from '@/libraries/playlist/loader/PlaylistBlisterLoader';
 
 export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> {
   public result: PlaylistScannerResult = new PlaylistScannerResult();
@@ -22,6 +23,8 @@ export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> 
 
     this.result.removedItems = diff.removed.length;
     this.result.keptItems = diff.kept.length;
+
+    this.checkForChange(diff.kept);
 
     const allPlaylists = this.MergeWithExistingPlaylists(diff);
     PlaylistLibrary.UpdateAllPlaylist(allPlaylists);
@@ -52,5 +55,28 @@ export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> 
     );
 
     return this.result.newItems.concat(existingPlaylist);
+  }
+
+  private checkForChange(paths: string[]) {
+    paths.forEach(async (path: string) => {
+      const fileHash = await PlaylistBlisterLoader.getHashFromPath(path);
+      const libHash = PlaylistLibrary.GetFromPath(path)?.hash;
+      if (fileHash !== libHash) {
+        await PlaylistScanner.updatePlaylist(path);
+        this.result.updatedItems += 1;
+      }
+    });
+  }
+
+  private static async updatePlaylist(path: string) {
+    const oldPlaylist = PlaylistLibrary.GetFromPath(path);
+
+    if (!oldPlaylist) {
+      return;
+    }
+
+    const newPlaylist = await PlaylistLoader.update(oldPlaylist, path);
+    PlaylistLibrary.RemovePlaylist(oldPlaylist);
+    PlaylistLibrary.AddPlaylist(newPlaylist);
   }
 }
