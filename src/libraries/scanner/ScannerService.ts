@@ -73,12 +73,13 @@ export default class ScannerService {
       this.playlistProgress = this.playlistProgressGetter();
     }
 
-    return new PlaylistScanner().scanAll(this.playlistProgress).then(() => {
-      this.locked = false;
-      this.scanning.playlist = false;
-      this.eventEmitter.emit(ON_PLAYLIST_SCAN_COMPLETED);
-      this.checkForEndOperation('playlist');
-    });
+    return new PlaylistScanner().scanAll(this.playlistProgress)
+      .then((result: PlaylistScannerResult) => {
+        this.locked = false;
+        this.scanning.playlist = false;
+        this.eventEmitter.emit(ON_PLAYLIST_SCAN_COMPLETED, result);
+        this.checkForEndOperation('playlist');
+      });
   }
 
   private static checkForEndOperation(from: 'beatmap' | 'playlist') {

@@ -175,8 +175,17 @@ export default class PlaylistLoader {
 
     return Throttle.all(newPlaylist.maps.map((map: IBeatmap) => async () => {
       const reusable = oldPlaylist.maps.find((oldMap: PlaylistLocalMap) => {
-        if (oldMap.error !== null) {
-          return false;
+        switch (oldMap.error) {
+          case null:
+          case PlaylistMapImportError.BeatmapTypeZipNotSupported:
+          case PlaylistMapImportError.BeatmapTypeLevelIdNotSupported:
+          case PlaylistMapImportError.BeatmapTypeUnknown:
+          case PlaylistMapImportError.BeatsaverInexistent:
+            return false;
+
+          case PlaylistMapImportError.BeatsaverRequestError:
+          default:
+            break;
         }
 
         switch (map.type) {
@@ -208,6 +217,8 @@ export default class PlaylistLoader {
 
     if (beatmap.status === BeatSaverAPIResponseStatus.ResourceFound) {
       map.online = beatmap.data;
+    } else if (beatmap.status === BeatSaverAPIResponseStatus.ResourceNotFound) {
+      map.error = PlaylistMapImportError.BeatsaverInexistent;
     } else {
       map.error = PlaylistMapImportError.BeatsaverRequestError;
     }

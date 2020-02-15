@@ -47,9 +47,13 @@ export default class PlaylistBlisterLoader {
       .substr(0, 5);
   }
 
-  public static async getHashFromPath(filepath: string) {
-    const playlist = await this.load(filepath);
-    return playlist.hash;
+  public static async getHashFromPath(filepath: string): Promise<string | undefined> {
+    try {
+      const playlist = await this.load(filepath);
+      return playlist.hash;
+    } catch (e) {
+      return undefined;
+    }
   }
 
   private static async isOldFormat(buffer: Buffer) {
@@ -78,7 +82,6 @@ export default class PlaylistBlisterLoader {
       throw INVALID_BLISTER_FORMAT;
     }
   }
-
 }
 
 export interface PlaylistBlisterLoaded {

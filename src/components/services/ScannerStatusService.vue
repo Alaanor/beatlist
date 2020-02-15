@@ -17,11 +17,11 @@
     >
       <v-card>
         <v-card-title>Scanner</v-card-title>
-        <v-card-text v-if="!isScanning">
+        <v-card-text v-if="!isScanning()">
           <p>There is no scan running at the moment.</p>
         </v-card-text>
 
-        <v-card-text v-else-if="scanning.beatmap">
+        <v-card-text v-else-if="scanning().beatmap">
           <p>
             Scanning beatmaps:
             {{ `${progress.beatmap.get().done} on ${progress.beatmap.get().total} done.` }}
@@ -29,10 +29,12 @@
           <v-progress-linear
             :indeterminate="progress.beatmap === undefined"
             :value="progress.beatmap.getRatio() * 100"
+            color="success"
+            rounded
           />
         </v-card-text>
 
-        <v-card-text v-else-if="scanning.playlist">
+        <v-card-text v-else-if="scanning().playlist">
           <p>
             Scanning playlists:
             {{ `${progress.playlist.get().done} on ${progress.playlist.get().total} done.` }}
@@ -40,6 +42,8 @@
           <v-progress-linear
             :indeterminate="progress.playlist === undefined"
             :value="progress.playlist.getRatio() * 100"
+            color="success"
+            rounded
           />
         </v-card-text>
 
@@ -49,7 +53,7 @@
             text
             @click="dialog = false"
           >
-            {{ isScanning ? 'Continue in background' : 'Close' }}
+            {{ isScanning() ? 'Continue in background' : 'Close' }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -74,10 +78,6 @@ export default Vue.extend({
     dialog: false,
     progress: { beatmap: new Progress(), playlist: new ProgressGroup() },
   }),
-  computed: {
-    isScanning: () => ScannerService.isScanning,
-    scanning: () => ScannerService.scanning,
-  },
   mounted(): void {
     ScannerService.OnBindBeatmapProgress(() => {
       this.progress.beatmap = new Progress();
@@ -112,6 +112,8 @@ export default Vue.extend({
     onScanCompleted() {
       this.dialog = false;
     },
+    isScanning: () => ScannerService.isScanning,
+    scanning: () => ScannerService.scanning,
   },
 });
 </script>
