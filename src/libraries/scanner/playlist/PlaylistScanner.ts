@@ -24,7 +24,7 @@ export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> 
     this.result.removedItems = diff.removed.length;
     this.result.keptItems = diff.kept.length;
 
-    this.checkForChange(diff.kept);
+    await this.checkForChange(diff.kept);
 
     const allPlaylists = this.MergeWithExistingPlaylists(diff);
     PlaylistLibrary.UpdateAllPlaylist(allPlaylists);
@@ -57,15 +57,15 @@ export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> 
     return this.result.newItems.concat(existingPlaylist);
   }
 
-  private checkForChange(paths: string[]) {
-    paths.forEach(async (path: string) => {
+  private async checkForChange(paths: string[]): Promise<void[]> {
+    return Promise.all(paths.map(async (path: string) => {
       const fileHash = await PlaylistBlisterLoader.getHashFromPath(path);
       const libHash = PlaylistLibrary.GetFromPath(path)?.hash;
       if (fileHash !== libHash && fileHash !== undefined) {
         await PlaylistScanner.updatePlaylist(path);
         this.result.updatedItems += 1;
       }
-    });
+    }));
   }
 
   private static async updatePlaylist(path: string) {

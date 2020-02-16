@@ -10,16 +10,31 @@ const ON_SCAN_COMPLETED = 'on_scan_completed';
 const ON_BEATMAP_SCAN_COMPLETED = 'on_beatmap_scan_completed';
 const ON_PLAYLIST_SCAN_COMPLETED = 'on_playlist_scan_completed';
 const ON_REQUEST_DIALOG_OPEN = 'on_request_dialog_open';
+const ON_SCANNING_STATE_UPDATE = 'on_scanning_state_update';
 
 export default class ScannerService {
   public static get isScanning(): boolean {
     return this.locked;
   }
 
-  public static scanning: { beatmap: boolean, playlist: boolean } = {
+  private static _scanning: { beatmap: boolean, playlist: boolean } = {
     beatmap: false,
     playlist: false,
   };
+
+  public static get scanning(): { beatmap: boolean; playlist: boolean } {
+    return this._scanning;
+  }
+
+  private static set scanningBeatmap(value: boolean) {
+    this._scanning.beatmap = value;
+    this.eventEmitter.emit(ON_SCANNING_STATE_UPDATE);
+  }
+
+  private static set scanningPlaylist(value: boolean) {
+    this._scanning.playlist = value;
+    this.eventEmitter.emit(ON_SCANNING_STATE_UPDATE);
+  }
 
   private static eventEmitter: events.EventEmitter = new events.EventEmitter();
 
@@ -45,7 +60,7 @@ export default class ScannerService {
   public static async ScanBeatmaps(): Promise<void> {
     if (this.locked) return undefined;
 
-    this.scanning.beatmap = true;
+    this.scanningBeatmap = true;
     this.locked = true;
     this.operation = this.operation ?? 'beatmap';
 
@@ -56,7 +71,7 @@ export default class ScannerService {
     return new BeatmapScanner().scanAll(this.beatmapProgress)
       .then((result: BeatmapScannerResult) => {
         this.locked = false;
-        this.scanning.beatmap = false;
+        this.scanningBeatmap = false;
         this.eventEmitter.emit(ON_BEATMAP_SCAN_COMPLETED, result);
         this.checkForEndOperation('beatmap');
       });
@@ -66,7 +81,7 @@ export default class ScannerService {
     if (this.locked) return undefined;
     this.operation = this.operation ?? 'playlist';
 
-    this.scanning.playlist = true;
+    this.scanningPlaylist = true;
     this.locked = true;
 
     if (this.playlistProgressGetter) {
@@ -76,7 +91,7 @@ export default class ScannerService {
     return new PlaylistScanner().scanAll(this.playlistProgress)
       .then((result: PlaylistScannerResult) => {
         this.locked = false;
-        this.scanning.playlist = false;
+        this.scanningPlaylist = false;
         this.eventEmitter.emit(ON_PLAYLIST_SCAN_COMPLETED, result);
         this.checkForEndOperation('playlist');
       });
@@ -128,5 +143,9 @@ export default class ScannerService {
 
   public static requestDialogToBeOpened() {
     this.eventEmitter.emit(ON_REQUEST_DIALOG_OPEN);
+  }
+
+  public static onScanningStateUpdate(callback: () => void) {
+    this.eventEmitter.on(ON_SCANNING_STATE_UPDATE, callback);
   }
 }
