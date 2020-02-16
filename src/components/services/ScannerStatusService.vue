@@ -51,6 +51,7 @@
         <v-card-actions>
           <v-spacer/>
           <v-btn
+            v-if="!isScanning"
             text
             color="success"
             @click="scanAll()"
