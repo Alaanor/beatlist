@@ -19,7 +19,7 @@
             Update library
           </v-btn>
           <v-btn
-            :disabled="isScanning || !installationPathValid || beatmapsCountValid === 0"
+            :disabled="canClearCache()"
             color="warning"
             class="my-2"
             @click="openConfirmDialogCache()"
@@ -108,6 +108,7 @@ export default Vue.extend({
     confirmDialog: false,
     invalidBeatmapDialog: false,
     invalidPlaylistDialog: false,
+    isScanning: false,
   }),
   computed: {
     installationPathValid: get('settings/installationPathValid'),
@@ -116,9 +117,14 @@ export default Vue.extend({
     playlistsCountValid: () => PlaylistLibrary.GetAllValidPlaylists().length,
     playlistsCountInvalid: () => PlaylistLibrary.GetAllInvalidPlaylists().length,
     lastScan: () => BeatmapLibrary.GetLastScanDate()?.toLocaleString() ?? undefined,
-    isScanning: () => ScannerService.isScanning,
+  },
+  mounted(): void {
+    ScannerService.onScanningStateUpdate(this.onScanningStateUpdate);
   },
   methods: {
+    onScanningStateUpdate() {
+      this.isScanning = ScannerService.isScanning;
+    },
     scan() {
       ScannerService.ScanAll();
       ScannerService.requestDialogToBeOpened();
@@ -129,6 +135,13 @@ export default Vue.extend({
     clearCache() {
       BeatmapLibrary.ClearCache();
       PlaylistLibrary.ClearCache();
+    },
+    canClearCache() {
+      return this.isScanning || !this.installationPathValid
+        || (
+          this.beatmapsCountValid === 0 && this.playlistsCountValid === 0
+          && this.beatmapsCountInvalid === 0 && this.playlistsCountInvalid === 0
+        );
     },
   },
 });
