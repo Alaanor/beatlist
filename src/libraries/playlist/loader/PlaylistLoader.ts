@@ -9,7 +9,7 @@ import {
   PlaylistMapImportError,
   PlaylistOnlineMap,
 } from '@/libraries/playlist/PlaylistLocal';
-import BeatsaverAPI, { BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
+import BeatsaverAPI, { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
 import Progress from '@/libraries/common/Progress';
 import PlaylistLoadStateError from '@/libraries/playlist/loader/PlaylistLoadStateError';
 import PlaylistBlisterLoader, {
@@ -17,6 +17,7 @@ import PlaylistBlisterLoader, {
   INVALID_BLISTER_FORMAT,
   INVALID_JSON_FORMAT,
 } from '@/libraries/playlist/loader/PlaylistBlisterLoader';
+import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 
 const MAX_CONCURRENCY_ITEM = 25;
 export const PLAYLIST_EXTENSION_NAME: string = 'blist';
@@ -214,21 +215,25 @@ export default class PlaylistLoader {
 
   private static async HandleBeatmapKey(map: PlaylistLocalMap, key: string) {
     const beatmap = await BeatsaverAPI.Singleton.getBeatmapByKey(key);
+    this.SetMapOnlineData(beatmap, map);
+  }
+
+  private static async HandleBeatmapHash(map: PlaylistLocalMap, hash: string) {
+    const beatmap = await BeatsaverAPI.Singleton.getBeatmapByHash(hash);
+    this.SetMapOnlineData(beatmap, map);
+  }
+
+  private static SetMapOnlineData(
+    beatmap: BeatSaverAPIResponse<BeatsaverBeatmap>,
+    map: PlaylistLocalMap,
+  ): void {
+    map.error = null;
+    map.online = null;
 
     if (beatmap.status === BeatSaverAPIResponseStatus.ResourceFound) {
       map.online = beatmap.data;
     } else if (beatmap.status === BeatSaverAPIResponseStatus.ResourceNotFound) {
       map.error = PlaylistMapImportError.BeatsaverInexistent;
-    } else {
-      map.error = PlaylistMapImportError.BeatsaverRequestError;
-    }
-  }
-
-  private static async HandleBeatmapHash(map: PlaylistLocalMap, hash: string) {
-    const beatmap = await BeatsaverAPI.Singleton.getBeatmapByHash(hash);
-
-    if (beatmap.status === BeatSaverAPIResponseStatus.ResourceFound) {
-      map.online = beatmap.data;
     } else {
       map.error = PlaylistMapImportError.BeatsaverRequestError;
     }
