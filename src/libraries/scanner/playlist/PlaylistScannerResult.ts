@@ -24,7 +24,7 @@ export default class PlaylistScannerResult implements ScannerResultInterface {
       : '';
 
     const updatedItemsStr = this.updatedItems > 0
-      ? `${this.updatedItems} playlist${this.updatedItems > 1 ? 's' : ''} has been update`
+      ? `${this.updatedItems} playlist${this.updatedItems > 1 ? 's' : ''} has been updated`
       : '';
 
     return [newItemsStr, removedItemsStr, keptItemsStr, updatedItemsStr]

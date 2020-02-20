@@ -25,7 +25,7 @@ export default class PlaylistLibrary {
       .find((playlist: PlaylistLocal) => playlist.hash === hash);
   }
 
-  public static GetFromPath(path: string): PlaylistLocal | undefined {
+  public static GetByPath(path: string): PlaylistLocal | undefined {
     return this.GetAllPlaylists()
       .find((playlist: PlaylistLocal) => playlist.path === path);
   }
