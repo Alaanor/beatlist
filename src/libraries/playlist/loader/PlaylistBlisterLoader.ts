@@ -1,6 +1,6 @@
 import {
   convertLegacyPlaylist,
-  deserialize,
+  deserialize, IBeatmap,
   IPlaylist,
   magicNumber,
   serialize,
@@ -40,9 +40,20 @@ export default class PlaylistBlisterLoader {
   }
 
   public static computeHash(playlist: IPlaylist, filepath: string): string {
+    const safeEmptyPlaylist = {} as IPlaylist;
+    safeEmptyPlaylist.title = playlist.title;
+    safeEmptyPlaylist.author = playlist.author;
+    safeEmptyPlaylist.description = playlist.description;
+    safeEmptyPlaylist.cover = playlist.cover;
+    safeEmptyPlaylist.maps = playlist.maps.map((beatmap: IBeatmap) => {
+      const copy = { ...beatmap };
+      delete copy.dateAdded;
+      return copy;
+    });
+
     return crypto
       .createHash('sha1')
-      .update(JSON.stringify(playlist) + filepath)
+      .update(JSON.stringify(safeEmptyPlaylist) + filepath.toLowerCase())
       .digest('hex')
       .substr(0, 5);
   }
