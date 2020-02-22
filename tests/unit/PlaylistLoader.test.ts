@@ -167,9 +167,14 @@ describe('playlist loader', () => {
     expect.assertions(9);
 
     const mockGetBeatmapByHash = jest.fn();
+
+    // map fetch from 'toBeUpdated'
     mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '1f90', hash: '2fddb136bda7f9e29b4cb6621d6d8e0f8a43b126' }));
     mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '1db6', hash: '196d1061eac3cd4bc586e5afcaea07c35f1d69d0' }));
-    mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '1a33' }));
+
+    // map fetched from 'updated'
+    mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '1db6', hash: '196d1061eac3cd4bc586e5afcaea07c35f1d69d0' }));
+    mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '1a33', hash: 'a5be6e439863b22bb0ca36e2f4ead53452e1b978' }));
     BeatsaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
 
     const toBeUpdatedPath = path.join(__dirname, '../data/playlist/update/toBeUpdated.blist');

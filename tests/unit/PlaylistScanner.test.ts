@@ -4,6 +4,8 @@ import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
 import PlaylistScanner from '@/libraries/scanner/playlist/PlaylistScanner';
 
+jest.mock('@/plugins/store', () => {});
+
 describe('playlist scanner', () => {
   it('should only scan the difference', async () => {
     expect.assertions(4);
@@ -20,6 +22,18 @@ describe('playlist scanner', () => {
         { path: 'bar' } as PlaylistLocal,
         { path: 'baz' } as PlaylistLocal,
       ]);
+
+    jest.spyOn(PlaylistLibrary, 'GetByPath')
+      .mockReturnValue({} as PlaylistLocal);
+
+    jest.spyOn(PlaylistLibrary, 'UpdateAllPlaylist')
+      .mockImplementation(() => {});
+
+    jest.spyOn(PlaylistLibrary, 'AddPlaylist')
+      .mockImplementation(() => {});
+
+    jest.spyOn(PlaylistLibrary, 'RemovePlaylist')
+      .mockImplementation(() => {});
 
     const scanner = new PlaylistScanner();
     await scanner.scanAll();
