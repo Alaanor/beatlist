@@ -61,11 +61,11 @@
 
 <script lang="ts">
 import MenuNavigationItem from '@/components/core/menu/MenuNavigationItem.vue';
-import ScannerStatusService from '@/components/services/ScannerStatusService.vue';
+import ScannerStatusOpenButton from '@/components/helper/ScannerStatusOpenButton.vue';
 
 export default {
   name: 'AppMenuNavBar',
-  components: { MenuNavigationItem, ScannerStatusService },
+  components: { MenuNavigationItem, ScannerStatusOpenButton },
   props: {
     menus: { type: Array, required: true },
     main: { type: Boolean, default: false },

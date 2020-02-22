@@ -78,7 +78,7 @@ export default Vue.extend({
       },
       {
         type: 'component',
-        component: 'ScannerStatusService',
+        component: 'ScannerStatusOpenButton',
       },
       {
         type: 'entry',

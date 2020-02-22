@@ -117,35 +117,55 @@ export default class ScannerService {
     }
   }
 
-  public static OnBindBeatmapProgress(callback: () => Progress) {
+  public static onBindBeatmapProgress(callback: () => Progress) {
     this.beatmapProgressGetter = callback;
   }
 
-  public static OnBindPlaylistProgress(callback: () => ProgressGroup) {
+  public static onBindPlaylistProgress(callback: () => ProgressGroup) {
     this.playlistProgressGetter = callback;
-  }
-
-  public static onBeatmapScanCompleted(callback: (result: BeatmapScannerResult) => void) {
-    this.eventEmitter.on(ON_BEATMAP_SCAN_COMPLETED, callback);
-  }
-
-  public static onPlaylistScanCompleted(callback: (result: PlaylistScannerResult) => void) {
-    this.eventEmitter.on(ON_PLAYLIST_SCAN_COMPLETED, callback);
-  }
-
-  public static onScanCompleted(callback: () => void) {
-    this.eventEmitter.on(ON_SCAN_COMPLETED, callback);
-  }
-
-  public static onStatusDialogRequestOpen(callback: () => void) {
-    this.eventEmitter.on(ON_REQUEST_DIALOG_OPEN, callback);
   }
 
   public static requestDialogToBeOpened() {
     this.eventEmitter.emit(ON_REQUEST_DIALOG_OPEN);
   }
 
+  public static onBeatmapScanCompleted(callback: (result: BeatmapScannerResult) => void) {
+    this.eventEmitter.on(ON_BEATMAP_SCAN_COMPLETED, callback);
+  }
+
+  public static offBeatmapScanCompleted(callback: (result: BeatmapScannerResult) => void) {
+    this.eventEmitter.off(ON_BEATMAP_SCAN_COMPLETED, callback);
+  }
+
+  public static onPlaylistScanCompleted(callback: (result: PlaylistScannerResult) => void) {
+    this.eventEmitter.on(ON_PLAYLIST_SCAN_COMPLETED, callback);
+  }
+
+  public static offPlaylistScanCompleted(callback: (result: PlaylistScannerResult) => void) {
+    this.eventEmitter.off(ON_PLAYLIST_SCAN_COMPLETED, callback);
+  }
+
+  public static onScanCompleted(callback: () => void) {
+    this.eventEmitter.on(ON_SCAN_COMPLETED, callback);
+  }
+
+  public static offScanCompleted(callback: () => void) {
+    this.eventEmitter.off(ON_SCAN_COMPLETED, callback);
+  }
+
+  public static onStatusDialogRequestOpen(callback: () => void) {
+    this.eventEmitter.on(ON_REQUEST_DIALOG_OPEN, callback);
+  }
+
+  public static offStatusDialogRequestOpen(callback: () => void) {
+    this.eventEmitter.off(ON_REQUEST_DIALOG_OPEN, callback);
+  }
+
   public static onScanningStateUpdate(callback: () => void) {
     this.eventEmitter.on(ON_SCANNING_STATE_UPDATE, callback);
+  }
+
+  public static offScanningStateUpdate(callback: () => void) {
+    this.eventEmitter.off(ON_SCANNING_STATE_UPDATE, callback);
   }
 }
