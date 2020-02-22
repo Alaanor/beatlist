@@ -2,6 +2,7 @@
   <Tooltip text="New playlist">
     <v-btn
       icon
+      :loading="loading"
       @click="MakeNewPlaylist"
     >
       <v-icon>add</v-icon>
@@ -17,9 +18,16 @@ import PlaylistInstaller from '@/libraries/os/beatSaber/installer/PlaylistInstal
 export default Vue.extend({
   name: 'PlaylistButtonNewPlaylist',
   components: { Tooltip },
+  data: () => ({
+    loading: false,
+  }),
   methods: {
     MakeNewPlaylist() {
-      PlaylistInstaller.InstallNewEmpty();
+      this.loading = true;
+      PlaylistInstaller.InstallNewEmpty()
+        .then(() => {
+          this.loading = false;
+        });
     },
   },
 });
