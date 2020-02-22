@@ -11,9 +11,13 @@
     >
       {{ notification.icon }}
     </v-icon>
-    <span v-html="notification.content"/>
+    <span
+      style="width: 100%"
+      v-html="notification.content"
+    />
     <v-btn
       text
+      class="ma-0"
       @click="close()"
     >
       Close

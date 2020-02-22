@@ -19,15 +19,11 @@ export default class PlaylistScannerResult implements ScannerResultInterface {
       ? `${this.removedItems} playlist${this.removedItems > 1 ? 's' : ''} has been removed`
       : '';
 
-    const keptItemsStr = this.keptItems > 0
-      ? `${this.keptItems} playlist${this.keptItems > 1 ? 's' : ''} has been kept`
-      : '';
-
     const updatedItemsStr = this.updatedItems > 0
       ? `${this.updatedItems} playlist${this.updatedItems > 1 ? 's' : ''} has been updated`
       : '';
 
-    return [newItemsStr, removedItemsStr, keptItemsStr, updatedItemsStr]
+    return [newItemsStr, removedItemsStr, updatedItemsStr]
       .filter((s: string) => s !== '')
       .join(' and ');
   }
@@ -35,7 +31,6 @@ export default class PlaylistScannerResult implements ScannerResultInterface {
   public anyChange(): boolean {
     return this.newItems.length !== 0
       || this.removedItems !== 0
-      || this.keptItems !== 0
       || this.updatedItems !== 0;
   }
 }

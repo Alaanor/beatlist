@@ -140,6 +140,8 @@ export default Vue.extend({
 
       if (message.length > 0) {
         NotificationService.NotifyMessage(message.join('. '), 'info', 'find_in_page', 10 * 1000);
+      } else {
+        NotificationService.NotifyMessage('No change', 'info', 'find_in_page', 2.5 * 1000);
       }
     },
   },

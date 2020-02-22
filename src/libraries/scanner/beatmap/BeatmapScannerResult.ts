@@ -17,16 +17,12 @@ export default class BeatmapScannerResult implements ScannerResultInterface {
       ? `${this.removedItems} beatmap${this.removedItems > 1 ? 's' : ''} has been removed`
       : '';
 
-    const keptItemStr: string = this.keptItems > 0
-      ? `${this.keptItems} beatmap${this.keptItems ? 's' : ''} has been kept`
-      : '';
-
-    return [newItemStr, removeItemStr, keptItemStr]
+    return [newItemStr, removeItemStr]
       .filter((s: string) => s !== '')
       .join(' and ');
   }
 
   public anyChange(): boolean {
-    return this.newItems.length !== 0 || this.removedItems !== 0 || this.keptItems !== 0;
+    return this.newItems.length !== 0 || this.removedItems !== 0;
   }
 }
