@@ -34,8 +34,17 @@ export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> 
 
   public async scanOne(path: string): Promise<PlaylistLocal> {
     const playlist = await PlaylistLoader.Load(path);
-    PlaylistLibrary.AddPlaylist(playlist);
-    this.result.newItems = [playlist];
+    const oldPlaylist = playlist.path && PlaylistLibrary.GetByPath(playlist.path);
+
+    if (oldPlaylist) { // update
+      PlaylistLibrary.RemovePlaylist(oldPlaylist);
+      PlaylistLibrary.AddPlaylist(playlist);
+      this.result.updatedItems += 1;
+    } else { // add
+      PlaylistLibrary.AddPlaylist(playlist);
+      this.result.newItems = [playlist];
+    }
+
     return playlist;
   }
 

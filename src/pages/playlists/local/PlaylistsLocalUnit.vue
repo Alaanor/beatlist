@@ -1,8 +1,5 @@
 <template>
   <v-container v-if="playlist">
-    <p class="display-2">
-      Playlist
-    </p>
     <div class="d-flex align-center">
       <PlaylistCoverAvatar
         :playlist="playlist"
@@ -11,9 +8,15 @@
       />
       <span class="display-1">
         {{ playlist.title }}
-        <span class="grey--text">- {{ playlist.author }}</span>
+        <span
+          v-if="playlist.author"
+          class="grey--text"
+        >
+          - {{ playlist.author }}
+        </span>
       </span>
     </div>
+    <PlaylistEditor :playlist="playlist"/>
   </v-container>
   <v-container v-else>
     <v-alert
@@ -30,15 +33,21 @@ import Vue from 'vue';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
 import PlaylistCoverAvatar from '@/components/playlist/cover/PlaylistCoverAvatar.vue';
+import PlaylistEditor from '@/pages/playlists/local/components/PlaylistEditor.vue';
 
 export default Vue.extend({
   name: 'PlaylistLocalUnit',
-  components: { PlaylistCoverAvatar },
+  components: { PlaylistCoverAvatar, PlaylistEditor },
   data: () => ({
     playlist: undefined as PlaylistLocal | undefined,
   }),
-  mounted(): void {
-    this.playlist = PlaylistLibrary.GetByHash(this.$route.params.hash);
+  watch: {
+    $route: {
+      handler() {
+        this.playlist = PlaylistLibrary.GetByHash(this.$route.params.hash);
+      },
+      immediate: true,
+    },
   },
 });
 </script>

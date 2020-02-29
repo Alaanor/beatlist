@@ -1,0 +1,40 @@
+<template>
+  <div>
+    <PlaylistEditorSidebar :items="menu"/>
+    <v-container>
+      <PlaylistEditorDetails
+        id="playlist-details"
+        :playlist="playlist"
+      />
+      <!-- list of beatmap in the playlist -->
+      <!-- beatmap browser -->
+    </v-container>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue, { PropType } from 'vue';
+import { TocItem } from '@/components/toc/TocItem';
+import PlaylistEditorSidebar from '@/pages/playlists/local/components/PlaylistEditorSidebar.vue';
+import PlaylistEditorDetails from '@/pages/playlists/local/components/PlaylistEditorDetails.vue';
+import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
+
+export default Vue.extend({
+  name: 'PlaylistEditor',
+  components: { PlaylistEditorSidebar, PlaylistEditorDetails },
+  props: {
+    playlist: { type: Object as PropType<PlaylistLocal>, required: true },
+  },
+  data: () => ({
+    menu: [
+      { name: 'Details', sectionId: 'playlist-details' },
+      { name: 'Content', sectionId: 'playlist-content-list' },
+      { name: 'Browser', sectionId: 'playlist-browser' },
+    ] as TocItem[],
+  }),
+});
+</script>
+
+<style scoped>
+
+</style>

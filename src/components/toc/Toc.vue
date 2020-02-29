@@ -7,10 +7,13 @@
     color="transparent"
     :style="app ? 'margin-top: 80px' : ''"
   >
-    <p class="headline">
+    <p
+      class="title font-weight-light mb-2"
+      style="padding-left: 7px"
+    >
       {{ headerName }}
     </p>
-    <ul>
+    <ul class="toc">
       <li
         v-for="item in items"
         :key="item.name"
@@ -87,6 +90,9 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+  ul.toc {
+    padding-left: 0;
+  }
   li.toc-item {
     list-style-type: none !important;
     border-left: 2px solid transparent;

@@ -4,6 +4,7 @@ import NotificationFactory from '@/libraries/notification/NotificationFactory';
 import { DownloadOperationBeatmapResult } from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
 
 export const NOTIFICATION_ICON_SUCCESS: string = 'check';
+export const NOTIFICATION_ICON_FAILED: string = 'sms_failed';
 export const NOTIFICATION_ICON_DELETE: string = 'delete';
 
 export default class NotificationService {

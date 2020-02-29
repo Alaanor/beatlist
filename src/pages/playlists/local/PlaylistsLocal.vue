@@ -37,7 +37,7 @@ import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistButtonNewPlaylist from '@/components/playlist/button/PlaylistButtonNewPlaylist.vue';
 import PlaylistButtonRemovePlaylist from '@/components/playlist/button/PlaylistButtonRemovePlaylist.vue';
 import Tooltip from '@/components/helper/Tooltip.vue';
-import NotificationService from '@/libraries/notification/NotificationService';
+import NotificationService, { NOTIFICATION_ICON_FAILED } from '@/libraries/notification/NotificationService';
 
 export default Vue.extend({
   name: 'PlaylistsLocal',
@@ -55,7 +55,7 @@ export default Vue.extend({
         NotificationService.NotifyMessage(
           "Somehow this map doesn't have hash, can't open the link",
           'error',
-          'sms_failed',
+          NOTIFICATION_ICON_FAILED,
           2500,
         );
       }

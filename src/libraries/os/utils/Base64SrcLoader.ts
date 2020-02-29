@@ -16,4 +16,12 @@ export default class Base64SrcLoader {
 
     return this.Format(data, '');
   }
+
+  public static async FromBuffer(buffer: Buffer, type: string): Promise<string> {
+    return this.Format(Buffer.from(buffer).toString('base64'), mime.lookup(type) || '');
+  }
+
+  public static GetRawSrc(base64src: string): string {
+    return base64src.replace(/^(data:.*;base64,)/, '');
+  }
 }
