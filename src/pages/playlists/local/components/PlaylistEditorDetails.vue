@@ -165,22 +165,7 @@ export default Vue.extend({
 
       if (playlist.path) {
         PlaylistLoader.Save(playlist).then(() => {
-          if (playlist.path) {
-            const scanner = new PlaylistScanner();
-            scanner
-              .scanOne(playlist.path)
-              .then((p: PlaylistLocal) => {
-                if (p.hash && p.hash !== playlist.hash) {
-                  this.$router.push({
-                    name: 'playlists-local-unit',
-                    params: { hash: p.hash },
-                  });
-                }
-              })
-              .finally(() => {
-                this.loading = false;
-              });
-          }
+          this.OnceSaved(playlist);
         });
       }
     },
@@ -203,6 +188,31 @@ export default Vue.extend({
         && this.playlist.description === this.playlistDescription
         && !this.imageChanged
       );
+    },
+    OnceSaved(playlist: PlaylistLocal): void {
+      if (!playlist.path) return;
+
+      const scanner = new PlaylistScanner();
+      scanner
+        .scanOne(playlist.path)
+        .then((p: PlaylistLocal) => {
+          this.OnceScanned(p);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    OnceScanned(playlist: PlaylistLocal): void {
+      if (!(playlist.hash && playlist.hash !== this.playlist.hash)) {
+        return;
+      }
+
+      this.$router.push({
+        name: 'playlists-local-unit',
+        params: { hash: playlist.hash },
+      });
+
+      this.imageChanged = false;
     },
     async openFileExplorer() {
       const file = remote.dialog.showOpenDialog({
