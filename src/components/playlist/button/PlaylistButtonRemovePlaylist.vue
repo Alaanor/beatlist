@@ -14,6 +14,7 @@
       :open.sync="dialog"
       title="Confirm"
       action-text="Delete"
+      action-color="error"
       :on-action="deletePlaylist"
     >
       Are you sure you want to
