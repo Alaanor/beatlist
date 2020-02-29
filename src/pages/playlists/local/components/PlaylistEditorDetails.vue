@@ -87,7 +87,7 @@
           text
           color="error"
           :loading="loading"
-          @click="Delete"
+          @click="confirmDeleteDialog = true"
         >
           Delete
         </v-btn>
@@ -111,6 +111,16 @@
         </v-btn>
       </v-card-actions>
     </v-container>
+    <ConfirmDialog
+      :open.sync="confirmDeleteDialog"
+      action-text="Delete"
+      action-color="error"
+      :on-action="Delete"
+    >
+      <span>
+        Are you sure you want to <strong class="error--text">delete</strong> this playlist ?
+      </span>
+    </ConfirmDialog>
   </div>
 </template>
 
@@ -118,15 +128,19 @@
 import Vue, { PropType } from 'vue';
 import { remote } from 'electron';
 import NotificationService, {
+  NOTIFICATION_ICON_DELETE,
   NOTIFICATION_ICON_FAILED,
 } from '@/libraries/notification/NotificationService';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import Base64SrcLoader from '@/libraries/os/utils/Base64SrcLoader';
 import PlaylistLoader from '@/libraries/playlist/loader/PlaylistLoader';
 import PlaylistScanner from '@/libraries/scanner/playlist/PlaylistScanner';
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog.vue';
+import PlaylistInstaller from '@/libraries/os/beatSaber/installer/PlaylistInstaller';
 
 export default Vue.extend({
   name: 'PlaylistEditorDetails',
+  components: { ConfirmDialog },
   props: {
     playlist: { type: Object as PropType<PlaylistLocal>, required: true },
   },
@@ -137,6 +151,7 @@ export default Vue.extend({
     imageData: '',
     imageChanged: false,
     loading: false,
+    confirmDeleteDialog: false,
   }),
   mounted(): void {
     this.LoadCover();
@@ -179,7 +194,15 @@ export default Vue.extend({
       this.playlistDescription = this.playlist.description ?? '';
     },
     Delete() {
-      // TODO
+      PlaylistInstaller.Uninstall(this.playlist).then(() => {
+        NotificationService.NotifyMessage(
+          'The playlist has been deleted',
+          undefined,
+          NOTIFICATION_ICON_DELETE,
+          2500,
+        );
+        this.$router.push({ name: 'playlists-local' });
+      });
     },
     IsThereChange(): boolean {
       return !(
