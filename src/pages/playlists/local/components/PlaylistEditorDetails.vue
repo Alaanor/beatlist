@@ -1,5 +1,8 @@
 <template>
   <div>
+    <span class="headline">
+      Details
+    </span>
     <v-container>
       <v-row align="center">
         <v-col cols="auto">

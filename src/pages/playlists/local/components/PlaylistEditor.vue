@@ -6,6 +6,10 @@
         id="playlist-details"
         :playlist="playlist"
       />
+      <PlaylistEditorBeatmapList
+        id="playlist-content-list"
+        :playlist="playlist"
+      />
       <!-- list of beatmap in the playlist -->
       <!-- beatmap browser -->
     </v-container>
@@ -18,10 +22,12 @@ import { TocItem } from '@/components/toc/TocItem';
 import PlaylistEditorSidebar from '@/pages/playlists/local/components/PlaylistEditorSidebar.vue';
 import PlaylistEditorDetails from '@/pages/playlists/local/components/PlaylistEditorDetails.vue';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
+import PlaylistEditorBeatmapList
+  from '@/pages/playlists/local/components/PlaylistEditorBeatmapList.vue';
 
 export default Vue.extend({
   name: 'PlaylistEditor',
-  components: { PlaylistEditorSidebar, PlaylistEditorDetails },
+  components: { PlaylistEditorSidebar, PlaylistEditorDetails, PlaylistEditorBeatmapList },
   props: {
     playlist: { type: Object as PropType<PlaylistLocal>, required: true },
   },
