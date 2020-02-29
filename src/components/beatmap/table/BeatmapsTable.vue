@@ -6,10 +6,10 @@
     :server-items-length="serverItemsLength"
     :loading="loading"
     :disable-sort="noSort"
+    :fixed-header="fixedHeader"
     loading-text="Loading contents ..."
     item-key="hash"
     hide-default-footer
-    fixed-header
     dense
     @update:page="updatePage"
   >
@@ -38,8 +38,12 @@
       <span
         v-else-if="!noActions"
         :key="header.value"
+        class="d-flex"
       >
-        <slot name="actions"/>
+        <slot
+          name="actions"
+          :beatsaver="item.raw.data"
+        />
         <Tooltip text="See more">
           <v-btn
             :to="{ name: seeMoreRouteName, params: { key: item.raw.data.key } }"
@@ -137,6 +141,8 @@ export default Vue.extend({
     noItemPerPageChoice: { type: Boolean, default: false },
     serverItemsLength: { type: Number, default: undefined },
     loading: { type: Boolean, default: false },
+    fixedHeader: { type: Boolean, default: false },
+    height: { type: Number, default: undefined },
     seeMoreRouteName: { type: String, default: undefined },
     noActions: { type: Boolean, default: false },
     noSort: { type: Boolean, default: false },
@@ -185,11 +191,12 @@ export default Vue.extend({
             .includes(this.filtersValue.name.toLowerCase()),
           filterType: BeatmapsTableFilterType.Text,
           sort: sortText,
+          width: 225,
         },
         {
           value: 'artist',
           text: 'Artist',
-          template: BeatmapsTableHeadersTemplate.Text,
+          template: BeatmapsTableHeadersTemplate.TextTooltip,
           templateItemAccess: 'metadata.songAuthorName',
           align: 'left',
           sortable: true,
@@ -199,11 +206,12 @@ export default Vue.extend({
             .includes(this.filtersValue.artist.toLowerCase()),
           filterType: BeatmapsTableFilterType.Text,
           sort: sortText,
+          width: 125,
         },
         {
           value: 'mapper',
           text: 'Mapper',
-          template: BeatmapsTableHeadersTemplate.Text,
+          template: BeatmapsTableHeadersTemplate.TextTooltip,
           templateItemAccess: 'metadata.levelAuthorName',
           align: 'left',
           sortable: true,
@@ -213,6 +221,7 @@ export default Vue.extend({
             .includes(this.filtersValue.mapper.toLowerCase()),
           filterType: BeatmapsTableFilterType.Text,
           sort: sortText,
+          width: 125,
         },
         {
           value: 'difficulties',
@@ -225,7 +234,7 @@ export default Vue.extend({
           filterable: true,
           filter: (value: DifficultiesSimple) => this.filtersValue.difficulties
             .some((diff: string) => value[diff]),
-          width: 125,
+          width: 110,
         },
         {
           value: 'dl',
@@ -298,6 +307,7 @@ export default Vue.extend({
           filterType: BeatmapsTableFilterType.Date,
           filter: (value: string) => IsInDate(new Date(value), this.filtersValue.uploaded),
           sort: sortDateFromString,
+          width: 150,
         },
         {
           value: 'key',

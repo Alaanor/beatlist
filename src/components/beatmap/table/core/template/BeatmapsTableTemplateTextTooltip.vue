@@ -1,9 +1,14 @@
 <template>
-  <Tooltip :text="data">
-    <span>
-      {{ data }}
-    </span>
-  </Tooltip>
+  <div
+    class="text-truncate"
+    :style="`width: ${header.width}px`"
+  >
+    <Tooltip :text="data">
+      <span>
+        {{ data }}
+      </span>
+    </Tooltip>
+  </div>
 </template>
 
 <script lang="ts">
