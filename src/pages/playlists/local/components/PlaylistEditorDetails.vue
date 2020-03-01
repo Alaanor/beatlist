@@ -136,10 +136,8 @@ import NotificationService, {
 } from '@/libraries/notification/NotificationService';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import Base64SrcLoader from '@/libraries/os/utils/Base64SrcLoader';
-import PlaylistLoader from '@/libraries/playlist/loader/PlaylistLoader';
-import PlaylistScanner from '@/libraries/scanner/playlist/PlaylistScanner';
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog.vue';
-import PlaylistInstaller from '@/libraries/os/beatSaber/installer/PlaylistInstaller';
+import PlaylistOperation from '@/libraries/playlist/PlaylistOperation';
 
 export default Vue.extend({
   name: 'PlaylistEditorDetails',
@@ -181,11 +179,26 @@ export default Vue.extend({
       playlist.description = this.playlistDescription;
       playlist.cover = Buffer.from(Base64SrcLoader.GetRawSrc(this.imageData), 'base64');
 
-      if (playlist.path) {
-        PlaylistLoader.Save(playlist).then(() => {
-          this.OnceSaved(playlist);
+      PlaylistOperation
+        .UpdatePlaylist(playlist)
+        .then((updatedPlaylist: PlaylistLocal | undefined) => {
+          if (
+            updatedPlaylist === undefined
+            || !(updatedPlaylist.hash && updatedPlaylist.hash !== this.playlist.hash)
+          ) {
+            return;
+          }
+
+          this.$router.push({
+            name: 'playlists-local-unit',
+            params: { hash: updatedPlaylist.hash },
+          });
+
+          this.imageChanged = false;
+        })
+        .finally(() => {
+          this.loading = false;
         });
-      }
     },
     Cancel() {
       this.Load();
@@ -197,7 +210,7 @@ export default Vue.extend({
       this.playlistDescription = this.playlist.description ?? '';
     },
     Delete() {
-      PlaylistInstaller.Uninstall(this.playlist).then(() => {
+      PlaylistOperation.DeletePlaylist(this.playlist).then(() => {
         NotificationService.NotifyMessage(
           'The playlist has been deleted',
           undefined,
@@ -214,31 +227,6 @@ export default Vue.extend({
         && this.playlist.description === this.playlistDescription
         && !this.imageChanged
       );
-    },
-    OnceSaved(playlist: PlaylistLocal): void {
-      if (!playlist.path) return;
-
-      const scanner = new PlaylistScanner();
-      scanner
-        .scanOne(playlist.path)
-        .then((p: PlaylistLocal) => {
-          this.OnceScanned(p);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    OnceScanned(playlist: PlaylistLocal): void {
-      if (!(playlist.hash && playlist.hash !== this.playlist.hash)) {
-        return;
-      }
-
-      this.$router.push({
-        name: 'playlists-local-unit',
-        params: { hash: playlist.hash },
-      });
-
-      this.imageChanged = false;
     },
     async openFileExplorer() {
       const file = remote.dialog.showOpenDialog({

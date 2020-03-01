@@ -28,8 +28,8 @@ import Vue, { PropType } from 'vue';
 import Tooltip from '@/components/helper/Tooltip.vue';
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog.vue';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
-import PlaylistInstaller from '@/libraries/os/beatSaber/installer/PlaylistInstaller';
 import NotificationService, { NOTIFICATION_ICON_DELETE } from '@/libraries/notification/NotificationService';
+import PlaylistOperation from '@/libraries/playlist/PlaylistOperation';
 
 export default Vue.extend({
   name: 'PlaylistButtonRemovePlaylist',
@@ -42,7 +42,7 @@ export default Vue.extend({
   }),
   methods: {
     async deletePlaylist() {
-      await PlaylistInstaller.Uninstall(this.playlist);
+      await PlaylistOperation.DeletePlaylist(this.playlist);
       NotificationService.NotifyMessage(
         'The playlist has been deleted',
         '',

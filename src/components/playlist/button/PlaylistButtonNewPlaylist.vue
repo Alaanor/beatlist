@@ -13,7 +13,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Tooltip from '@/components/helper/Tooltip.vue';
-import PlaylistInstaller from '@/libraries/os/beatSaber/installer/PlaylistInstaller';
+import PlaylistOperation from '@/libraries/playlist/PlaylistOperation';
 
 export default Vue.extend({
   name: 'PlaylistButtonNewPlaylist',
@@ -24,7 +24,7 @@ export default Vue.extend({
   methods: {
     MakeNewPlaylist() {
       this.loading = true;
-      PlaylistInstaller.InstallNewEmpty()
+      PlaylistOperation.CreateNewPlaylist()
         .then(() => {
           this.loading = false;
         });
