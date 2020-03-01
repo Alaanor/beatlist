@@ -38,7 +38,7 @@
       <span
         v-else-if="!noActions"
         :key="header.value"
-        class="d-flex"
+        class="d-flex justify-center"
       >
         <slot
           name="actions"
@@ -380,6 +380,17 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
+<style>
+  td {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
 
+  td:first-child {
+    padding-left: 16px !important;
+  }
+
+  td:last-child {
+    padding-right: 16px !important;
+  }
 </style>
