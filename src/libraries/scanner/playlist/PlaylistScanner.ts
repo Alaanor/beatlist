@@ -71,21 +71,28 @@ export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> 
       const fileHash = await PlaylistBlisterLoader.getHashFromPath(path);
       const libHash = PlaylistLibrary.GetByPath(path)?.hash;
       if (fileHash !== libHash || fileHash === undefined) {
-        await PlaylistScanner.updatePlaylist(path);
-        this.result.updatedItems += 1;
+        const { updated } = await PlaylistScanner.updatePlaylist(path);
+        this.result.updatedItems += updated ? 1 : 0;
       }
     }));
   }
 
-  private static async updatePlaylist(path: string) {
+  private static async updatePlaylist(path: string): Promise<{ updated: boolean }> {
     const oldPlaylist = PlaylistLibrary.GetByPath(path);
 
     if (!oldPlaylist) {
-      return;
+      return { updated: false };
     }
 
     const newPlaylist = await PlaylistLoader.update(oldPlaylist, path);
+
+    if (newPlaylist.hash === oldPlaylist.hash) {
+      return { updated: false };
+    }
+
     PlaylistLibrary.RemovePlaylist(oldPlaylist);
     PlaylistLibrary.AddPlaylist(newPlaylist);
+
+    return { updated: true };
   }
 }
