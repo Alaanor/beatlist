@@ -9,9 +9,12 @@
       <PlaylistEditorBeatmapList
         id="playlist-content-list"
         :playlist="playlist"
+        class="mb-10"
       />
-      <!-- list of beatmap in the playlist -->
-      <!-- beatmap browser -->
+      <PlaylistEditorBeatmapBrowser
+        id="playlist-browser"
+        :playlist="playlist"
+      />
     </v-container>
   </div>
 </template>
@@ -24,10 +27,17 @@ import PlaylistEditorDetails from '@/pages/playlists/local/components/PlaylistEd
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistEditorBeatmapList
   from '@/pages/playlists/local/components/PlaylistEditorBeatmapList.vue';
+import PlaylistEditorBeatmapBrowser
+  from '@/pages/playlists/local/components/PlaylistEditorBeatmapBrowser.vue';
 
 export default Vue.extend({
   name: 'PlaylistEditor',
-  components: { PlaylistEditorSidebar, PlaylistEditorDetails, PlaylistEditorBeatmapList },
+  components: {
+    PlaylistEditorSidebar,
+    PlaylistEditorDetails,
+    PlaylistEditorBeatmapList,
+    PlaylistEditorBeatmapBrowser,
+  },
   props: {
     playlist: { type: Object as PropType<PlaylistLocal>, required: true },
   },
