@@ -10,7 +10,15 @@
       :items="beatmaps"
       :shown-column="shownColumn"
       see-more-route-name="beatmaps-online-unit"
-    />
+    >
+      <template #actions="{ beatsaver }">
+        <PlaylistButtonRemoveFromPlaylist
+          :playlist="playlist"
+          :beatmap="beatsaver"
+          small
+        />
+      </template>
+    </BeatmapsTable>
   </div>
 </template>
 
@@ -21,10 +29,12 @@ import BeatmapsTable from '@/components/beatmap/table/BeatmapsTable.vue';
 import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
 import BeatmapsTableColumnSelector
   from '@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue';
+import PlaylistButtonRemoveFromPlaylist
+  from '@/components/playlist/button/PlaylistButtonRemoveFromPlaylist.vue';
 
 export default Vue.extend({
   name: 'PlaylistEditorBeatmapList',
-  components: { BeatmapsTableColumnSelector, BeatmapsTable },
+  components: { BeatmapsTableColumnSelector, BeatmapsTable, PlaylistButtonRemoveFromPlaylist },
   props: {
     playlist: { type: Object as PropType<PlaylistLocal>, required: true },
   },
