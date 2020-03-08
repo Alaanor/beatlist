@@ -157,6 +157,7 @@ export default class PlaylistLoader {
 
       case BeatmapType.LevelID:
         map.error = PlaylistMapImportError.BeatmapTypeLevelIdNotSupported;
+        map.errorInfo = `levelid: ${mapToConvert.levelID}`;
         break;
 
       default:
@@ -216,11 +217,19 @@ export default class PlaylistLoader {
   private static async HandleBeatmapKey(map: PlaylistLocalMap, key: string) {
     const beatmap = await BeatsaverAPI.Singleton.getBeatmapByKey(key);
     this.SetMapOnlineData(beatmap, map);
+
+    if (map.error) {
+      map.errorInfo = `key: ${key}`;
+    }
   }
 
   private static async HandleBeatmapHash(map: PlaylistLocalMap, hash: string) {
     const beatmap = await BeatsaverAPI.Singleton.getBeatmapByHash(hash);
     this.SetMapOnlineData(beatmap, map);
+
+    if (map.error) {
+      map.errorInfo = `hash: ${hash}`;
+    }
   }
 
   private static SetMapOnlineData(

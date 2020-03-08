@@ -22,7 +22,8 @@ export interface PlaylistOnline extends PlaylistBase {
 
 export interface PlaylistLocalMap {
   dateAdded: Date;
-  error: PlaylistMapImportError | null,
+  error: PlaylistMapImportError | null;
+  errorInfo: string;
   online: BeatsaverBeatmap | null;
 }
 
