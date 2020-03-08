@@ -2,6 +2,7 @@
   <v-dialog
     v-model="open"
     max-width="80%"
+    @click:outside="closeDialog"
   >
     <v-card>
       <v-card-title>

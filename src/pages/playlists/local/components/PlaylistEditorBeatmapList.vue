@@ -31,6 +31,7 @@ import BeatmapsTableColumnSelector
   from '@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue';
 import PlaylistButtonRemoveFromPlaylist
   from '@/components/playlist/button/PlaylistButtonRemoveFromPlaylist.vue';
+import PlaylistMapsLibrary from '@/libraries/playlist/PlaylistMapsLibrary';
 
 export default Vue.extend({
   name: 'PlaylistEditorBeatmapList',
@@ -43,8 +44,7 @@ export default Vue.extend({
   }),
   computed: {
     beatmaps(): BeatmapsTableDataUnit[] {
-      return this.playlist.maps
-        .filter((entry) => entry.error === null)
+      return PlaylistMapsLibrary.GetAllValidMapFor(this.playlist)
         .map((entry) => ({
           local: undefined,
           data: entry.online,

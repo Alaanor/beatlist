@@ -27,6 +27,7 @@
             Clear cache
           </v-btn>
         </v-col>
+
         <v-col class="d-flex justify-center align-start flex-column py-0">
           <span>
             <strong>{{ beatmapsCountValid }}</strong>
@@ -37,6 +38,7 @@
             {{ beatmapsCountValid > 1 ? 'playlists are' : 'playlist is' }} loaded.
           </span>
           <span class="py-1"/>
+
           <span
             v-if="beatmapsCountInvalid > 0"
             class="grey--text d-flex align-center"
@@ -47,11 +49,12 @@
               icon
               x-small
               class="ml-1"
-              @click="invalidBeatmapDialog = true"
+              @click.stop="invalidBeatmapDialog = true"
             >
               <v-icon x-small>mdi-help</v-icon>
             </v-btn>
           </span>
+
           <span
             v-if="playlistsCountInvalid > 0"
             class="grey--text d-flex align-center"
@@ -62,11 +65,33 @@
               icon
               x-small
               class="ml-1"
-              @click="invalidPlaylistDialog = true"
+              @click.stop="invalidPlaylistDialog = true"
             >
               <v-icon x-small>mdi-help</v-icon>
             </v-btn>
           </span>
+
+          <span
+            v-if="playlistsMapsCountInvalid > 0"
+            class="grey--text d-flex align-center"
+          >
+            <strong class="pr-1">{{ playlistsMapsCountInvalid }}</strong>
+            {{
+              playlistsMapsCountInvalid > 1
+                ? 'beatmaps inside some playlists are'
+                : 'beatmap inside a playlist is'
+            }}
+            invalid.
+            <v-btn
+              icon
+              x-small
+              class="ml-1"
+              @click.stop="invalidPlaylistsMapsDialog = true"
+            >
+              <v-icon x-small>mdi-help</v-icon>
+            </v-btn>
+          </span>
+
           <span
             v-if="lastScan"
             class="grey--text"
@@ -86,6 +111,7 @@
     </ConfirmDialog>
     <InvalidBeatmapDialog :open.sync="invalidBeatmapDialog"/>
     <InvalidPlaylistDialog :open.sync="invalidPlaylistDialog"/>
+    <InvalidPlaylistsMapsDialog :open.sync="invalidPlaylistsMapsDialog"/>
   </v-container>
 </template>
 
@@ -98,16 +124,22 @@ import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
 import InvalidBeatmapDialog from '@/components/dialogs/InvalidBeatmapDialog.vue';
 import InvalidPlaylistDialog from '@/components/dialogs/InvalidPlaylistDialog.vue';
 import ScannerService from '@/libraries/scanner/ScannerService';
+import PlaylistMapsLibrary from '@/libraries/playlist/PlaylistMapsLibrary';
+import InvalidPlaylistsMapsDialog from '@/components/dialogs/InvalidPlaylistsMapsDialog.vue';
 
 export default Vue.extend({
   name: 'SongLibrary',
   components: {
-    ConfirmDialog, InvalidBeatmapDialog, InvalidPlaylistDialog,
+    ConfirmDialog,
+    InvalidBeatmapDialog,
+    InvalidPlaylistDialog,
+    InvalidPlaylistsMapsDialog,
   },
   data: () => ({
     confirmDialog: false,
     invalidBeatmapDialog: false,
     invalidPlaylistDialog: false,
+    invalidPlaylistsMapsDialog: false,
     isScanning: false,
   }),
   computed: {
@@ -116,6 +148,7 @@ export default Vue.extend({
     beatmapsCountInvalid: () => BeatmapLibrary.GetAllInvalidMap().length,
     playlistsCountValid: () => PlaylistLibrary.GetAllValidPlaylists().length,
     playlistsCountInvalid: () => PlaylistLibrary.GetAllInvalidPlaylists().length,
+    playlistsMapsCountInvalid: () => PlaylistMapsLibrary.GetAllInvalidMapFlatten().length,
     lastScan: () => BeatmapLibrary.GetLastScanDate()?.toLocaleString() ?? undefined,
   },
   mounted(): void {
