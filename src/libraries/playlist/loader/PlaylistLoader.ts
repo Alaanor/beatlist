@@ -257,15 +257,14 @@ export default class PlaylistLoader {
     output.cover = playlist.cover;
 
     output.maps = playlist.maps.map((map: PlaylistLocalMap | PlaylistOnlineMap) => {
-      if (map.online === undefined) {
+      if (!map.online?.hash) {
         return undefined;
       }
 
-      const hash = map.online?.hash || '';
       return {
         dateAdded: map.dateAdded,
         type: BeatmapType.Hash,
-        hash: Buffer.from(hash.toLowerCase(), 'hex'),
+        hash: Buffer.from(map.online.hash.toLowerCase(), 'hex'),
       } as IBeatmap;
     }).filter((map: IBeatmap | undefined) => map !== undefined) as IBeatmap[];
 
