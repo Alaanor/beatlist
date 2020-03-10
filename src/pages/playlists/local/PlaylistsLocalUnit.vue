@@ -30,6 +30,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { get } from 'vuex-pathify';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
 import PlaylistCoverAvatar from '@/components/playlist/cover/PlaylistCoverAvatar.vue';
@@ -41,6 +42,9 @@ export default Vue.extend({
   data: () => ({
     playlist: undefined as PlaylistLocal | undefined,
   }),
+  computed: {
+    playlists: get<PlaylistLocal[]>('playlist/playlists'),
+  },
   watch: {
     $route: {
       handler() {
@@ -48,10 +52,15 @@ export default Vue.extend({
       },
       immediate: true,
     },
+    playlists() {
+      if (!this.playlist?.path) return;
+
+      const hash = PlaylistLibrary.GetByPath(this.playlist.path)?.hash;
+
+      if (!hash) return;
+
+      this.$router.replace({ name: 'playlists-local-unit', params: { hash } });
+    },
   },
 });
 </script>
-
-<style scoped>
-
-</style>
