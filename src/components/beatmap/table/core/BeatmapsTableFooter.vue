@@ -18,7 +18,7 @@
           <v-list-item
             v-for="item in itemsPerPageList"
             :key="item"
-            @click="itemsPerPage = item"
+            @click="updateItemsPerPage(item)"
           >
             <v-list-item-title>{{ item | withAll }}</v-list-item-title>
           </v-list-item>
@@ -77,7 +77,6 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { sync } from 'vuex-pathify';
 
 export default Vue.extend({
   name: 'BeatmapsTableFooter',
@@ -89,6 +88,7 @@ export default Vue.extend({
   props: {
     options: { type: Object, required: true },
     pagination: { type: Object, required: true },
+    itemsPerPage: { type: Number, default: undefined },
     itemsPerPageList: {
       type: Array as PropType<number[]>,
       default: () => [5, 10, 15, 20, 25, 50, 100, -1],
@@ -96,7 +96,6 @@ export default Vue.extend({
     noItemPerPageChoice: { type: Boolean, default: false },
   },
   computed: {
-    itemsPerPage: sync<number>('settings/beatmapsTable@itemsPerPage'),
     isFirstPage() {
       return this.options.page === 1;
     },
@@ -120,6 +119,9 @@ export default Vue.extend({
     },
     pageEnd() {
       this.options.page = this.pagination.pageCount;
+    },
+    updateItemsPerPage(item: number) {
+      this.$emit('update:itemsPerPage', item);
     },
   },
 });

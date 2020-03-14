@@ -53,6 +53,7 @@
       <BeatmapsTable
         :items="beatmaps"
         :shown-column="shownColumn"
+        :items-per-page="10"
         :server-items-length="totalDocs"
         :loading="loading"
         see-more-route-name="beatmaps-online-unit"
@@ -108,7 +109,7 @@ export default Vue.extend({
     error: undefined as string | undefined,
   }),
   computed: {
-    shownColumn: sync<string[]>('settings/beatmapsTable@shownColumn'),
+    shownColumn: sync<string[]>('settings/beatmapsTable@beatsaverBeatmap.shownColumn'),
     beatmaps(): BeatmapsTableDataUnit[] {
       return this.beatsaverPage?.docs.map((beatmap): BeatmapsTableDataUnit => ({
         local: undefined,

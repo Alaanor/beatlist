@@ -5,6 +5,7 @@
       <BeatmapsTable
         :items="beatmaps"
         :shown-column="shownColumn"
+        :items-per-page.sync="itemsPerPage"
         see-more-route-name="beatmaps-local-unit"
       />
     </v-card>
@@ -23,7 +24,8 @@ export default Vue.extend({
   name: 'BeatmapTableLocal',
   components: { BeatmapsTableColumnSelector, BeatmapsTable },
   computed: {
-    shownColumn: sync<string[]>('settings/beatmapsTable@shownColumn'),
+    shownColumn: sync<string[]>('settings/beatmapsTable@localBeatmaps.shownColumn'),
+    itemsPerPage: sync<string[]>('settings/beatmapsTable@localBeatmaps.itemsPerPage'),
     beatmaps: () => BeatmapLibrary.GetAllValidMap()
       .map((beatmap): BeatmapsTableDataUnit => ({
         local: beatmap,

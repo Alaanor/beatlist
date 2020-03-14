@@ -5,7 +5,12 @@ export interface SettingsStoreState {
   installationPathValid: boolean,
   darkTheme: boolean,
   enableDiscordRichPresence: boolean,
-  beatmapsTable: BeatmapTableStoreState;
+  beatmapsTable: {
+    localBeatmaps: BeatmapTableStoreState;
+    beatsaverBeatmaps: BeatmapTableStoreState;
+    playlistContent: BeatmapTableStoreState;
+    playlistBrowser: BeatmapTableStoreState;
+  }
 }
 
 export interface BeatmapTableStoreState {
@@ -13,14 +18,21 @@ export interface BeatmapTableStoreState {
   itemsPerPage: number,
 }
 
+const defaultTableSettings = {
+  shownColumn: ['cover', 'name', 'mapper', 'difficulties'],
+  itemsPerPage: 10,
+};
+
 const state = {
   installationPath: '',
   installationPathValid: false,
   darkTheme: true,
   enableDiscordRichPresence: true,
   beatmapsTable: {
-    shownColumn: ['cover', 'name', 'mapper', 'difficulties'],
-    itemsPerPage: 10,
+    localBeatmaps: { ...defaultTableSettings },
+    beatsaverBeatmaps: { ...defaultTableSettings },
+    playlistContent: { ...defaultTableSettings },
+    playlistBrowser: { ...defaultTableSettings },
   },
 };
 

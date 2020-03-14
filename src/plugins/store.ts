@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
-import pathify from 'vuex-pathify';
 import localForage from 'localforage';
+import pathify from '@/plugins/pathify';
 import modules, { StoreState } from '@/store';
 
 Vue.use(Vuex);

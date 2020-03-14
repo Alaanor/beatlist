@@ -20,6 +20,7 @@
         :no-item-per-page-choice="noItemPerPageChoice"
         :options="options"
         :pagination="pagination"
+        v-on="$listeners"
       />
     </template>
 
@@ -167,7 +168,6 @@ export default Vue.extend({
     },
   }),
   computed: {
-    itemsPerPage: sync<number>('settings/beatmapsTable@itemsPerPage'),
     headers(): BeatmapsTableHeader[] {
       return [
         {
