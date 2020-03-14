@@ -247,6 +247,7 @@ export default Vue.extend({
           filterType: BeatmapsTableFilterType.RangeInt,
           filter: (value: number) => IsIn(value, this.filtersValue.dl),
           sort: sortNumber,
+          width: 50,
         },
         {
           value: 'plays',
@@ -259,6 +260,7 @@ export default Vue.extend({
           filterType: BeatmapsTableFilterType.RangeInt,
           filter: (value: number) => IsIn(value, this.filtersValue.plays),
           sort: sortNumber,
+          width: 50,
         },
         {
           value: 'upvotes',
@@ -271,6 +273,7 @@ export default Vue.extend({
           filterType: BeatmapsTableFilterType.RangeInt,
           filter: (value: number) => IsIn(value, this.filtersValue.upvotes),
           sort: sortNumber,
+          width: 50,
         },
         {
           value: 'downvotes',
@@ -283,6 +286,7 @@ export default Vue.extend({
           filterType: BeatmapsTableFilterType.RangeInt,
           filter: (value: number) => IsIn(value, this.filtersValue.downvotes),
           sort: sortNumber,
+          width: 50,
         },
         {
           value: 'rating',
@@ -295,6 +299,7 @@ export default Vue.extend({
           filterType: BeatmapsTableFilterType.RangeInt,
           filter: (value: number) => IsIn(value, this.filtersValue.rating),
           sort: sortNumber,
+          width: 50,
         },
         {
           value: 'uploaded',
@@ -337,6 +342,7 @@ export default Vue.extend({
             .toLowerCase()
             .includes(this.filtersValue.hash.toLowerCase()),
           sort: sortNumber,
+          width: 300,
         },
         {
           value: 'actions',
