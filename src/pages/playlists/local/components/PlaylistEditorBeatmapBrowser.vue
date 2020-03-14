@@ -9,6 +9,7 @@
     <BeatmapsTable
       :items="beatmaps"
       :shown-column="shownColumn"
+      :selected="selectedHashes"
       see-more-route-name="beatmaps-online-unit"
     >
       <template #actions="{ beatsaver }">
@@ -24,6 +25,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
+import { sync } from 'vuex-pathify';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import BeatmapsTableColumnSelector
   from '@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue';
@@ -44,6 +46,8 @@ export default Vue.extend({
     shownColumn: ['cover', 'name', 'artist', 'mapper'],
   }),
   computed: {
+    shownColumn: sync<string[]>('settings/beatmapsTable@playlistBrowser.shownColumn'),
+    itemsPerPage: sync<string[]>('settings/beatmapsTable@playlistBrowser.itemsPerPage'),
     allValidBeatmaps: (): BeatmapLocal[] => BeatmapLibrary.GetAllValidMap(),
     beatmaps(): BeatmapsTableDataUnit[] {
       return this.allValidBeatmaps

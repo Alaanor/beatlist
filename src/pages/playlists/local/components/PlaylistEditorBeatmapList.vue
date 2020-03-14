@@ -8,6 +8,7 @@
     />
     <BeatmapsTable
       :items="beatmaps"
+      :items-per-page.sync="itemsPerPage"
       :shown-column="shownColumn"
       see-more-route-name="beatmaps-online-unit"
     >
@@ -24,6 +25,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
+import { sync } from 'vuex-pathify';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import BeatmapsTable from '@/components/beatmap/table/BeatmapsTable.vue';
 import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
@@ -39,10 +41,9 @@ export default Vue.extend({
   props: {
     playlist: { type: Object as PropType<PlaylistLocal>, required: true },
   },
-  data: () => ({
-    shownColumn: ['cover', 'name', 'artist', 'mapper'],
-  }),
   computed: {
+    shownColumn: sync<string[]>('settings/beatmapsTable@playlistContent.shownColumn'),
+    itemsPerPage: sync<string[]>('settings/beatmapsTable@playlistContent.itemsPerPage'),
     beatmaps(): BeatmapsTableDataUnit[] {
       return PlaylistMapsLibrary.GetAllValidMapFor(this.playlist)
         .map((entry) => ({
