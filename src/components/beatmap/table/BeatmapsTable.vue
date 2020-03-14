@@ -381,16 +381,16 @@ export default Vue.extend({
 </script>
 
 <style>
-  td {
+  td, th {
     padding-left: 4px !important;
     padding-right: 4px !important;
   }
 
-  td:first-child {
+  td:first-child, th:first-child {
     padding-left: 16px !important;
   }
 
-  td:last-child {
+  td:last-child, th:last-child {
     padding-right: 16px !important;
   }
 </style>
