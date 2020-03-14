@@ -99,7 +99,7 @@ describe('playlist loader', () => {
     expect.assertions(10);
 
     const mockGetBeatmapByHash = jest.fn();
-    const mockedValue = { key: '75f1' };
+    const mockedValue = { key: '75f1', hash: 'foo_bar' };
     mockGetBeatmapByHash.mockReturnValue(mockResponseSuccess(mockedValue));
     BeatsaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
 
