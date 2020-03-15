@@ -1,5 +1,6 @@
 <template>
   <v-data-table
+    v-model="selectedItem"
     :headers="getHeaders()"
     :items="beatmapAsTableData"
     :options="{...options, itemsPerPage}"
@@ -7,6 +8,7 @@
     :loading="loading"
     :disable-sort="noSort"
     :fixed-header="fixedHeader"
+    :show-select="selected !== undefined"
     loading-text="Loading contents ..."
     item-key="hash"
     hide-default-footer
@@ -65,6 +67,7 @@
       <BeatmapsTableFilterRow
         :headers="getHeaders()"
         :filters-value="filtersValue"
+        :shift-left="selected !== undefined ? 1 : 0"
       />
     </template>
 
@@ -79,9 +82,8 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { sync } from 'vuex-pathify';
 import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
-import { DifficultiesSimple } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import { BeatsaverBeatmap, DifficultiesSimple } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import Tooltip from '@/components/helper/Tooltip.vue';
 import {
   BeatmapsTableFilterType,
@@ -138,6 +140,7 @@ export default Vue.extend({
     items: { type: Array as PropType<BeatmapsTableDataUnit[]>, required: true },
     shownColumn: { type: Array as PropType<string[]>, required: true },
     noFilter: { type: Boolean, default: false },
+    itemsPerPage: { type: Number, default: undefined },
     itemsPerPageList: { type: Array as PropType<number[]>, default: undefined },
     noItemPerPageChoice: { type: Boolean, default: false },
     serverItemsLength: { type: Number, default: undefined },
@@ -147,6 +150,7 @@ export default Vue.extend({
     seeMoreRouteName: { type: String, default: undefined },
     noActions: { type: Boolean, default: false },
     noSort: { type: Boolean, default: false },
+    selected: { type: Array as PropType<BeatsaverBeatmap[]>, default: undefined },
   },
   data: () => ({
     options: {
@@ -166,6 +170,7 @@ export default Vue.extend({
       key: '',
       hash: '',
     },
+    selectedItem: [] as { hash: string, key: string }[],
   }),
   computed: {
     headers(): BeatmapsTableHeader[] {
@@ -370,6 +375,11 @@ export default Vue.extend({
         key: entry.data.key,
         hash: entry.data.hash,
       }));
+    },
+  },
+  watch: {
+    selectedItem() {
+      this.$emit('update:selected', this.selectedItem.map((entry: any) => entry.raw.data));
     },
   },
   methods: {

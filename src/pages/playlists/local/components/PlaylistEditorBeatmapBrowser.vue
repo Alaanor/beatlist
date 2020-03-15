@@ -9,7 +9,8 @@
     <BeatmapsTable
       :items="beatmaps"
       :shown-column="shownColumn"
-      :selected="selectedHashes"
+      :items-per-page.sync="itemsPerPage"
+      :selected.sync="selectedBeatmap"
       see-more-route-name="beatmaps-online-unit"
     >
       <template #actions="{ beatsaver }">
@@ -20,6 +21,11 @@
         />
       </template>
     </BeatmapsTable>
+    <BeatmapsTableBulkActions
+      :playlist="playlist"
+      :selected="selectedBeatmap"
+      bulk-add
+    />
   </div>
 </template>
 
@@ -35,15 +41,22 @@ import PlaylistButtonAddToPlaylist
 import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
 import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
 import { BeatmapLocal } from '@/libraries/beatmap/BeatmapLocal';
+import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import BeatmapsTableBulkActions from '@/components/beatmap/table/core/BeatmapsTableBulkActions.vue';
 
 export default Vue.extend({
   name: 'PlaylistEditorBeatmapBrowser',
-  components: { BeatmapsTableColumnSelector, BeatmapsTable, PlaylistButtonAddToPlaylist },
+  components: {
+    BeatmapsTableColumnSelector,
+    BeatmapsTable,
+    PlaylistButtonAddToPlaylist,
+    BeatmapsTableBulkActions,
+  },
   props: {
     playlist: { type: Object as PropType<PlaylistLocal>, required: true },
   },
   data: () => ({
-    shownColumn: ['cover', 'name', 'artist', 'mapper'],
+    selectedBeatmap: [] as BeatsaverBeatmap[],
   }),
   computed: {
     shownColumn: sync<string[]>('settings/beatmapsTable@playlistBrowser.shownColumn'),

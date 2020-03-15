@@ -1,6 +1,10 @@
 <template>
   <tr>
     <td
+      v-for="index in [...Array(shiftLeft)].map((_, i) => i)"
+      :key="index"
+    />
+    <td
       v-for="header in headers"
       :key="header.value"
       :align="header.align"
@@ -34,6 +38,7 @@ export default Vue.extend({
   props: {
     headers: { type: Array as PropType<BeatmapsTableHeader[]>, required: true },
     filtersValue: { type: Object, required: true },
+    shiftLeft: { type: Number, default: 0 },
   },
 });
 </script>

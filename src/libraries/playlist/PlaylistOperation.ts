@@ -27,13 +27,7 @@ export default class PlaylistOperation {
     const copy = { ...playlist };
     copy.maps = [...playlist.maps];
 
-    const playlistLocalMap = {
-      online: beatsaver,
-      error: null,
-      dateAdded: new Date(),
-    } as PlaylistLocalMap;
-
-    copy.maps.push(playlistLocalMap);
+    this.PushMapInPlaylist(copy, beatsaver);
 
     return this.UpdatePlaylist(copy);
   }
@@ -47,5 +41,34 @@ export default class PlaylistOperation {
     return this.UpdatePlaylist(copy);
   }
 
-  // @TODO bulk operation for add/remove
+  public static BulkAddMapInPlaylist(playlist: PlaylistLocal, beatsavers: BeatsaverBeatmap[]) {
+    const copy = { ...playlist };
+    copy.maps = [...playlist.maps];
+
+    beatsavers.forEach((beatsaver: BeatsaverBeatmap) => {
+      this.PushMapInPlaylist(copy, beatsaver);
+    });
+
+    return this.UpdatePlaylist(copy);
+  }
+
+  public static BulkRemoveMapFromPlaylist(playlist: PlaylistLocal, beatsavers: BeatsaverBeatmap[]) {
+    const copy = { ...playlist };
+
+    copy.maps = playlist.maps
+      .filter((entry: PlaylistLocalMap) => beatsavers
+        .find((beatsaver: BeatsaverBeatmap) => entry.online?.hash !== beatsaver.hash));
+
+    return this.UpdatePlaylist(copy);
+  }
+
+  private static PushMapInPlaylist(playlist: PlaylistLocal, beatsaver: BeatsaverBeatmap) {
+    const playlistLocalMap = {
+      online: beatsaver,
+      error: null,
+      dateAdded: new Date(),
+    } as PlaylistLocalMap;
+
+    playlist.maps.push(playlistLocalMap);
+  }
 }
