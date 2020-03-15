@@ -77,6 +77,21 @@
         indeterminate
       />
     </template>
+
+    <template #header.data-table-select>
+      <v-simple-checkbox
+        :value="selected.length > 0"
+        :indeterminate="selected.length !== items.length && selected.length !== 0"
+        @input="selectAllItems"
+      />
+    </template>
+
+    <template #item.data-table-select="{ item }">
+      <v-simple-checkbox
+        :value="selected.includes(item.raw.data)"
+        @input="((value) => selectThisItem(item.raw.data, value))"
+      />
+    </template>
   </v-data-table>
 </template>
 
@@ -391,6 +406,23 @@ export default Vue.extend({
     },
     updatePage(page: number): void {
       this.$emit('update:page', page);
+    },
+    selectAllItems(select: boolean): void {
+      if (select) {
+        this.$emit('update:selected', this.items.map((item: BeatmapsTableDataUnit) => item.data));
+      } else {
+        this.$emit('update:selected', []);
+      }
+    },
+    selectThisItem(item: BeatsaverBeatmap, enabled: boolean) {
+      if (enabled) {
+        this.$emit('update:selected', [...this.selected, item]);
+      } else {
+        this.$emit(
+          'update:selected',
+          this.selected.filter((selectedItem: BeatsaverBeatmap) => selectedItem.hash !== item.hash),
+        );
+      }
     },
   },
 });
