@@ -7,18 +7,22 @@ export default class Base64SrcLoader {
   }
 
   public static async FromFile(filepath: string): Promise<string> {
-    const data = (await fs.readFile(filepath)).toString('base64');
+    const data = await fs.readFile(filepath);
     const type = mime.lookup(filepath);
 
     if (type) {
-      return this.Format(data, type);
+      return this.FromBuffer(data, type);
     }
 
-    return this.Format(data, '');
+    return this.FromBuffer(data, '');
   }
 
-  public static async FromBuffer(buffer: Buffer, type: string): Promise<string> {
+  public static FromBuffer(buffer: Buffer, type: string): string {
     return this.Format(Buffer.from(buffer).toString('base64'), mime.lookup(type) || '');
+  }
+
+  public static ToBuffer(base64: string): Buffer {
+    return Buffer.from(this.GetRawSrc(base64), 'base64');
   }
 
   public static GetRawSrc(base64src: string): string {

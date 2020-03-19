@@ -165,7 +165,7 @@ export default Vue.extend({
       this.imageChanged = false;
 
       if (this.playlist.cover) {
-        this.imageData = await Base64SrcLoader.FromBuffer(this.playlist.cover, 'png');
+        this.imageData = Base64SrcLoader.FromBuffer(this.playlist.cover, 'png');
       } else {
         this.imageData = '';
       }
@@ -177,7 +177,7 @@ export default Vue.extend({
       playlist.title = this.playlistTitle;
       playlist.author = this.playlistAuthor;
       playlist.description = this.playlistDescription;
-      playlist.cover = Buffer.from(Base64SrcLoader.GetRawSrc(this.imageData), 'base64');
+      playlist.cover = Base64SrcLoader.ToBuffer(this.imageData);
 
       PlaylistOperation
         .UpdatePlaylist(playlist)

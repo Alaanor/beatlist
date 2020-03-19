@@ -18,7 +18,7 @@ export default class PlaylistInstaller {
     const randNum = Math.floor(Math.random() * 1e6 - 1) + 1e5;
     const name = `new-playlist-${randNum}`;
     const cover = Buffer.from(await fs.readFile(defaultCoverPath));
-    const filepath = path.join(BeatSaber.getPlaylistFolder(), `${name}.${PLAYLIST_EXTENSION_NAME}`);
+    const filepath = path.join(BeatSaber.getPlaylistFolder(), `${name}.${PLAYLIST_EXTENSION_NAME}`).toLowerCase();
 
     const emptyPlaylist = {
       title: name,

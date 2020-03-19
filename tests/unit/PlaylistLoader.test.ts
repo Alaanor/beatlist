@@ -128,7 +128,7 @@ describe('playlist loader', () => {
   });
 
   it('should save the playlist correctly', async () => {
-    expect.assertions(4);
+    expect.assertions(5);
 
     const mockGetBeatmapByHash = jest.fn();
     const mockedValue = { key: '75f1' };
@@ -158,6 +158,7 @@ describe('playlist loader', () => {
 
     expect(playlist.loadState.valid).toBe(true);
     expect(playlist.title).toBe('test');
+    expect(playlist.cover?.toString()).toBe('test');
     expect(playlist.maps[0].online?.key).toBe('75f1');
 
     await fs.unlink(playlistPath);

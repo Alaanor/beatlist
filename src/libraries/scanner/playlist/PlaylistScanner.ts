@@ -70,6 +70,7 @@ export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> 
     return Promise.all(paths.map(async (path: string) => {
       const fileHash = await PlaylistBlisterLoader.getHashFromPath(path);
       const libHash = PlaylistLibrary.GetByPath(path)?.hash;
+
       if (fileHash !== libHash || fileHash === undefined) {
         const { updated } = await PlaylistScanner.updatePlaylist(path);
         this.result.updatedItems += updated ? 1 : 0;
