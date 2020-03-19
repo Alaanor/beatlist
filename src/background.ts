@@ -30,6 +30,7 @@ class Background {
         nodeIntegration: true,
       },
       icon: path.join(__dirname, '../public/icon_bold_64.png'),
+      backgroundColor: '#303030',
     });
 
     this.win.webContents.on('new-window', (e, url) => {
