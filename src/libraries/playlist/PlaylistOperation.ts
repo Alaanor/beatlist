@@ -56,8 +56,8 @@ export default class PlaylistOperation {
     const copy = { ...playlist };
 
     copy.maps = playlist.maps
-      .filter((entry: PlaylistLocalMap) => beatsavers
-        .find((beatsaver: BeatsaverBeatmap) => entry.online?.hash !== beatsaver.hash));
+      .filter((entry: PlaylistLocalMap) => !beatsavers
+        .find((beatsaver: BeatsaverBeatmap) => entry.online?.hash === beatsaver.hash));
 
     return this.UpdatePlaylist(copy);
   }
