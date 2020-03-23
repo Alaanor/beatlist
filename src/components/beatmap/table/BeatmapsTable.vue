@@ -2,7 +2,7 @@
   <v-data-table
     v-model="selectedItem"
     :headers="getHeaders()"
-    :items="beatmapAsTableData"
+    :items="beatmapAsTableDataFiltered"
     :options="{...options, itemsPerPage}"
     :server-items-length="serverItemsLength"
     :loading="loading"
@@ -98,7 +98,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
-import { BeatsaverBeatmap, DifficultiesSimple } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import Tooltip from '@/components/helper/Tooltip.vue';
 import {
   BeatmapsTableFilterType,
@@ -111,8 +111,12 @@ import {
   sortText,
 } from '@/components/beatmap/table/core/function/BeatmapsTableSortFunctions';
 import {
-  DateRange, IsIn, IsInDate, Range,
-} from '@/libraries/common/Range';
+  FilterDateRange,
+  FilterRange,
+  FilterText,
+  FilterDifficulties,
+} from '@/components/beatmap/table/core/filter/BeatmapsTableFilterFunction';
+import { DateRange, Range } from '@/libraries/common/Range';
 
 // Template
 import BeatmapsTableTemplateCover
@@ -185,6 +189,7 @@ export default Vue.extend({
       key: '',
       hash: '',
     },
+    itemsDisplayed: [] as { raw: BeatmapsTableDataUnit }[],
     selectedItem: [] as { hash: string, key: string }[],
   }),
   computed: {
@@ -206,9 +211,7 @@ export default Vue.extend({
           align: 'left',
           sortable: true,
           filterable: true,
-          filter: (value: string) => value
-            .toLowerCase()
-            .includes(this.filtersValue.name.toLowerCase()),
+          localFilter: (value: string) => FilterText(value, this.filtersValue.name),
           filterType: BeatmapsTableFilterType.Text,
           sort: sortText,
           width: 225,
@@ -221,9 +224,7 @@ export default Vue.extend({
           align: 'left',
           sortable: true,
           filterable: true,
-          filter: (value: string) => value
-            .toLowerCase()
-            .includes(this.filtersValue.artist.toLowerCase()),
+          localFilter: (value: string) => FilterText(value, this.filtersValue.artist),
           filterType: BeatmapsTableFilterType.Text,
           sort: sortText,
           width: 125,
@@ -236,9 +237,7 @@ export default Vue.extend({
           align: 'left',
           sortable: true,
           filterable: true,
-          filter: (value: string) => value
-            .toLowerCase()
-            .includes(this.filtersValue.mapper.toLowerCase()),
+          localFilter: (value: string) => FilterText(value, this.filtersValue.mapper),
           filterType: BeatmapsTableFilterType.Text,
           sort: sortText,
           width: 125,
@@ -252,8 +251,7 @@ export default Vue.extend({
           sortable: false,
           filterType: BeatmapsTableFilterType.Difficulties,
           filterable: true,
-          filter: (value: DifficultiesSimple) => this.filtersValue.difficulties
-            .some((diff: string) => value[diff]),
+          localFilter: (value) => FilterDifficulties(value, this.filtersValue.difficulties),
           width: 110,
         },
         {
@@ -265,7 +263,7 @@ export default Vue.extend({
           sortable: true,
           filterable: true,
           filterType: BeatmapsTableFilterType.RangeInt,
-          filter: (value: number) => IsIn(value, this.filtersValue.dl),
+          localFilter: (value: number) => FilterRange(value, this.filtersValue.dl),
           sort: sortNumber,
           width: 50,
         },
@@ -278,7 +276,7 @@ export default Vue.extend({
           sortable: true,
           filterable: true,
           filterType: BeatmapsTableFilterType.RangeInt,
-          filter: (value: number) => IsIn(value, this.filtersValue.plays),
+          localFilter: (value: number) => FilterRange(value, this.filtersValue.plays),
           sort: sortNumber,
           width: 50,
         },
@@ -291,7 +289,7 @@ export default Vue.extend({
           sortable: true,
           filterable: true,
           filterType: BeatmapsTableFilterType.RangeInt,
-          filter: (value: number) => IsIn(value, this.filtersValue.upvotes),
+          localFilter: (value: number) => FilterRange(value, this.filtersValue.upvotes),
           sort: sortNumber,
           width: 50,
         },
@@ -304,7 +302,7 @@ export default Vue.extend({
           sortable: true,
           filterable: true,
           filterType: BeatmapsTableFilterType.RangeInt,
-          filter: (value: number) => IsIn(value, this.filtersValue.downvotes),
+          localFilter: (value: number) => FilterRange(value, this.filtersValue.downvotes),
           sort: sortNumber,
           width: 50,
         },
@@ -317,7 +315,7 @@ export default Vue.extend({
           sortable: true,
           filterable: true,
           filterType: BeatmapsTableFilterType.RangeInt,
-          filter: (value: number) => IsIn(value, this.filtersValue.rating),
+          localFilter: (value: number) => FilterRange(value, this.filtersValue.rating),
           sort: sortNumber,
           width: 50,
         },
@@ -330,7 +328,10 @@ export default Vue.extend({
           sortable: true,
           filterable: true,
           filterType: BeatmapsTableFilterType.Date,
-          filter: (value: string) => IsInDate(new Date(value), this.filtersValue.uploaded),
+          localFilter: (value: string) => FilterDateRange(
+            new Date(value),
+            this.filtersValue.uploaded,
+          ),
           sort: sortDateFromString,
           width: 150,
         },
@@ -343,9 +344,7 @@ export default Vue.extend({
           sortable: false,
           filterable: true,
           filterType: BeatmapsTableFilterType.Text,
-          filter: (value: string) => value
-            .toLowerCase()
-            .includes(this.filtersValue.key.toLowerCase()),
+          localFilter: (value: string) => FilterText(value, this.filtersValue.key),
           sort: sortNumber,
           width: 50,
         },
@@ -358,9 +357,7 @@ export default Vue.extend({
           sortable: false,
           filterable: true,
           filterType: BeatmapsTableFilterType.Text,
-          filter: (value: string) => value
-            .toLowerCase()
-            .includes(this.filtersValue.hash.toLowerCase()),
+          localFilter: (value: string) => FilterText(value, this.filtersValue.hash),
           sort: sortNumber,
           width: 300,
         },
@@ -374,7 +371,7 @@ export default Vue.extend({
         },
       ] as BeatmapsTableHeader[];
     },
-    beatmapAsTableData(): any[] {
+    beatmapAsTableData(): { raw: BeatmapsTableDataUnit }[] {
       return this.items.map((entry: BeatmapsTableDataUnit) => ({
         raw: entry,
         name: `${entry.data.metadata.songName} - ${entry.data.metadata.songSubName}`,
@@ -390,6 +387,26 @@ export default Vue.extend({
         key: entry.data.key,
         hash: entry.data.hash,
       }));
+    },
+    beatmapAsTableDataFiltered(): { raw: BeatmapsTableDataUnit }[] {
+      if (this.noFilter) {
+        return this.beatmapAsTableData;
+      }
+
+      return this.beatmapAsTableData.filter((entry: any) => this.headers
+        .every((header: BeatmapsTableHeader) => {
+          if (!header.filterable) {
+            return true;
+          }
+
+          const value = entry[header.value];
+
+          if (value && header.localFilter) {
+            return header.localFilter(value);
+          }
+
+          return true;
+        }));
     },
   },
   watch: {
@@ -409,7 +426,7 @@ export default Vue.extend({
     },
     selectAllItems(select: boolean): void {
       if (select) {
-        this.$emit('update:selected', this.items.map((item: BeatmapsTableDataUnit) => item.data));
+        this.$emit('update:selected', this.beatmapAsTableDataFiltered.map((item) => item.raw.data));
       } else {
         this.$emit('update:selected', []);
       }

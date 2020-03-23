@@ -25,7 +25,8 @@ export interface BeatmapsTableHeader {
   filterable?: boolean,
 
   sort?: (a: any, b: any) => number,
-  filter?: (value: any, search: string, item: any) => boolean,
+  localFilter?: (value: any) => boolean,
+  globalSearch?: (value: string) => boolean,
   filterType?: BeatmapsTableFilterType,
 
   template: BeatmapsTableHeadersTemplate,
