@@ -170,6 +170,7 @@ export default Vue.extend({
     noActions: { type: Boolean, default: false },
     noSort: { type: Boolean, default: false },
     selected: { type: Array as PropType<BeatsaverBeatmap[]>, default: undefined },
+    search: { type: String, default: undefined },
   },
   data: () => ({
     options: {

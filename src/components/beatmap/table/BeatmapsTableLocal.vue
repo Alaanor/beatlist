@@ -1,11 +1,15 @@
 <template>
   <v-container>
-    <BeatmapsTableColumnSelector v-model="shownColumn"/>
+    <BeatmapsTableOuterHeader
+      :shown-column.sync="shownColumn"
+      :search.sync="search"
+    />
     <v-card>
       <BeatmapsTable
         :items="beatmaps"
         :shown-column="shownColumn"
         :items-per-page.sync="itemsPerPage"
+        :search="search"
         see-more-route-name="beatmaps-local-unit"
       />
     </v-card>
@@ -17,12 +21,15 @@ import Vue from 'vue';
 import { sync } from 'vuex-pathify';
 import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
 import BeatmapsTable from '@/components/beatmap/table/BeatmapsTable.vue';
-import BeatmapsTableColumnSelector from '@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue';
 import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
+import BeatmapsTableOuterHeader from '@/components/beatmap/table/core/BeatmapsTableOuterHeader.vue';
 
 export default Vue.extend({
   name: 'BeatmapTableLocal',
-  components: { BeatmapsTableColumnSelector, BeatmapsTable },
+  components: { BeatmapsTable, BeatmapsTableOuterHeader },
+  data: () => ({
+    search: '',
+  }),
   computed: {
     shownColumn: sync<string[]>('settings/beatmapsTable@localBeatmaps.shownColumn'),
     itemsPerPage: sync<string[]>('settings/beatmapsTable@localBeatmaps.itemsPerPage'),

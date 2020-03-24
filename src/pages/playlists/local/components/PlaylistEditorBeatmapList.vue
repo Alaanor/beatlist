@@ -3,8 +3,9 @@
     <p class="headline">
       Content
     </p>
-    <BeatmapsTableColumnSelector
-      v-model="shownColumn"
+    <BeatmapsTableOuterHeader
+      :shown-column.sync="shownColumn"
+      :search.sync="search"
     />
     <BeatmapsTable
       :items="beatmaps"
@@ -35,19 +36,18 @@ import { sync } from 'vuex-pathify';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import BeatmapsTable from '@/components/beatmap/table/BeatmapsTable.vue';
 import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
-import BeatmapsTableColumnSelector
-  from '@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue';
 import PlaylistButtonRemoveFromPlaylist
   from '@/components/playlist/button/PlaylistButtonRemoveFromPlaylist.vue';
 import PlaylistMapsLibrary from '@/libraries/playlist/PlaylistMapsLibrary';
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import BeatmapsTableBulkActions from '@/components/beatmap/table/core/BeatmapsTableBulkActions.vue';
+import BeatmapsTableOuterHeader from '@/components/beatmap/table/core/BeatmapsTableOuterHeader.vue';
 
 export default Vue.extend({
   name: 'PlaylistEditorBeatmapList',
   components: {
     BeatmapsTable,
-    BeatmapsTableColumnSelector,
+    BeatmapsTableOuterHeader,
     BeatmapsTableBulkActions,
     PlaylistButtonRemoveFromPlaylist,
   },
@@ -56,6 +56,7 @@ export default Vue.extend({
   },
   data: () => ({
     selectedBeatmap: [] as BeatsaverBeatmap[],
+    search: '',
   }),
   computed: {
     shownColumn: sync<string[]>('settings/beatmapsTable@playlistContent.shownColumn'),
