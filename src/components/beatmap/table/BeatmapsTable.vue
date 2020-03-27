@@ -213,6 +213,7 @@ export default Vue.extend({
           sortable: true,
           filterable: true,
           localFilter: (value: string) => FilterText(value, this.filtersValue.name),
+          globalSearch: (value: string) => FilterText(value, this.search),
           filterType: BeatmapsTableFilterType.Text,
           sort: sortText,
           width: 225,
@@ -226,6 +227,7 @@ export default Vue.extend({
           sortable: true,
           filterable: true,
           localFilter: (value: string) => FilterText(value, this.filtersValue.artist),
+          globalSearch: (value: string) => FilterText(value, this.search),
           filterType: BeatmapsTableFilterType.Text,
           sort: sortText,
           width: 125,
@@ -239,6 +241,7 @@ export default Vue.extend({
           sortable: true,
           filterable: true,
           localFilter: (value: string) => FilterText(value, this.filtersValue.mapper),
+          globalSearch: (value: string) => FilterText(value, this.search),
           filterType: BeatmapsTableFilterType.Text,
           sort: sortText,
           width: 125,
@@ -346,6 +349,7 @@ export default Vue.extend({
           filterable: true,
           filterType: BeatmapsTableFilterType.Text,
           localFilter: (value: string) => FilterText(value, this.filtersValue.key),
+          globalSearch: (value: string) => FilterText(value, this.search),
           sort: sortNumber,
           width: 50,
         },
@@ -358,6 +362,7 @@ export default Vue.extend({
           sortable: false,
           filterable: true,
           filterType: BeatmapsTableFilterType.Text,
+          globalSearch: (value: string) => FilterText(value, this.search),
           localFilter: (value: string) => FilterText(value, this.filtersValue.hash),
           sort: sortNumber,
           width: 300,
@@ -394,20 +399,11 @@ export default Vue.extend({
         return this.beatmapAsTableData;
       }
 
-      return this.beatmapAsTableData.filter((entry: any) => this.headers
-        .every((header: BeatmapsTableHeader) => {
-          if (!header.filterable) {
-            return true;
-          }
+      if (this.search) {
+        return this.filterWithSearch();
+      }
 
-          const value = entry[header.value];
-
-          if (value && header.localFilter) {
-            return header.localFilter(value);
-          }
-
-          return true;
-        }));
+      return this.filterWithFilters();
     },
   },
   watch: {
@@ -441,6 +437,38 @@ export default Vue.extend({
           this.selected.filter((selectedItem: BeatsaverBeatmap) => selectedItem.hash !== item.hash),
         );
       }
+    },
+    filterWithSearch() {
+      return this.beatmapAsTableData.filter((entry: any) => this.headers
+        .some((header: BeatmapsTableHeader) => {
+          if (!header.filterable) {
+            return false;
+          }
+
+          const value = entry[header.value];
+
+          if (this.search && header.globalSearch) {
+            return header.globalSearch(value);
+          }
+
+          return false;
+        }));
+    },
+    filterWithFilters() {
+      return this.beatmapAsTableData.filter((entry: any) => this.headers
+        .every((header: BeatmapsTableHeader) => {
+          if (!header.filterable) {
+            return true;
+          }
+
+          const value = entry[header.value];
+
+          if (value && header.localFilter) {
+            return header.localFilter(value);
+          }
+
+          return true;
+        }));
     },
   },
 });
