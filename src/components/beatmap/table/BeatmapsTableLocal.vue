@@ -11,7 +11,11 @@
         :items-per-page.sync="itemsPerPage"
         :search="search"
         see-more-route-name="beatmaps-local-unit"
-      />
+      >
+        <template #actions="{ beatsaver }">
+          <BeatmapButtonAddToNPlaylists :beatmap="beatsaver"/>
+        </template>
+      </BeatmapsTable>
     </v-card>
   </v-container>
 </template>
@@ -23,10 +27,16 @@ import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsT
 import BeatmapsTable from '@/components/beatmap/table/BeatmapsTable.vue';
 import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
 import BeatmapsTableOuterHeader from '@/components/beatmap/table/core/BeatmapsTableOuterHeader.vue';
+import BeatmapButtonAddToNPlaylists
+  from '@/components/beatmap/button/BeatmapButtonAddToNPlaylists.vue';
 
 export default Vue.extend({
   name: 'BeatmapTableLocal',
-  components: { BeatmapsTable, BeatmapsTableOuterHeader },
+  components: {
+    BeatmapsTable,
+    BeatmapsTableOuterHeader,
+    BeatmapButtonAddToNPlaylists,
+  },
   data: () => ({
     search: '',
   }),
