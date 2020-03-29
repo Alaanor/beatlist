@@ -11,8 +11,11 @@
 
       <v-card-text>
         <PlaylistsListViewer :playlists="playlists">
-          <template #actions>
-            hi
+          <template #actions="{ playlist }">
+            <PlaylistButtonAddRemoveTogglePlaylist
+              :playlist="playlist"
+              :beatmap="beatmap"
+            />
           </template>
         </PlaylistsListViewer>
       </v-card-text>
@@ -31,15 +34,19 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import PlaylistsListViewer from '@/components/playlist/list/PlaylistsListViewer.vue';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
+import PlaylistButtonAddRemoveTogglePlaylist
+  from '@/components/playlist/button/PlaylistButtonAddRemoveTogglePlaylist.vue';
+import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 
 export default Vue.extend({
-  name: 'AddRemoveFromPlaylists',
-  components: { PlaylistsListViewer },
+  name: 'AddRemoveFromPlaylistsDialog',
+  components: { PlaylistsListViewer, PlaylistButtonAddRemoveTogglePlaylist },
   props: {
     open: { type: Boolean, required: true },
+    beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
   },
   computed: {
     playlists: () => PlaylistLibrary.GetAllValidPlaylists(),
