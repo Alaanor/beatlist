@@ -4,6 +4,7 @@
       color="error"
       :small="small"
       :loading="loading"
+      :disabled="!isAlreadyInPlaylist || lockPlaylistModification"
       icon
       @click="Remove"
     >
@@ -16,6 +17,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
+import { sync } from 'vuex-pathify';
 import Tooltip from '@/components/helper/Tooltip.vue';
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
@@ -32,11 +34,21 @@ export default Vue.extend({
   data: () => ({
     loading: false,
   }),
+  computed: {
+    isAlreadyInPlaylist(): boolean {
+      return this.playlist.maps.some((map) => map.online?.hash === this.beatmap.hash);
+    },
+    lockPlaylistModification: sync<boolean>('appState/lockPlaylistModification'),
+  },
   methods: {
     Remove() {
       this.loading = true;
+      this.lockPlaylistModification = true;
       PlaylistOperation.RemoveMapFromPlaylist(this.playlist, this.beatmap)
-        .finally(() => { this.loading = false; });
+        .finally(() => {
+          this.loading = false;
+          this.lockPlaylistModification = false;
+        });
     },
   },
 });

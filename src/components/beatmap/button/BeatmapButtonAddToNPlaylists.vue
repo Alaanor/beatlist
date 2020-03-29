@@ -1,5 +1,5 @@
 <template>
-  <v-container class="ma-0 pa-0">
+  <span>
     <Tooltip text="Add/Remove from playlists">
       <v-btn
         icon
@@ -12,7 +12,7 @@
       </v-btn>
     </tooltip>
     <AddRemoveFromPlaylistsDialog :open.sync="dialog"/>
-  </v-container>
+  </span>
 </template>
 
 <script lang="ts">
