@@ -4,7 +4,7 @@
     mini-variant-width="44"
     mobile-break-point="0"
     width="120"
-    color="primary"
+    color="app"
     style="overflow: visible;"
     :floating="main"
     :permanent="main"
@@ -52,7 +52,7 @@
         y="0"
         width="10"
         height="10"
-        :fill="this.$vuetify.theme.currentTheme.primary"
+        :fill="this.$vuetify.theme.currentTheme.app"
         mask="url(#curve-mask)"
       />
     </svg>

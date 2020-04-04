@@ -7,7 +7,7 @@
     clipped-left
     clipped-right
     class="windows-draggable"
-    color="primary"
+    color="app"
     height="24"
   >
     <v-toolbar-title>
