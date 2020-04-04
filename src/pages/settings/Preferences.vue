@@ -20,6 +20,16 @@
       dense
       inset
     />
+    <v-combobox
+      v-model="exportMode"
+      color="accent"
+      :items="exportModeList"
+      label="Playlist export format"
+      messages="The format used to save playlist on any modification."
+      class="pt-5"
+      dense
+      filled
+    />
   </v-container>
 </template>
 
@@ -27,6 +37,7 @@
 import Vue from 'vue';
 import { sync } from 'vuex-pathify';
 import DiscordRichPresence from '@/libraries/ipc/DiscordRichPresence';
+import { PlaylistExportType } from '@/libraries/playlist/serializer/IPlaylistSerializer';
 
 export default Vue.extend({
   name: 'Preferences',
@@ -34,6 +45,8 @@ export default Vue.extend({
     enableDiscordRichPresence: sync<boolean>('settings/enableDiscordRichPresence'),
     darkTheme: sync<boolean>('settings/darkTheme'),
     installationPathValid: sync<boolean>('settings/installationPathValid'),
+    exportMode: sync<PlaylistExportType>('settings/exportMode'),
+    exportModeList: () => Object.values(PlaylistExportType),
   },
   watch: {
     enableDiscordRichPresence() {

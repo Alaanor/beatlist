@@ -1,10 +1,12 @@
 import { make } from 'vuex-pathify';
+import { PlaylistExportType } from '@/libraries/playlist/serializer/IPlaylistSerializer';
 
 export interface SettingsStoreState {
   installationPath: string,
   installationPathValid: boolean,
   darkTheme: boolean,
   enableDiscordRichPresence: boolean,
+  exportMode: PlaylistExportType,
   beatmapsTable: {
     localBeatmaps: BeatmapTableStoreState;
     beatsaverBeatmaps: BeatmapTableStoreState;
