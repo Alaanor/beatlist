@@ -103,7 +103,7 @@
         <v-btn
           text
           color="grey"
-          :disabled="!IsThereChange()"
+          :disabled="!IsThereChange"
           :loading="loading"
           @click="Cancel"
         >
@@ -112,7 +112,7 @@
         <v-btn
           text
           color="success"
-          :disabled="!IsThereChange()"
+          :disabled="!IsThereChange"
           :loading="loading"
           @click="Save"
         >
@@ -166,6 +166,15 @@ export default Vue.extend({
     playlistFormatTypeList() {
       return Object.values(PlaylistFormatType);
     },
+    IsThereChange(): boolean {
+      return !(
+        this.playlist.title === this.playlistTitle
+        && this.playlist.author === this.playlistAuthor
+        && (this.playlist.description ?? '') === this.playlistDescription
+        && this.playlist.format === this.playlistFormat
+        && !this.imageChanged
+      );
+    },
   },
   mounted(): void {
     this.LoadCover();
@@ -204,12 +213,16 @@ export default Vue.extend({
             return;
           }
 
-          this.$router.push({
-            name: 'playlists-local-unit',
-            params: { hash: updatedPlaylist.hash },
-          });
+          if (this.$router.currentRoute.params.hash !== updatedPlaylist.hash) {
+            this.$router.push({
+              name: 'playlists-local-unit',
+              params: { hash: updatedPlaylist.hash },
+            });
+          }
 
           this.imageChanged = false;
+
+          NotificationService.NotifyMessage('Saved', 'success', 'save', 2500);
         })
         .finally(() => {
           this.loading = false;
@@ -235,15 +248,6 @@ export default Vue.extend({
         );
         this.$router.push({ name: 'playlists-local' });
       });
-    },
-    IsThereChange(): boolean {
-      return !(
-        this.playlist.title === this.playlistTitle
-        && this.playlist.author === this.playlistAuthor
-        && this.playlist.description === this.playlistDescription
-        && this.playlist.format === this.playlistFormat
-        && !this.imageChanged
-      );
     },
     async openFileExplorer() {
       const file = remote.dialog.showOpenDialog({
