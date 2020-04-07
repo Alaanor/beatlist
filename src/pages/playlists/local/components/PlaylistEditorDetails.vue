@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="col-sm-12 col-lg-8 offset-lg-2">
     <span class="headline">
       Details
     </span>
@@ -67,6 +67,12 @@
             outlined
             hide-details
             clearable
+          />
+          <v-select
+            v-model="playlistFormat"
+            :items="playlistFormatTypeList"
+            outlined
+            hide-details
           />
         </v-col>
       </v-row>
@@ -138,6 +144,7 @@ import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import Base64SrcLoader from '@/libraries/os/utils/Base64SrcLoader';
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog.vue';
 import PlaylistOperation from '@/libraries/playlist/PlaylistOperation';
+import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
 
 export default Vue.extend({
   name: 'PlaylistEditorDetails',
@@ -149,16 +156,23 @@ export default Vue.extend({
     playlistTitle: '',
     playlistAuthor: '',
     playlistDescription: '',
+    playlistFormat: PlaylistFormatType.Json,
     imageData: '',
     imageChanged: false,
     loading: false,
     confirmDeleteDialog: false,
   }),
+  computed: {
+    playlistFormatTypeList() {
+      return Object.values(PlaylistFormatType);
+    },
+  },
   mounted(): void {
     this.LoadCover();
     this.playlistTitle = this.playlist.title;
     this.playlistAuthor = this.playlist.author;
     this.playlistDescription = this.playlist.description ?? '';
+    this.playlistFormat = this.playlist.format;
   },
   methods: {
     async LoadCover() {
@@ -178,6 +192,7 @@ export default Vue.extend({
       playlist.author = this.playlistAuthor;
       playlist.description = this.playlistDescription;
       playlist.cover = Base64SrcLoader.ToBuffer(this.imageData);
+      playlist.format = this.playlistFormat;
 
       PlaylistOperation
         .UpdatePlaylist(playlist)
@@ -208,6 +223,7 @@ export default Vue.extend({
       this.playlistTitle = this.playlist.title;
       this.playlistAuthor = this.playlist.author;
       this.playlistDescription = this.playlist.description ?? '';
+      this.playlistFormat = this.playlist.format;
     },
     Delete() {
       PlaylistOperation.DeletePlaylist(this.playlist).then(() => {
@@ -225,6 +241,7 @@ export default Vue.extend({
         this.playlist.title === this.playlistTitle
         && this.playlist.author === this.playlistAuthor
         && this.playlist.description === this.playlistDescription
+        && this.playlist.format === this.playlistFormat
         && !this.imageChanged
       );
     },
