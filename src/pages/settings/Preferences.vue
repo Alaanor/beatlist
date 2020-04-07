@@ -37,7 +37,7 @@
 import Vue from 'vue';
 import { sync } from 'vuex-pathify';
 import DiscordRichPresence from '@/libraries/ipc/DiscordRichPresence';
-import { PlaylistExportType } from '@/libraries/playlist/serializer/IPlaylistSerializer';
+import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
 
 export default Vue.extend({
   name: 'Preferences',
@@ -45,8 +45,8 @@ export default Vue.extend({
     enableDiscordRichPresence: sync<boolean>('settings/enableDiscordRichPresence'),
     darkTheme: sync<boolean>('settings/darkTheme'),
     installationPathValid: sync<boolean>('settings/installationPathValid'),
-    exportMode: sync<PlaylistExportType>('settings/exportMode'),
-    exportModeList: () => Object.values(PlaylistExportType),
+    exportMode: sync<PlaylistFormatType>('settings/exportFormat'),
+    exportModeList: () => Object.values(PlaylistFormatType),
   },
   watch: {
     enableDiscordRichPresence() {

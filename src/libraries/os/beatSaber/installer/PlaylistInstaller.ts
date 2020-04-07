@@ -2,9 +2,12 @@ import fs from 'fs-extra';
 import path from 'path';
 import { PlaylistBase, PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
-import PlaylistLoader, { PLAYLIST_EXTENSION_NAME } from '@/libraries/playlist/loader/PlaylistLoader';
+import PlaylistLoader from '@/libraries/playlist/loader/PlaylistLoader';
 import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
 import PlaylistScanner from '@/libraries/scanner/playlist/PlaylistScanner';
+import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
+import store from '@/plugins/store';
+import PlaylistFilenameExtension from '@/libraries/playlist/PlaylistFilenameExtension';
 
 declare const __static: string;
 const defaultCoverPath = path.join(__static, 'defaultCover.jpg');
@@ -18,7 +21,9 @@ export default class PlaylistInstaller {
     const randNum = Math.floor(Math.random() * 1e6 - 1) + 1e5;
     const name = `new-playlist-${randNum}`;
     const cover = Buffer.from(await fs.readFile(defaultCoverPath));
-    const filepath = path.join(BeatSaber.getPlaylistFolder(), `${name}.${PLAYLIST_EXTENSION_NAME}`).toLowerCase();
+    const format = store.getters['settings/exportFormat'] as PlaylistFormatType;
+    const extension = PlaylistFilenameExtension.GetFor(format);
+    const filepath = path.join(BeatSaber.getPlaylistFolder(), `${name}.${extension}`).toLowerCase();
 
     const emptyPlaylist = {
       title: name,
@@ -28,7 +33,7 @@ export default class PlaylistInstaller {
       maps: [],
     } as PlaylistBase;
 
-    await PlaylistLoader.SaveAt(filepath, emptyPlaylist);
+    await PlaylistLoader.SaveAt(filepath, emptyPlaylist, format);
     return (new PlaylistScanner()).scanOne(filepath);
   }
 

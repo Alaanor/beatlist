@@ -1,12 +1,9 @@
 import {
-  convertLegacyPlaylist,
-  deserialize, IBeatmap,
-  IPlaylist,
-  magicNumber,
-  serialize,
+  convertLegacyPlaylist, deserialize, IBeatmap, IPlaylist, magicNumber,
 } from 'blister.js';
 import fs from 'fs-extra';
 import crypto from 'crypto';
+import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
 
 export const FILE_NOT_FOUND: Error = new Error('File not found');
 export const INVALID_JSON_FORMAT: Error = new Error('invalid json format');
@@ -28,15 +25,10 @@ export default class PlaylistBlisterLoader {
 
     return {
       playlist,
-      format: oldFormat ? 'json' : 'blister',
+      format: oldFormat ? PlaylistFormatType.Json : PlaylistFormatType.Blister,
       hash: this.computeHash(playlist, filepath),
       filepath,
     } as PlaylistBlisterLoaded;
-  }
-
-  public static async write(playlist: IPlaylist, filepath: string) {
-    const buffer = await serialize(playlist);
-    await fs.writeFile(filepath, buffer);
   }
 
   public static computeHash(playlist: IPlaylist, filepath: string): string {
@@ -96,7 +88,7 @@ export default class PlaylistBlisterLoader {
 }
 
 export interface PlaylistBlisterLoaded {
-  format: 'json' | 'blister';
+  format: PlaylistFormatType,
   playlist: IPlaylist;
   hash: string;
   filepath: string;

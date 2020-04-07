@@ -17,7 +17,7 @@ export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> 
 
     this.result.newItems = (await Promise.all(
       diff.added.map(
-        async (path: string) => PlaylistLoader.Load(path, false, progressGroup.getNewOne()),
+        async (path: string) => PlaylistLoader.Load(path, progressGroup.getNewOne()),
       ),
     ));
 

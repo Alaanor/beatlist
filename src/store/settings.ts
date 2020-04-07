@@ -1,12 +1,12 @@
 import { make } from 'vuex-pathify';
-import { PlaylistExportType } from '@/libraries/playlist/serializer/IPlaylistSerializer';
+import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
 
 export interface SettingsStoreState {
   installationPath: string,
   installationPathValid: boolean,
   darkTheme: boolean,
   enableDiscordRichPresence: boolean,
-  exportMode: PlaylistExportType,
+  exportFormat: PlaylistFormatType,
   beatmapsTable: {
     localBeatmaps: BeatmapTableStoreState;
     beatsaverBeatmaps: BeatmapTableStoreState;
@@ -30,6 +30,7 @@ const state = {
   installationPathValid: false,
   darkTheme: true,
   enableDiscordRichPresence: true,
+  exportFormat: PlaylistFormatType.Json,
   beatmapsTable: {
     localBeatmaps: { ...defaultTableSettings },
     beatsaverBeatmaps: { ...defaultTableSettings },

@@ -1,5 +1,3 @@
-import fs from 'fs-extra';
-import path from 'path';
 import * as Throttle from 'promise-parallel-throttle';
 import { BeatmapType, IBeatmap, IPlaylist } from 'blister.js';
 import {
@@ -7,7 +5,6 @@ import {
   PlaylistLocal,
   PlaylistLocalMap,
   PlaylistMapImportError,
-  PlaylistOnlineMap,
 } from '@/libraries/playlist/PlaylistLocal';
 import BeatsaverAPI, { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
 import Progress from '@/libraries/common/Progress';
@@ -18,26 +15,21 @@ import PlaylistBlisterLoader, {
   INVALID_JSON_FORMAT,
 } from '@/libraries/playlist/loader/PlaylistBlisterLoader';
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import { IPlaylistSerializer } from '@/libraries/playlist/serializer/IPlaylistSerializer';
+import BlisterSerializer from '@/libraries/playlist/serializer/BlisterSerializer';
+import JsonSerializer from '@/libraries/playlist/serializer/JsonSerializer';
+import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
+import PlaylistFilenameExtension from '@/libraries/playlist/PlaylistFilenameExtension';
 
 const MAX_CONCURRENCY_ITEM = 25;
-export const PLAYLIST_EXTENSION_NAME: string = 'blist';
 
 export default class PlaylistLoader {
-  public static async Load(filepath: string, forceConvert: boolean = false, progress?: Progress)
+  public static async Load(filepath: string, progress?: Progress)
     : Promise<PlaylistLocal> {
     try {
       const blisterLoaded = await PlaylistBlisterLoader.load(filepath);
       const output = await PlaylistLoader.ConvertToPlaylistLocal(blisterLoaded.playlist, progress);
-      output.loadState = { valid: true, hasBeenConverted: false };
-
-      if (blisterLoaded.format === 'json' && forceConvert) {
-        const newFilePath = await PlaylistLoader.ConvertPlaylistFile(filepath, output);
-        if (newFilePath) {
-          filepath = newFilePath;
-          output.loadState.hasBeenConverted = true;
-        }
-      }
-
+      output.loadState = { valid: true, format: blisterLoaded.format };
       output.path = filepath;
       output.hash = blisterLoaded.hash;
 
@@ -47,17 +39,34 @@ export default class PlaylistLoader {
     }
   }
 
-  public static async Save(playlist: PlaylistLocal): Promise<void> {
+  public static async Save(playlist: PlaylistLocal, format: PlaylistFormatType): Promise<void> {
     if (playlist.path === undefined) {
       throw new Error("this playlist doesn't contain a path");
     }
 
-    await this.SaveAt(playlist.path, playlist);
+    await this.SaveAt(playlist.path, playlist, format);
+
+    if (!PlaylistFilenameExtension.isExtensionCorrect(playlist.path, format)) {
+      await PlaylistFilenameExtension.RenameTo(playlist.path, format);
+    }
   }
 
-  public static async SaveAt(filepath: string, playlist: PlaylistBase): Promise<void> {
-    const blisterPlaylist = await PlaylistLoader.ConvertToPlaylistBlister(playlist);
-    await PlaylistBlisterLoader.write(blisterPlaylist, filepath);
+  public static async SaveAt(filepath: string, playlist: PlaylistBase, format: PlaylistFormatType)
+    : Promise<void> {
+    let serializer: IPlaylistSerializer;
+
+    switch (format) {
+      case PlaylistFormatType.Json:
+        serializer = new JsonSerializer();
+        break;
+      case PlaylistFormatType.Blister:
+        serializer = new BlisterSerializer();
+        break;
+      default:
+        throw new Error('Invalid playlist export format specified');
+    }
+
+    await serializer.serialize(playlist, filepath);
   }
 
   public static async update(oldPlaylist: PlaylistLocal, filepath: string, progress?: Progress)
@@ -73,7 +82,7 @@ export default class PlaylistLoader {
       output.hash = blisterLoaded.hash;
       output.path = filepath;
       output.maps = await this.getMissingMap(oldPlaylist, blisterLoaded.playlist, progress);
-      output.loadState = { valid: true, hasBeenConverted: false };
+      output.loadState = { valid: true, format: blisterLoaded.format };
 
       return output;
     } catch (e) {
@@ -248,43 +257,6 @@ export default class PlaylistLoader {
     }
   }
 
-  private static async ConvertToPlaylistBlister(playlist: PlaylistBase): Promise<IPlaylist> {
-    const output = {} as IPlaylist;
-
-    output.title = playlist.title;
-    output.author = playlist.author;
-    output.description = playlist.description;
-    output.cover = playlist.cover;
-
-    output.maps = playlist.maps.map((map: PlaylistLocalMap | PlaylistOnlineMap) => {
-      if (!map.online?.hash) {
-        return undefined;
-      }
-
-      return {
-        dateAdded: map.dateAdded,
-        type: BeatmapType.Hash,
-        hash: Buffer.from(map.online.hash.toLowerCase(), 'hex'),
-      } as IBeatmap;
-    }).filter((map: IBeatmap | undefined) => map !== undefined) as IBeatmap[];
-
-    return output;
-  }
-
-  private static async ConvertPlaylistFile(filepath: string, playlist: PlaylistLocal)
-    : Promise<string | undefined> {
-    const filename = `${path.parse(filepath).name}.${PLAYLIST_EXTENSION_NAME}`;
-    const newFilepath = path.join(path.parse(filepath).dir, filename);
-
-    try {
-      await this.SaveAt(newFilepath, playlist);
-      await fs.unlink(filepath);
-      return newFilepath;
-    } catch (e) {
-      return undefined;
-    }
-  }
-
   private static buildEmptyPlaylist(
     filepath: string | undefined,
     message: string,
@@ -302,6 +274,7 @@ export default class PlaylistLoader {
         valid: false,
         errorMessage: message,
         errorType,
+        format: undefined,
       },
     } as PlaylistLocal;
   }

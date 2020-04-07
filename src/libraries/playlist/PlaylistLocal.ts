@@ -6,7 +6,7 @@ export interface PlaylistBase {
   author: string;
   description: string | null;
   cover: Buffer | null;
-  maps: any[],
+  maps: PlaylistMap[],
 }
 
 export interface PlaylistLocal extends PlaylistBase {
@@ -20,17 +20,17 @@ export interface PlaylistOnline extends PlaylistBase {
   maps: PlaylistOnlineMap[];
 }
 
-export interface PlaylistLocalMap {
-  dateAdded: Date;
-  error: PlaylistMapImportError | null;
-  errorInfo: string;
+export interface PlaylistMap {
   online: BeatsaverBeatmap | null;
+  dateAdded: Date;
 }
 
-export interface PlaylistOnlineMap {
-  dateAdded: Date;
-  online: BeatsaverBeatmap | null;
+export interface PlaylistLocalMap extends PlaylistMap {
+  error: PlaylistMapImportError | null;
+  errorInfo: string;
 }
+
+export interface PlaylistOnlineMap extends PlaylistMap {}
 
 export enum PlaylistMapImportError {
   BeatmapTypeZipNotSupported = 0,

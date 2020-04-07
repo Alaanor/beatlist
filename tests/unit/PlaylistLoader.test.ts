@@ -7,6 +7,7 @@ import Progress from '@/libraries/common/Progress';
 import mockResponseSuccess from './helper/BeatsaverAPIResponseMocking';
 import PlaylistLoadStateError from '@/libraries/playlist/loader/PlaylistLoadStateError';
 import { PlaylistLoadStateInvalid } from '@/libraries/playlist/loader/PlaylistLoadState';
+import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
 
 describe('playlist loader', () => {
   it('should fail if invalid path', async () => {
@@ -88,46 +89,14 @@ describe('playlist loader', () => {
 
     const newFormatPlaylistFile = path.join(__dirname, '../data/playlist/newFormatFromBeatlist.blist');
     const progress = new Progress();
-    await PlaylistLoader.Load(newFormatPlaylistFile, false, progress);
+    await PlaylistLoader.Load(newFormatPlaylistFile, progress);
 
     expect(progress.getRatio()).toBe(1);
     expect(progress.get().total).toBe(1);
     expect(progress.get().done).toBe(1);
   });
 
-  it('should convert the old playlist to a new one', async () => {
-    expect.assertions(10);
-
-    const mockGetBeatmapByHash = jest.fn();
-    const mockedValue = { key: '75f1', hash: 'foo_bar' };
-    mockGetBeatmapByHash.mockReturnValue(mockResponseSuccess(mockedValue));
-    BeatsaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
-
-    const sourcePlaylist = path.join(__dirname, '../data/playlist/oldFormatFromBeatlist.json');
-    const targetPlaylist = path.join(__dirname, '../data/playlist/oldFormatFromBeatlist-copy-tmp.json');
-    const convertedPlaylist = path.join(__dirname, '../data/playlist/oldFormatFromBeatlist-copy-tmp.blist');
-    await fs.copyFile(sourcePlaylist, targetPlaylist);
-
-    const playlist = await PlaylistLoader.Load(targetPlaylist, true);
-
-    expect(playlist.loadState.valid).toBe(true);
-    expect(playlist.title).toBe('Test');
-    expect(playlist.maps[0].online?.key).toBe('75f1');
-    expect(await fs.pathExists(convertedPlaylist)).toBe(true);
-    expect(await fs.pathExists(targetPlaylist)).toBe(false);
-
-    const loadedPlaylist = await PlaylistLoader.Load(convertedPlaylist, true);
-
-    expect(loadedPlaylist.loadState.valid).toBe(true);
-    expect(loadedPlaylist.title).toBe('Test');
-    expect(loadedPlaylist.maps[0].online?.key).toBe('75f1');
-    expect(await fs.pathExists(convertedPlaylist)).toBe(true);
-    expect(await fs.pathExists(targetPlaylist)).toBe(false);
-
-    await fs.unlink(convertedPlaylist);
-  });
-
-  it('should save the playlist correctly', async () => {
+  it('should save the playlist correctly using blister format', async () => {
     expect.assertions(5);
 
     const mockGetBeatmapByHash = jest.fn();
@@ -150,7 +119,7 @@ describe('playlist loader', () => {
       ],
     } as PlaylistLocal;
 
-    await PlaylistLoader.SaveAt(playlistPath, playlistData);
+    await PlaylistLoader.SaveAt(playlistPath, playlistData, PlaylistFormatType.Blister);
 
     expect(await fs.pathExists(playlistPath)).toBe(true);
 

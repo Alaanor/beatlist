@@ -1,4 +1,5 @@
 import PlaylistLoadStateError from '@/libraries/playlist/loader/PlaylistLoadStateError';
+import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
 
 export type PlaylistLoadState = PlaylistLoadStateBase
   & (PlaylistLoadStateValid | PlaylistLoadStateInvalid);
@@ -9,7 +10,7 @@ export interface PlaylistLoadStateBase {
 
 export interface PlaylistLoadStateValid {
   valid: true,
-  hasBeenConverted: boolean,
+  format: PlaylistFormatType | undefined;
 }
 
 export interface PlaylistLoadStateInvalid {
