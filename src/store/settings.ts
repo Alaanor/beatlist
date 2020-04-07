@@ -6,7 +6,7 @@ export interface SettingsStoreState {
   installationPathValid: boolean,
   darkTheme: boolean,
   enableDiscordRichPresence: boolean,
-  exportFormat: PlaylistFormatType,
+  defaultExportFormat: PlaylistFormatType,
   beatmapsTable: {
     localBeatmaps: BeatmapTableStoreState;
     beatsaverBeatmaps: BeatmapTableStoreState;
@@ -30,7 +30,7 @@ const state = {
   installationPathValid: false,
   darkTheme: true,
   enableDiscordRichPresence: true,
-  exportFormat: PlaylistFormatType.Json,
+  defaultExportFormat: PlaylistFormatType.Json,
   beatmapsTable: {
     localBeatmaps: { ...defaultTableSettings },
     beatsaverBeatmaps: { ...defaultTableSettings },

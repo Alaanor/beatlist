@@ -20,6 +20,7 @@ import BlisterSerializer from '@/libraries/playlist/serializer/BlisterSerializer
 import JsonSerializer from '@/libraries/playlist/serializer/JsonSerializer';
 import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
 import PlaylistFilenameExtension from '@/libraries/playlist/PlaylistFilenameExtension';
+import store from '@/plugins/store';
 
 const MAX_CONCURRENCY_ITEM = 25;
 
@@ -32,6 +33,7 @@ export default class PlaylistLoader {
       output.loadState = { valid: true, format: blisterLoaded.format };
       output.path = filepath;
       output.hash = blisterLoaded.hash;
+      output.format = blisterLoaded.format;
 
       return output;
     } catch (e) {
@@ -39,11 +41,12 @@ export default class PlaylistLoader {
     }
   }
 
-  public static async Save(playlist: PlaylistLocal, format: PlaylistFormatType): Promise<void> {
+  public static async Save(playlist: PlaylistLocal, format?: PlaylistFormatType): Promise<void> {
     if (playlist.path === undefined) {
       throw new Error("this playlist doesn't contain a path");
     }
 
+    format = format ?? playlist.format;
     await this.SaveAt(playlist.path, playlist, format);
 
     if (!PlaylistFilenameExtension.isExtensionCorrect(playlist.path, format)) {
@@ -83,6 +86,7 @@ export default class PlaylistLoader {
       output.path = filepath;
       output.maps = await this.getMissingMap(oldPlaylist, blisterLoaded.playlist, progress);
       output.loadState = { valid: true, format: blisterLoaded.format };
+      output.format = blisterLoaded.format;
 
       return output;
     } catch (e) {
@@ -262,6 +266,7 @@ export default class PlaylistLoader {
     message: string,
     errorType: PlaylistLoadStateError,
   ): PlaylistLocal {
+    const format = store.getters['settings/defaultExportFormat'] as PlaylistFormatType;
     return {
       author: '',
       cover: null,
@@ -276,6 +281,7 @@ export default class PlaylistLoader {
         errorType,
         format: undefined,
       },
+      format,
     } as PlaylistLocal;
   }
 }

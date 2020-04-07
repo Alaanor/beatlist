@@ -21,11 +21,11 @@
       inset
     />
     <v-combobox
-      v-model="exportMode"
+      v-model="defaultExportFormat"
       color="accent"
-      :items="exportModeList"
+      :items="exportFormatList"
       label="Playlist export format"
-      messages="The format used to save playlist on any modification."
+      messages="The default format used to save new playlist."
       class="pt-5"
       dense
       filled
@@ -45,8 +45,8 @@ export default Vue.extend({
     enableDiscordRichPresence: sync<boolean>('settings/enableDiscordRichPresence'),
     darkTheme: sync<boolean>('settings/darkTheme'),
     installationPathValid: sync<boolean>('settings/installationPathValid'),
-    exportMode: sync<PlaylistFormatType>('settings/exportFormat'),
-    exportModeList: () => Object.values(PlaylistFormatType),
+    defaultExportFormat: sync<PlaylistFormatType>('settings/defaultExportFormat'),
+    exportFormatList: () => Object.values(PlaylistFormatType),
   },
   watch: {
     enableDiscordRichPresence() {

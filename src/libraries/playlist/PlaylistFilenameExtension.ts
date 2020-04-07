@@ -32,13 +32,13 @@ export default class PlaylistFilenameExtension {
     );
 
     if (await fs.pathExists(newFilepath)) {
-      throw new Error(`The new path already exist, cancelled before the override. (path: ${path})`);
+      throw new Error(`The new path already exist, cancelled before the override. (path: ${newFilepath})`);
     }
 
     await fs.rename(filepath, newFilepath);
   }
 
   public static isExtensionCorrect(filepath: string, format: PlaylistFormatType) {
-    return path.extname(filepath) === this.GetFor(format);
+    return path.extname(filepath).substr(1) === this.GetFor(format);
   }
 }

@@ -3,6 +3,7 @@ import path from 'path';
 import PlaylistLoader from '@/libraries/playlist/loader/PlaylistLoader';
 import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
 import { PlaylistLoadStateValid } from '@/libraries/playlist/loader/PlaylistLoadState';
+import PlaylistFilenameExtension from '@/libraries/playlist/PlaylistFilenameExtension';
 
 describe('playlist format conversion', () => {
   it('should convert the file, be loaded as json, written in blister, with the right file extension', async () => {
@@ -32,5 +33,18 @@ describe('playlist format conversion', () => {
       .toBe(PlaylistFormatType.Json);
 
     fs.removeSync(toPath);
+  });
+
+  it('should detect if extension is correct or not', () => {
+    expect.assertions(4);
+
+    expect(PlaylistFilenameExtension.isExtensionCorrect('foo/bar.blist', PlaylistFormatType.Blister))
+      .toBe(true);
+    expect(PlaylistFilenameExtension.isExtensionCorrect('foo/bar.blist', PlaylistFormatType.Json))
+      .toBe(false);
+    expect(PlaylistFilenameExtension.isExtensionCorrect('foo/bar.json', PlaylistFormatType.Json))
+      .toBe(true);
+    expect(PlaylistFilenameExtension.isExtensionCorrect('foo/bar.json', PlaylistFormatType.Blister))
+      .toBe(false);
   });
 });

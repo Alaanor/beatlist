@@ -1,5 +1,6 @@
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import { PlaylistLoadState } from '@/libraries/playlist/loader/PlaylistLoadState';
+import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
 
 export interface PlaylistBase {
   title: string;
@@ -14,6 +15,7 @@ export interface PlaylistLocal extends PlaylistBase {
   hash: string | undefined;
   maps: PlaylistLocalMap[];
   loadState: PlaylistLoadState;
+  format: PlaylistFormatType;
 }
 
 export interface PlaylistOnline extends PlaylistBase {
