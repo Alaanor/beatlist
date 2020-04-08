@@ -6,6 +6,7 @@
     <v-container class="d-flex align-center">
       <v-subheader>actions</v-subheader>
       <PlaylistButtonNewPlaylist/>
+      <PlaylistButtonOpenFolder/>
     </v-container>
 
     <PlaylistsListViewer
@@ -38,11 +39,16 @@ import PlaylistButtonNewPlaylist from '@/components/playlist/button/PlaylistButt
 import PlaylistButtonRemovePlaylist from '@/components/playlist/button/PlaylistButtonRemovePlaylist.vue';
 import Tooltip from '@/components/helper/Tooltip.vue';
 import NotificationService, { NOTIFICATION_ICON_FAILED } from '@/libraries/notification/NotificationService';
+import PlaylistButtonOpenFolder from '@/components/playlist/button/PlaylistButtonOpenFolder.vue';
 
 export default Vue.extend({
   name: 'PlaylistsLocal',
   components: {
-    PlaylistsListViewer, PlaylistButtonNewPlaylist, PlaylistButtonRemovePlaylist, Tooltip,
+    PlaylistsListViewer,
+    PlaylistButtonNewPlaylist,
+    PlaylistButtonRemovePlaylist,
+    PlaylistButtonOpenFolder,
+    Tooltip,
   },
   computed: {
     playlists: () => PlaylistLibrary.GetAllValidPlaylists(),
