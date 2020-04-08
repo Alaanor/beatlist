@@ -20,7 +20,7 @@
       dense
       inset
     />
-    <v-combobox
+    <v-select
       v-model="defaultExportFormat"
       color="accent"
       :items="exportFormatList"
