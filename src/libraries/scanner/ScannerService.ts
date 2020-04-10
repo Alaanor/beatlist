@@ -6,6 +6,7 @@ import BeatmapScanner from '@/libraries/scanner/beatmap/BeatmapScanner';
 import BeatmapScannerResult from '@/libraries/scanner/beatmap/BeatmapScannerResult';
 import PlaylistScannerResult from '@/libraries/scanner/playlist/PlaylistScannerResult';
 
+const ON_SCAN_START = 'on_scan_start';
 const ON_SCAN_COMPLETED = 'on_scan_completed';
 const ON_BEATMAP_SCAN_COMPLETED = 'on_beatmap_scan_completed';
 const ON_PLAYLIST_SCAN_COMPLETED = 'on_playlist_scan_completed';
@@ -54,6 +55,7 @@ export default class ScannerService {
     if (this.locked) return undefined;
     this.operation = 'all';
 
+    this.eventEmitter.emit(ON_SCAN_START);
     return this.ScanBeatmaps().then(() => this.ScanPlaylists());
   }
 
@@ -63,6 +65,7 @@ export default class ScannerService {
     this.scanningBeatmap = true;
     this.locked = true;
     this.operation = this.operation ?? 'beatmap';
+    this.eventEmitter.emit(ON_SCAN_START);
 
     if (this.beatmapProgressGetter) {
       this.beatmapProgress = this.beatmapProgressGetter();
@@ -79,10 +82,11 @@ export default class ScannerService {
 
   public static async ScanPlaylists(): Promise<void> {
     if (this.locked) return undefined;
-    this.operation = this.operation ?? 'playlist';
 
     this.scanningPlaylist = true;
     this.locked = true;
+    this.operation = this.operation ?? 'playlist';
+    this.eventEmitter.emit(ON_SCAN_START);
 
     if (this.playlistProgressGetter) {
       this.playlistProgress = this.playlistProgressGetter();
@@ -143,6 +147,14 @@ export default class ScannerService {
 
   public static offPlaylistScanCompleted(callback: (result: PlaylistScannerResult) => void) {
     this.eventEmitter.off(ON_PLAYLIST_SCAN_COMPLETED, callback);
+  }
+
+  public static onScanStart(callback: () => void) {
+    this.eventEmitter.on(ON_SCAN_START, callback);
+  }
+
+  public static offScanStart(callback: () => void) {
+    this.eventEmitter.off(ON_SCAN_START, callback);
   }
 
   public static onScanCompleted(callback: () => void) {

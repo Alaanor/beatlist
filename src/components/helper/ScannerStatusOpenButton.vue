@@ -6,7 +6,7 @@
     >
       <v-btn
         icon
-        :loading="isScanning"
+        :loading="scanning"
         @click="openScannerDialog()"
       >
         <v-icon>find_in_page</v-icon>
@@ -23,14 +23,26 @@ import ScannerService from '@/libraries/scanner/ScannerService';
 export default Vue.extend({
   name: 'ScannerStatusOpenButton',
   components: { Tooltip },
-  computed: {
-    isScanning(): boolean {
-      return ScannerService.isScanning;
-    },
+  data: () => ({
+    scanning: false,
+  }),
+  mounted(): void {
+    ScannerService.onScanStart(this.onScanStart);
+    ScannerService.onScanCompleted(this.onScanCompleted);
+  },
+  beforeDestroy(): void {
+    ScannerService.offScanStart(this.onScanStart);
+    ScannerService.offScanCompleted(this.onScanCompleted);
   },
   methods: {
     openScannerDialog() {
       ScannerService.requestDialogToBeOpened();
+    },
+    onScanCompleted() {
+      this.scanning = false;
+    },
+    onScanStart() {
+      this.scanning = true;
     },
   },
 });
