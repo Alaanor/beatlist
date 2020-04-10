@@ -18,14 +18,18 @@ export default class BeatSaber {
     return resolveInstallPath();
   }
 
+  public static getBeatmapFolder(): string {
+    const installationPath = store.getters['settings/installationPath'];
+    return path.join(installationPath, BEAT_SABER_CUSTOM_LEVEL);
+  }
+
   public static getPlaylistFolder(): string {
     const installationPath = store.getters['settings/installationPath'];
     return path.join(installationPath, BEAT_SABER_PLAYLIST);
   }
 
   public static async getAllSongFolderPath(): Promise<string[]> {
-    const installationPath = store.getters['settings/installationPath'];
-    const pathSongList = path.join(installationPath, BEAT_SABER_CUSTOM_LEVEL);
+    const pathSongList = this.getBeatmapFolder();
     const directoryList = await fs.readdir(pathSongList);
     return directoryList.map((directory) => path.join(pathSongList, directory));
   }

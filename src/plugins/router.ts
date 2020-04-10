@@ -122,7 +122,7 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   // wait for the vuex-persist to be ready, restored exists but isn't defined.
   // @ts-ignore
-  await store.restored.then();
+  await store.restored;
 
   const subNav = to.matched
     .find((record) => record.meta.subNav)
