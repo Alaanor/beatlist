@@ -48,7 +48,7 @@ export default Vue.extend({
   }),
   computed: {
     beatmapLocal(): BeatmapLocal | undefined {
-      return BeatmapLibrary.GetMapByKey(this.beatmap.key);
+      return BeatmapLibrary.GetMapByHash(this.beatmap.hash);
     },
     currentTime(): string {
       return this.convertTimeHHMMSS(this.currentSeconds);

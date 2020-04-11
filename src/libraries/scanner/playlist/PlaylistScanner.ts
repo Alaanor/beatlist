@@ -6,7 +6,6 @@ import PlaylistLoader from '@/libraries/playlist/loader/PlaylistLoader';
 import ProgressGroup from '@/libraries/common/ProgressGroup';
 import PlaylistScannerResult from '@/libraries/scanner/playlist/PlaylistScannerResult';
 import { ScannerInterface } from '@/libraries/scanner/ScannerInterface';
-import PlaylistBlisterLoader from '@/libraries/playlist/loader/PlaylistBlisterLoader';
 
 export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> {
   public result: PlaylistScannerResult = new PlaylistScannerResult();
@@ -68,32 +67,21 @@ export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> 
 
   private async checkForChange(paths: string[]): Promise<void[]> {
     return Promise.all(paths.map(async (path: string) => {
-      const fileHash = await PlaylistBlisterLoader.getHashFromPath(path);
+      const newPlaylist = await PlaylistLoader.Load(path);
+      const fileHash = newPlaylist.hash;
       const libHash = PlaylistLibrary.GetByPath(path)?.hash;
 
       if (fileHash !== libHash || fileHash === undefined) {
-        const { updated } = await PlaylistScanner.updatePlaylist(path);
-        this.result.updatedItems += updated ? 1 : 0;
+        const oldPlaylist = PlaylistLibrary.GetByPath(path);
+
+        if (oldPlaylist) {
+          PlaylistLibrary.ReplacePlaylist(oldPlaylist, newPlaylist);
+        } else {
+          PlaylistLibrary.AddPlaylist(newPlaylist);
+        }
+
+        this.result.updatedItems += 1;
       }
     }));
-  }
-
-  private static async updatePlaylist(path: string): Promise<{ updated: boolean }> {
-    const oldPlaylist = PlaylistLibrary.GetByPath(path);
-
-    if (!oldPlaylist) {
-      return { updated: false };
-    }
-
-    const newPlaylist = await PlaylistLoader.update(oldPlaylist, path);
-
-    if (newPlaylist.hash === oldPlaylist.hash) {
-      return { updated: false };
-    }
-
-    PlaylistLibrary.RemovePlaylist(oldPlaylist);
-    PlaylistLibrary.AddPlaylist(newPlaylist);
-
-    return { updated: true };
   }
 }

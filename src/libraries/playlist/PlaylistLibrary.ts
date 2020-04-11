@@ -47,4 +47,8 @@ export default class PlaylistLibrary {
   public static RemovePlaylist(playlist: PlaylistLocal) {
     store.commit('playlist/removePlaylist', { playlist });
   }
+
+  public static ReplacePlaylist(from: PlaylistLocal, to: PlaylistLocal) {
+    store.commit('playlist/replacePlaylist', { from, to });
+  }
 }

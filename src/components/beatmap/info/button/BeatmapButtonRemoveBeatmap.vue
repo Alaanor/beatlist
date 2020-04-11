@@ -51,7 +51,7 @@ export default Vue.extend({
   }),
   computed: {
     localBeatmap(): BeatmapLocal | undefined {
-      return BeatmapLibrary.GetMapByKey(this.beatmap.key);
+      return BeatmapLibrary.GetMapByHash(this.beatmap.hash);
     },
   },
   methods: {

@@ -1,6 +1,6 @@
 enum PlaylistFormatType {
   Json = 'Json',
-  Blister = 'Blister',
+  Blist = 'Blist',
 }
 
 export default PlaylistFormatType;

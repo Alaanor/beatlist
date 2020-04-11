@@ -24,6 +24,13 @@ const mutations = {
     context.playlists = context.playlists
       .filter((value: PlaylistLocal) => value.hash !== payload.playlist.hash);
   },
+  replacePlaylist(
+    context: PlaylistStoreState,
+    payload: { from: PlaylistLocal, to: PlaylistLocal },
+  ) {
+    const index = context.playlists.findIndex((item) => item.hash === payload.from.hash);
+    context.playlists[index] = payload.to;
+  },
 };
 
 export default {

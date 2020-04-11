@@ -48,7 +48,7 @@ export default Vue.extend({
   },
   methods: {
     fetchData(): void {
-      this.beatmap = BeatmapLibrary.GetMapByKey(this.$route.params.key);
+      this.beatmap = BeatmapLibrary.GetMapByHash(this.$route.params.hash);
     },
     backHistory(): void {
       this.$router.go(-1);

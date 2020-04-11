@@ -1,41 +1,35 @@
-import * as Throttle from 'promise-parallel-throttle';
-import { BeatmapType, IBeatmap, IPlaylist } from 'blister.js';
+import crypto from 'crypto';
 import {
   PlaylistBase,
-  PlaylistLocal,
-  PlaylistLocalMap,
-  PlaylistMapImportError,
+  PlaylistLocal, PlaylistMap,
 } from '@/libraries/playlist/PlaylistLocal';
-import BeatsaverAPI, { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
 import Progress from '@/libraries/common/Progress';
 import PlaylistLoadStateError from '@/libraries/playlist/loader/PlaylistLoadStateError';
-import PlaylistBlisterLoader, {
-  FILE_NOT_FOUND,
-  INVALID_BLISTER_FORMAT,
-  INVALID_JSON_FORMAT,
-} from '@/libraries/playlist/loader/PlaylistBlisterLoader';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import { IPlaylistSerializer } from '@/libraries/playlist/serializer/IPlaylistSerializer';
-import BlisterSerializer from '@/libraries/playlist/serializer/BlisterSerializer';
-import JsonSerializer from '@/libraries/playlist/serializer/JsonSerializer';
+import JsonSerializer from '@/libraries/playlist/loader/serializer/JsonSerializer';
 import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
-import PlaylistFilenameExtension from '@/libraries/playlist/PlaylistFilenameExtension';
+import PlaylistFilenameExtension, { FILENAME_EXTENSION_UNHANDLED } from '@/libraries/playlist/PlaylistFilenameExtension';
 import store from '@/plugins/store';
-
-const MAX_CONCURRENCY_ITEM = 25;
+import JsonDeserializer, {
+  FILE_NOT_FOUND,
+  INVALID_JSON,
+} from '@/libraries/playlist/loader/deserializer/JsonDeserializer';
+import PlaylistDeserializer from '@/libraries/playlist/loader/deserializer/PlaylistDeserializer';
+import PlaylistSerializer from '@/libraries/playlist/loader/serializer/PlaylistSerializer';
 
 export default class PlaylistLoader {
   public static async Load(filepath: string, progress?: Progress)
     : Promise<PlaylistLocal> {
     try {
-      const blisterLoaded = await PlaylistBlisterLoader.load(filepath);
-      const output = await PlaylistLoader.ConvertToPlaylistLocal(blisterLoaded.playlist, progress);
-      output.loadState = { valid: true, format: blisterLoaded.format };
-      output.path = filepath;
-      output.hash = blisterLoaded.hash;
-      output.format = blisterLoaded.format;
+      progress = progress ?? new Progress();
 
-      return output;
+      const format = PlaylistFilenameExtension.detectType(filepath);
+      const playlist = await this.GetPlaylistBase(filepath, progress) as PlaylistLocal;
+      playlist.loadState = { valid: true, format };
+      playlist.path = filepath;
+      playlist.hash = this.computeHash(playlist, filepath);
+      playlist.format = format;
+
+      return playlist;
     } catch (e) {
       return this.handleError(e, filepath);
     }
@@ -56,42 +50,37 @@ export default class PlaylistLoader {
 
   public static async SaveAt(filepath: string, playlist: PlaylistBase, format: PlaylistFormatType)
     : Promise<void> {
-    let serializer: IPlaylistSerializer;
+    let serializer: PlaylistSerializer;
 
     switch (format) {
       case PlaylistFormatType.Json:
-        serializer = new JsonSerializer();
+        serializer = new JsonSerializer(filepath);
         break;
-      case PlaylistFormatType.Blister:
-        serializer = new BlisterSerializer();
-        break;
+      case PlaylistFormatType.Blist:
       default:
         throw new Error('Invalid playlist export format specified');
     }
 
-    await serializer.serialize(playlist, filepath);
+    await serializer.serialize(playlist);
   }
 
-  public static async update(oldPlaylist: PlaylistLocal, filepath: string, progress?: Progress)
-    : Promise<PlaylistLocal> {
-    try {
-      const blisterLoaded = await PlaylistBlisterLoader.load(filepath);
-      const output = {} as PlaylistLocal;
+  private static async GetPlaylistBase(filepath: string, progress?: Progress)
+    : Promise<PlaylistBase> {
+    progress = progress ?? new Progress();
+    let deserializer: PlaylistDeserializer;
+    const format = PlaylistFilenameExtension.detectType(filepath);
 
-      output.title = blisterLoaded.playlist.title;
-      output.author = blisterLoaded.playlist.author;
-      output.description = blisterLoaded.playlist.description;
-      output.cover = blisterLoaded.playlist.cover;
-      output.hash = blisterLoaded.hash;
-      output.path = filepath;
-      output.maps = await this.getMissingMap(oldPlaylist, blisterLoaded.playlist, progress);
-      output.loadState = { valid: true, format: blisterLoaded.format };
-      output.format = blisterLoaded.format;
+    switch (format) {
+      case PlaylistFormatType.Json:
+        deserializer = new JsonDeserializer(filepath);
+        break;
 
-      return output;
-    } catch (e) {
-      return this.handleError(e, filepath);
+      case PlaylistFormatType.Blist:
+      default:
+        throw new Error('Undefined format');
     }
+
+    return deserializer.deserialize(progress);
   }
 
   private static handleError(e: any, filepath: string) {
@@ -99,20 +88,20 @@ export default class PlaylistLoader {
       case FILE_NOT_FOUND:
         return this.buildEmptyPlaylist(
           undefined,
-          'The path doesn\'t exist',
+          e.message,
           PlaylistLoadStateError.PathDoesntExist,
         );
-      case INVALID_JSON_FORMAT:
+      case INVALID_JSON:
         return this.buildEmptyPlaylist(
           filepath,
           e.message,
-          PlaylistLoadStateError.FailedToParseOldFormat,
+          PlaylistLoadStateError.FailedToParse,
         );
-      case INVALID_BLISTER_FORMAT:
+      case FILENAME_EXTENSION_UNHANDLED:
         return this.buildEmptyPlaylist(
           filepath,
           e.message,
-          PlaylistLoadStateError.FailedToParseNewFormat,
+          PlaylistLoadStateError.FormatDoesntExist,
         );
       default:
         return this.buildEmptyPlaylist(
@@ -123,142 +112,23 @@ export default class PlaylistLoader {
     }
   }
 
-  private static async ConvertToPlaylistLocal(
-    playlist: IPlaylist,
-    progress: Progress = new Progress(),
-  ): Promise<PlaylistLocal> {
-    const output = {} as PlaylistLocal;
+  private static computeHash(playlist: PlaylistBase, filepath: string): string {
+    const safeEmptyPlaylist = {} as PlaylistBase;
+    safeEmptyPlaylist.title = playlist.title;
+    safeEmptyPlaylist.author = playlist.author;
+    safeEmptyPlaylist.description = playlist.description;
+    safeEmptyPlaylist.cover = playlist.cover;
+    safeEmptyPlaylist.maps = playlist.maps.map((beatmap: PlaylistMap) => {
+      const copy = { ...beatmap };
+      delete copy.dateAdded;
+      return copy;
+    });
 
-    progress.setTotal(playlist.maps.length);
-
-    output.title = playlist.title;
-    output.author = playlist.author;
-    output.description = playlist.description;
-    output.cover = playlist.cover;
-    output.maps = await this.convertMapsFromBlister(playlist, progress);
-
-    return output;
-  }
-
-  private static async convertMapsFromBlister(playlist: IPlaylist, progress: Progress)
-    : Promise<PlaylistLocalMap[]> {
-    return Throttle.all(
-      playlist.maps.map((mapToConvert: IBeatmap) => async () => this
-        .convertToLocalMap(mapToConvert)
-        .then((map: PlaylistLocalMap) => {
-          progress.plusOne();
-          return map;
-        })), { maxInProgress: MAX_CONCURRENCY_ITEM },
-    );
-  }
-
-  private static async convertToLocalMap(mapToConvert: IBeatmap): Promise<PlaylistLocalMap> {
-    const map = { dateAdded: mapToConvert.dateAdded, error: null } as PlaylistLocalMap;
-
-    switch (mapToConvert.type) {
-      case BeatmapType.Key:
-        await PlaylistLoader.HandleBeatmapKey(map, mapToConvert.keyHex);
-        break;
-
-      case BeatmapType.Hash:
-        await PlaylistLoader.HandleBeatmapHash(map, mapToConvert.hashHex);
-        break;
-
-      case BeatmapType.Zip:
-        map.error = PlaylistMapImportError.BeatmapTypeZipNotSupported;
-        break;
-
-      case BeatmapType.LevelID:
-        map.error = PlaylistMapImportError.BeatmapTypeLevelIdNotSupported;
-        map.errorInfo = `levelid: ${mapToConvert.levelID}`;
-        break;
-
-      default:
-        map.error = PlaylistMapImportError.BeatmapTypeUnknown;
-        break;
-    }
-
-    return map;
-  }
-
-  private static async getMissingMap(
-    oldPlaylist: PlaylistLocal,
-    newPlaylist: IPlaylist,
-    progress: Progress = new Progress(),
-  ): Promise<PlaylistLocalMap[]> {
-    progress.setTotal(newPlaylist.maps.length);
-
-    return Throttle.all(newPlaylist.maps.map((map: IBeatmap) => async () => {
-      const reusable = oldPlaylist.maps.find((oldMap: PlaylistLocalMap) => {
-        switch (oldMap.error) {
-          case null:
-          case PlaylistMapImportError.BeatmapTypeZipNotSupported:
-          case PlaylistMapImportError.BeatmapTypeLevelIdNotSupported:
-          case PlaylistMapImportError.BeatmapTypeUnknown:
-          case PlaylistMapImportError.BeatsaverInexistent:
-            return false;
-
-          case PlaylistMapImportError.BeatsaverRequestError:
-          default:
-            break;
-        }
-
-        switch (map.type) {
-          case BeatmapType.Key:
-            return map.keyHex === oldMap.online?.key;
-
-          case BeatmapType.Hash:
-            return map.hashHex === oldMap.online?.hash;
-
-          case BeatmapType.Zip:
-          case BeatmapType.LevelID:
-          default:
-            return false;
-        }
-      });
-
-      progress.plusOne();
-
-      if (reusable) {
-        return reusable;
-      }
-
-      return this.convertToLocalMap(map);
-    }), { maxInProgress: MAX_CONCURRENCY_ITEM });
-  }
-
-  private static async HandleBeatmapKey(map: PlaylistLocalMap, key: string) {
-    const beatmap = await BeatsaverAPI.Singleton.getBeatmapByKey(key);
-    this.SetMapOnlineData(beatmap, map);
-
-    if (map.error) {
-      map.errorInfo = `key: ${key}`;
-    }
-  }
-
-  private static async HandleBeatmapHash(map: PlaylistLocalMap, hash: string) {
-    const beatmap = await BeatsaverAPI.Singleton.getBeatmapByHash(hash);
-    this.SetMapOnlineData(beatmap, map);
-
-    if (map.error) {
-      map.errorInfo = `hash: ${hash}`;
-    }
-  }
-
-  private static SetMapOnlineData(
-    beatmap: BeatSaverAPIResponse<BeatsaverBeatmap>,
-    map: PlaylistLocalMap,
-  ): void {
-    map.error = null;
-    map.online = null;
-
-    if (beatmap.status === BeatSaverAPIResponseStatus.ResourceFound) {
-      map.online = beatmap.data;
-    } else if (beatmap.status === BeatSaverAPIResponseStatus.ResourceNotFound) {
-      map.error = PlaylistMapImportError.BeatsaverInexistent;
-    } else {
-      map.error = PlaylistMapImportError.BeatsaverRequestError;
-    }
+    return crypto
+      .createHash('sha1')
+      .update(JSON.stringify(safeEmptyPlaylist) + filepath.toLowerCase())
+      .digest('hex')
+      .substr(0, 5);
   }
 
   private static buildEmptyPlaylist(

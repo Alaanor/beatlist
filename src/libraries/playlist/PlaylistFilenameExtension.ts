@@ -2,16 +2,17 @@ import fs from 'fs-extra';
 import path from 'path';
 import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
 
+export const PLAYLIST_EXTENSION_NAME_BPLIST = 'bplist';
 export const PLAYLIST_EXTENSION_NAME_JSON = 'json';
-export const PLAYLIST_EXTENSION_NAME_BLISTER = 'blist';
-
+export const PLAYLIST_EXTENSION_NAME_BLIST = 'blist';
+export const FILENAME_EXTENSION_UNHANDLED = new Error('Unhandled filename extension');
 export default class PlaylistFilenameExtension {
   static GetFor(format: PlaylistFormatType): string {
     switch (format) {
       case PlaylistFormatType.Json:
         return PLAYLIST_EXTENSION_NAME_JSON;
-      case PlaylistFormatType.Blister:
-        return PLAYLIST_EXTENSION_NAME_BLISTER;
+      case PlaylistFormatType.Blist:
+        return PLAYLIST_EXTENSION_NAME_BLIST;
       default:
         throw new Error('Undefined playlist format');
     }
@@ -40,5 +41,21 @@ export default class PlaylistFilenameExtension {
 
   public static isExtensionCorrect(filepath: string, format: PlaylistFormatType) {
     return path.extname(filepath).substr(1) === this.GetFor(format);
+  }
+
+  public static detectType(filepath: string): PlaylistFormatType {
+    const extName = path.extname(filepath).substr(1);
+
+    switch (extName) {
+      case PLAYLIST_EXTENSION_NAME_BPLIST:
+      case PLAYLIST_EXTENSION_NAME_JSON:
+        return PlaylistFormatType.Json;
+
+      case PLAYLIST_EXTENSION_NAME_BLIST:
+        return PlaylistFormatType.Blist;
+
+      default:
+        throw FILENAME_EXTENSION_UNHANDLED;
+    }
   }
 }

@@ -1,11 +1,12 @@
 import fs from 'fs-extra';
 import path from 'path';
-import BeatsaverAPI, { BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
 import { BeatmapLocal } from './BeatmapLocal';
 import BeatmapLoadStateError from './BeatmapLoadStateError';
 import { BeatmapLoadState } from './BeatmapLoadState';
 import BeatmapHashComputer from './BeatmapHashComputer';
 import Base64SrcLoader from '@/libraries/os/utils/Base64SrcLoader';
+import BeatsaverCachedRepo from '@/libraries/beatmap/repo/BeatsaverCachedRepo';
+import { BeatsaverKeyType } from '@/libraries/beatmap/repo/BeatsaverKeyType';
 
 export default class BeatmapLoader {
   private readonly beatmap: BeatmapLocal;
@@ -37,11 +38,9 @@ export default class BeatmapLoader {
 
     await this.ValidateFolderContent();
     await this.FindTheHash();
-    await this.GetOnlineData();
+    await this.CacheBeatsaverMap();
 
-    if (this.beatmap.loadState.errorType === undefined) {
-      this.beatmap.loadState.valid = true;
-    }
+    this.beatmap.loadState.valid = this.beatmap.loadState.errorType === undefined;
 
     return this.beatmap;
   }
@@ -83,45 +82,14 @@ export default class BeatmapLoader {
 
     if (!this.hash) {
       this.beatmap.loadState.errorType = BeatmapLoadStateError.FailedToComputeHash;
+    } else {
+      this.beatmap.hash = this.hash;
     }
   }
 
-  private async GetOnlineData() {
-    if (this.beatmap.loadState.errorType) {
-      return;
-    }
-
-    if (this.hash !== undefined) {
-      const response = await BeatsaverAPI.Singleton.getBeatmapByHash(this.hash);
-
-      switch (response.status) {
-        case BeatSaverAPIResponseStatus.ResourceFound:
-          this.beatmap.onlineData = response.data;
-          break;
-
-        case BeatSaverAPIResponseStatus.ResourceNotFound:
-          this.beatmap.loadState.errorType = BeatmapLoadStateError.BeatmapNotOnBeatsaver;
-          this.beatmap.loadState.errorMessage = `${response.statusCode}: ${response.statusMessage}`;
-          break;
-
-        case BeatSaverAPIResponseStatus.ResourceFoundButInvalidData:
-          this.beatmap.loadState.errorType = BeatmapLoadStateError.InvalidDataReceivedFromBeatsaver;
-          this.beatmap.loadState.errorMessage = `Failed to parse as a BeatsaverBeatmap: ${response.rawData?.toString()}`;
-          break;
-
-        case BeatSaverAPIResponseStatus.RateLimited:
-          this.beatmap.loadState.errorType = BeatmapLoadStateError.BeatsaverRateLimited;
-          this.beatmap.loadState.errorMessage = `We got rate limited: (${response.remaining}/${response.total}) reset at: ${response.resetAt?.toLocaleString()}`;
-          break;
-
-        case BeatSaverAPIResponseStatus.ServerNotAvailable:
-          this.beatmap.loadState.errorType = BeatmapLoadStateError.BeatsaverServerNotAvailable;
-          this.beatmap.loadState.errorMessage = `${response.statusCode}: ${response.statusMessage}`;
-          break;
-
-        default:
-          this.beatmap.loadState.errorType = BeatmapLoadStateError.Unknown;
-      }
+  private async CacheBeatsaverMap() {
+    if (this.hash) {
+      await BeatsaverCachedRepo.cacheBeatmap(BeatsaverKeyType.Hash, this.hash);
     }
   }
 }

@@ -24,7 +24,7 @@ export default Vue.extend({
   },
   methods: {
     openFolder(): void {
-      const local = BeatmapLibrary.GetMapByKey(this.beatmap.key);
+      const local = BeatmapLibrary.GetMapByHash(this.beatmap.hash);
 
       if (local) {
         shell.openItem(local.folderPath);

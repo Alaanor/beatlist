@@ -52,7 +52,7 @@ const router = new VueRouter({
           component: BeatmapLocal,
         },
         {
-          path: 'local/:key',
+          path: 'local/:hash',
           name: 'beatmaps-local-unit',
           component: BeatmapLocalUnit,
         },
@@ -62,7 +62,7 @@ const router = new VueRouter({
           component: BeatmapOnline,
         },
         {
-          path: 'online/:key',
+          path: 'online/:hash',
           name: 'beatmaps-online-unit',
           component: BeatmapOnlineUnit,
         },

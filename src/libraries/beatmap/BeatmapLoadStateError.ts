@@ -1,13 +1,9 @@
 enum BeatmapLoadStateError{
-  BeatmapNotOnBeatsaver = 0,
-  FailedToComputeHash = 1,
-  NoInfoDatFileFound = 2,
-  NoCoverImageFound = 3,
-  NoSoundFileFound = 4,
-  BeatsaverServerNotAvailable = 6,
-  InvalidDataReceivedFromBeatsaver = 7,
-  BeatsaverRateLimited = 8,
-  Unknown = 9,
+  FailedToComputeHash = 0,
+  NoInfoDatFileFound = 1,
+  NoCoverImageFound = 2,
+  NoSoundFileFound = 3,
+  Unknown = 4,
 }
 
 export default BeatmapLoadStateError;

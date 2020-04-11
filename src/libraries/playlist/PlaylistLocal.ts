@@ -1,4 +1,3 @@
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import { PlaylistLoadState } from '@/libraries/playlist/loader/PlaylistLoadState';
 import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
 
@@ -23,21 +22,20 @@ export interface PlaylistOnline extends PlaylistBase {
 }
 
 export interface PlaylistMap {
-  online: BeatsaverBeatmap | null;
+  hash: string | undefined;
   dateAdded: Date;
 }
 
 export interface PlaylistLocalMap extends PlaylistMap {
-  error: PlaylistMapImportError | null;
-  errorInfo: string;
+  error: PlaylistMapImportError | undefined;
+  errorInfo: string | undefined;
 }
 
 export interface PlaylistOnlineMap extends PlaylistMap {}
 
 export enum PlaylistMapImportError {
-  BeatmapTypeZipNotSupported = 0,
-  BeatmapTypeLevelIdNotSupported = 1,
-  BeatmapTypeUnknown = 2,
-  BeatsaverInexistent = 3,
-  BeatsaverRequestError = 4,
+  BeatmapTypeLevelIdNotSupported = 0,
+  BeatsaverInexistent = 1,
+  BeatsaverRequestError = 2,
+  Unknown = 3,
 }
