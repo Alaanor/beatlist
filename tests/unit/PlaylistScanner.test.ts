@@ -4,7 +4,9 @@ import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
 import PlaylistScanner from '@/libraries/scanner/playlist/PlaylistScanner';
 
-jest.mock('@/plugins/store', () => {});
+jest.mock('@/plugins/store', () => ({
+  commit: () => {},
+}));
 
 describe('playlist scanner', () => {
   it('should only scan the difference', async () => {

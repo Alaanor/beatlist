@@ -19,7 +19,7 @@ describe('playlist format conversion', () => {
 
     expect(playlist.loadState.valid).toBe(true);
     expect((playlist.loadState as PlaylistLoadStateValid).format)
-      .toBe(PlaylistFormatType.Blister);
+      .toBe(PlaylistFormatType.Blist);
 
     await PlaylistLoader.Save(playlist, PlaylistFormatType.Json);
 
@@ -38,13 +38,13 @@ describe('playlist format conversion', () => {
   it('should detect if extension is correct or not', () => {
     expect.assertions(4);
 
-    expect(PlaylistFilenameExtension.isExtensionCorrect('foo/bar.blist', PlaylistFormatType.Blister))
+    expect(PlaylistFilenameExtension.isExtensionCorrect('foo/bar.blist', PlaylistFormatType.Blist))
       .toBe(true);
     expect(PlaylistFilenameExtension.isExtensionCorrect('foo/bar.blist', PlaylistFormatType.Json))
       .toBe(false);
     expect(PlaylistFilenameExtension.isExtensionCorrect('foo/bar.json', PlaylistFormatType.Json))
       .toBe(true);
-    expect(PlaylistFilenameExtension.isExtensionCorrect('foo/bar.json', PlaylistFormatType.Blister))
+    expect(PlaylistFilenameExtension.isExtensionCorrect('foo/bar.json', PlaylistFormatType.Blist))
       .toBe(false);
   });
 });

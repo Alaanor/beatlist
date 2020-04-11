@@ -1,9 +1,14 @@
 import path from 'path';
 import BeatmapLoader from '@/libraries/beatmap/BeatmapLoader';
-import BeatsaverAPI, { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
+import BeatsaverAPI from '@/libraries/net/beatsaver/BeatsaverAPI';
 import BeatmapLoadStateError from '@/libraries/beatmap/BeatmapLoadStateError';
 import BeatmapHashComputer from '@/libraries/beatmap/BeatmapHashComputer';
 import mockResponseSuccess from './helper/BeatsaverAPIResponseMocking';
+
+jest.mock('@/plugins/store', () => {});
+jest.mock('@/libraries/beatmap/repo/BeatsaverCachedRepo', () => ({
+  cacheBeatmap: () => {},
+}));
 
 describe('beatmap loader', () => {
   it('should load the map correctly', async () => {
@@ -26,7 +31,7 @@ describe('beatmap loader', () => {
     expect(beatmap.coverPath).toBe(coverPath);
     expect(beatmap.songPath).toBe(songPath);
     expect(beatmap.folderPath).toBe(beatmapFolder);
-    expect(beatmap.onlineData).toBe(mockedAnswer);
+    expect(beatmap.hash).toBe('152DA020C774105DB2D70FCBFD4991EF2878384B');
   });
 
   it('should fail at infoDat', async () => {
@@ -57,26 +62,6 @@ describe('beatmap loader', () => {
 
     expect(beatmap.loadState.valid).toBe(false);
     expect(beatmap.loadState.errorType).toBe(BeatmapLoadStateError.NoSoundFileFound);
-  });
-
-  it('should fail at beatsaver', async () => {
-    expect.assertions(3);
-
-    const mockGetBeatmapByHash = jest.fn();
-    const mockedValue = {
-      status: BeatSaverAPIResponseStatus.ResourceNotFound,
-      statusCode: 404,
-      statusMessage: 'Not Found',
-    } as BeatSaverAPIResponse<Object>;
-    mockGetBeatmapByHash.mockReturnValue(mockedValue);
-    BeatsaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
-
-    const beatmapFolder = path.join(__dirname, '../data/beatmap');
-    const beatmap = await (BeatmapLoader.Load(beatmapFolder));
-
-    expect(beatmap.loadState.valid).toBe(false);
-    expect(beatmap.loadState.errorType).toBe(BeatmapLoadStateError.BeatmapNotOnBeatsaver);
-    expect(beatmap.loadState.errorMessage).toBeDefined();
   });
 
   it('should fail at hash', async () => {

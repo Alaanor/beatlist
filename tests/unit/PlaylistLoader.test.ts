@@ -3,24 +3,31 @@ import fs from 'fs-extra';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLoader from '@/libraries/playlist/loader/PlaylistLoader';
 import BeatsaverAPI from '@/libraries/net/beatsaver/BeatsaverAPI';
-import Progress from '@/libraries/common/Progress';
 import mockResponseSuccess from './helper/BeatsaverAPIResponseMocking';
 import PlaylistLoadStateError from '@/libraries/playlist/loader/PlaylistLoadStateError';
 import { PlaylistLoadStateInvalid } from '@/libraries/playlist/loader/PlaylistLoadState';
 import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
 
-describe('playlist loader', () => {
+jest.mock('@/plugins/store', () => ({
+  getters: { 'settings/defaultExportFormat': 'Json' },
+}));
+
+jest.mock('@/libraries/beatmap/repo/BeatsaverCachedRepo', () => ({
+  cacheBeatmap: async () => ({ loadState: { valid: true }, beatmap: { hash: 'foobar' } }),
+}));
+
+describe('playlist loader, using the legacy JSON as format', () => {
   it('should fail if invalid path', async () => {
     expect.assertions(2);
 
-    const playlist = await PlaylistLoader.Load('');
+    const playlist = await PlaylistLoader.Load('unknown.json');
 
     expect(playlist.loadState.valid).toBe(false);
     expect((playlist.loadState as PlaylistLoadStateInvalid).errorType)
       .toBe(PlaylistLoadStateError.PathDoesntExist);
   });
 
-  it('should not load an invalid playlist using the old format', async () => {
+  it('should not load an invalid playlist', async () => {
     expect.assertions(2);
 
     const oldFormatInvalid = path.join(__dirname, '../data/playlist/oldFormatInvalid.json');
@@ -28,29 +35,11 @@ describe('playlist loader', () => {
 
     expect(playlist.loadState.valid).toBe(false);
     expect((playlist.loadState as PlaylistLoadStateInvalid).errorType)
-      .toBe(PlaylistLoadStateError.FailedToParseOldFormat);
+      .toBe(PlaylistLoadStateError.FailedToParse);
   });
 
-  it('should not load an invalid playlist using the new format', async () => {
-    expect.assertions(2);
-
-    const newFormatInvalid = path.join(__dirname, '../data/playlist/newFormatInvalid.blist');
-    const playlist = await PlaylistLoader.Load(newFormatInvalid);
-
-    expect(playlist.loadState.valid).toBe(false);
-    expect((playlist.loadState as PlaylistLoadStateInvalid).errorType)
-      .toBe(PlaylistLoadStateError.FailedToParseNewFormat);
-  });
-
-  it('should load old format playlist', async () => {
+  it('should load a JSON format playlist', async () => {
     expect.assertions(6);
-
-    const mockGetBeatmapByHash = jest.fn();
-
-    mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '75f1' }));
-    mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '765d' }));
-
-    BeatsaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
 
     const oldFormatBeatlist = path.join(__dirname, '../data/playlist/oldFormatFromBeatlist.json');
     const oldFormatPeepee = path.join(__dirname, '../data/playlist/oldFormatFromPeepee.bplist');
@@ -60,52 +49,21 @@ describe('playlist loader', () => {
 
     expect(playlistBeatlist.loadState.valid).toBe(true);
     expect(playlistBeatlist.title).toBe('Test');
-    expect(playlistBeatlist.maps[0].online?.key).toBe('75f1');
+    expect(playlistBeatlist.maps[0].hash).toBe('foobar');
 
     expect(playlistPeepee.loadState.valid).toBe(true);
     expect(playlistPeepee.title).toBe('Not played (2019-12-22)');
-    expect(playlistPeepee.maps[0].online?.key).toBe('765d');
+    expect(playlistPeepee.maps[0].hash).toBe('foobar');
   });
 
-  it('should load new format playlist', async () => {
-    expect.assertions(4);
-
-    const mockGetBeatmapByHash = jest.fn();
-    const mockedValue = { key: '75f1' };
-    mockGetBeatmapByHash.mockReturnValue(mockResponseSuccess(mockedValue));
-    BeatsaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
-
-    const newFormatPlaylistFile = path.join(__dirname, '../data/playlist/newFormatFromBeatlist.blist');
-    const playlist = await PlaylistLoader.Load(newFormatPlaylistFile);
-
-    expect(playlist.loadState.valid).toBe(true);
-    expect(playlist.title).toBe('Test');
-    expect(playlist.author).toBe('Alaanor');
-    expect(playlist.maps[0].online?.key).toBe('75f1');
-  });
-
-  it('should show a correct progress', async () => {
-    expect.assertions(3);
-
-    const newFormatPlaylistFile = path.join(__dirname, '../data/playlist/newFormatFromBeatlist.blist');
-    const progress = new Progress();
-    await PlaylistLoader.Load(newFormatPlaylistFile, progress);
-
-    expect(progress.getRatio()).toBe(1);
-    expect(progress.get().total).toBe(1);
-    expect(progress.get().done).toBe(1);
-  });
-
-  it('should save the playlist correctly using blister format', async () => {
+  it('should save the playlist correctly using JSON format', async () => {
     expect.assertions(5);
 
     const mockGetBeatmapByHash = jest.fn();
-    const mockedValue = { key: '75f1' };
-    mockGetBeatmapByHash.mockReturnValue(mockResponseSuccess(mockedValue));
+    mockGetBeatmapByHash.mockReturnValue(mockResponseSuccess({}));
     BeatsaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
 
-    const playlistPath = path.join(__dirname, '../data/playlist/testPlaylistLoaderSaveFunction.blist');
-    const beatmap = { key: '75f1', hash: '01fb2aa5064d8e30105de66181be1b3fbc9fa28a' };
+    const playlistPath = path.join(__dirname, '../data/playlist/testPlaylistLoaderSaveFunction.json');
     const playlistData = {
       title: 'test',
       author: 'test',
@@ -114,12 +72,12 @@ describe('playlist loader', () => {
       maps: [
         {
           dateAdded: new Date(),
-          online: beatmap,
+          hash: 'foobar',
         },
       ],
     } as PlaylistLocal;
 
-    await PlaylistLoader.SaveAt(playlistPath, playlistData, PlaylistFormatType.Blister);
+    await PlaylistLoader.SaveAt(playlistPath, playlistData, PlaylistFormatType.Json);
 
     expect(await fs.pathExists(playlistPath)).toBe(true);
 
@@ -128,40 +86,8 @@ describe('playlist loader', () => {
     expect(playlist.loadState.valid).toBe(true);
     expect(playlist.title).toBe('test');
     expect(playlist.cover?.toString()).toBe('test');
-    expect(playlist.maps[0].online?.key).toBe('75f1');
+    expect(playlist.maps[0].hash).toBe('foobar');
 
     await fs.unlink(playlistPath);
-  });
-
-  it('should update the playlist', async () => {
-    expect.assertions(9);
-
-    const mockGetBeatmapByHash = jest.fn();
-
-    // map fetch from 'toBeUpdated'
-    mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '1f90', hash: '2fddb136bda7f9e29b4cb6621d6d8e0f8a43b126' }));
-    mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '1db6', hash: '196d1061eac3cd4bc586e5afcaea07c35f1d69d0' }));
-
-    // map fetched from 'updated'
-    mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '1db6', hash: '196d1061eac3cd4bc586e5afcaea07c35f1d69d0' }));
-    mockGetBeatmapByHash.mockReturnValueOnce(mockResponseSuccess({ key: '1a33', hash: 'a5be6e439863b22bb0ca36e2f4ead53452e1b978' }));
-    BeatsaverAPI.Singleton.getBeatmapByHash = mockGetBeatmapByHash;
-
-    const toBeUpdatedPath = path.join(__dirname, '../data/playlist/update/toBeUpdated.blist');
-    const toBeUpdated = await PlaylistLoader.Load(toBeUpdatedPath);
-
-    const progress = new Progress();
-    const updatedPath = path.join(__dirname, '../data/playlist/update/updated.blist');
-    const updated = await PlaylistLoader.update(toBeUpdated, updatedPath, progress);
-
-    expect(updated.hash).not.toBe(toBeUpdated.hash);
-    expect(updated.path).toBe(updatedPath);
-    expect(updated.loadState.valid).toBe(true);
-    expect(updated.author).toBe('bar');
-    expect(updated.maps).toHaveLength(2);
-    expect(updated.maps[0].online?.key).toBe('1db6');
-    expect(updated.maps[1].online?.key).toBe('1a33');
-    expect(progress.get().total).toBe(2);
-    expect(progress.get().done).toBe(2);
   });
 });
