@@ -93,6 +93,27 @@
           </span>
 
           <span
+            v-if="beatsaverBeatmapCountInvalid > 0"
+            class="grey--text d-flex align-center"
+          >
+            <strong class="pr-1">{{ beatsaverBeatmapCountInvalid }}</strong>
+            {{
+              beatsaverBeatmapCountInvalid > 1
+                ? 'beatsaver cached beatmaps are'
+                : 'beatsaver cached beatmap is'
+            }}
+            invalid.
+            <v-btn
+              icon
+              x-small
+              class="ml-1"
+              @click.stop="invalidBeatsaverBeatmapDialog = true"
+            >
+              <v-icon x-small>mdi-help</v-icon>
+            </v-btn>
+          </span>
+
+          <span
             v-if="lastScan"
             class="grey--text"
           >
@@ -112,6 +133,7 @@
     <InvalidBeatmapDialog :open.sync="invalidBeatmapDialog"/>
     <InvalidPlaylistDialog :open.sync="invalidPlaylistDialog"/>
     <InvalidPlaylistsMapsDialog :open.sync="invalidPlaylistsMapsDialog"/>
+    <InvalidBeatsaverBeatmapDialog :open.sync="invalidBeatsaverBeatmapDialog"/>
   </v-container>
 </template>
 
@@ -126,6 +148,7 @@ import InvalidPlaylistDialog from '@/components/dialogs/InvalidPlaylistDialog.vu
 import ScannerService from '@/libraries/scanner/ScannerService';
 import PlaylistMapsLibrary from '@/libraries/playlist/PlaylistMapsLibrary';
 import InvalidPlaylistsMapsDialog from '@/components/dialogs/InvalidPlaylistsMapsDialog.vue';
+import BeatsaverCachedLibrary from '@/libraries/beatmap/repo/BeatsaverCachedLibrary';
 
 export default Vue.extend({
   name: 'SongLibrary',
@@ -140,6 +163,7 @@ export default Vue.extend({
     invalidBeatmapDialog: false,
     invalidPlaylistDialog: false,
     invalidPlaylistsMapsDialog: false,
+    invalidBeatsaverBeatmapDialog: false,
     isScanning: false,
   }),
   computed: {
@@ -149,6 +173,7 @@ export default Vue.extend({
     playlistsCountValid: () => PlaylistLibrary.GetAllValidPlaylists().length,
     playlistsCountInvalid: () => PlaylistLibrary.GetAllInvalidPlaylists().length,
     playlistsMapsCountInvalid: () => PlaylistMapsLibrary.GetAllInvalidMapFlatten().length,
+    beatsaverBeatmapCountInvalid: () => BeatsaverCachedLibrary.getAllInvalid().length,
     lastScan: () => BeatmapLibrary.GetLastScanDate()?.toLocaleString() ?? undefined,
   },
   mounted(): void {

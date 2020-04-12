@@ -59,22 +59,23 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
-import BeatmapLoadStateError from '@/libraries/beatmap/BeatmapLoadStateError';
+import BeatsaverCachedLibrary from '@/libraries/beatmap/repo/BeatsaverCachedLibrary';
+import { BeatsaverItemLoadError } from '@/libraries/beatmap/repo/BeatsaverItem';
 
 export default Vue.extend({
   name: 'InvalidBeatmapDialog',
   filters: {
-    errorTranslated: (error: BeatmapLoadStateError): string => {
+    errorTranslated: (error: BeatsaverItemLoadError): string => {
       switch (error) {
-        case BeatmapLoadStateError.FailedToComputeHash:
-          return 'Failed to compute the hash';
-        case BeatmapLoadStateError.NoInfoDatFileFound:
-          return 'No info.dat file found';
-        case BeatmapLoadStateError.NoCoverImageFound:
-          return 'No cover image found';
-        case BeatmapLoadStateError.NoSoundFileFound:
-          return 'No music file found';
+        case BeatsaverItemLoadError.BeatmapNotOnBeatsaver:
+          return "Couldn't find the map on beatsaver";
+        case BeatsaverItemLoadError.BeatsaverServerNotAvailable:
+          return 'Beatsaver server was unavailable';
+        case BeatsaverItemLoadError.InvalidDataReceivedFromBeatsaver:
+          return 'Unexpected answer gotten from beatsaver';
+        case BeatsaverItemLoadError.BeatsaverRateLimited:
+          return "Got rate limited by the beatsaver's server";
+        case BeatsaverItemLoadError.Unknown:
         default:
           return 'Unknown error';
       }
@@ -84,7 +85,7 @@ export default Vue.extend({
     open: { type: Boolean, required: true },
   },
   computed: {
-    invalidBeatmap: () => BeatmapLibrary.GetAllInvalidMap(),
+    invalidBeatmap: () => BeatsaverCachedLibrary.getAllInvalid(),
   },
   methods: {
     closeDialog() {

@@ -4,16 +4,16 @@ import { BeatsaverKeyType } from '@/libraries/beatmap/repo/BeatsaverKeyType';
 import { BeatsaverItem, BeatsaverItemLoadError } from '@/libraries/beatmap/repo/BeatsaverItem';
 import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
 
-export default class BeatsaverCachedRepo {
+export default class BeatsaverCachedLibrary {
   public static async cacheBeatmap(keyType: BeatsaverKeyType, keyValue: string)
     : Promise<BeatsaverItem> {
-    const existingBeatmap = BeatsaverCachedRepo.get(keyType, keyValue);
+    const existingBeatmap = BeatsaverCachedLibrary.get(keyType, keyValue);
 
     if (existingBeatmap !== undefined) {
       return existingBeatmap;
     }
 
-    const beatsaverItem = await BeatsaverCachedRepo.getOnlineData(keyType, keyValue);
+    const beatsaverItem = await BeatsaverCachedLibrary.getOnlineData(keyType, keyValue);
     BeatmapLibrary.AddBeatsaverCachedMap(beatsaverItem);
     return beatsaverItem;
   }
@@ -73,7 +73,7 @@ export default class BeatsaverCachedRepo {
   }
 
   public static exist(keyType: BeatsaverKeyType, keyValue: string) {
-    return BeatsaverCachedRepo.get(keyType, keyValue) !== undefined;
+    return BeatsaverCachedLibrary.get(keyType, keyValue) !== undefined;
   }
 
   public static get(keyType: BeatsaverKeyType, keyValue: string) {
@@ -95,12 +95,17 @@ export default class BeatsaverCachedRepo {
     return this.getAll().find((item) => item.beatmap?.hash === hash);
   }
 
-  private static getAll(): BeatsaverItem[] {
+  public static getAll(): BeatsaverItem[] {
     return BeatmapLibrary.GetAllBeatsaverCached();
   }
 
-  public static async updateOne(hash: string) {
-    const item = await BeatsaverCachedRepo.getOnlineData(BeatsaverKeyType.Hash, hash);
+  public static async updateOne(hash: string): Promise<{success: boolean, errMsg?: string}> {
+    const item = await BeatsaverCachedLibrary.getOnlineData(BeatsaverKeyType.Hash, hash);
     BeatmapLibrary.UpdateBeatsaverCachedMap(item);
+    return { success: item.loadState.valid, errMsg: item.loadState.errorMessage };
+  }
+
+  public static getAllInvalid() {
+    return this.getAll().filter((beatmap) => !beatmap.loadState.valid);
   }
 }
