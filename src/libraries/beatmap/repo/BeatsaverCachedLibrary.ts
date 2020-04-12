@@ -1,90 +1,14 @@
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import BeatsaverAPI, { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
-import { BeatsaverKeyType } from '@/libraries/beatmap/repo/BeatsaverKeyType';
-import { BeatsaverItem, BeatsaverItemLoadError } from '@/libraries/beatmap/repo/BeatsaverItem';
-import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
+import { BeatsaverKey, BeatsaverKeyType } from '@/libraries/beatmap/repo/BeatsaverKeyType';
+import { BeatsaverItem } from '@/libraries/beatmap/repo/BeatsaverItem';
+import store from '@/plugins/store';
 
 export default class BeatsaverCachedLibrary {
-  public static async cacheBeatmap(keyType: BeatsaverKeyType, keyValue: string)
-    : Promise<BeatsaverItem> {
-    const existingBeatmap = BeatsaverCachedLibrary.get(keyType, keyValue);
-
-    if (existingBeatmap !== undefined) {
-      return existingBeatmap;
-    }
-
-    const beatsaverItem = await BeatsaverCachedLibrary.getOnlineData(keyType, keyValue);
-    BeatmapLibrary.AddBeatsaverCachedMap(beatsaverItem);
-    return beatsaverItem;
+  public static Add(key: BeatsaverKey, item: BeatsaverItem) {
+    store.commit('beatmap/addBeatsaberCached', { key, item });
   }
 
-  private static async getOnlineData(keyType: BeatsaverKeyType, keyValue: string)
-    : Promise<BeatsaverItem> {
-    let response: BeatSaverAPIResponse<BeatsaverBeatmap>;
-    const item = {
-      beatmap: undefined,
-      loadState: {
-        valid: false,
-      },
-    } as BeatsaverItem;
-
-    switch (keyType) {
-      case BeatsaverKeyType.Hash:
-        response = await BeatsaverAPI.Singleton.getBeatmapByHash(keyValue);
-        break;
-      case BeatsaverKeyType.Key:
-        response = await BeatsaverAPI.Singleton.getBeatmapByKey(keyValue);
-        break;
-      default:
-        throw new Error('Unexpected key type');
-    }
-
-    switch (response.status) {
-      case BeatSaverAPIResponseStatus.ResourceFound:
-        item.beatmap = response.data;
-        item.loadState.valid = true;
-        break;
-
-      case BeatSaverAPIResponseStatus.ResourceNotFound:
-        item.loadState.errorType = BeatsaverItemLoadError.BeatmapNotOnBeatsaver;
-        item.loadState.errorMessage = `${response.statusCode}: ${response.statusMessage}`;
-        break;
-
-      case BeatSaverAPIResponseStatus.ResourceFoundButInvalidData:
-        item.loadState.errorType = BeatsaverItemLoadError.InvalidDataReceivedFromBeatsaver;
-        item.loadState.errorMessage = `Failed to parse as a BeatsaverBeatmap: ${response.rawData?.toString()}`;
-        break;
-
-      case BeatSaverAPIResponseStatus.RateLimited:
-        item.loadState.errorType = BeatsaverItemLoadError.BeatsaverRateLimited;
-        item.loadState.errorMessage = `We got rate limited: (${response.remaining}/${response.total}) reset at: ${response.resetAt?.toLocaleString()}`;
-        break;
-
-      case BeatSaverAPIResponseStatus.ServerNotAvailable:
-        item.loadState.errorType = BeatsaverItemLoadError.BeatsaverServerNotAvailable;
-        item.loadState.errorMessage = `${response.statusCode}: ${response.statusMessage}`;
-        break;
-
-      default:
-        item.loadState.errorType = BeatsaverItemLoadError.Unknown;
-    }
-
-    return item;
-  }
-
-  public static exist(keyType: BeatsaverKeyType, keyValue: string) {
-    return BeatsaverCachedLibrary.get(keyType, keyValue) !== undefined;
-  }
-
-  public static get(keyType: BeatsaverKeyType, keyValue: string) {
-    switch (keyType) {
-      case BeatsaverKeyType.Hash:
-        return this.getByHash(keyValue);
-      case BeatsaverKeyType.Key:
-        return this.getByKey(keyValue);
-      default:
-        throw new Error('Unexpected key type');
-    }
+  public static exist(key: BeatsaverKey) {
+    return this.get(key) !== undefined;
   }
 
   public static getByKey(key: string): BeatsaverItem | undefined {
@@ -92,20 +16,29 @@ export default class BeatsaverCachedLibrary {
   }
 
   public static getByHash(hash: string): BeatsaverItem | undefined {
-    return this.getAll().find((item) => item.beatmap?.hash === hash);
+    return store.getters[`beatmap/beatsaverCached@${hash}`];
   }
 
   public static getAll(): BeatsaverItem[] {
-    return BeatmapLibrary.GetAllBeatsaverCached();
+    return store.getters['beatmap/beatsaverCached'];
   }
 
-  public static async updateOne(hash: string): Promise<{success: boolean, errMsg?: string}> {
-    const item = await BeatsaverCachedLibrary.getOnlineData(BeatsaverKeyType.Hash, hash);
-    BeatmapLibrary.UpdateBeatsaverCachedMap(item);
-    return { success: item.loadState.valid, errMsg: item.loadState.errorMessage };
+  public static updateOne(item: BeatsaverItem) {
+    store.commit('beatmap/updateBeatsaberCached', item);
   }
 
   public static getAllInvalid() {
     return this.getAll().filter((beatmap) => !beatmap.loadState.valid);
+  }
+
+  public static get(key: BeatsaverKey) {
+    switch (key.type) {
+      case BeatsaverKeyType.Hash:
+        return BeatsaverCachedLibrary.getByHash(key.value);
+      case BeatsaverKeyType.Key:
+        return BeatsaverCachedLibrary.getByKey(key.value);
+      default:
+        throw new Error('Unexpected key type');
+    }
   }
 }

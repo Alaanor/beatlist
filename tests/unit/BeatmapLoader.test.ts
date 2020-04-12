@@ -6,7 +6,7 @@ import BeatmapHashComputer from '@/libraries/beatmap/BeatmapHashComputer';
 import mockResponseSuccess from './helper/BeatsaverAPIResponseMocking';
 
 jest.mock('@/plugins/store', () => {});
-jest.mock('@/libraries/beatmap/repo/BeatsaverCachedRepo', () => ({
+jest.mock('@/libraries/beatmap/repo/BeatsaverCachedLibrary', () => ({
   cacheBeatmap: () => {},
 }));
 

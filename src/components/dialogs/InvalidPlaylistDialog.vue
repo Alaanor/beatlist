@@ -69,11 +69,11 @@ export default Vue.extend({
       switch (error) {
         case PlaylistLoadStateError.PathDoesntExist:
           return "The playlist doesn't even exist";
-        case PlaylistLoadStateError.FailedToParseOldFormat:
-          return 'Failed to parse using the old format deserializer.';
-        case PlaylistLoadStateError.FailedToParseNewFormat:
-          return 'Failed to parse using the new format deserializer.';
-
+        case PlaylistLoadStateError.FormatDoesntExist:
+          return "This playlist format doesn't exist (judging from the file extension name).";
+        case PlaylistLoadStateError.FailedToParse:
+          return 'Failed to parse the playlist.';
+        case PlaylistLoadStateError.Unknown:
         default:
           return 'Unknown error';
       }

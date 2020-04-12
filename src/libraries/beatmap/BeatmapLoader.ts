@@ -5,8 +5,8 @@ import BeatmapLoadStateError from './BeatmapLoadStateError';
 import { BeatmapLoadState } from './BeatmapLoadState';
 import BeatmapHashComputer from './BeatmapHashComputer';
 import Base64SrcLoader from '@/libraries/os/utils/Base64SrcLoader';
-import BeatsaverCachedRepo from '@/libraries/beatmap/repo/BeatsaverCachedRepo';
 import { BeatsaverKeyType } from '@/libraries/beatmap/repo/BeatsaverKeyType';
+import BeatsaverCacheManager from '@/libraries/beatmap/repo/BeatsaverCacheManager';
 
 export default class BeatmapLoader {
   private readonly beatmap: BeatmapLocal;
@@ -89,7 +89,7 @@ export default class BeatmapLoader {
 
   private async CacheBeatsaverMap() {
     if (this.hash) {
-      await BeatsaverCachedRepo.cacheBeatmap(BeatsaverKeyType.Hash, this.hash);
+      await BeatsaverCacheManager.cacheBeatmap(BeatsaverKeyType.Hash, this.hash);
     }
   }
 }

@@ -2,7 +2,8 @@
 import store from '@/plugins/store';
 import { BeatmapLocal } from '@/libraries/beatmap/BeatmapLocal';
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import { BeatsaverItem } from '@/libraries/beatmap/repo/BeatsaverItem';
+import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
+import BeatsaverCachedLibrary from '@/libraries/beatmap/repo/BeatsaverCachedLibrary';
 
 export default class BeatmapLibrary {
   public static GetAllMaps(): BeatmapLocal[] {
@@ -17,6 +18,15 @@ export default class BeatmapLibrary {
   public static GetAllInvalidMap(): BeatmapLocal[] {
     return this.GetAllMaps()
       .filter((beatmap: BeatmapLocal) => !beatmap.loadState.valid);
+  }
+
+  public static GetAllValidBeatmapAsTableData(): BeatmapsTableDataUnit[] {
+    return this.GetAllMaps()
+      .map((beatmap: BeatmapLocal) => ({
+        local: beatmap,
+        data: BeatsaverCachedLibrary.getByHash(beatmap.hash)?.beatmap,
+      }))
+      .filter((unit) => unit.data !== undefined) as BeatmapsTableDataUnit[];
   }
 
   public static GetMapByHash(hash: string): BeatmapLocal | undefined {
@@ -47,17 +57,5 @@ export default class BeatmapLibrary {
 
   public static RemoveBeatmap(beatmap: BeatmapLocal) {
     store.commit('beatmap/removeBeatmap', { beatmap });
-  }
-
-  public static GetAllBeatsaverCached(): BeatsaverItem[] {
-    return store.getters['beatmap/beatsaverCached'];
-  }
-
-  public static AddBeatsaverCachedMap(beatsaverItem: BeatsaverItem) {
-    store.commit('beatmap/addBeatsaberCached', beatsaverItem);
-  }
-
-  public static UpdateBeatsaverCachedMap(beatsaverItem: BeatsaverItem) {
-    store.commit('beatmap/updateBeatsaberCached', beatsaverItem);
   }
 }

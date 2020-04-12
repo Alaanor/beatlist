@@ -3,4 +3,9 @@ export enum BeatsaverKeyType {
   Key = 1,
 }
 
+export interface BeatsaverKey {
+  type: BeatsaverKeyType,
+  value: string,
+}
+
 export default {};

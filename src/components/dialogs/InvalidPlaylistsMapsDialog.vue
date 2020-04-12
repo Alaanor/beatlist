@@ -56,16 +56,13 @@ export default Vue.extend({
   filters: {
     errorTranslated: (error: PlaylistMapImportError): string => {
       switch (error) {
-        case PlaylistMapImportError.BeatmapTypeZipNotSupported:
-          return 'Beatmap type zip is currently not supported';
         case PlaylistMapImportError.BeatmapTypeLevelIdNotSupported:
           return 'Beatmap type level id is currently not supported';
-        case PlaylistMapImportError.BeatmapTypeUnknown:
-          return 'Unknown type of beatmap found';
         case PlaylistMapImportError.BeatsaverInexistent:
           return 'The beatmap was not found on beatsaver.';
         case PlaylistMapImportError.BeatsaverRequestError:
-          return 'Request error while retreiving data on beatsaver';
+          return 'Request error while retrieving data on beatsaver';
+        case PlaylistMapImportError.Unknown:
         default:
           return 'Unknown error';
       }
@@ -85,7 +82,7 @@ export default Vue.extend({
   computed: {
     invalidPlaylistsMaps: () => PlaylistMapsLibrary.GetAllInvalidMapFlatten()
       .map((entry) => ({
-        key: entry.playlist.path + entry.map.errorInfo,
+        key: (entry.playlist.path ?? '') + (entry.map.errorInfo ?? ''),
         path: entry.playlist.path,
         filename: path.basename(entry.playlist.path ?? ''),
         error: entry.map.error,

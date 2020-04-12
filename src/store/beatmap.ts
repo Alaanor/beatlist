@@ -1,17 +1,18 @@
 import { make } from 'vuex-pathify';
 import { BeatmapLocal } from '@/libraries/beatmap/BeatmapLocal';
 import { BeatsaverItem } from '@/libraries/beatmap/repo/BeatsaverItem';
+import { BeatsaverKey } from '@/libraries/beatmap/repo/BeatsaverKeyType';
 
 export interface BeatmapStoreState {
   lastScan: Date,
   beatmaps: BeatmapLocal[],
-  beatsaverCached: BeatsaverItem[],
+  beatsaverCached: Map<BeatsaverKey, BeatsaverItem>,
 }
 
 const state = {
   lastScan: undefined,
   beatmaps: [],
-  beatsaverCached: [],
+  beatsaverCached: new Map<BeatsaverKey, BeatsaverItem>(),
 };
 
 const getters = {
@@ -27,22 +28,23 @@ const mutations = {
     context.beatmaps = context.beatmaps
       .filter((value: BeatmapLocal) => value.hash !== payload.beatmap.hash);
   },
-  addBeatsaberCached(context: BeatmapStoreState, payload: { beatsaverItem: BeatsaverItem }) {
-    context.beatsaverCached.push(payload.beatsaverItem);
+  addBeatsaberCached(
+    context: BeatmapStoreState,
+    payload: { key: BeatsaverKey, item: BeatsaverItem },
+  ) {
+    context.beatsaverCached.set(payload.key, payload.item);
   },
-  updateBeatsaberCached(context: BeatmapStoreState, payload: { beatsaverItem: BeatsaverItem }) {
-    if (payload.beatsaverItem.beatmap === undefined) {
+  updateBeatsaberCached(
+    context: BeatmapStoreState,
+    payload: { key: BeatsaverKey, item: BeatsaverItem },
+  ) {
+    const cached = context.beatsaverCached.get(payload.key);
+
+    if (cached && cached.loadState.valid && !payload.item.loadState.valid) {
       return;
     }
 
-    const index = context.beatsaverCached
-      .findIndex((item) => item.beatmap?.hash === payload.beatsaverItem.beatmap?.hash);
-
-    if (context.beatsaverCached[index].loadState.valid && !payload.beatsaverItem.loadState.valid) {
-      return;
-    }
-
-    context.beatsaverCached[index] = payload.beatsaverItem;
+    context.beatsaverCached.set(payload.key, payload.item);
   },
 };
 

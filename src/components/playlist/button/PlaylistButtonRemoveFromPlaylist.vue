@@ -36,7 +36,7 @@ export default Vue.extend({
   }),
   computed: {
     isAlreadyInPlaylist(): boolean {
-      return this.playlist.maps.some((map) => map.online?.hash === this.beatmap.hash);
+      return this.playlist.maps.some((map) => map.hash === this.beatmap.hash);
     },
     lockPlaylistModification: sync<boolean>('appState/lockPlaylistModification'),
   },

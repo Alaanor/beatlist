@@ -2,7 +2,6 @@ import PlaylistInstaller from '@/libraries/os/beatSaber/installer/PlaylistInstal
 import { PlaylistLocal, PlaylistLocalMap } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLoader from '@/libraries/playlist/loader/PlaylistLoader';
 import PlaylistScanner from '@/libraries/scanner/playlist/PlaylistScanner';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 
 export default class PlaylistOperation {
   public static async CreateNewPlaylist(): Promise<PlaylistLocal> {
@@ -22,50 +21,49 @@ export default class PlaylistOperation {
     return scanner.scanOne(playlist.path);
   }
 
-  public static AddMapInPlaylist(playlist: PlaylistLocal, beatsaver: BeatsaverBeatmap)
+  public static AddMapInPlaylist(playlist: PlaylistLocal, beatmapHash: string)
     : Promise<PlaylistLocal | undefined> {
     const copy = { ...playlist };
     copy.maps = [...playlist.maps];
 
-    this.PushMapInPlaylist(copy, beatsaver);
+    this.PushMapInPlaylist(copy, beatmapHash);
 
     return this.UpdatePlaylist(copy);
   }
 
-  public static RemoveMapFromPlaylist(playlist: PlaylistLocal, beatsaver: BeatsaverBeatmap) {
+  public static RemoveMapFromPlaylist(playlist: PlaylistLocal, beatmapHash: string) {
     const copy = { ...playlist };
 
     copy.maps = playlist.maps
-      .filter((entry: PlaylistLocalMap) => entry.online?.hash !== beatsaver.hash);
+      .filter((entry: PlaylistLocalMap) => entry.hash !== beatmapHash);
 
     return this.UpdatePlaylist(copy);
   }
 
-  public static BulkAddMapInPlaylist(playlist: PlaylistLocal, beatsavers: BeatsaverBeatmap[]) {
+  public static BulkAddMapInPlaylist(playlist: PlaylistLocal, beatmapHashes: string[]) {
     const copy = { ...playlist };
     copy.maps = [...playlist.maps];
 
-    beatsavers.forEach((beatsaver: BeatsaverBeatmap) => {
-      this.PushMapInPlaylist(copy, beatsaver);
+    beatmapHashes.forEach((hash: string) => {
+      this.PushMapInPlaylist(copy, hash);
     });
 
     return this.UpdatePlaylist(copy);
   }
 
-  public static BulkRemoveMapFromPlaylist(playlist: PlaylistLocal, beatsavers: BeatsaverBeatmap[]) {
+  public static BulkRemoveMapFromPlaylist(playlist: PlaylistLocal, beatmapHashes: string[]) {
     const copy = { ...playlist };
 
     copy.maps = playlist.maps
-      .filter((entry: PlaylistLocalMap) => !beatsavers
-        .find((beatsaver: BeatsaverBeatmap) => entry.online?.hash === beatsaver.hash));
+      .filter((entry: PlaylistLocalMap) => !beatmapHashes
+        .find((hash: string) => entry.hash === hash));
 
     return this.UpdatePlaylist(copy);
   }
 
-  private static PushMapInPlaylist(playlist: PlaylistLocal, beatsaver: BeatsaverBeatmap) {
+  private static PushMapInPlaylist(playlist: PlaylistLocal, beatmapHash: string) {
     const playlistLocalMap = {
-      online: beatsaver,
-      error: null,
+      hash: beatmapHash,
       dateAdded: new Date(),
     } as PlaylistLocalMap;
 

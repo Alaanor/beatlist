@@ -12,7 +12,7 @@ jest.mock('@/plugins/store', () => ({
   getters: { 'settings/defaultExportFormat': 'Json' },
 }));
 
-jest.mock('@/libraries/beatmap/repo/BeatsaverCachedRepo', () => ({
+jest.mock('@/libraries/beatmap/repo/BeatsaverCachedLibrary', () => ({
   cacheBeatmap: async () => ({ loadState: { valid: true }, beatmap: { hash: 'foobar' } }),
 }));
 

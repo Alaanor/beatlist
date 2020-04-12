@@ -29,6 +29,7 @@ import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
 import BeatmapsTableOuterHeader from '@/components/beatmap/table/core/BeatmapsTableOuterHeader.vue';
 import BeatmapButtonAddToNPlaylists
   from '@/components/beatmap/button/BeatmapButtonAddToNPlaylists.vue';
+import BeatsaverCachedLibrary from '@/libraries/beatmap/repo/BeatsaverCachedLibrary';
 
 export default Vue.extend({
   name: 'BeatmapTableLocal',
@@ -44,10 +45,11 @@ export default Vue.extend({
     shownColumn: sync<string[]>('settings/beatmapsTable@localBeatmaps.shownColumn'),
     itemsPerPage: sync<string[]>('settings/beatmapsTable@localBeatmaps.itemsPerPage'),
     beatmaps: () => BeatmapLibrary.GetAllValidMap()
-      .map((beatmap): BeatmapsTableDataUnit => ({
+      .map((beatmap) => ({
         local: beatmap,
-        data: beatmap.onlineData,
-      })),
+        data: BeatsaverCachedLibrary.getByHash(beatmap.hash)?.beatmap,
+      }))
+      .filter((beatmap) => beatmap.data !== undefined) as BeatmapsTableDataUnit[],
   },
 });
 </script>
