@@ -24,12 +24,12 @@ export default class BeatmapLibrary {
     console.log(this.GetAllMaps()
       .map((beatmap: BeatmapLocal) => ({
         local: beatmap,
-        data: BeatsaverCachedLibrary.getByHash(beatmap.hash)?.beatmap,
+        data: BeatsaverCachedLibrary.GetByHash(beatmap.hash)?.beatmap,
       })));
     return this.GetAllMaps()
       .map((beatmap: BeatmapLocal) => ({
         local: beatmap,
-        data: BeatsaverCachedLibrary.getByHash(beatmap.hash)?.beatmap,
+        data: BeatsaverCachedLibrary.GetByHash(beatmap.hash)?.beatmap,
       }))
       .filter((unit) => unit.data !== undefined) as BeatmapsTableDataUnit[];
   }

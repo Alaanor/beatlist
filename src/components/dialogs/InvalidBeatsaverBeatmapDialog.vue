@@ -10,6 +10,7 @@
       </v-card-title>
       <v-card-text>
         <v-simple-table
+          height="500"
           dense
           fixed-header
         >
@@ -17,7 +18,10 @@
             <thead>
               <tr>
                 <th class="text-left">
-                  Folder
+                  Key type
+                </th>
+                <th class="text-left">
+                  Key value
                 </th>
                 <th class="text-left">
                   Reason
@@ -30,9 +34,13 @@
             <tbody>
               <tr
                 v-for="item in invalidBeatmap"
-                :key="item.folderPath"
+                :key="`
+                  ${item.loadState.attemptedSource.type}
+                  ${item.loadState.attemptedSource.value}
+                 `"
               >
-                <td>{{ item.folderPath }}</td>
+                <td>{{ item.loadState.attemptedSource.type }}</td>
+                <td>{{ item.loadState.attemptedSource.value }}</td>
                 <td class="error--text">
                   {{ item.loadState.errorType | errorTranslated }}
                 </td>
@@ -85,7 +93,7 @@ export default Vue.extend({
     open: { type: Boolean, required: true },
   },
   computed: {
-    invalidBeatmap: () => BeatsaverCachedLibrary.getAllInvalid(),
+    invalidBeatmap: () => BeatsaverCachedLibrary.GetAllInvalid(),
   },
   methods: {
     closeDialog() {

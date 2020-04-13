@@ -1,4 +1,5 @@
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import { BeatsaverKey } from '@/libraries/beatmap/repo/BeatsaverKeyType';
 
 export enum BeatsaverItemLoadError {
   BeatmapNotOnBeatsaver = 0,
@@ -12,6 +13,7 @@ export interface BeatsaverItemLoadState {
   valid: boolean,
   errorType: BeatsaverItemLoadError | undefined,
   errorMessage: string | undefined,
+  attemptedSource: BeatsaverKey,
 }
 
 export interface BeatsaverItem {

@@ -175,7 +175,7 @@ export default Vue.extend({
     playlistsCountValid: () => PlaylistLibrary.GetAllValidPlaylists().length,
     playlistsCountInvalid: () => PlaylistLibrary.GetAllInvalidPlaylists().length,
     playlistsMapsCountInvalid: () => PlaylistMapsLibrary.GetAllInvalidMapFlatten().length,
-    beatsaverBeatmapCountInvalid: () => BeatsaverCachedLibrary.getAllInvalid().length,
+    beatsaverBeatmapCountInvalid: () => BeatsaverCachedLibrary.GetAllInvalid().length,
     lastScan: () => BeatmapLibrary.GetLastScanDate()?.toLocaleString() ?? undefined,
   },
   mounted(): void {
@@ -195,6 +195,7 @@ export default Vue.extend({
     clearCache() {
       BeatmapLibrary.ClearCache();
       PlaylistLibrary.ClearCache();
+      BeatsaverCachedLibrary.ClearCache();
     },
     canClearCache() {
       return this.isScanning || !this.installationPathValid

@@ -33,7 +33,7 @@ export default class PlaylistMapsLibrary {
   public static GetAllValidMapAsTableDataFor(playlist: PlaylistLocal): BeatmapsTableDataUnit[] {
     return this.GetAllValidMapFor(playlist)
       .map((playlistMap: PlaylistValidMap) => ({
-        data: BeatsaverCachedLibrary.getByHash(playlistMap.hash)?.beatmap,
+        data: BeatsaverCachedLibrary.GetByHash(playlistMap.hash)?.beatmap,
       }))
       .filter((unit) => unit.data !== undefined) as BeatmapsTableDataUnit[];
   }

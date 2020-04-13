@@ -7,7 +7,7 @@ import BeatsaverCachedLibrary from '@/libraries/beatmap/repo/BeatsaverCachedLibr
 export default class BeatsaverCacheManager {
   public static async cacheBeatmap(key: BeatsaverKey)
     : Promise<BeatsaverItem> {
-    const existingBeatmap = BeatsaverCachedLibrary.get(key);
+    const existingBeatmap = BeatsaverCachedLibrary.Get(key);
 
     if (existingBeatmap !== undefined) {
       return existingBeatmap;
@@ -23,7 +23,7 @@ export default class BeatsaverCacheManager {
     const key: BeatsaverKey = { type: BeatsaverKeyType.Hash, value: hash };
     const item = await BeatsaverCacheManager.getOnlineData(key);
 
-    BeatsaverCachedLibrary.updateOne(item);
+    BeatsaverCachedLibrary.UpdateOne(item);
 
     return { success: item.loadState.valid, errMsg: item.loadState.errorMessage };
   }
@@ -35,6 +35,7 @@ export default class BeatsaverCacheManager {
       beatmap: undefined,
       loadState: {
         valid: false,
+        attemptedSource: key,
       },
     } as BeatsaverItem;
 

@@ -46,6 +46,9 @@ const mutations = {
 
     context.beatsaverCached.set(toStrKey(payload.key), payload.item);
   },
+  clearBeatsaverCache(context: BeatmapStoreState) {
+    context.beatsaverCached = new Map<string, BeatsaverItem>();
+  },
 };
 
 export default {
