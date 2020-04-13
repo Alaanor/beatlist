@@ -1,5 +1,7 @@
 import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
-import { PlaylistLocal, PlaylistLocalMap } from '@/libraries/playlist/PlaylistLocal';
+import { PlaylistLocal, PlaylistLocalMap, PlaylistValidMap } from '@/libraries/playlist/PlaylistLocal';
+import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
+import BeatsaverCachedLibrary from '@/libraries/beatmap/repo/BeatsaverCachedLibrary';
 
 export default class PlaylistMapsLibrary {
   public static GetAllInvalidMap(): { playlist: PlaylistLocal, invalids: PlaylistLocalMap[] }[] {
@@ -23,7 +25,16 @@ export default class PlaylistMapsLibrary {
     return playlist.maps.filter((map) => map.error !== null);
   }
 
-  public static GetAllValidMapFor(playlist: PlaylistLocal): PlaylistLocalMap[] {
-    return playlist.maps.filter((map) => map.error === null);
+  public static GetAllValidMapFor(playlist: PlaylistLocal): PlaylistValidMap[] {
+    return playlist.maps
+      .filter((map) => map.error === null && map.hash !== undefined) as PlaylistValidMap[];
+  }
+
+  public static GetAllValidMapAsTableDataFor(playlist: PlaylistLocal): BeatmapsTableDataUnit[] {
+    return this.GetAllValidMapFor(playlist)
+      .map((playlistMap: PlaylistValidMap) => ({
+        data: BeatsaverCachedLibrary.getByHash(playlistMap.hash)?.beatmap,
+      }))
+      .filter((unit) => unit.data !== undefined) as BeatmapsTableDataUnit[];
   }
 }

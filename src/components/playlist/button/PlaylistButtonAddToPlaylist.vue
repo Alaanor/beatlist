@@ -44,7 +44,7 @@ export default Vue.extend({
     Add(): void {
       this.loading = true;
       this.lockPlaylistModification = true;
-      PlaylistOperation.AddMapInPlaylist(this.playlist, this.beatmap)
+      PlaylistOperation.AddMapInPlaylist(this.playlist, this.beatmap.hash)
         .finally(() => {
           this.loading = false;
           this.lockPlaylistModification = false;

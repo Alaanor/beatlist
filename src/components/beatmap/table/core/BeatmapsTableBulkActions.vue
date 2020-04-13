@@ -56,14 +56,14 @@ export default Vue.extend({
   methods: {
     performBulkAdd() {
       this.bulkAddLoading = true;
-      PlaylistOperation.BulkAddMapInPlaylist(this.playlist, this.selected)
+      PlaylistOperation.BulkAddMapInPlaylist(this.playlist, this.selected.map((s) => s.hash))
         .finally(() => {
           this.bulkAddLoading = false;
         });
     },
     performBulkRemove() {
       this.bulkRemoveLoading = true;
-      PlaylistOperation.BulkRemoveMapFromPlaylist(this.playlist, this.selected)
+      PlaylistOperation.BulkRemoveMapFromPlaylist(this.playlist, this.selected.map((s) => s.hash))
         .finally(() => {
           this.bulkRemoveLoading = false;
         });

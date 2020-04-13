@@ -26,6 +26,10 @@ export interface PlaylistMap {
   dateAdded: Date;
 }
 
+export interface PlaylistValidMap extends PlaylistMap {
+  hash: string;
+}
+
 export interface PlaylistLocalMap extends PlaylistMap {
   error: PlaylistMapImportError | undefined;
   errorInfo: string | undefined;

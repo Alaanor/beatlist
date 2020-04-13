@@ -89,7 +89,7 @@ export default class BeatmapLoader {
 
   private async CacheBeatsaverMap() {
     if (this.hash) {
-      await BeatsaverCacheManager.cacheBeatmap(BeatsaverKeyType.Hash, this.hash);
+      await BeatsaverCacheManager.cacheBeatmap({ type: BeatsaverKeyType.Hash, value: this.hash });
     }
   }
 }

@@ -8,11 +8,11 @@ const MAX_CONCURRENCY_ITEM = 25;
 
 export default class PlaylistDeserializeBeatsaverBeatmap {
   public static async fromHash(hash: string): Promise<BeatsaverItem> {
-    return BeatsaverCacheManager.cacheBeatmap(BeatsaverKeyType.Hash, hash);
+    return BeatsaverCacheManager.cacheBeatmap({ type: BeatsaverKeyType.Hash, value: hash });
   }
 
   public static async fromKey(key: string): Promise<BeatsaverItem> {
-    return BeatsaverCacheManager.cacheBeatmap(BeatsaverKeyType.Key, key);
+    return BeatsaverCacheManager.cacheBeatmap({ type: BeatsaverKeyType.Key, value: key });
   }
 
   public static async convert(identifiers: {key?: string, hash?: string}[], progress: Progress) {

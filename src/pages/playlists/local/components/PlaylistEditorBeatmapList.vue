@@ -35,7 +35,6 @@ import Vue, { PropType } from 'vue';
 import { sync } from 'vuex-pathify';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import BeatmapsTable from '@/components/beatmap/table/BeatmapsTable.vue';
-import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
 import PlaylistButtonRemoveFromPlaylist
   from '@/components/playlist/button/PlaylistButtonRemoveFromPlaylist.vue';
 import PlaylistMapsLibrary from '@/libraries/playlist/PlaylistMapsLibrary';
@@ -61,12 +60,8 @@ export default Vue.extend({
   computed: {
     shownColumn: sync<string[]>('settings/beatmapsTable@playlistContent.shownColumn'),
     itemsPerPage: sync<string[]>('settings/beatmapsTable@playlistContent.itemsPerPage'),
-    beatmaps(): BeatmapsTableDataUnit[] {
-      return PlaylistMapsLibrary.GetAllValidMapFor(this.playlist)
-        .map((entry) => ({
-          local: undefined,
-          data: entry.online,
-        }) as BeatmapsTableDataUnit);
+    beatmaps() {
+      return PlaylistMapsLibrary.GetAllValidMapAsTableDataFor(this.playlist);
     },
   },
 });

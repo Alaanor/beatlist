@@ -15,7 +15,7 @@ import Vue, { PropType } from 'vue';
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import Tooltip from '@/components/helper/Tooltip.vue';
 import NotificationService from '@/libraries/notification/NotificationService';
-import BeatsaverCachedLibrary from '@/libraries/beatmap/repo/BeatsaverCachedLibrary';
+import BeatsaverCacheManager from '@/libraries/beatmap/repo/BeatsaverCacheManager';
 
 export default Vue.extend({
   name: 'BeatmapButtonRefreshData',
@@ -29,7 +29,7 @@ export default Vue.extend({
   methods: {
     async refreshData() {
       this.loading = true;
-      const response = await BeatsaverCachedLibrary.updateOne(this.beatmap.hash);
+      const response = await BeatsaverCacheManager.updateOne(this.beatmap.hash);
 
       if (response.success) {
         NotificationService.NotifyMessage('The data has been refreshed', 'success');

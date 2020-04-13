@@ -44,7 +44,7 @@ export default Vue.extend({
     Remove() {
       this.loading = true;
       this.lockPlaylistModification = true;
-      PlaylistOperation.RemoveMapFromPlaylist(this.playlist, this.beatmap)
+      PlaylistOperation.RemoveMapFromPlaylist(this.playlist, this.beatmap.hash)
         .finally(() => {
           this.loading = false;
           this.lockPlaylistModification = false;
