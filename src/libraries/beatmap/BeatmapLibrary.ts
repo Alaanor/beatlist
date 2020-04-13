@@ -21,6 +21,11 @@ export default class BeatmapLibrary {
   }
 
   public static GetAllValidBeatmapAsTableData(): BeatmapsTableDataUnit[] {
+    console.log(this.GetAllMaps()
+      .map((beatmap: BeatmapLocal) => ({
+        local: beatmap,
+        data: BeatsaverCachedLibrary.getByHash(beatmap.hash)?.beatmap,
+      })));
     return this.GetAllMaps()
       .map((beatmap: BeatmapLocal) => ({
         local: beatmap,

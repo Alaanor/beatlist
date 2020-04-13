@@ -109,7 +109,7 @@ export default Vue.extend({
     error: undefined as string | undefined,
   }),
   computed: {
-    shownColumn: sync<string[]>('settings/beatmapsTable@beatsaverBeatmap.shownColumn'),
+    shownColumn: sync<string[]>('settings/beatmapsTable@beatsaverBeatmaps.shownColumn'),
     beatmaps(): BeatmapsTableDataUnit[] {
       return this.beatsaverPage?.docs.map((beatmap): BeatmapsTableDataUnit => ({
         local: undefined,

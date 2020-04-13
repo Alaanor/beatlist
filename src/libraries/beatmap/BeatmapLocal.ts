@@ -13,7 +13,7 @@ export function isBeatmapLocal(beatmap: any): beatmap is BeatmapLocal {
     'folderPath' in beatmap
     && 'coverPath' in beatmap
     && 'songPath' in beatmap
-    && 'onlineData' in beatmap
+    && 'hash' in beatmap
     && 'loadState' in beatmap
   );
 }

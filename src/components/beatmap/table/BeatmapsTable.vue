@@ -49,7 +49,7 @@
         />
         <Tooltip text="See more">
           <v-btn
-            :to="{ name: seeMoreRouteName, params: { key: item.raw.data.key } }"
+            :to="{ name: seeMoreRouteName, params: { hash: item.raw.data.hash } }"
             icon
             small
             exact

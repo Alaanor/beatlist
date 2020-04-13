@@ -1,4 +1,4 @@
-import { BeatsaverKey, BeatsaverKeyType } from '@/libraries/beatmap/repo/BeatsaverKeyType';
+import { BeatsaverKey, BeatsaverKeyType, toStrKey } from '@/libraries/beatmap/repo/BeatsaverKeyType';
 import { BeatsaverItem } from '@/libraries/beatmap/repo/BeatsaverItem';
 import store from '@/plugins/store';
 
@@ -8,18 +8,20 @@ export default class BeatsaverCachedLibrary {
   }
 
   public static exist(key: BeatsaverKey) {
-    return this.get(key) !== undefined;
+    return BeatsaverCachedLibrary.get(key) !== undefined;
   }
 
   public static getByKey(key: string): BeatsaverItem | undefined {
-    return this.getAll().find((item) => item.beatmap?.key === key);
+    return Array.from(BeatsaverCachedLibrary.getAll().values())
+      .find((item) => item.beatmap?.key === key);
   }
 
   public static getByHash(hash: string): BeatsaverItem | undefined {
-    return store.getters[`beatmap/beatsaverCached@${hash}`];
+    const key = toStrKey({ type: BeatsaverKeyType.Hash, value: hash });
+    return BeatsaverCachedLibrary.getAll().get(key);
   }
 
-  public static getAll(): BeatsaverItem[] {
+  public static getAll(): Map<string, BeatsaverItem> {
     return store.getters['beatmap/beatsaverCached'];
   }
 
@@ -28,7 +30,8 @@ export default class BeatsaverCachedLibrary {
   }
 
   public static getAllInvalid() {
-    return this.getAll().filter((beatmap) => !beatmap.loadState.valid);
+    return Array.from(BeatsaverCachedLibrary.getAll().values())
+      .filter((beatmap) => !beatmap.loadState.valid);
   }
 
   public static get(key: BeatsaverKey) {

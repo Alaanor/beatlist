@@ -1,18 +1,18 @@
 import { make } from 'vuex-pathify';
 import { BeatmapLocal } from '@/libraries/beatmap/BeatmapLocal';
 import { BeatsaverItem } from '@/libraries/beatmap/repo/BeatsaverItem';
-import { BeatsaverKey } from '@/libraries/beatmap/repo/BeatsaverKeyType';
+import { BeatsaverKey, toStrKey } from '@/libraries/beatmap/repo/BeatsaverKeyType';
 
 export interface BeatmapStoreState {
   lastScan: Date,
   beatmaps: BeatmapLocal[],
-  beatsaverCached: Map<BeatsaverKey, BeatsaverItem>,
+  beatsaverCached: Map<string, BeatsaverItem>,
 }
 
 const state = {
   lastScan: undefined,
   beatmaps: [],
-  beatsaverCached: new Map<BeatsaverKey, BeatsaverItem>(),
+  beatsaverCached: new Map<string, BeatsaverItem>(),
 };
 
 const getters = {
@@ -32,19 +32,19 @@ const mutations = {
     context: BeatmapStoreState,
     payload: { key: BeatsaverKey, item: BeatsaverItem },
   ) {
-    context.beatsaverCached.set(payload.key, payload.item);
+    context.beatsaverCached.set(toStrKey(payload.key), payload.item);
   },
   updateBeatsaberCached(
     context: BeatmapStoreState,
     payload: { key: BeatsaverKey, item: BeatsaverItem },
   ) {
-    const cached = context.beatsaverCached.get(payload.key);
+    const cached = context.beatsaverCached.get(toStrKey(payload.key));
 
     if (cached && cached.loadState.valid && !payload.item.loadState.valid) {
       return;
     }
 
-    context.beatsaverCached.set(payload.key, payload.item);
+    context.beatsaverCached.set(toStrKey(payload.key), payload.item);
   },
 };
 

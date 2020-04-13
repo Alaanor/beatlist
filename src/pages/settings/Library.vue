@@ -149,14 +149,16 @@ import ScannerService from '@/libraries/scanner/ScannerService';
 import PlaylistMapsLibrary from '@/libraries/playlist/PlaylistMapsLibrary';
 import InvalidPlaylistsMapsDialog from '@/components/dialogs/InvalidPlaylistsMapsDialog.vue';
 import BeatsaverCachedLibrary from '@/libraries/beatmap/repo/BeatsaverCachedLibrary';
+import InvalidBeatsaverBeatmapDialog from '@/components/dialogs/InvalidBeatsaverBeatmapDialog.vue';
 
 export default Vue.extend({
-  name: 'SongLibrary',
+  name: 'Library',
   components: {
     ConfirmDialog,
     InvalidBeatmapDialog,
     InvalidPlaylistDialog,
     InvalidPlaylistsMapsDialog,
+    InvalidBeatsaverBeatmapDialog,
   },
   data: () => ({
     confirmDialog: false,

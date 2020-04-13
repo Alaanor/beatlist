@@ -1,7 +1,7 @@
-import {BeatsaverKey, BeatsaverKeyType} from '@/libraries/beatmap/repo/BeatsaverKeyType';
-import {BeatsaverItem, BeatsaverItemLoadError} from '@/libraries/beatmap/repo/BeatsaverItem';
-import BeatsaverAPI, {BeatSaverAPIResponse, BeatSaverAPIResponseStatus} from '@/libraries/net/beatsaver/BeatsaverAPI';
-import {BeatsaverBeatmap} from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import { BeatsaverKey, BeatsaverKeyType } from '@/libraries/beatmap/repo/BeatsaverKeyType';
+import { BeatsaverItem, BeatsaverItemLoadError } from '@/libraries/beatmap/repo/BeatsaverItem';
+import BeatsaverAPI, { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
+import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import BeatsaverCachedLibrary from '@/libraries/beatmap/repo/BeatsaverCachedLibrary';
 
 export default class BeatsaverCacheManager {
