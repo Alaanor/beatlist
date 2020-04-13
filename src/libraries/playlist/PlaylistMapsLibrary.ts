@@ -22,7 +22,7 @@ export default class PlaylistMapsLibrary {
   }
 
   public static GetAllInvalidMapFor(playlist: PlaylistLocal): PlaylistLocalMap[] {
-    return playlist.maps.filter((map) => map.error !== null);
+    return playlist.maps.filter((map) => map.error !== undefined);
   }
 
   public static GetAllValidMapFor(playlist: PlaylistLocal): PlaylistValidMap[] {

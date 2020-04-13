@@ -1,14 +1,10 @@
 import crypto from 'crypto';
-import {
-  PlaylistBase,
-  PlaylistLocal, PlaylistMap,
-} from '@/libraries/playlist/PlaylistLocal';
+import { PlaylistBase, PlaylistLocal, PlaylistMap } from '@/libraries/playlist/PlaylistLocal';
 import Progress from '@/libraries/common/Progress';
 import PlaylistLoadStateError from '@/libraries/playlist/loader/PlaylistLoadStateError';
 import JsonSerializer from '@/libraries/playlist/loader/serializer/JsonSerializer';
 import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
 import PlaylistFilenameExtension, { FILENAME_EXTENSION_UNHANDLED } from '@/libraries/playlist/PlaylistFilenameExtension';
-import store from '@/plugins/store';
 import JsonDeserializer, {
   FILE_NOT_FOUND,
   INVALID_JSON,
@@ -136,7 +132,6 @@ export default class PlaylistLoader {
     message: string,
     errorType: PlaylistLoadStateError,
   ): PlaylistLocal {
-    const format = store.getters['settings/defaultExportFormat'] as PlaylistFormatType;
     return {
       author: '',
       cover: null,
@@ -151,7 +146,7 @@ export default class PlaylistLoader {
         errorType,
         format: undefined,
       },
-      format,
+      format: PlaylistFormatType.Unset,
     } as PlaylistLocal;
   }
 }

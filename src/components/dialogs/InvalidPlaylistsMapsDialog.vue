@@ -13,22 +13,17 @@
           :headers="headers"
           :items="invalidPlaylistsMaps"
           item-key="key"
+          hide-default-footer
+          disable-pagination
+          fixed-header
+          height="500"
           group-by="filename"
-          show-expand
-          show-group-by
-          single-expand
           dense
         >
           <template #item.error="{item}">
             <span class="error--text">
               {{ item.error | errorTranslated }}
             </span>
-          </template>
-
-          <template #expanded-item="{ item, headers }">
-            <td :colspan="headers.length">
-              {{ item.path }}
-            </td>
           </template>
         </v-data-table>
       </v-card-text>
@@ -76,7 +71,6 @@ export default Vue.extend({
       { text: 'Filename', value: 'filename' },
       { text: 'Error', value: 'error' },
       { text: 'Details', value: 'errorInfo' },
-      { text: '', value: 'data-table-expand' },
     ],
   }),
   computed: {
