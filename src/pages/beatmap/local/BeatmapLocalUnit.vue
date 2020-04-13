@@ -21,22 +21,22 @@
 
     <BeatmapSummary
       v-if="beatmap"
-      :beatmap="beatmap.onlineData"
+      :beatmap="beatmap"
     />
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { BeatmapLocal } from '@/libraries/beatmap/BeatmapLocal';
-import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
 import BeatmapSummary from '@/components/beatmap/info/BeatmapSummary.vue';
+import BeatsaverCachedLibrary from '@/libraries/beatmap/repo/BeatsaverCachedLibrary';
+import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 
 export default Vue.extend({
   name: 'BeatmapLocalUnit',
   components: { BeatmapSummary },
   data: () => ({
-    beatmap: undefined as BeatmapLocal | undefined,
+    beatmap: undefined as BeatsaverBeatmap | undefined,
   }),
   watch: {
     $route() {
@@ -48,7 +48,7 @@ export default Vue.extend({
   },
   methods: {
     fetchData(): void {
-      this.beatmap = BeatmapLibrary.GetMapByHash(this.$route.params.hash);
+      this.beatmap = BeatsaverCachedLibrary.GetByHash(this.$route.params.hash)?.beatmap;
     },
     backHistory(): void {
       this.$router.go(-1);

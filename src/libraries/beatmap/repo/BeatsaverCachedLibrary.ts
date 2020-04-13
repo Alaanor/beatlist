@@ -17,7 +17,7 @@ export default class BeatsaverCachedLibrary {
   }
 
   public static GetByHash(hash: string): BeatsaverItem | undefined {
-    const key = toStrKey({ type: BeatsaverKeyType.Hash, value: hash });
+    const key = toStrKey({ type: BeatsaverKeyType.Hash, value: hash.toUpperCase() });
     return BeatsaverCachedLibrary.GetAll().get(key);
   }
 

@@ -27,7 +27,7 @@ export default class PlaylistMapsLibrary {
 
   public static GetAllValidMapFor(playlist: PlaylistLocal): PlaylistValidMap[] {
     return playlist.maps
-      .filter((map) => map.error === null && map.hash !== undefined) as PlaylistValidMap[];
+      .filter((map) => map.error === undefined && map.hash !== undefined) as PlaylistValidMap[];
   }
 
   public static GetAllValidMapAsTableDataFor(playlist: PlaylistLocal): BeatmapsTableDataUnit[] {
