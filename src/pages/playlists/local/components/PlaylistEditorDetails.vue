@@ -164,7 +164,8 @@ export default Vue.extend({
   }),
   computed: {
     playlistFormatTypeList() {
-      return Object.values(PlaylistFormatType);
+      return Object.values(PlaylistFormatType)
+        .filter((i) => ![PlaylistFormatType.Blist, PlaylistFormatType.Unset].includes(i));
     },
     IsThereChange(): boolean {
       return !(
