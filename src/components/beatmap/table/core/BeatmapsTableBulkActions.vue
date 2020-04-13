@@ -59,6 +59,7 @@ export default Vue.extend({
       PlaylistOperation.BulkAddMapInPlaylist(this.playlist, this.selected.map((s) => s.hash))
         .finally(() => {
           this.bulkAddLoading = false;
+          this.$emit('onDone');
         });
     },
     performBulkRemove() {
@@ -66,6 +67,7 @@ export default Vue.extend({
       PlaylistOperation.BulkRemoveMapFromPlaylist(this.playlist, this.selected.map((s) => s.hash))
         .finally(() => {
           this.bulkRemoveLoading = false;
+          this.$emit('onDone');
         });
     },
   },

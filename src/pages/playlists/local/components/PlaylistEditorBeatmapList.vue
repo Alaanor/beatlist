@@ -26,6 +26,7 @@
       :playlist="playlist"
       :selected="selectedBeatmap"
       bulk-remove
+      @onDone="selectedBeatmap = []"
     />
   </div>
 </template>
