@@ -12,6 +12,7 @@
       :shown-column="shownColumn"
       :items-per-page.sync="itemsPerPage"
       :selected.sync="selectedBeatmap"
+      :search="search"
       see-more-route-name="beatmaps-online-unit"
     >
       <template #actions="{ beatsaver }">
