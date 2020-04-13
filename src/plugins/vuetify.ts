@@ -26,5 +26,8 @@ export default new Vuetify({
         close: colors.red.lighten1,
       },
     },
+    options: {
+      customProperties: true,
+    },
   },
 });

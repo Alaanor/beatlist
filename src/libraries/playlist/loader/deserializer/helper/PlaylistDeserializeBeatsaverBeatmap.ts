@@ -1,6 +1,6 @@
 import * as Throttle from 'promise-parallel-throttle';
 import { BeatsaverItem } from '@/libraries/beatmap/repo/BeatsaverItem';
-import { BeatsaverKeyType } from '@/libraries/beatmap/repo/BeatsaverKeyType';
+import { BeatsaverKey, BeatsaverKeyType } from '@/libraries/beatmap/repo/BeatsaverKeyType';
 import Progress from '@/libraries/common/Progress';
 import BeatsaverCacheManager from '@/libraries/beatmap/repo/BeatsaverCacheManager';
 
@@ -8,11 +8,13 @@ const MAX_CONCURRENCY_ITEM = 25;
 
 export default class PlaylistDeserializeBeatsaverBeatmap {
   public static async fromHash(hash: string): Promise<BeatsaverItem> {
-    return BeatsaverCacheManager.cacheBeatmap({ type: BeatsaverKeyType.Hash, value: hash });
+    const k: BeatsaverKey = { type: BeatsaverKeyType.Hash, value: hash.toUpperCase() };
+    return BeatsaverCacheManager.cacheBeatmap(k);
   }
 
   public static async fromKey(key: string): Promise<BeatsaverItem> {
-    return BeatsaverCacheManager.cacheBeatmap({ type: BeatsaverKeyType.Key, value: key });
+    const k: BeatsaverKey = { type: BeatsaverKeyType.Key, value: key.toUpperCase() };
+    return BeatsaverCacheManager.cacheBeatmap(k);
   }
 
   public static async convert(identifiers: {key?: string, hash?: string}[], progress: Progress) {

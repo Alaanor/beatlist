@@ -1,5 +1,8 @@
 <template>
-  <v-card flat>
+  <v-card
+    flat
+    style="min-height: 225px"
+  >
     <v-tabs
       v-model="tab"
       height="32"
@@ -13,12 +16,17 @@
       </v-tab>
     </v-tabs>
 
-    <v-tabs-items v-model="tab">
+    <v-tabs-items
+      v-model="tab"
+    >
       <v-tab-item
         v-for="characteristic in beatmap.metadata.characteristics"
         :key="characteristic.name"
       >
-        <BeatmapSummaryDifficultiesTabs :characteristic="characteristic"/>
+        <BeatmapSummaryDifficultiesTabs
+          style="min-height: 200px"
+          :characteristic="characteristic"
+        />
       </v-tab-item>
     </v-tabs-items>
   </v-card>
@@ -41,6 +49,7 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
+<style lang="sass">
+  .v-tabs-slider
+    color: var(--v-app-base)
 </style>

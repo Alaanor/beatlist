@@ -65,7 +65,7 @@ export default Vue.extend({
   methods: {
     fetchData(): void {
       this.loading = true;
-      BeatsaverAPI.Singleton.getBeatmapByKey(this.$route.params.key)
+      BeatsaverAPI.Singleton.getBeatmapByHash(this.$route.params.hash)
         .then((response: BeatSaverAPIResponse<BeatsaverBeatmap>) => {
           this.error = BeatsaverUtilities.ErrorToMessage(response);
 
