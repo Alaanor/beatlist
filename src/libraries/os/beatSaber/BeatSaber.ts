@@ -3,6 +3,7 @@ import path from 'path';
 import { resolveInstallPath } from '@/libraries/os/pathResolver/Resolve';
 import store from '@/plugins/store';
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import PlaylistFilenameExtension from '@/libraries/playlist/PlaylistFilenameExtension';
 
 const BEAT_SABER_EXE = 'Beat Saber.exe';
 const BEAT_SABER_PLAYLIST = 'Playlists';
@@ -40,9 +41,13 @@ export default class BeatSaber {
 
     const allFile = await Promise.all(fileList.map(async (file: string) => {
       const filepath = path.join(pathPlaylists, file);
+
       if ((await fs.stat(filepath)).isFile()) {
-        return filepath;
+        if (PlaylistFilenameExtension.isValid(filepath)) {
+          return filepath;
+        }
       }
+
       return undefined;
     }));
 

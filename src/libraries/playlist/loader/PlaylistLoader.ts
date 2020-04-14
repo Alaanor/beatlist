@@ -73,7 +73,7 @@ export default class PlaylistLoader {
 
       case PlaylistFormatType.Blist:
       default:
-        throw new Error('Undefined format');
+        throw FILENAME_EXTENSION_UNHANDLED;
     }
 
     return deserializer.deserialize(progress);

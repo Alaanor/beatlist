@@ -28,7 +28,7 @@ const mutations = {
     context: PlaylistStoreState,
     payload: { from: PlaylistLocal, to: PlaylistLocal },
   ) {
-    const index = context.playlists.findIndex((item) => item.hash === payload.from.hash);
+    const index = context.playlists.findIndex((item) => item.path === payload.from.path);
     context.playlists[index] = payload.to;
   },
 };

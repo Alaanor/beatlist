@@ -6,6 +6,7 @@ export const PLAYLIST_EXTENSION_NAME_BPLIST = 'bplist';
 export const PLAYLIST_EXTENSION_NAME_JSON = 'json';
 export const PLAYLIST_EXTENSION_NAME_BLIST = 'blist';
 export const FILENAME_EXTENSION_UNHANDLED = new Error('Unhandled filename extension');
+
 export default class PlaylistFilenameExtension {
   static GetFor(format: PlaylistFormatType): string {
     switch (format) {
@@ -14,7 +15,7 @@ export default class PlaylistFilenameExtension {
       case PlaylistFormatType.Blist:
         return PLAYLIST_EXTENSION_NAME_BLIST;
       default:
-        throw new Error('Undefined playlist format');
+        throw FILENAME_EXTENSION_UNHANDLED;
     }
   }
 
@@ -56,6 +57,15 @@ export default class PlaylistFilenameExtension {
 
       default:
         throw FILENAME_EXTENSION_UNHANDLED;
+    }
+  }
+
+  public static isValid(filepath: string) {
+    try {
+      this.detectType(filepath);
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }

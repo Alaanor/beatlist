@@ -72,6 +72,10 @@ export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> 
       const libHash = PlaylistLibrary.GetByPath(path)?.hash;
 
       if (fileHash !== libHash || fileHash === undefined) {
+        if (fileHash === undefined && libHash === undefined) {
+          return; // we got nothing new, so that's not an update
+        }
+
         const oldPlaylist = PlaylistLibrary.GetByPath(path);
 
         if (oldPlaylist) {
