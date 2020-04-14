@@ -4,10 +4,12 @@
       icon
       :disabled="isDownloaded || isDownloading"
       :loading="isDownloading"
+      :small="small"
       @click="downloadIt()"
     >
       <v-icon
         color="success"
+        :small="small"
       >
         mdi-download
       </v-icon>
@@ -37,6 +39,7 @@ export default Vue.extend({
   components: { Tooltip, DownloadProgressCircular },
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
+    small: { type: Boolean, default: false },
   },
   data: () => ({
     operation: undefined as DownloadOperation | undefined,

@@ -16,6 +16,10 @@
       see-more-route-name="beatmaps-online-unit"
     >
       <template #actions="{ beatsaver }">
+        <BeatmapDownloadButton
+          :beatmap="beatsaver"
+          small
+        />
         <PlaylistButtonRemoveFromPlaylist
           :playlist="playlist"
           :beatmap="beatsaver"
@@ -43,6 +47,7 @@ import PlaylistMapsLibrary from '@/libraries/playlist/PlaylistMapsLibrary';
 import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import BeatmapsTableBulkActions from '@/components/beatmap/table/core/BeatmapsTableBulkActions.vue';
 import BeatmapsTableOuterHeader from '@/components/beatmap/table/core/BeatmapsTableOuterHeader.vue';
+import BeatmapDownloadButton from '@/components/downloads/BeatmapDownloadButton.vue';
 
 export default Vue.extend({
   name: 'PlaylistEditorBeatmapList',
@@ -51,6 +56,7 @@ export default Vue.extend({
     BeatmapsTableOuterHeader,
     BeatmapsTableBulkActions,
     PlaylistButtonRemoveFromPlaylist,
+    BeatmapDownloadButton,
   },
   props: {
     playlist: { type: Object as PropType<PlaylistLocal>, required: true },
