@@ -10,7 +10,7 @@ export default class BeatsaverUtilities {
   }
 
   public static GetDownloadUrl(beatmap: BeatsaverBeatmap): string {
-    return url.resolve(BEATSAVER_DOMAIN, beatmap.directDownload);
+    return url.resolve(BEATSAVER_DOMAIN, beatmap.downloadURL);
   }
 
   public static GetPageUrl(beatmap: BeatsaverBeatmap): string {

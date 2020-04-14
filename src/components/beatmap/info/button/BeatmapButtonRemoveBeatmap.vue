@@ -20,9 +20,9 @@
       <span>You're about to
         <strong>
           <span class="error--text">remove</span>
-          {{ localBeatmap.onlineData.metadata.songName }}
+          {{ beatmap.metadata.songName }}
         </strong>
-        ({{ localBeatmap.onlineData.key }})
+        ({{ beatmap.key }})
       </span>
       <span class="caption grey--text">{{ localBeatmap.folderPath }}</span>
     </ConfirmDialog>

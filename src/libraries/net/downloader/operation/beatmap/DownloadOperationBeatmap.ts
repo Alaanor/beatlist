@@ -64,6 +64,7 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
 
       try {
         this.result = { ...this.result, status: DownloadOperationBeatmapResultStatus.Downloading };
+
         this.download = new DownloadUnit(url, stream, this.progress);
         this.download.onError(this.onDownloadError);
         this.download.onCompleted(() => {

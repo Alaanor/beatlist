@@ -7,6 +7,7 @@ export interface BeatsaverBeatmap {
   uploaded: Date;
   hash: string;
   directDownload: string;
+  downloadURL: string;
   coverURL: string;
 }
 

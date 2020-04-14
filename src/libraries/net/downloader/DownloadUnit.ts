@@ -1,4 +1,5 @@
 import request from 'request';
+import { remote } from 'electron';
 import { DownloadUnitProgress, DownloadUnitProgressFactory } from '@/libraries/net/downloader/DownloadUnitProgress';
 
 export default class DownloadUnit {
@@ -16,6 +17,9 @@ export default class DownloadUnit {
     this.progress = progress ?? DownloadUnitProgressFactory();
     this._request = request(url, {
       timeout: DownloadUnit.TimeoutMs,
+      headers: {
+        'User-Agent': remote.session.defaultSession?.getUserAgent(),
+      },
     });
 
     this._request.pipe(writableStream);
