@@ -102,7 +102,6 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
   }
 
   OnCompleted(callback: (result: DownloadOperationBeatmapResult) => void): void {
-    this.isCompleted = true;
     this._eventEmitter.on(ON_COMPLETED, () => callback(this.result));
   }
 
@@ -113,6 +112,7 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
       errorWritten: `Couldn't download beatmap. [${error.name}]: ${error.message}`,
     };
 
+    this.isCompleted = true;
     this._eventEmitter.emit(ON_COMPLETED);
   }
 
@@ -123,6 +123,7 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
       errorWritten: `Couldn't extract beatmap. [${error.name}]: ${error.message}`,
     };
 
+    this.isCompleted = true;
     this._eventEmitter.emit(ON_COMPLETED);
   }
 
@@ -133,6 +134,7 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
       errorWritten: `Couldn't make the temporary folder to download. [${error.name}]: ${error.message}`,
     };
 
+    this.isCompleted = true;
     this._eventEmitter.emit(ON_COMPLETED);
   }
 
@@ -143,6 +145,7 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
       path: BeatSaber.GetFolderPathFor(this.beatmap),
     };
 
+    this.isCompleted = true;
     this._eventEmitter.emit(ON_COMPLETED);
   }
 }
