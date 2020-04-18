@@ -1,5 +1,5 @@
 import { make } from 'vuex-pathify';
-import { INotification, NotificationState } from '@/libraries/notification/Notification';
+import { IKeyedNotification, INotification, NotificationState } from '@/libraries/notification/Notification';
 
 export interface NotificationStoreState {
   notifications: INotification[],
@@ -18,13 +18,8 @@ const mutations = {
   add(context: NotificationStoreState, payload: { notification: INotification }) {
     context.notifications.push(payload.notification);
   },
-  setAsNotified(context: NotificationStoreState, payload: { notification: INotification }) {
-    const notif = context.notifications
-      .find((notification: INotification) => notification === payload.notification);
-
-    if (notif !== undefined) {
-      notif.state = NotificationState.Dismissed;
-    }
+  setAsNotified(context: NotificationStoreState, payload: { notification: IKeyedNotification }) {
+    context.notifications[payload.notification.key].state = NotificationState.Dismissed;
   },
 };
 

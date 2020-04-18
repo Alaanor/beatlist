@@ -2,8 +2,9 @@
   <v-snackbar
     v-model="snackbar"
     :color="snackbarColor"
-    :timeout="notification.timeout"
-    @input="checkForDismissed()"
+    :timeout="0"
+    bottom
+    right
   >
     <v-list
       v-if="isSuccess"
@@ -96,15 +97,21 @@ export default Vue.extend({
       }
     },
   },
-  methods: {
-    close(): void {
-      this.snackbar = false;
-      NotificationLibrary.SetAsNotified(this.notification);
-    },
-    checkForDismissed(): void {
+  watch: {
+    snackbar() {
       if (!this.snackbar) {
-        NotificationLibrary.SetAsNotified(this.notification);
+        setTimeout(() => NotificationLibrary.SetAsNotified(this.notification), 250);
       }
+    },
+  },
+  mounted(): void {
+    setTimeout(() => {
+      this.snackbar = false;
+    }, this.notification.timeout);
+  },
+  methods: {
+    close() {
+      this.snackbar = false;
     },
   },
 });

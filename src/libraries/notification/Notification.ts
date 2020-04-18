@@ -32,6 +32,8 @@ export interface IBeatmapDownloadNotification extends INotificationType {
   result: DownloadOperationBeatmapResult;
 }
 
+export type IKeyedNotification = INotification & { key: number };
+
 export type INotification = ICommonNotification & (
   IMessageNotification |
   IBeatmapDownloadNotification

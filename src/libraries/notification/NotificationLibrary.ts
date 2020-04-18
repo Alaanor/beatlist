@@ -1,4 +1,4 @@
-import { INotification, NotificationState } from '@/libraries/notification/Notification';
+import { IKeyedNotification, INotification, NotificationState } from '@/libraries/notification/Notification';
 import store from '@/plugins/store';
 
 export default class NotificationLibrary {
@@ -6,10 +6,11 @@ export default class NotificationLibrary {
     return store.getters['notification/notifications'];
   }
 
-  public static GetAllUnnotified() {
-    return this.GetAll().filter(
-      (notification: INotification) => notification.state === NotificationState.ReadyToBeSend,
-    );
+  public static GetAllUnnotified(): IKeyedNotification[] {
+    return this.GetAll()
+      .map((notification: INotification, index: number) => ({ ...notification, key: index }))
+      .filter((notification: IKeyedNotification) => notification
+        .state === NotificationState.ReadyToBeSend);
   }
 
   public static Add(notification: INotification) {

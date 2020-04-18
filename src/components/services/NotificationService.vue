@@ -1,13 +1,12 @@
 <template>
   <v-container>
-    <v-scroll-x-transition group>
-      <component
-        :is="`NotificationModel${notification.type}`"
-        v-for="(notification, key) in toNotify"
-        :key="key"
-        :notification="notification"
-      />
-    </v-scroll-x-transition>
+    <component
+      :is="`NotificationModel${notification.type}`"
+      v-for="notification in toNotify"
+      :key="notification.key"
+      :notification="notification"
+    />
+    {{ toNotify }}
   </v-container>
 </template>
 
