@@ -15,6 +15,7 @@
       floating
       clipped
       permanent
+      color="appSecondary"
       :mini-variant="true"
       mini-variant-width="88"
     >

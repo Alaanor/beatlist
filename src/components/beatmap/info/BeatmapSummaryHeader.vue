@@ -51,7 +51,7 @@ export default Vue.extend({
   },
   computed: {
     gradientColor(): string {
-      return this.$vuetify.theme.dark ? '48, 48, 48' : '255, 255, 255';
+      return this.$vuetify.theme.dark ? '18, 18, 18' : '255, 255, 255';
     },
   },
 });

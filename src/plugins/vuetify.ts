@@ -15,7 +15,8 @@ export default new Vuetify({
         primary: colors.blue.lighten2,
         secondary: '#AAA',
         accent: colors.blueGrey.lighten2,
-        app: '#353535',
+        app: '#1e1e1e',
+        appSecondary: '#232323',
         close: colors.red.darken3,
       },
       light: {
@@ -23,6 +24,7 @@ export default new Vuetify({
         secondary: '#666',
         accent: colors.blueGrey.darken2,
         app: colors.grey.lighten3,
+        appSecondary: colors.grey.lighten4,
         close: colors.red.lighten1,
       },
     },
