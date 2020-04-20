@@ -1,14 +1,17 @@
 <template>
-  <div>
+  <div v-if="autoHide && localBeatmap">
     <Tooltip text="Delete the beatmap">
       <v-btn
         icon
         color="error"
         :loading="loading"
         :disabled="!localBeatmap"
+        :small="small"
         @click="dialog = true"
       >
-        <v-icon>delete_forever</v-icon>
+        <v-icon :small="small">
+          delete_forever
+        </v-icon>
       </v-btn>
     </Tooltip>
     <ConfirmDialog
@@ -46,6 +49,8 @@ export default Vue.extend({
   components: { Tooltip, ConfirmDialog },
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
+    small: { type: Boolean, default: false },
+    autoHide: { type: Boolean, default: false },
   },
   data: () => ({
     loading: false,

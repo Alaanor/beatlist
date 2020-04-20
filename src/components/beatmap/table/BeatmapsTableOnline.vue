@@ -61,7 +61,20 @@
         no-filter
         no-sort
         @update:page="updatePagination"
-      />
+      >
+        <template #actions="{ beatsaver }">
+          <BeatmapDownloadButton
+            :beatmap="beatsaver"
+            auto-hide
+            small
+          />
+          <BeatmapButtonRemoveBeatmap
+            :beatmap="beatsaver"
+            auto-hide
+            small
+          />
+        </template>
+      </BeatmapsTable>
     </v-card>
     <v-alert
       v-if="error"
@@ -85,10 +98,19 @@ import BeatsaverAPI, { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '
 import { BeatsaverBeatmap, BeatsaverPage } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
 import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
 import BeatsaverUtilities from '@/libraries/net/beatsaver/BeatsaverUtilities';
+import BeatmapDownloadButton from '@/components/downloads/BeatmapDownloadButton.vue';
+import BeatmapButtonRemoveBeatmap
+  from '@/components/beatmap/info/button/BeatmapButtonRemoveBeatmap.vue';
 
 export default Vue.extend({
   name: 'BeatmapTableLocal',
-  components: { BeatmapsTableColumnSelector, BeatmapsTable, Tooltip },
+  components: {
+    BeatmapsTableColumnSelector,
+    BeatmapsTable,
+    Tooltip,
+    BeatmapDownloadButton,
+    BeatmapButtonRemoveBeatmap,
+  },
   data: () => ({
     selectedMode: 'hot',
     modes: [

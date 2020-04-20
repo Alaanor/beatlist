@@ -1,5 +1,8 @@
 <template>
-  <Tooltip :text="tooltipText">
+  <Tooltip
+    v-if="autoHide && !isDownloaded"
+    :text="tooltipText"
+  >
     <v-btn
       icon
       :disabled="isDownloaded || isDownloading"
@@ -40,6 +43,7 @@ export default Vue.extend({
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
     small: { type: Boolean, default: false },
+    autoHide: { type: Boolean, default: false },
   },
   data: () => ({
     operation: undefined as DownloadOperation | undefined,
