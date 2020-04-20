@@ -150,6 +150,7 @@ import PlaylistMapsLibrary from '@/libraries/playlist/PlaylistMapsLibrary';
 import InvalidPlaylistsMapsDialog from '@/components/dialogs/InvalidPlaylistsMapsDialog.vue';
 import BeatsaverCachedLibrary from '@/libraries/beatmap/repo/BeatsaverCachedLibrary';
 import InvalidBeatsaverBeatmapDialog from '@/components/dialogs/InvalidBeatsaverBeatmapDialog.vue';
+import NotificationServiceScanner from '@/libraries/notification/NotificationServiceScanner';
 
 export default Vue.extend({
   name: 'Library',
@@ -188,6 +189,7 @@ export default Vue.extend({
     scan() {
       ScannerService.ScanAll();
       ScannerService.requestDialogToBeOpened();
+      NotificationServiceScanner.notifyOnNextScan();
     },
     openConfirmDialogCache() {
       this.confirmDialog = true;

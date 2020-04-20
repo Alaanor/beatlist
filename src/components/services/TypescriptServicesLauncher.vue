@@ -10,6 +10,7 @@ import DiscordRichPresence from '@/libraries/ipc/DiscordRichPresence';
 import { ON_BEATSAVER_LINK_OPENER_COMPONENT_READY, OPEN_BEATSAVER_LINK }
   from '@/libraries/ipc/BeatsaverLinkOpener';
 import AutoScanLibHandler from '@/libraries/scanner/AutoScanLibHandler';
+import NotificationServiceScanner from '@/libraries/notification/NotificationServiceScanner';
 
 export default Vue.extend({
   name: 'TypescriptServicesLauncher',
@@ -24,6 +25,7 @@ export default Vue.extend({
       this.DiscordRichPresence();
       this.RegisterBeatsaverLinkListener();
       AutoScanLibHandler.register();
+      NotificationServiceScanner.Initialize();
     },
     DiscordRichPresence() {
       DiscordRichPresence.SetVisibility(this.enableDiscordRichPresence);

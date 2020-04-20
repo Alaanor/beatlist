@@ -60,20 +60,14 @@
 import Vue from 'vue';
 import Progress from '@/libraries/common/Progress';
 import ProgressGroup from '@/libraries/common/ProgressGroup';
-import NotificationService from '@/libraries/notification/NotificationService';
 import ScannerService from '@/libraries/scanner/ScannerService';
-import BeatmapScannerResult from '@/libraries/scanner/beatmap/BeatmapScannerResult';
-import PlaylistScannerResult from '@/libraries/scanner/playlist/PlaylistScannerResult';
+import NotificationServiceScanner from '@/libraries/notification/NotificationServiceScanner';
 
 export default Vue.extend({
   name: 'ScannerStatusService',
   data: () => ({
     dialog: false,
     progress: { beatmap: new Progress(), playlist: new ProgressGroup() },
-    latestResult: {
-      beatmap: undefined as undefined | BeatmapScannerResult,
-      playlist: undefined as undefined | PlaylistScannerResult,
-    },
     scanningBeatmap: false,
     scanningPlaylist: false,
   }),
@@ -93,15 +87,11 @@ export default Vue.extend({
       return this.progress.playlist;
     });
 
-    ScannerService.onBeatmapScanCompleted(this.onBeatmapScanCompleted);
-    ScannerService.onPlaylistScanCompleted(this.onPlaylistScanCompleted);
     ScannerService.onStatusDialogRequestOpen(this.onStatusDialogRequestOpen);
     ScannerService.onScanCompleted(this.onScanCompleted);
     ScannerService.onScanningStateUpdate(this.onScanningStateUpdate);
   },
   beforeDestroy(): void {
-    ScannerService.offBeatmapScanCompleted(this.onBeatmapScanCompleted);
-    ScannerService.offPlaylistScanCompleted(this.onPlaylistScanCompleted);
     ScannerService.offStatusDialogRequestOpen(this.onStatusDialogRequestOpen);
     ScannerService.offScanCompleted(this.onScanCompleted);
     ScannerService.offScanningStateUpdate(this.onScanningStateUpdate);
@@ -109,12 +99,7 @@ export default Vue.extend({
   methods: {
     scanAll(): void {
       ScannerService.ScanAll();
-    },
-    onBeatmapScanCompleted(result: BeatmapScannerResult): void {
-      this.latestResult.beatmap = result;
-    },
-    onPlaylistScanCompleted(result: PlaylistScannerResult): void {
-      this.latestResult.playlist = result;
+      NotificationServiceScanner.notifyOnNextScan();
     },
     onStatusDialogRequestOpen(): void {
       this.dialog = true;
@@ -125,22 +110,6 @@ export default Vue.extend({
     },
     onScanCompleted(): void {
       this.dialog = false;
-      this.sendResultNotification();
-    },
-    sendResultNotification(): void {
-      const message = [];
-
-      if (this.latestResult.beatmap?.anyChange()) {
-        message.push(this.latestResult.beatmap.toString());
-      }
-
-      if (this.latestResult.playlist?.anyChange()) {
-        message.push(this.latestResult.playlist.toString());
-      }
-
-      if (message.length > 0) {
-        NotificationService.NotifyMessage(message.join('. '), 'info', 'find_in_page', 10 * 1000);
-      }
     },
   },
 });
