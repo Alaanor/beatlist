@@ -13,7 +13,14 @@
         see-more-route-name="beatmaps-local-unit"
       >
         <template #actions="{ beatsaver }">
-          <BeatmapButtonAddToNPlaylists :beatmap="beatsaver"/>
+          <BeatmapButtonRemoveBeatmap
+            :beatmap="beatsaver"
+            small
+          />
+          <BeatmapButtonAddToNPlaylists
+            :beatmap="beatsaver"
+            small
+          />
         </template>
       </BeatmapsTable>
     </v-card>
@@ -28,6 +35,8 @@ import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
 import BeatmapsTableOuterHeader from '@/components/beatmap/table/core/BeatmapsTableOuterHeader.vue';
 import BeatmapButtonAddToNPlaylists
   from '@/components/beatmap/button/BeatmapButtonAddToNPlaylists.vue';
+import BeatmapButtonRemoveBeatmap
+  from '@/components/beatmap/info/button/BeatmapButtonRemoveBeatmap.vue';
 
 export default Vue.extend({
   name: 'BeatmapTableLocal',
@@ -35,6 +44,7 @@ export default Vue.extend({
     BeatmapsTable,
     BeatmapsTableOuterHeader,
     BeatmapButtonAddToNPlaylists,
+    BeatmapButtonRemoveBeatmap,
   },
   data: () => ({
     search: '',

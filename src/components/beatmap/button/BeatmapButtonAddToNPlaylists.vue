@@ -3,10 +3,10 @@
     <Tooltip text="Add/Remove from playlists">
       <v-btn
         icon
-        small
+        :small="small"
         @click="dialog = true"
       >
-        <v-icon small>
+        <v-icon :small="small">
           playlist_add
         </v-icon>
       </v-btn>
@@ -29,6 +29,7 @@ export default Vue.extend({
   components: { Tooltip, AddRemoveFromPlaylistsDialog },
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
+    small: { type: Boolean, default: false },
   },
   data: () => ({
     dialog: false,

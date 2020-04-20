@@ -1,6 +1,6 @@
 <template>
   <Tooltip
-    v-if="autoHide && !isDownloaded"
+    v-if="!autoHide || (autoHide && !isDownloaded)"
     :text="tooltipText"
   >
     <v-btn

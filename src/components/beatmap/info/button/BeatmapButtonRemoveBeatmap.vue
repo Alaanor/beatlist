@@ -1,5 +1,5 @@
 <template>
-  <div v-if="autoHide && localBeatmap">
+  <div v-if="!autoHide || (autoHide && localBeatmap)">
     <Tooltip text="Delete the beatmap">
       <v-btn
         icon
