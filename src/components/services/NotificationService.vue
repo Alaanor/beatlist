@@ -6,7 +6,6 @@
       :key="notification.key"
       :notification="notification"
     />
-    {{ toNotify }}
   </v-container>
 </template>
 
