@@ -11,7 +11,7 @@ export default class AutoScanLibHandler {
     const beatmapFolder = BeatSaber.getBeatmapFolder();
     const playlistFolder = BeatSaber.getPlaylistFolder();
 
-    const watcher = chokidar.watch([beatmapFolder, playlistFolder]);
+    const watcher = chokidar.watch([beatmapFolder, playlistFolder], { ignoreInitial: true });
 
     watcher.on('add', AutoScanLibHandler.onChange);
     watcher.on('change', AutoScanLibHandler.onChange);
