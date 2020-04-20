@@ -6,45 +6,50 @@ import PlaylistLoader from '@/libraries/playlist/loader/PlaylistLoader';
 import ProgressGroup from '@/libraries/common/ProgressGroup';
 import PlaylistScannerResult from '@/libraries/scanner/playlist/PlaylistScannerResult';
 import { ScannerInterface } from '@/libraries/scanner/ScannerInterface';
+import ScannerLocker from '@/libraries/scanner/ScannerLocker';
 
 export default class PlaylistScanner implements ScannerInterface<PlaylistLocal> {
   public result: PlaylistScannerResult = new PlaylistScannerResult();
 
   public async scanAll(progressGroup: ProgressGroup = new ProgressGroup())
     : Promise<PlaylistScannerResult> {
-    const diff = await PlaylistScanner.GetTheDifferenceInPath();
+    return ScannerLocker.acquire(async () => {
+      const diff = await PlaylistScanner.GetTheDifferenceInPath();
 
-    this.result.newItems = (await Promise.all(
-      diff.added.map(
-        async (path: string) => PlaylistLoader.Load(path, progressGroup.getNewOne()),
-      ),
-    ));
+      this.result.newItems = (await Promise.all(
+        diff.added.map(
+          async (path: string) => PlaylistLoader.Load(path, progressGroup.getNewOne()),
+        ),
+      ));
 
-    this.result.removedItems = diff.removed.length;
-    this.result.keptItems = diff.kept.length;
+      this.result.removedItems = diff.removed.length;
+      this.result.keptItems = diff.kept.length;
 
-    await this.checkForChange(diff.kept);
+      await this.checkForChange(diff.kept);
 
-    const allPlaylists = this.MergeWithExistingPlaylists(diff);
-    PlaylistLibrary.UpdateAllPlaylist(allPlaylists);
+      const allPlaylists = this.MergeWithExistingPlaylists(diff);
+      PlaylistLibrary.UpdateAllPlaylist(allPlaylists);
 
-    return this.result;
+      return this.result;
+    });
   }
 
   public async scanOne(path: string): Promise<PlaylistLocal> {
-    const playlist = await PlaylistLoader.Load(path);
-    const oldPlaylist = playlist.path && PlaylistLibrary.GetByPath(playlist.path);
+    return ScannerLocker.acquire(async () => {
+      const playlist = await PlaylistLoader.Load(path);
+      const oldPlaylist = playlist.path && PlaylistLibrary.GetByPath(playlist.path);
 
-    if (oldPlaylist) { // update
-      PlaylistLibrary.RemovePlaylist(oldPlaylist);
-      PlaylistLibrary.AddPlaylist(playlist);
-      this.result.updatedItems += 1;
-    } else { // add
-      PlaylistLibrary.AddPlaylist(playlist);
-      this.result.newItems = [playlist];
-    }
+      if (oldPlaylist) { // update
+        PlaylistLibrary.RemovePlaylist(oldPlaylist);
+        PlaylistLibrary.AddPlaylist(playlist);
+        this.result.updatedItems += 1;
+      } else { // add
+        PlaylistLibrary.AddPlaylist(playlist);
+        this.result.newItems = [playlist];
+      }
 
-    return playlist;
+      return playlist;
+    });
   }
 
   private static async GetTheDifferenceInPath() : Promise<Differences<string>> {

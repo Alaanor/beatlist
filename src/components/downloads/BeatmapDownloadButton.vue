@@ -43,7 +43,6 @@ export default Vue.extend({
   },
   data: () => ({
     operation: undefined as DownloadOperation | undefined,
-    isDownloaded: false,
     isDownloading: false,
   }),
   computed: {
@@ -53,6 +52,9 @@ export default Vue.extend({
       }
 
       return 'Download';
+    },
+    isDownloaded(): boolean {
+      return BeatmapLibrary.GetMapByHash(this.beatmap.hash) !== undefined;
     },
   },
   mounted(): void {
@@ -67,7 +69,6 @@ export default Vue.extend({
       BeatmapInstaller.Install(this.beatmap, this.notifyResult);
     },
     updateDownloadData(): void {
-      this.isDownloaded = BeatmapLibrary.HasBeatmap(this.beatmap);
       this.isDownloading = DownloadLibrary.HasBeatmapScheduled(this.beatmap);
 
       if (this.isDownloading) {
