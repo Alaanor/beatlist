@@ -1,7 +1,8 @@
 import Vue from 'vue';
-import App from './App.vue';
-import store from './store/store';
+import App from '@/App.vue';
 import vuetify from '@/plugins/vuetify';
+import router from '@/plugins/router';
+import store from '@/plugins/store';
 import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -13,6 +14,7 @@ Vue.config.productionTip = false;
 Vue.config.devtools = isDevelopment;
 
 new Vue({
+  router,
   vuetify,
   store,
   render: (h) => h(App),

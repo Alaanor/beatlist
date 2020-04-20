@@ -1,15 +1,21 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import SongListLocal from '../pages/SongListLocal.vue';
-import SongListOnline from '../pages/SongListOnline.vue';
-import PlaylistsLocal from '../pages/PlaylistsLocal.vue';
-import PlaylistsOnline from '../pages/PlaylistsOnline.vue';
-import PlaylistEditor from '../pages/PlaylistEditor.vue';
-import Settings from '../pages/Settings.vue';
-import Beatmap from '../pages/Beatmap.vue';
-import Home from '../pages/Home.vue';
-import FAQ from '../pages/FAQ.vue';
-import store from '../store/store';
+import store from './store';
+
+import Settings from '@/pages/settings';
+import Home from '@/pages/home';
+import Downloads from '@/pages/downloads/';
+
+import Beatmap, {
+  BeatmapLocal, BeatmapLocalUnit,
+  BeatmapOnline, BeatmapOnlineUnit,
+} from '@/pages/beatmap';
+
+import Playlists, {
+  PlaylistsLocal,
+  PlaylistsLocalUnit,
+  PlaylistsBsaber,
+} from '@/pages/playlists';
 
 Vue.use(VueRouter);
 
@@ -21,65 +27,110 @@ const router = new VueRouter({
       component: Home,
     },
     {
-      path: '/songs/local',
-      name: 'song-list-local',
-      component: SongListLocal,
-      meta: {requireValidSettings: true},
+      path: '/beatmaps',
+      name: 'beatmaps',
+      redirect: { name: 'beatmaps-local' },
+      component: Beatmap,
+      meta: {
+        subNav: [
+          {
+            name: 'Local',
+            path: { name: 'beatmaps-local' },
+            icon: 'computer',
+          },
+          {
+            name: 'Online - Beatsaver',
+            path: { name: 'beatmaps-online' },
+            icon: 'language',
+          },
+        ],
+      },
+      children: [
+        {
+          path: 'local',
+          name: 'beatmaps-local',
+          component: BeatmapLocal,
+        },
+        {
+          path: 'local/:hash',
+          name: 'beatmaps-local-unit',
+          component: BeatmapLocalUnit,
+        },
+        {
+          path: 'online',
+          name: 'beatmaps-online',
+          component: BeatmapOnline,
+        },
+        {
+          path: 'online/:hash',
+          name: 'beatmaps-online-unit',
+          component: BeatmapOnlineUnit,
+        },
+      ],
     },
     {
-      path: '/songs/online',
-      name: 'song-list-online',
-      component: SongListOnline,
-      meta: {requireValidSettings: true},
+      path: '/playlists',
+      name: 'playlists',
+      redirect: { name: 'playlists-local' },
+      component: Playlists,
+      meta: {
+        subNav: [
+          {
+            name: 'Local',
+            path: { name: 'playlists-local' },
+            icon: 'computer',
+          },
+          {
+            name: 'Online - BSaber.com',
+            path: { name: 'playlists-bsaber' },
+            icon: 'language',
+          },
+        ],
+      },
+      children: [
+        {
+          path: 'local',
+          name: 'playlists-local',
+          component: PlaylistsLocal,
+        },
+        {
+          path: 'local/:hash',
+          name: 'playlists-local-unit',
+          component: PlaylistsLocalUnit,
+        },
+        {
+          path: 'bsaber',
+          name: 'playlists-bsaber',
+          component: PlaylistsBsaber,
+        },
+      ],
     },
     {
-      path: '/playlists/online',
-      name: 'playlists-online',
-      component: PlaylistsOnline,
-      meta: {requireValidSettings: true},
-    },
-    {
-      path: '/playlists/local',
-      name: 'playlists-local',
-      component: PlaylistsLocal,
-      meta: {requireValidSettings: true},
-    },
-    {
-      path: '/playlist/local/edit/:hash',
-      name: 'playlist-editor',
-      component: PlaylistEditor,
-      meta: {requireValidSettings: true},
+      path: '/downloads',
+      name: 'downloads',
+      component: Downloads,
     },
     {
       path: '/settings',
       name: 'settings',
       component: Settings,
     },
-    {
-      path: '/beatmap/:key',
-      name: 'beatmap',
-      component: Beatmap,
-    },
-    {
-      path: '/faq',
-      name: 'faq',
-      component: FAQ,
-    },
-    {path: '*', redirect: '/'},
+    { path: '*', redirect: '/' },
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requireValidSettings)) {
-    const st = store as unknown as { get: (path: string) => boolean };
-    if (!st.get('settings/configValid')) {
-      next();
-    } else {
-      next();
-    }
-  } else {
-    next();
-  }
+router.beforeEach(async (to, from, next) => {
+  // wait for the vuex-persist to be ready, restored exists but isn't defined.
+  // @ts-ignore
+  await store.restored;
+
+  const subNav = to.matched
+    .find((record) => record.meta.subNav)
+    ?.meta.subNav ?? [];
+
+  store.commit('appState/SET_SUB_NAV', subNav);
+
+  next();
 });
 
 export default router;
