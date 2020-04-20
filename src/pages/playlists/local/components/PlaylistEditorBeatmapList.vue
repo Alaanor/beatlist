@@ -31,6 +31,7 @@
       :playlist="playlist"
       :selected="selectedBeatmap"
       bulk-remove
+      bulk-download
       @onDone="selectedBeatmap = []"
     />
   </div>
