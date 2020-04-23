@@ -87,7 +87,7 @@ export default class BeatSaber {
   public async CreateBeatMapFolder(beatmap: ISongOnline) {
     const songFolder = path.join(this.installationPath, BEAT_SABER_CUSTOM_LEVEL);
     const newFolderName = `${beatmap.key} (${beatmap.metadata.songName} - ${beatmap.metadata.levelAuthorName})`
-      .replace(/[|&;$%@"<>()+,]/g, '')
+      .replace(/[|&;$%@"<>()+,:]/g, '')
       .replace('\\', '_')
       .replace('/', '_');
     const finalPath = path.join(songFolder, newFolderName);
