@@ -49,7 +49,7 @@ describe('download operation beatmap', () => {
     expect.assertions(2);
 
     const beatmap = {
-      directDownload: 'foo',
+      downloadURL: 'foo',
       key: 'foo',
     } as BeatsaverBeatmap;
 
