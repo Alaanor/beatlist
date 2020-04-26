@@ -47,8 +47,8 @@ describe('beatSaber', () => {
 
     const [first, second, third] = await BeatSaber.getAllPlaylistsPath() ?? [];
 
-    expect(first).toBe(path.join(__dirname, '../data/fakeInstallation/Playlists/file1'));
-    expect(second).toBe(path.join(__dirname, '../data/fakeInstallation/Playlists/file2'));
+    expect(first).toBe(path.join(__dirname, '../data/fakeInstallation/Playlists/file1.json'));
+    expect(second).toBe(path.join(__dirname, '../data/fakeInstallation/Playlists/file2.json'));
     expect(third).toBeUndefined();
   });
 });

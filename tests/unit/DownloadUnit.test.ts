@@ -34,6 +34,10 @@ const routing = {
   },
 };
 
+jest.mock('electron', () => ({
+  remote: { session: { defaultSession: { getUserAgent: () => 'foobar' } } },
+}));
+
 describe('download unit', () => {
   beforeAll(() => {
     http.createServer((req, res) => {
