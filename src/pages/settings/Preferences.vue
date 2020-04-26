@@ -46,7 +46,9 @@ export default Vue.extend({
     darkTheme: sync<boolean>('settings/darkTheme'),
     installationPathValid: sync<boolean>('settings/installationPathValid'),
     defaultExportFormat: sync<PlaylistFormatType>('settings/defaultExportFormat'),
-    exportFormatList: () => Object.values(PlaylistFormatType),
+    exportFormatList: () => Object.values(PlaylistFormatType).filter((format) => ![
+      PlaylistFormatType.Unset, PlaylistFormatType.Blist,
+    ].includes(format)),
   },
   watch: {
     enableDiscordRichPresence() {
