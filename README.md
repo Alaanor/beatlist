@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="src/assets/title_white.png" width="256px" alt="logo">
+  <a href="https://github.com/Alaanor/beatlist/releases/latest">
+    <img src="src/assets/title_white.png" width="256px" alt="logo">
+  </a>
 </p>
 <p align="center">
   <img src="https://img.shields.io/github/release/Alaanor/beatlist.svg?style=flat-square" alt="version">
@@ -18,7 +20,7 @@ Beatlist is an app to manage playlist and beatmap for the game BeatSaber.
  
 # Installation
 
-1. [Download](https://github.com/Alaanor/beatlist/releases) and execute the latest version.
+1. [Download](https://github.com/Alaanor/beatlist/releases/latest) and execute the latest version.
 2. Insert manually or use the detector to set the **installation path** of BeatSaber in **settings**
 3. **Scan** your songs library in settings through the scan button.
 4. Enjoy !
