@@ -12,6 +12,7 @@ import { ON_BEATSAVER_LINK_OPENER_COMPONENT_READY, OPEN_BEATSAVER_LINK }
 import AutoScanLibHandler from '@/libraries/scanner/AutoScanLibHandler';
 import NotificationServiceScanner from '@/libraries/notification/NotificationServiceScanner';
 import UpgradeCheckerService from '@/libraries/app/UpgradeCheckerService';
+import DownloadManager from '@/libraries/net/downloader/DownloadManager';
 
 export default Vue.extend({
   name: 'TypescriptServicesLauncher',
@@ -28,6 +29,7 @@ export default Vue.extend({
       AutoScanLibHandler.register();
       NotificationServiceScanner.Initialize();
       UpgradeCheckerService.Initialize();
+      DownloadManager.Initialize();
     },
     DiscordRichPresence() {
       DiscordRichPresence.SetVisibility(this.enableDiscordRichPresence);

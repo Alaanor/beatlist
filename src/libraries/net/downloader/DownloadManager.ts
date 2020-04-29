@@ -8,6 +8,10 @@ const ON_QUEUE_UPDATED = 'on_queue_updated';
 export default class DownloadManager {
   private static EventEmitter = new events.EventEmitter();
 
+  public static Initialize() {
+    this.EventEmitter.setMaxListeners(1000);
+  }
+
   public static AddQueue(operation: DownloadOperation) {
     DownloadLibrary.queuedOperation.push(operation);
     DownloadManager.UpdateQueue();
