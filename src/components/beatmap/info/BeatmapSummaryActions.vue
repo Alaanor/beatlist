@@ -14,6 +14,10 @@
       v-if="isDownloaded"
       :beatmap="beatmap"
     />
+    <BeatmapButtonAddToNPlaylists
+      :beatmap="beatmap"
+      small
+    />
     <BeatmapButtonRefreshData
       v-if="isDownloaded"
       :beatmap="beatmap"
@@ -42,6 +46,8 @@ import BeatmapButtonOpenBeatsaver from '@/components/beatmap/info/button/Beatmap
 import BeatmapButtonPlaySong from '@/components/beatmap/info/button/BeatmapButtonPlaySong.vue';
 import BeatmapButtonRemoveBeatmap from '@/components/beatmap/info/button/BeatmapButtonRemoveBeatmap.vue';
 import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
+import BeatmapButtonAddToNPlaylists
+  from '@/components/beatmap/button/BeatmapButtonAddToNPlaylists.vue';
 
 export default Vue.extend({
   name: 'BeatmapSummaryActions',
@@ -53,6 +59,7 @@ export default Vue.extend({
     BeatmapButtonRefreshData,
     BeatmapButtonPlaySong,
     BeatmapButtonRemoveBeatmap,
+    BeatmapButtonAddToNPlaylists,
   },
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },

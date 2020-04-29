@@ -63,6 +63,10 @@
         @update:page="updatePagination"
       >
         <template #actions="{ beatsaver }">
+          <BeatmapButtonAddToNPlaylists
+            :beatmap="beatsaver"
+            small
+          />
           <BeatmapDownloadButton
             :beatmap="beatsaver"
             auto-hide
@@ -101,6 +105,8 @@ import BeatsaverUtilities from '@/libraries/net/beatsaver/BeatsaverUtilities';
 import BeatmapDownloadButton from '@/components/downloads/BeatmapDownloadButton.vue';
 import BeatmapButtonRemoveBeatmap
   from '@/components/beatmap/info/button/BeatmapButtonRemoveBeatmap.vue';
+import BeatmapButtonAddToNPlaylists
+  from '@/components/beatmap/button/BeatmapButtonAddToNPlaylists.vue';
 
 export default Vue.extend({
   name: 'BeatmapTableLocal',
@@ -110,6 +116,7 @@ export default Vue.extend({
     Tooltip,
     BeatmapDownloadButton,
     BeatmapButtonRemoveBeatmap,
+    BeatmapButtonAddToNPlaylists,
   },
   data: () => ({
     selectedMode: 'hot',
