@@ -2,6 +2,7 @@ import { make } from 'vuex-pathify';
 import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
 
 export interface SettingsStoreState {
+  appVersion: string | undefined,
   installationPath: string,
   installationPathValid: boolean,
   darkTheme: boolean,
@@ -26,6 +27,7 @@ const defaultTableSettings = {
 };
 
 const state = {
+  appVersion: undefined,
   installationPath: '',
   installationPathValid: false,
   darkTheme: true,
