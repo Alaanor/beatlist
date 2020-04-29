@@ -182,6 +182,9 @@ export default Vue.extend({
   mounted(): void {
     ScannerService.onScanningStateUpdate(this.onScanningStateUpdate);
   },
+  beforeDestroy(): void {
+    ScannerService.offScanningStateUpdate(this.onScanningStateUpdate);
+  },
   methods: {
     onScanningStateUpdate() {
       this.isScanning = ScannerService.isScanning;

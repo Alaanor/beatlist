@@ -61,7 +61,7 @@
 
 <script lang="ts">
 import MenuNavigationItem from '@/components/core/menu/MenuNavigationItem.vue';
-import ScannerStatusOpenButton from '@/components/helper/ScannerStatusOpenButton.vue';
+import ScannerStatusOpenButton from '@/components/scanner/ScannerStatusOpenButton.vue';
 
 export default {
   name: 'AppMenuNavBar',
