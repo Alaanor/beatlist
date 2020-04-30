@@ -18,8 +18,7 @@ export default class UpgradeCheckerService {
       store.commit('modal/SET_NEW_USER_MODAL', true);
       store.commit('settings/SET_APP_VERSION', currentVersion);
 
-      UpgradeCheckerService.cleanOldVuexCacheIfExist().then(() => {
-      });
+      UpgradeCheckerService.cleanOldVuexCacheIfExist().then(() => {});
     }
 
     if (isNewVersion) {
@@ -37,7 +36,7 @@ export default class UpgradeCheckerService {
   }
 
   private static async cleanOldVuexCacheIfExist() {
-    const oldCache = localforage.createInstance({ name: 'vuex' });
-    await oldCache.clear();
+    const oldCache = localforage.createInstance({ name: 'localforage' });
+    await oldCache.removeItem('vuex');
   }
 }
