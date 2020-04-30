@@ -32,6 +32,7 @@ import DownloadsListGroup from '@/components/downloads/list/DownloadsListGroup.v
 import DownloadLibrary from '@/libraries/net/downloader/DownloadLibrary';
 import DownloadManager from '@/libraries/net/downloader/DownloadManager';
 import { DownloadOperation } from '@/libraries/net/downloader/operation/DownloadOperation';
+import DiscordRichPresence from '@/libraries/ipc/DiscordRichPresence';
 
 export default Vue.extend({
   name: 'Downloads',
@@ -44,6 +45,10 @@ export default Vue.extend({
   mounted(): void {
     DownloadManager.OnQueueUpdated(this.updateDownloadData);
     this.updateDownloadData();
+  },
+  beforeRouteEnter(to, from, next) {
+    DiscordRichPresence.UpdateStatus('Checking his downloads');
+    next();
   },
   beforeDestroy(): void {
     DownloadManager.RemoveOnQueueUpdatedListener(this.updateDownloadData);

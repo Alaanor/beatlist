@@ -40,6 +40,7 @@ import PlaylistButtonRemovePlaylist from '@/components/playlist/button/PlaylistB
 import Tooltip from '@/components/helper/Tooltip.vue';
 import NotificationService, { NOTIFICATION_ICON_FAILED } from '@/libraries/notification/NotificationService';
 import PlaylistButtonOpenFolder from '@/components/playlist/button/PlaylistButtonOpenFolder.vue';
+import DiscordRichPresence from '@/libraries/ipc/DiscordRichPresence';
 
 export default Vue.extend({
   name: 'PlaylistsLocal',
@@ -49,6 +50,12 @@ export default Vue.extend({
     PlaylistButtonRemovePlaylist,
     PlaylistButtonOpenFolder,
     Tooltip,
+  },
+  beforeRouteEnter(to, from, next) {
+    const amount = PlaylistLibrary.GetAllValidPlaylists().length;
+    const amountText = `${amount} playlist${amount > 1 ? 's' : ''}`;
+    DiscordRichPresence.UpdateStatus('Browsing local playlist', amountText);
+    next();
   },
   computed: {
     playlists: () => PlaylistLibrary.GetAllValidPlaylists(),
