@@ -1,5 +1,5 @@
 import { ipcMain, ipcRenderer } from 'electron';
-import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
+import { resolveInstallPath } from '@/libraries/os/pathResolver/Resolve';
 
 export const RESOLVE_INST_PATH_MSG = 'resolve_inst_path_msg';
 export const RESOLVE_INST_PATH_REPLY = 'resolve_inst_path_reply';
@@ -7,7 +7,7 @@ export const RESOLVE_INST_PATH_REPLY = 'resolve_inst_path_reply';
 export default class PathResolver {
   public static register(): void {
     ipcMain.on(RESOLVE_INST_PATH_MSG, async (event: any) => {
-      const installationPath = await BeatSaber.solveInstallationPath();
+      const installationPath = await resolveInstallPath();
       event.reply(RESOLVE_INST_PATH_REPLY, installationPath ?? '');
     });
   }
