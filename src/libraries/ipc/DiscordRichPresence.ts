@@ -6,6 +6,11 @@ const UPDATE_RICH_PRESENCE_VISIBILITY = 'update_rich_presence_visibility';
 const DEFAULT_STATUS = 'just started it';
 
 export default class DiscordRichPresence {
+  public static register() {
+    const richPresence = new DiscordRichPresence();
+    richPresence.Initiate();
+  }
+
   public static UpdateStatus(context?: string, details?: string) {
     ipcRenderer.send(SET_DISCORD_RP_STATUS, { context, details });
   }
