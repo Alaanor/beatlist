@@ -3,7 +3,7 @@
     v-model="selectedItem"
     :headers="getHeaders()"
     :items="beatmapAsTableDataFiltered"
-    :options="{...options, itemsPerPage}"
+    :options="{ ...options, itemsPerPage }"
     :server-items-length="serverItemsLength"
     :loading="loading"
     :disable-sort="noSort"
@@ -43,13 +43,13 @@
         :key="header.value"
         class="d-flex justify-center"
       >
-        <slot
-          name="actions"
-          :beatsaver="item.raw.data"
-        />
+        <slot name="actions" :beatsaver="item.raw.data" />
         <Tooltip text="See more">
           <v-btn
-            :to="{ name: seeMoreRouteName, params: { hash: item.raw.data.hash } }"
+            :to="{
+              name: seeMoreRouteName,
+              params: { hash: item.raw.data.hash },
+            }"
             icon
             small
             exact
@@ -60,10 +60,7 @@
       </span>
     </template>
 
-    <template
-      v-if="!noFilter"
-      #body.append
-    >
+    <template v-if="!noFilter" #body.append>
       <BeatmapsTableFilterRow
         :headers="getHeaders()"
         :filters-value="filtersValue"
@@ -72,16 +69,15 @@
     </template>
 
     <template #progress>
-      <v-progress-linear
-        color="success"
-        indeterminate
-      />
+      <v-progress-linear color="success" indeterminate />
     </template>
 
     <template #header.data-table-select>
       <v-simple-checkbox
         :value="selected.length > 0"
-        :indeterminate="selected.length !== items.length && selected.length !== 0"
+        :indeterminate="
+          selected.length !== items.length && selected.length !== 0
+        "
         @input="selectAllItems"
       />
     </template>
@@ -96,52 +92,42 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { BeatmapsTableDataUnit } from '@/components/beatmap/table/core/BeatmapsTableDataUnit';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import Tooltip from '@/components/helper/Tooltip.vue';
+import Vue, { PropType } from "vue";
+import { BeatmapsTableDataUnit } from "@/components/beatmap/table/core/BeatmapsTableDataUnit";
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import Tooltip from "@/components/helper/Tooltip.vue";
 import {
   BeatmapsTableFilterType,
   BeatmapsTableHeader,
   BeatmapsTableHeadersTemplate,
-} from '@/components/beatmap/table/core/BeatmapsTableHeaders';
+} from "@/components/beatmap/table/core/BeatmapsTableHeaders";
 import {
   sortDateFromString,
   sortNumber,
   sortText,
-} from '@/components/beatmap/table/core/function/BeatmapsTableSortFunctions';
+} from "@/components/beatmap/table/core/function/BeatmapsTableSortFunctions";
 import {
   FilterDateRange,
   FilterRange,
   FilterText,
   FilterDifficulties,
-} from '@/components/beatmap/table/core/filter/BeatmapsTableFilterFunction';
-import { DateRange, Range } from '@/libraries/common/Range';
+} from "@/components/beatmap/table/core/filter/BeatmapsTableFilterFunction";
+import { DateRange, Range } from "@/libraries/common/Range";
 
 // Template
-import BeatmapsTableTemplateCover
-  from '@/components/beatmap/table/core/template/BeatmapsTableTemplateCover.vue';
-import BeatmapsTableTemplateText
-  from '@/components/beatmap/table/core/template/BeatmapsTableTemplateText.vue';
-import BeatmapsTableTemplateTextTooltip
-  from '@/components/beatmap/table/core/template/BeatmapsTableTemplateTextTooltip.vue';
-import BeatmapsTableTemplateBeatmapName
-  from '@/components/beatmap/table/core/template/BeatmapsTableTemplateBeatmapName.vue';
-import BeatmapsTableTemplateStrToDate
-  from '@/components/beatmap/table/core/template/BeatmapsTableTemplateStrToDate.vue';
-import BeatmapsTableTemplateDifficulties
-  from '@/components/beatmap/table/core/template/BeatmapsTableTemplateDifficulties.vue';
-import BeatmapsTableTemplateRating
-  from '@/components/beatmap/table/core/template/BeatmapsTableTemplateRating.vue';
-import BeatmapsTableColumnSelector
-  from '@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue';
-import BeatmapsTableFooter
-  from '@/components/beatmap/table/core/BeatmapsTableFooter.vue';
-import BeatmapsTableFilterRow
-  from '@/components/beatmap/table/core/BeatmapsTableFilterRow.vue';
+import BeatmapsTableTemplateCover from "@/components/beatmap/table/core/template/BeatmapsTableTemplateCover.vue";
+import BeatmapsTableTemplateText from "@/components/beatmap/table/core/template/BeatmapsTableTemplateText.vue";
+import BeatmapsTableTemplateTextTooltip from "@/components/beatmap/table/core/template/BeatmapsTableTemplateTextTooltip.vue";
+import BeatmapsTableTemplateBeatmapName from "@/components/beatmap/table/core/template/BeatmapsTableTemplateBeatmapName.vue";
+import BeatmapsTableTemplateStrToDate from "@/components/beatmap/table/core/template/BeatmapsTableTemplateStrToDate.vue";
+import BeatmapsTableTemplateDifficulties from "@/components/beatmap/table/core/template/BeatmapsTableTemplateDifficulties.vue";
+import BeatmapsTableTemplateRating from "@/components/beatmap/table/core/template/BeatmapsTableTemplateRating.vue";
+import BeatmapsTableColumnSelector from "@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue";
+import BeatmapsTableFooter from "@/components/beatmap/table/core/BeatmapsTableFooter.vue";
+import BeatmapsTableFilterRow from "@/components/beatmap/table/core/BeatmapsTableFilterRow.vue";
 
 export default Vue.extend({
-  name: 'BeatmapsTable',
+  name: "BeatmapsTable",
   components: {
     BeatmapsTableColumnSelector,
     BeatmapsTableFooter,
@@ -169,7 +155,10 @@ export default Vue.extend({
     seeMoreRouteName: { type: String, default: undefined },
     noActions: { type: Boolean, default: false },
     noSort: { type: Boolean, default: false },
-    selected: { type: Array as PropType<BeatsaverBeatmap[]>, default: undefined },
+    selected: {
+      type: Array as PropType<BeatsaverBeatmap[]>,
+      default: undefined,
+    },
     search: { type: String, default: undefined },
   },
   data: () => ({
@@ -177,200 +166,209 @@ export default Vue.extend({
       page: 1,
     },
     filtersValue: {
-      name: '',
-      artist: '',
-      mapper: '',
+      name: "",
+      artist: "",
+      mapper: "",
       dl: {} as Range,
       plays: {} as Range,
       upvotes: {} as Range,
       downvotes: {} as Range,
       rating: {} as Range,
-      difficulties: ['easy', 'normal', 'hard', 'expert', 'expertPlus'],
+      difficulties: ["easy", "normal", "hard", "expert", "expertPlus"],
       uploaded: {} as DateRange,
-      key: '',
-      hash: '',
+      key: "",
+      hash: "",
     },
     itemsDisplayed: [] as { raw: BeatmapsTableDataUnit }[],
-    selectedItem: [] as { hash: string, key: string }[],
+    selectedItem: [] as { hash: string; key: string }[],
   }),
   computed: {
     headers(): BeatmapsTableHeader[] {
       return [
         {
-          value: 'cover',
-          text: 'Cover',
+          value: "cover",
+          text: "Cover",
           template: BeatmapsTableHeadersTemplate.Cover,
-          align: 'left',
+          align: "left",
           sortable: false,
           filterable: false,
           width: 50,
         },
         {
-          value: 'name',
-          text: 'Song name',
+          value: "name",
+          text: "Song name",
           template: BeatmapsTableHeadersTemplate.BeatmapName,
-          align: 'left',
+          align: "left",
           sortable: true,
           filterable: true,
-          localFilter: (value: string) => FilterText(value, this.filtersValue.name),
+          localFilter: (value: string) =>
+            FilterText(value, this.filtersValue.name),
           globalSearch: (value: string) => FilterText(value, this.search),
           filterType: BeatmapsTableFilterType.Text,
           sort: sortText,
           width: 225,
         },
         {
-          value: 'artist',
-          text: 'Artist',
+          value: "artist",
+          text: "Artist",
           template: BeatmapsTableHeadersTemplate.TextTooltip,
-          templateItemAccess: 'metadata.songAuthorName',
-          align: 'left',
+          templateItemAccess: "metadata.songAuthorName",
+          align: "left",
           sortable: true,
           filterable: true,
-          localFilter: (value: string) => FilterText(value, this.filtersValue.artist),
+          localFilter: (value: string) =>
+            FilterText(value, this.filtersValue.artist),
           globalSearch: (value: string) => FilterText(value, this.search),
           filterType: BeatmapsTableFilterType.Text,
           sort: sortText,
           width: 125,
         },
         {
-          value: 'mapper',
-          text: 'Mapper',
+          value: "mapper",
+          text: "Mapper",
           template: BeatmapsTableHeadersTemplate.TextTooltip,
-          templateItemAccess: 'metadata.levelAuthorName',
-          align: 'left',
+          templateItemAccess: "metadata.levelAuthorName",
+          align: "left",
           sortable: true,
           filterable: true,
-          localFilter: (value: string) => FilterText(value, this.filtersValue.mapper),
+          localFilter: (value: string) =>
+            FilterText(value, this.filtersValue.mapper),
           globalSearch: (value: string) => FilterText(value, this.search),
           filterType: BeatmapsTableFilterType.Text,
           sort: sortText,
           width: 125,
         },
         {
-          value: 'difficulties',
-          text: 'Difficulties',
+          value: "difficulties",
+          text: "Difficulties",
           template: BeatmapsTableHeadersTemplate.Difficulties,
-          templateItemAccess: 'metadata.difficulties',
-          align: 'left',
+          templateItemAccess: "metadata.difficulties",
+          align: "left",
           sortable: false,
           filterType: BeatmapsTableFilterType.Difficulties,
           filterable: true,
-          localFilter: (value) => FilterDifficulties(value, this.filtersValue.difficulties),
+          localFilter: (value) =>
+            FilterDifficulties(value, this.filtersValue.difficulties),
           width: 110,
         },
         {
-          value: 'dl',
-          text: 'Downloads',
+          value: "dl",
+          text: "Downloads",
           template: BeatmapsTableHeadersTemplate.Text,
-          templateItemAccess: 'stats.downloads',
-          align: 'center',
+          templateItemAccess: "stats.downloads",
+          align: "center",
           sortable: true,
           filterable: true,
           filterType: BeatmapsTableFilterType.RangeInt,
-          localFilter: (value: number) => FilterRange(value, this.filtersValue.dl),
+          localFilter: (value: number) =>
+            FilterRange(value, this.filtersValue.dl),
           sort: sortNumber,
           width: 50,
         },
         {
-          value: 'plays',
-          text: 'Plays',
+          value: "plays",
+          text: "Plays",
           template: BeatmapsTableHeadersTemplate.Text,
-          templateItemAccess: 'stats.plays',
-          align: 'center',
+          templateItemAccess: "stats.plays",
+          align: "center",
           sortable: true,
           filterable: true,
           filterType: BeatmapsTableFilterType.RangeInt,
-          localFilter: (value: number) => FilterRange(value, this.filtersValue.plays),
+          localFilter: (value: number) =>
+            FilterRange(value, this.filtersValue.plays),
           sort: sortNumber,
           width: 50,
         },
         {
-          value: 'upvotes',
-          text: 'Up votes',
+          value: "upvotes",
+          text: "Up votes",
           template: BeatmapsTableHeadersTemplate.Text,
-          templateItemAccess: 'stats.upVotes',
-          align: 'center',
+          templateItemAccess: "stats.upVotes",
+          align: "center",
           sortable: true,
           filterable: true,
           filterType: BeatmapsTableFilterType.RangeInt,
-          localFilter: (value: number) => FilterRange(value, this.filtersValue.upvotes),
+          localFilter: (value: number) =>
+            FilterRange(value, this.filtersValue.upvotes),
           sort: sortNumber,
           width: 50,
         },
         {
-          value: 'downvotes',
-          text: 'Down votes',
+          value: "downvotes",
+          text: "Down votes",
           template: BeatmapsTableHeadersTemplate.Text,
-          templateItemAccess: 'stats.downVotes',
-          align: 'center',
+          templateItemAccess: "stats.downVotes",
+          align: "center",
           sortable: true,
           filterable: true,
           filterType: BeatmapsTableFilterType.RangeInt,
-          localFilter: (value: number) => FilterRange(value, this.filtersValue.downvotes),
+          localFilter: (value: number) =>
+            FilterRange(value, this.filtersValue.downvotes),
           sort: sortNumber,
           width: 50,
         },
         {
-          value: 'rating',
-          text: 'Rating',
+          value: "rating",
+          text: "Rating",
           template: BeatmapsTableHeadersTemplate.Rating,
-          templateItemAccess: 'stats.rating',
-          align: 'center',
+          templateItemAccess: "stats.rating",
+          align: "center",
           sortable: true,
           filterable: true,
           filterType: BeatmapsTableFilterType.RangeInt,
-          localFilter: (value: number) => FilterRange(value, this.filtersValue.rating),
+          localFilter: (value: number) =>
+            FilterRange(value, this.filtersValue.rating),
           sort: sortNumber,
           width: 50,
         },
         {
-          value: 'uploaded',
-          text: 'Uploaded',
+          value: "uploaded",
+          text: "Uploaded",
           template: BeatmapsTableHeadersTemplate.StrToDate,
-          templateItemAccess: 'uploaded',
-          align: 'center',
+          templateItemAccess: "uploaded",
+          align: "center",
           sortable: true,
           filterable: true,
           filterType: BeatmapsTableFilterType.Date,
-          localFilter: (value: string) => FilterDateRange(
-            new Date(value),
-            this.filtersValue.uploaded,
-          ),
+          localFilter: (value: string) =>
+            FilterDateRange(new Date(value), this.filtersValue.uploaded),
           sort: sortDateFromString,
           width: 150,
         },
         {
-          value: 'key',
-          text: 'Key',
+          value: "key",
+          text: "Key",
           template: BeatmapsTableHeadersTemplate.Text,
-          templateItemAccess: 'key',
-          align: 'center',
+          templateItemAccess: "key",
+          align: "center",
           sortable: false,
           filterable: true,
           filterType: BeatmapsTableFilterType.Text,
-          localFilter: (value: string) => FilterText(value, this.filtersValue.key),
+          localFilter: (value: string) =>
+            FilterText(value, this.filtersValue.key),
           globalSearch: (value: string) => FilterText(value, this.search),
           sort: sortNumber,
           width: 50,
         },
         {
-          value: 'hash',
-          text: 'Hash',
+          value: "hash",
+          text: "Hash",
           template: BeatmapsTableHeadersTemplate.Text,
-          templateItemAccess: 'hash',
-          align: 'center',
+          templateItemAccess: "hash",
+          align: "center",
           sortable: false,
           filterable: true,
           filterType: BeatmapsTableFilterType.Text,
           globalSearch: (value: string) => FilterText(value, this.search),
-          localFilter: (value: string) => FilterText(value, this.filtersValue.hash),
+          localFilter: (value: string) =>
+            FilterText(value, this.filtersValue.hash),
           sort: sortNumber,
           width: 300,
         },
         {
-          value: 'actions',
-          text: 'Actions',
-          align: 'center',
+          value: "actions",
+          text: "Actions",
+          align: "center",
           sortable: false,
           filterable: false,
           width: 50,
@@ -408,7 +406,10 @@ export default Vue.extend({
   },
   watch: {
     selectedItem() {
-      this.$emit('update:selected', this.selectedItem.map((entry: any) => entry.raw.data));
+      this.$emit(
+        "update:selected",
+        this.selectedItem.map((entry: any) => entry.raw.data)
+      );
     },
   },
   methods: {
@@ -416,31 +417,39 @@ export default Vue.extend({
       return `item.${header.value}`;
     },
     getHeaders(): BeatmapsTableHeader[] {
-      return this.headers.filter((header) => this.shownColumn.includes(header.value) || header.value === 'actions');
+      return this.headers.filter(
+        (header) =>
+          this.shownColumn.includes(header.value) || header.value === "actions"
+      );
     },
     updatePage(page: number): void {
-      this.$emit('update:page', page);
+      this.$emit("update:page", page);
     },
     selectAllItems(select: boolean): void {
       if (select) {
-        this.$emit('update:selected', this.beatmapAsTableDataFiltered.map((item) => item.raw.data));
+        this.$emit(
+          "update:selected",
+          this.beatmapAsTableDataFiltered.map((item) => item.raw.data)
+        );
       } else {
-        this.$emit('update:selected', []);
+        this.$emit("update:selected", []);
       }
     },
     selectThisItem(item: BeatsaverBeatmap, enabled: boolean) {
       if (enabled) {
-        this.$emit('update:selected', [...this.selected, item]);
+        this.$emit("update:selected", [...this.selected, item]);
       } else {
         this.$emit(
-          'update:selected',
-          this.selected.filter((selectedItem: BeatsaverBeatmap) => selectedItem.hash !== item.hash),
+          "update:selected",
+          this.selected.filter(
+            (selectedItem: BeatsaverBeatmap) => selectedItem.hash !== item.hash
+          )
         );
       }
     },
     filterWithSearch() {
-      return this.beatmapAsTableData.filter((entry: any) => this.headers
-        .some((header: BeatmapsTableHeader) => {
+      return this.beatmapAsTableData.filter((entry: any) =>
+        this.headers.some((header: BeatmapsTableHeader) => {
           if (!header.filterable) {
             return false;
           }
@@ -452,11 +461,12 @@ export default Vue.extend({
           }
 
           return false;
-        }));
+        })
+      );
     },
     filterWithFilters() {
-      return this.beatmapAsTableData.filter((entry: any) => this.headers
-        .every((header: BeatmapsTableHeader) => {
+      return this.beatmapAsTableData.filter((entry: any) =>
+        this.headers.every((header: BeatmapsTableHeader) => {
           if (!header.filterable) {
             return true;
           }
@@ -468,23 +478,27 @@ export default Vue.extend({
           }
 
           return true;
-        }));
+        })
+      );
     },
   },
 });
 </script>
 
 <style>
-  td, th {
-    padding-left: 4px !important;
-    padding-right: 4px !important;
-  }
+td,
+th {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
 
-  td:first-child, th:first-child {
-    padding-left: 16px !important;
-  }
+td:first-child,
+th:first-child {
+  padding-left: 16px !important;
+}
 
-  td:last-child, th:last-child {
-    padding-right: 16px !important;
-  }
+td:last-child,
+th:last-child {
+  padding-right: 16px !important;
+}
 </style>

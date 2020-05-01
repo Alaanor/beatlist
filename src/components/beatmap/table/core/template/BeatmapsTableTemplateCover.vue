@@ -7,11 +7,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import BeatmapCoverAvatar from '@/components/beatmap/cover/BeatmapCoverAvatar.vue';
+import Vue from "vue";
+import BeatmapCoverAvatar from "@/components/beatmap/cover/BeatmapCoverAvatar.vue";
 
 export default Vue.extend({
-  name: 'BeatmapsTableTemplateCover',
+  name: "BeatmapsTableTemplateCover",
   components: { BeatmapCoverAvatar },
   props: {
     item: { type: Object, required: true },
@@ -19,6 +19,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

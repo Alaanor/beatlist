@@ -1,4 +1,4 @@
-import { ProgressInterface } from '@/libraries/common/Progress';
+import { ProgressInterface } from "@/libraries/common/Progress";
 
 export interface ScannerInterface<T> {
   scanAll(progress?: ProgressInterface): Promise<ScannerResultInterface>;

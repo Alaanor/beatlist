@@ -1,8 +1,8 @@
-import { make } from 'vuex-pathify';
+import { make } from "vuex-pathify";
 
 export interface ModalStoreState {
-  newUserModal: boolean,
-  newVersionModal: boolean,
+  newUserModal: boolean;
+  newVersionModal: boolean;
 }
 
 const state = {

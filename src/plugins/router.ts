@@ -1,118 +1,120 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Settings from '@/pages/settings';
-import Home from '@/pages/home';
-import Downloads from '@/pages/downloads/';
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Settings from "@/pages/settings";
+import Home from "@/pages/home";
+import Downloads from "@/pages/downloads/";
 import Beatmap, {
-  BeatmapLocal, BeatmapLocalUnit,
-  BeatmapOnline, BeatmapOnlineUnit,
-} from '@/pages/beatmap';
+  BeatmapLocal,
+  BeatmapLocalUnit,
+  BeatmapOnline,
+  BeatmapOnlineUnit,
+} from "@/pages/beatmap";
 import Playlists, {
   PlaylistsLocal,
   PlaylistsLocalUnit,
   PlaylistsBsaber,
-} from '@/pages/playlists';
-import store from './store';
+} from "@/pages/playlists";
+import store from "./store";
 
 Vue.use(VueRouter);
 
 const router = new VueRouter({
   routes: [
     {
-      path: '/',
-      name: 'home',
+      path: "/",
+      name: "home",
       component: Home,
     },
     {
-      path: '/beatmaps',
-      name: 'beatmaps',
-      redirect: { name: 'beatmaps-local' },
+      path: "/beatmaps",
+      name: "beatmaps",
+      redirect: { name: "beatmaps-local" },
       component: Beatmap,
       meta: {
         subNav: [
           {
-            name: 'Local',
-            path: { name: 'beatmaps-local' },
-            icon: 'computer',
+            name: "Local",
+            path: { name: "beatmaps-local" },
+            icon: "computer",
           },
           {
-            name: 'Online - Beatsaver',
-            path: { name: 'beatmaps-online' },
-            icon: 'language',
+            name: "Online - Beatsaver",
+            path: { name: "beatmaps-online" },
+            icon: "language",
           },
         ],
       },
       children: [
         {
-          path: 'local',
-          name: 'beatmaps-local',
+          path: "local",
+          name: "beatmaps-local",
           component: BeatmapLocal,
         },
         {
-          path: 'local/:hash',
-          name: 'beatmaps-local-unit',
+          path: "local/:hash",
+          name: "beatmaps-local-unit",
           component: BeatmapLocalUnit,
         },
         {
-          path: 'online',
-          name: 'beatmaps-online',
+          path: "online",
+          name: "beatmaps-online",
           component: BeatmapOnline,
         },
         {
-          path: 'online/:hash',
-          name: 'beatmaps-online-unit',
+          path: "online/:hash",
+          name: "beatmaps-online-unit",
           component: BeatmapOnlineUnit,
         },
       ],
     },
     {
-      path: '/playlists',
-      name: 'playlists',
-      redirect: { name: 'playlists-local' },
+      path: "/playlists",
+      name: "playlists",
+      redirect: { name: "playlists-local" },
       component: Playlists,
       meta: {
         subNav: [
           {
-            name: 'Local',
-            path: { name: 'playlists-local' },
-            icon: 'computer',
+            name: "Local",
+            path: { name: "playlists-local" },
+            icon: "computer",
           },
           {
-            name: 'Online - BSaber.com',
-            path: { name: 'playlists-bsaber' },
-            icon: 'language',
+            name: "Online - BSaber.com",
+            path: { name: "playlists-bsaber" },
+            icon: "language",
           },
         ],
       },
       children: [
         {
-          path: 'local',
-          name: 'playlists-local',
+          path: "local",
+          name: "playlists-local",
           component: PlaylistsLocal,
         },
         {
-          path: 'local/:hash',
-          name: 'playlists-local-unit',
+          path: "local/:hash",
+          name: "playlists-local-unit",
           component: PlaylistsLocalUnit,
         },
         {
-          path: 'bsaber',
-          name: 'playlists-bsaber',
+          path: "bsaber",
+          name: "playlists-bsaber",
           component: PlaylistsBsaber,
         },
       ],
     },
     {
-      path: '/downloads',
-      name: 'downloads',
+      path: "/downloads",
+      name: "downloads",
       component: Downloads,
     },
     {
-      path: '/settings',
-      name: 'settings',
+      path: "/settings",
+      name: "settings",
       component: Settings,
     },
-    { path: '*', redirect: '/' },
+    { path: "*", redirect: "/" },
   ],
 });
 
@@ -121,11 +123,10 @@ router.beforeEach(async (to, from, next) => {
   // @ts-ignore
   await store.restored;
 
-  const subNav = to.matched
-    .find((record) => record.meta.subNav)
-    ?.meta.subNav ?? [];
+  const subNav =
+    to.matched.find((record) => record.meta.subNav)?.meta.subNav ?? [];
 
-  store.commit('appState/SET_SUB_NAV', subNav);
+  store.commit("appState/SET_SUB_NAV", subNav);
 
   next();
 });

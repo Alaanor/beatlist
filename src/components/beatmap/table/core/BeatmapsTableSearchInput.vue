@@ -13,16 +13,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from "vue";
 
 export default Vue.extend({
-  name: 'BeatmapsTableSearchInput',
+  name: "BeatmapsTableSearchInput",
   props: {
     value: { type: String, required: true },
   },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

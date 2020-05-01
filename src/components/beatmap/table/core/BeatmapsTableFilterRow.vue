@@ -1,14 +1,7 @@
 <template>
   <tr>
-    <td
-      v-for="index in [...Array(shiftLeft)].map((_, i) => i)"
-      :key="index"
-    />
-    <td
-      v-for="header in headers"
-      :key="header.value"
-      :align="header.align"
-    >
+    <td v-for="index in [...Array(shiftLeft)].map((_, i) => i)" :key="index" />
+    <td v-for="header in headers" :key="header.value" :align="header.align">
       <component
         :is="`BeatmapsTableFilter${header.filterType}`"
         v-if="header.filterType !== undefined"
@@ -20,15 +13,15 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { BeatmapsTableHeader } from '@/components/beatmap/table/core/BeatmapsTableHeaders';
-import BeatmapsTableFilterText from '@/components/beatmap/table/core/filter/BeatmapsTableFilterText.vue';
-import BeatmapsTableFilterRange from '@/components/beatmap/table/core/filter/BeatmapsTableFilterRange.vue';
-import BeatmapsTableFilterDifficulties from '@/components/beatmap/table/core/filter/BeatmapsTableFilterDifficulties.vue';
-import BeatmapsTableFilterDate from '@/components/beatmap/table/core/filter/BeatmapsTableFilterDate.vue';
+import Vue, { PropType } from "vue";
+import { BeatmapsTableHeader } from "@/components/beatmap/table/core/BeatmapsTableHeaders";
+import BeatmapsTableFilterText from "@/components/beatmap/table/core/filter/BeatmapsTableFilterText.vue";
+import BeatmapsTableFilterRange from "@/components/beatmap/table/core/filter/BeatmapsTableFilterRange.vue";
+import BeatmapsTableFilterDifficulties from "@/components/beatmap/table/core/filter/BeatmapsTableFilterDifficulties.vue";
+import BeatmapsTableFilterDate from "@/components/beatmap/table/core/filter/BeatmapsTableFilterDate.vue";
 
 export default Vue.extend({
-  name: 'BeatmapsTableFilterRow',
+  name: "BeatmapsTableFilterRow",
   components: {
     BeatmapsTableFilterText,
     BeatmapsTableFilterRange,
@@ -43,6 +36,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

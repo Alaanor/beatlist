@@ -17,34 +17,15 @@
         :key="menu.name"
         :class="menu.type === 'spacer' ? 'mt-auto' : ''"
       >
-        <MenuNavigationItem
-          v-if="menu.type === 'entry'"
-          :item="menu"
-        />
-        <component
-          :is="menu.component"
-          v-if="menu.type === 'component'"
-        />
+        <MenuNavigationItem v-if="menu.type === 'entry'" :item="menu" />
+        <component :is="menu.component" v-if="menu.type === 'component'" />
       </div>
     </div>
-    <svg
-      id="curve"
-      viewBox="0 0 20 20"
-      style="right: -20px"
-    >
+    <svg id="curve" viewBox="0 0 20 20" style="right: -20px;">
       <defs>
         <mask id="curve-mask">
-          <rect
-            width="100%"
-            height="100%"
-            fill="white"
-          />
-          <circle
-            cy="10"
-            cx="10"
-            r="50%"
-            fill="black"
-          />
+          <rect width="100%" height="100%" fill="white" />
+          <circle cy="10" cx="10" r="50%" fill="black" />
         </mask>
       </defs>
       <rect
@@ -60,11 +41,11 @@
 </template>
 
 <script lang="ts">
-import MenuNavigationItem from '@/components/core/menu/MenuNavigationItem.vue';
-import ScannerStatusOpenButton from '@/components/scanner/ScannerStatusOpenButton.vue';
+import MenuNavigationItem from "@/components/core/menu/MenuNavigationItem.vue";
+import ScannerStatusOpenButton from "@/components/scanner/ScannerStatusOpenButton.vue";
 
 export default {
-  name: 'AppMenuNavBar',
+  name: "AppMenuNavBar",
   components: { MenuNavigationItem, ScannerStatusOpenButton },
   props: {
     menus: { type: Array, required: true },
@@ -73,12 +54,12 @@ export default {
 };
 </script>
 <style scoped>
-  #curve {
-    position: absolute;
-    top: 0;
-    width: 20px;
-    height: 20px;
-    z-index: 100;
-    overflow: visible;
-  }
+#curve {
+  position: absolute;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  z-index: 100;
+  overflow: visible;
+}
 </style>

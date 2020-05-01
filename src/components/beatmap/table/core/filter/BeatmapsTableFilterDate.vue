@@ -3,7 +3,9 @@
     <v-btn
       icon
       small
-      :color="(stringMin === undefined && stringMax === undefined) ? '' : 'success'"
+      :color="
+        stringMin === undefined && stringMax === undefined ? '' : 'success'
+      "
     >
       <v-icon>filter_list</v-icon>
     </v-btn>
@@ -26,7 +28,7 @@
             v-on="on"
           />
         </template>
-        <v-date-picker v-model="stringMin"/>
+        <v-date-picker v-model="stringMin" />
       </v-menu>
       <v-menu
         ref="menu"
@@ -46,19 +48,19 @@
             v-on="on"
           />
         </template>
-        <v-date-picker v-model="stringMax"/>
+        <v-date-picker v-model="stringMax" />
       </v-menu>
     </template>
   </v-edit-dialog>
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { BeatmapsTableHeader } from '@/components/beatmap/table/core/BeatmapsTableHeaders';
-import { DateRange } from '@/libraries/common/Range';
+import Vue, { PropType } from "vue";
+import { BeatmapsTableHeader } from "@/components/beatmap/table/core/BeatmapsTableHeaders";
+import { DateRange } from "@/libraries/common/Range";
 
 export default Vue.extend({
-  name: 'BeatmapsTableFilterDate',
+  name: "BeatmapsTableFilterDate",
   props: {
     value: { type: Object as PropType<DateRange>, required: true },
     header: { type: Object as PropType<BeatmapsTableHeader>, required: true },
@@ -73,11 +75,13 @@ export default Vue.extend({
   }),
   watch: {
     stringMin() {
-      this.dateMin = this.stringMin !== undefined ? new Date(this.stringMin) : undefined;
+      this.dateMin =
+        this.stringMin !== undefined ? new Date(this.stringMin) : undefined;
       this.update();
     },
     stringMax() {
-      this.dateMax = this.stringMax !== undefined ? new Date(this.stringMax) : undefined;
+      this.dateMax =
+        this.stringMax !== undefined ? new Date(this.stringMax) : undefined;
       this.update();
     },
   },
@@ -91,13 +95,16 @@ export default Vue.extend({
     update() {
       this.checkForValidMinMax();
       this.convertNullToUndefined();
-      this.$emit('input', { min: this.dateMin, max: this.dateMax } as DateRange);
+      this.$emit("input", {
+        min: this.dateMin,
+        max: this.dateMax,
+      } as DateRange);
     },
     checkForValidMinMax() {
       if (
-        this.dateMin !== undefined
-        && this.dateMax !== undefined
-        && this.dateMin?.getTime() > this.dateMax?.getTime()
+        this.dateMin !== undefined &&
+        this.dateMax !== undefined &&
+        this.dateMin?.getTime() > this.dateMax?.getTime()
       ) {
         this.dateMax = this.dateMin;
       }
@@ -121,6 +128,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

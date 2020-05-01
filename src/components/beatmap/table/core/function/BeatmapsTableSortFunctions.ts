@@ -25,8 +25,4 @@ function sortDateFromString(a: string, b: string): number {
   return new Date(a) > new Date(b) ? 1 : -1;
 }
 
-export {
-  sortText,
-  sortNumber,
-  sortDateFromString,
-};
+export { sortText, sortNumber, sortDateFromString };

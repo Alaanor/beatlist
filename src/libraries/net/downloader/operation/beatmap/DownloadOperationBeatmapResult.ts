@@ -1,4 +1,4 @@
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 
 export enum DownloadOperationBeatmapResultStatus {
   Init = 0,
@@ -10,11 +10,12 @@ export enum DownloadOperationBeatmapResultStatus {
   IOError = 6,
 }
 
-export type DownloadOperationBeatmapResult = DownloadOperationBeatmapResultBase & (
-  DownloadOperationBeatmapResultInProgress
-  | DownloadOperationBeatmapResultDone
-  | DownloadOperationBeatmapResultError
-  )
+export type DownloadOperationBeatmapResult = DownloadOperationBeatmapResultBase &
+  (
+    | DownloadOperationBeatmapResultInProgress
+    | DownloadOperationBeatmapResultDone
+    | DownloadOperationBeatmapResultError
+  );
 
 export interface DownloadOperationBeatmapResultBase {
   beatmap: BeatsaverBeatmap;
@@ -22,11 +23,10 @@ export interface DownloadOperationBeatmapResultBase {
 }
 
 export interface DownloadOperationBeatmapResultInProgress {
-  status: (
-    DownloadOperationBeatmapResultStatus.Init
+  status:
+    | DownloadOperationBeatmapResultStatus.Init
     | DownloadOperationBeatmapResultStatus.Downloading
-    | DownloadOperationBeatmapResultStatus.Extracting
-    );
+    | DownloadOperationBeatmapResultStatus.Extracting;
 }
 
 export interface DownloadOperationBeatmapResultDone {
@@ -35,10 +35,9 @@ export interface DownloadOperationBeatmapResultDone {
 }
 
 export interface DownloadOperationBeatmapResultError {
-  status: (
-    DownloadOperationBeatmapResultStatus.ExtractionError
+  status:
+    | DownloadOperationBeatmapResultStatus.ExtractionError
     | DownloadOperationBeatmapResultStatus.DownloadError
-    | DownloadOperationBeatmapResultStatus.IOError
-    );
-  errorWritten: string,
+    | DownloadOperationBeatmapResultStatus.IOError;
+  errorWritten: string;
 }

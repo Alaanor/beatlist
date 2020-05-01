@@ -1,15 +1,14 @@
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import { DownloadOperationBeatmapResult } from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
-import { DownloadUnitProgress } from '@/libraries/net/downloader/DownloadUnitProgress';
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import { DownloadOperationBeatmapResult } from "@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult";
+import { DownloadUnitProgress } from "@/libraries/net/downloader/DownloadUnitProgress";
 
 export enum DownloadOperationType {
-  Beatmap = 'Beatmap',
-  Playlist = 'Playlist',
+  Beatmap = "Beatmap",
+  Playlist = "Playlist",
 }
 
-export type DownloadOperation = DownloadOperationBase & (
-  DownloadOperationTypeBeatmap
-)
+export type DownloadOperation = DownloadOperationBase &
+  DownloadOperationTypeBeatmap;
 
 export interface DownloadOperationBase {
   type: DownloadOperationType;

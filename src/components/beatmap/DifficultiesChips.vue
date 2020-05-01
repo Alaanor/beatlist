@@ -1,10 +1,6 @@
 <template>
   <v-container :class="short ? 'pa-0 pl-3' : 'pa-1 ml-n2'">
-    <v-tooltip
-      v-for="value in difficulties"
-      :key="value.key"
-      top
-    >
+    <v-tooltip v-for="value in difficulties" :key="value.key" top>
       <template #activator="{ on }">
         <v-chip
           :color="value.color"
@@ -12,7 +8,7 @@
           :class="short ? 'ml-n3' : 'ma-1'"
           v-on="on"
         >
-          {{ short ? '' : value.chipName }}
+          {{ short ? "" : value.chipName }}
         </v-chip>
       </template>
       <span>{{ value.chipName }}</span>
@@ -21,12 +17,16 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { DifficultiesSimple } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import { getColorFor, getNameFor, getWeightFor } from '@/libraries/helper/DifficultiesHelper';
+import Vue, { PropType } from "vue";
+import { DifficultiesSimple } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import {
+  getColorFor,
+  getNameFor,
+  getWeightFor,
+} from "@/libraries/helper/DifficultiesHelper";
 
 export default Vue.extend({
-  name: 'DifficultiesChips',
+  name: "DifficultiesChips",
   props: {
     diff: { type: Object as PropType<DifficultiesSimple>, required: true },
     small: { type: Boolean, default: false },
@@ -37,7 +37,9 @@ export default Vue.extend({
   }),
   watch: {
     diff: {
-      handler() { this.computeDifficulties(); },
+      handler() {
+        this.computeDifficulties();
+      },
       immediate: true,
     },
   },
@@ -58,15 +60,15 @@ export default Vue.extend({
         .map((d: any) => d.enabled)
         .join();
 
-      this.difficulties = this.difficulties.map((d: any) => {
-        d.key = `${keyBase} - ${d.name}`;
-        return d;
-      }).filter((d: any) => d.enabled);
+      this.difficulties = this.difficulties
+        .map((d: any) => {
+          d.key = `${keyBase} - ${d.name}`;
+          return d;
+        })
+        .filter((d: any) => d.enabled);
     },
   },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

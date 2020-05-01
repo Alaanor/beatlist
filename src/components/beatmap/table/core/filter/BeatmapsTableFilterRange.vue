@@ -3,7 +3,7 @@
     <v-btn
       icon
       small
-      :color="(min === undefined && max === undefined) ? '' : 'success'"
+      :color="min === undefined && max === undefined ? '' : 'success'"
     >
       <v-icon>filter_list</v-icon>
     </v-btn>
@@ -34,12 +34,12 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { BeatmapsTableHeader } from '@/components/beatmap/table/core/BeatmapsTableHeaders';
-import { Range } from '@/libraries/common/Range';
+import Vue, { PropType } from "vue";
+import { BeatmapsTableHeader } from "@/components/beatmap/table/core/BeatmapsTableHeaders";
+import { Range } from "@/libraries/common/Range";
 
 export default Vue.extend({
-  name: 'BeatmapsTableFilterRange',
+  name: "BeatmapsTableFilterRange",
   props: {
     value: { type: Object as PropType<Range>, required: true },
     header: { type: Object as PropType<BeatmapsTableHeader>, required: true },
@@ -56,14 +56,14 @@ export default Vue.extend({
     update() {
       this.setEmptyAsUndefined();
       this.convertNullToUndefined();
-      this.$emit('input', { min: this.min, max: this.max } as Range);
+      this.$emit("input", { min: this.min, max: this.max } as Range);
     },
     setEmptyAsUndefined() {
-      if ((this.min as unknown as string) === '') {
+      if (((this.min as unknown) as string) === "") {
         this.min = undefined;
       }
 
-      if ((this.max as unknown as string) === '') {
+      if (((this.max as unknown) as string) === "") {
         this.max = undefined;
       }
     },
@@ -86,6 +86,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,4 +1,4 @@
-enum BeatmapLoadStateError{
+enum BeatmapLoadStateError {
   FailedToComputeHash = 0,
   NoInfoDatFileFound = 1,
   NoCoverImageFound = 2,

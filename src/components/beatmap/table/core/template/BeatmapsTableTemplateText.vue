@@ -5,11 +5,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Utilities from '@/libraries/helper/Utilities';
+import Vue from "vue";
+import Utilities from "@/libraries/helper/Utilities";
 
 export default Vue.extend({
-  name: 'BeatmapsTableTemplateText',
+  name: "BeatmapsTableTemplateText",
   props: {
     item: { type: Object, required: true },
     header: { type: Object, required: true },
@@ -22,6 +22,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

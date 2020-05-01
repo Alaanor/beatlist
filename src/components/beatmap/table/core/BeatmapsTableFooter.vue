@@ -4,13 +4,7 @@
       <span v-if="!noItemPerPageChoice">Rows per page:</span>
       <v-menu v-if="!noItemPerPageChoice">
         <template #activator="{ on }">
-          <v-btn
-            small
-            text
-            outlined
-            class="mx-3"
-            v-on="on"
-          >
+          <v-btn small text outlined class="mx-3" v-on="on">
             {{ itemsPerPage | withAll }}
           </v-btn>
         </template>
@@ -25,7 +19,11 @@
         </v-list>
       </v-menu>
       <span class="px-2">
-        {{ `${pagination.pageStart+1}-${pagination.pageStop} of ${pagination.itemsLength}` }}
+        {{
+          `${pagination.pageStart + 1}-${pagination.pageStop} of ${
+            pagination.itemsLength
+          }`
+        }}
       </span>
       <v-btn
         icon
@@ -49,13 +47,7 @@
           chevron_left
         </v-icon>
       </v-btn>
-      <v-btn
-        icon
-        small
-        class="mx-1"
-        :disabled="isLastPage"
-        @click="pageNext"
-      >
+      <v-btn icon small class="mx-1" :disabled="isLastPage" @click="pageNext">
         <v-icon small>
           chevron_right
         </v-icon>
@@ -76,13 +68,13 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import Vue, { PropType } from "vue";
 
 export default Vue.extend({
-  name: 'BeatmapsTableFooter',
+  name: "BeatmapsTableFooter",
   filters: {
     withAll(item: number): string {
-      return item === -1 ? 'all' : item.toString();
+      return item === -1 ? "all" : item.toString();
     },
   },
   props: {
@@ -121,13 +113,13 @@ export default Vue.extend({
       this.options.page = this.pagination.pageCount;
     },
     updateItemsPerPage(item: number) {
-      this.$emit('update:itemsPerPage', item);
+      this.$emit("update:itemsPerPage", item);
     },
   },
 });
 </script>
 <style scoped>
-  .small-font {
-    font-size: 12px;
-  }
+.small-font {
+  font-size: 12px;
+}
 </style>

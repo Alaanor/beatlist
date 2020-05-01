@@ -13,14 +13,8 @@
         see-more-route-name="beatmaps-local-unit"
       >
         <template #actions="{ beatsaver }">
-          <BeatmapButtonRemoveBeatmap
-            :beatmap="beatsaver"
-            small
-          />
-          <BeatmapButtonAddToNPlaylists
-            :beatmap="beatsaver"
-            small
-          />
+          <BeatmapButtonRemoveBeatmap :beatmap="beatsaver" small />
+          <BeatmapButtonAddToNPlaylists :beatmap="beatsaver" small />
         </template>
       </BeatmapsTable>
     </v-card>
@@ -28,18 +22,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { sync } from 'vuex-pathify';
-import BeatmapsTable from '@/components/beatmap/table/BeatmapsTable.vue';
-import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
-import BeatmapsTableOuterHeader from '@/components/beatmap/table/core/BeatmapsTableOuterHeader.vue';
-import BeatmapButtonAddToNPlaylists
-  from '@/components/beatmap/button/BeatmapButtonAddToNPlaylists.vue';
-import BeatmapButtonRemoveBeatmap
-  from '@/components/beatmap/info/button/BeatmapButtonRemoveBeatmap.vue';
+import Vue from "vue";
+import { sync } from "vuex-pathify";
+import BeatmapsTable from "@/components/beatmap/table/BeatmapsTable.vue";
+import BeatmapLibrary from "@/libraries/beatmap/BeatmapLibrary";
+import BeatmapsTableOuterHeader from "@/components/beatmap/table/core/BeatmapsTableOuterHeader.vue";
+import BeatmapButtonAddToNPlaylists from "@/components/beatmap/button/BeatmapButtonAddToNPlaylists.vue";
+import BeatmapButtonRemoveBeatmap from "@/components/beatmap/info/button/BeatmapButtonRemoveBeatmap.vue";
 
 export default Vue.extend({
-  name: 'BeatmapTableLocal',
+  name: "BeatmapTableLocal",
   components: {
     BeatmapsTable,
     BeatmapsTableOuterHeader,
@@ -47,11 +39,15 @@ export default Vue.extend({
     BeatmapButtonRemoveBeatmap,
   },
   data: () => ({
-    search: '',
+    search: "",
   }),
   computed: {
-    shownColumn: sync<string[]>('settings/beatmapsTable@localBeatmaps.shownColumn'),
-    itemsPerPage: sync<string[]>('settings/beatmapsTable@localBeatmaps.itemsPerPage'),
+    shownColumn: sync<string[]>(
+      "settings/beatmapsTable@localBeatmaps.shownColumn"
+    ),
+    itemsPerPage: sync<string[]>(
+      "settings/beatmapsTable@localBeatmaps.itemsPerPage"
+    ),
     beatmaps: () => BeatmapLibrary.GetAllValidBeatmapAsTableData(),
   },
 });

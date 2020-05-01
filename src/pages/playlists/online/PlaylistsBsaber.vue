@@ -1,20 +1,18 @@
 <template>
-  <v-container/>
+  <v-container />
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import DiscordRichPresence from '@/libraries/ipc/DiscordRichPresence';
+import Vue from "vue";
+import DiscordRichPresence from "@/libraries/ipc/DiscordRichPresence";
 
 export default Vue.extend({
-  name: 'PlaylistsBsaber',
+  name: "PlaylistsBsaber",
   beforeRouteEnter(to, from, next) {
-    DiscordRichPresence.UpdateStatus('Browsing online playlist');
+    DiscordRichPresence.UpdateStatus("Browsing online playlist");
     next();
   },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

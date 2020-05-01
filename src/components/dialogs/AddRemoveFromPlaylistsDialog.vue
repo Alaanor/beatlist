@@ -21,11 +21,8 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-spacer/>
-        <v-btn
-          text
-          @click="closeDialog"
-        >
+        <v-spacer />
+        <v-btn text @click="closeDialog">
           Cancel
         </v-btn>
       </v-card-actions>
@@ -34,15 +31,14 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import PlaylistsListViewer from '@/components/playlist/list/PlaylistsListViewer.vue';
-import PlaylistLibrary from '@/libraries/playlist/PlaylistLibrary';
-import PlaylistButtonAddRemoveTogglePlaylist
-  from '@/components/playlist/button/PlaylistButtonAddRemoveTogglePlaylist.vue';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+import Vue, { PropType } from "vue";
+import PlaylistsListViewer from "@/components/playlist/list/PlaylistsListViewer.vue";
+import PlaylistLibrary from "@/libraries/playlist/PlaylistLibrary";
+import PlaylistButtonAddRemoveTogglePlaylist from "@/components/playlist/button/PlaylistButtonAddRemoveTogglePlaylist.vue";
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 
 export default Vue.extend({
-  name: 'AddRemoveFromPlaylistsDialog',
+  name: "AddRemoveFromPlaylistsDialog",
   components: { PlaylistsListViewer, PlaylistButtonAddRemoveTogglePlaylist },
   props: {
     open: { type: Boolean, required: true },
@@ -53,12 +49,10 @@ export default Vue.extend({
   },
   methods: {
     closeDialog() {
-      this.$emit('update:open', false);
+      this.$emit("update:open", false);
     },
   },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

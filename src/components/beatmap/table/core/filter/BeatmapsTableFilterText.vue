@@ -1,10 +1,6 @@
 <template>
   <v-edit-dialog>
-    <v-btn
-      icon
-      small
-      :color="textFieldValue === '' ? '' : 'success'"
-    >
+    <v-btn icon small :color="textFieldValue === '' ? '' : 'success'">
       <v-icon>filter_list</v-icon>
     </v-btn>
     <template v-slot:input>
@@ -18,17 +14,17 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { BeatmapsTableHeader } from '@/components/beatmap/table/core/BeatmapsTableHeaders';
+import Vue, { PropType } from "vue";
+import { BeatmapsTableHeader } from "@/components/beatmap/table/core/BeatmapsTableHeaders";
 
 export default Vue.extend({
-  name: 'BeatmapsTableFilterText',
+  name: "BeatmapsTableFilterText",
   props: {
     value: { type: String, required: true },
     header: { type: Object as PropType<BeatmapsTableHeader>, required: true },
   },
   data: () => ({
-    textFieldValue: '',
+    textFieldValue: "",
   }),
   watch: {
     textFieldValue() {
@@ -40,12 +36,10 @@ export default Vue.extend({
   },
   methods: {
     update() {
-      this.$emit('input', this.textFieldValue);
+      this.$emit("input", this.textFieldValue);
     },
   },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

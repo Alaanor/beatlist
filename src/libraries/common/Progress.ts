@@ -1,10 +1,10 @@
-import events from 'events';
+import events from "events";
 
-export const ON_PLUS_ONE: string = 'plusOne';
-export const ON_TOTAL_CHANGE: string = 'totalChange';
+export const ON_PLUS_ONE: string = "plusOne";
+export const ON_TOTAL_CHANGE: string = "totalChange";
 
 export interface ProgressInterface {
-  get(): { done: number, total: number };
+  get(): { done: number; total: number };
   getRatio(): number;
 }
 
@@ -27,7 +27,7 @@ export default class Progress implements ProgressInterface {
     }
   }
 
-  public get(): {done: number, total: number} {
+  public get(): { done: number; total: number } {
     return {
       done: this._done,
       total: this._total,

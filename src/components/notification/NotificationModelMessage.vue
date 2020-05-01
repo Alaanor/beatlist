@@ -6,34 +6,24 @@
     right
     bottom
   >
-    <v-icon
-      v-if="notification.icon"
-      class="pr-2"
-    >
+    <v-icon v-if="notification.icon" class="pr-2">
       {{ notification.icon }}
     </v-icon>
-    <span
-      style="width: 100%"
-      v-html="notification.content"
-    />
-    <v-btn
-      text
-      class="ma-0"
-      @click="close()"
-    >
+    <span style="width: 100%;" v-html="notification.content" />
+    <v-btn text class="ma-0" @click="close()">
       Close
     </v-btn>
   </v-snackbar>
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import Vue, { PropType } from "vue";
 import {
   IMessageNotification,
   ICommonNotification,
   NotificationType,
-} from '@/libraries/notification/Notification';
-import NotificationLibrary from '@/libraries/notification/NotificationLibrary';
+} from "@/libraries/notification/Notification";
+import NotificationLibrary from "@/libraries/notification/NotificationLibrary";
 
 export default Vue.extend({
   name: `NotificationModel${NotificationType.Message}`,
@@ -49,7 +39,10 @@ export default Vue.extend({
   watch: {
     snackbar() {
       if (!this.snackbar) {
-        setTimeout(() => NotificationLibrary.SetAsNotified(this.notification), 250);
+        setTimeout(
+          () => NotificationLibrary.SetAsNotified(this.notification),
+          250
+        );
       }
     },
   },
@@ -66,6 +59,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

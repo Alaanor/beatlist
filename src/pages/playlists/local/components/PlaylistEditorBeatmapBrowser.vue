@@ -33,19 +33,18 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { sync } from 'vuex-pathify';
-import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
-import BeatmapsTable from '@/components/beatmap/table/BeatmapsTable.vue';
-import PlaylistButtonAddToPlaylist
-  from '@/components/playlist/button/PlaylistButtonAddToPlaylist.vue';
-import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import BeatmapsTableBulkActions from '@/components/beatmap/table/core/BeatmapsTableBulkActions.vue';
-import BeatmapsTableOuterHeader from '@/components/beatmap/table/core/BeatmapsTableOuterHeader.vue';
+import Vue, { PropType } from "vue";
+import { sync } from "vuex-pathify";
+import { PlaylistLocal } from "@/libraries/playlist/PlaylistLocal";
+import BeatmapsTable from "@/components/beatmap/table/BeatmapsTable.vue";
+import PlaylistButtonAddToPlaylist from "@/components/playlist/button/PlaylistButtonAddToPlaylist.vue";
+import BeatmapLibrary from "@/libraries/beatmap/BeatmapLibrary";
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import BeatmapsTableBulkActions from "@/components/beatmap/table/core/BeatmapsTableBulkActions.vue";
+import BeatmapsTableOuterHeader from "@/components/beatmap/table/core/BeatmapsTableOuterHeader.vue";
 
 export default Vue.extend({
-  name: 'PlaylistEditorBeatmapBrowser',
+  name: "PlaylistEditorBeatmapBrowser",
   components: {
     BeatmapsTableOuterHeader,
     BeatmapsTable,
@@ -57,16 +56,18 @@ export default Vue.extend({
   },
   data: () => ({
     selectedBeatmap: [] as BeatsaverBeatmap[],
-    search: '',
+    search: "",
   }),
   computed: {
-    shownColumn: sync<string[]>('settings/beatmapsTable@playlistBrowser.shownColumn'),
-    itemsPerPage: sync<string[]>('settings/beatmapsTable@playlistBrowser.itemsPerPage'),
+    shownColumn: sync<string[]>(
+      "settings/beatmapsTable@playlistBrowser.shownColumn"
+    ),
+    itemsPerPage: sync<string[]>(
+      "settings/beatmapsTable@playlistBrowser.itemsPerPage"
+    ),
     beatmaps: () => BeatmapLibrary.GetAllValidBeatmapAsTableData(),
   },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

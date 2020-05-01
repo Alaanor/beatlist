@@ -1,14 +1,14 @@
 <template>
-  <Toc :items="items"/>
+  <Toc :items="items" />
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import Toc from '@/components/toc/Toc.vue';
-import { TocItem } from '@/components/toc/TocItem';
+import Vue, { PropType } from "vue";
+import Toc from "@/components/toc/Toc.vue";
+import { TocItem } from "@/components/toc/TocItem";
 
 export default Vue.extend({
-  name: 'PlaylistEditorSidebar',
+  name: "PlaylistEditorSidebar",
   components: { Toc },
   props: {
     items: { type: Array as PropType<TocItem[]>, required: true },
@@ -16,6 +16,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

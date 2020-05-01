@@ -1,7 +1,8 @@
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow } from "electron";
 
-export const OPEN_BEATSAVER_LINK = 'open_beatsaver_link';
-export const ON_BEATSAVER_LINK_OPENER_COMPONENT_READY = 'on_bs_link_component_ready';
+export const OPEN_BEATSAVER_LINK = "open_beatsaver_link";
+export const ON_BEATSAVER_LINK_OPENER_COMPONENT_READY =
+  "on_bs_link_component_ready";
 
 export default class BeatsaverLinkOpener {
   public static register(): void {

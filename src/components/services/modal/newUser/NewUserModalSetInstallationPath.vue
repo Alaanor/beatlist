@@ -1,39 +1,24 @@
 <template>
   <div>
-    <v-progress-circular
-      v-if="loading"
-      indeterminate
-    />
-    <div
-      v-if="failed"
-      class="d-flex flex-row align-center"
-    >
-      <v-icon
-        color="error"
-        class="pr-4"
-      >
+    <v-progress-circular v-if="loading" indeterminate />
+    <div v-if="failed" class="d-flex flex-row align-center">
+      <v-icon color="error" class="pr-4">
         report_problem
       </v-icon>
       <div>
-        Failed to detect your beatsaber installation<br>
+        Failed to detect your beatsaber installation<br />
         <span class="text--disabled caption">
-          Are you sure you installed the game ? <br>
+          Are you sure you installed the game ? <br />
           This is for pc user only, quest is not supported.
         </span>
       </div>
     </div>
-    <div
-      v-else
-      class="d-flex flex-row align-center"
-    >
-      <v-icon
-        color="success"
-        class="pr-4"
-      >
+    <div v-else class="d-flex flex-row align-center">
+      <v-icon color="success" class="pr-4">
         check
       </v-icon>
       <div>
-        Found the installation path at<br>
+        Found the installation path at<br />
         <span class="text--disabled caption">{{ installationPath }}</span>
       </div>
     </div>
@@ -41,28 +26,28 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { sync } from 'vuex-pathify';
-import PathResolver from '@/libraries/ipc/PathResolver.ipc';
+import Vue from "vue";
+import { sync } from "vuex-pathify";
+import PathResolver from "@/libraries/ipc/PathResolver.ipc";
 
 export default Vue.extend({
-  name: 'NewUserModalSetInstallationPath',
+  name: "NewUserModalSetInstallationPath",
   data: () => ({
     loading: true,
     failed: false,
   }),
   computed: {
-    installationPath: sync<string>('settings/installationPath'),
+    installationPath: sync<string>("settings/installationPath"),
   },
   mounted(): void {
-    if (this.installationPath !== '') {
+    if (this.installationPath !== "") {
       this.loading = false;
       return;
     }
 
     PathResolver.detectInstallationPath()
       .then((path: string) => {
-        this.failed = path === '';
+        this.failed = path === "";
         this.installationPath = path;
       })
       .finally(() => {
@@ -72,6 +57,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

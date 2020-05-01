@@ -16,15 +16,15 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { sync } from 'vuex-pathify';
-import Tooltip from '@/components/helper/Tooltip.vue';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
-import PlaylistOperation from '@/libraries/playlist/PlaylistOperation';
+import Vue, { PropType } from "vue";
+import { sync } from "vuex-pathify";
+import Tooltip from "@/components/helper/Tooltip.vue";
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import { PlaylistLocal } from "@/libraries/playlist/PlaylistLocal";
+import PlaylistOperation from "@/libraries/playlist/PlaylistOperation";
 
 export default Vue.extend({
-  name: 'PlaylistButtonRemoveFromPlaylist',
+  name: "PlaylistButtonRemoveFromPlaylist",
   components: { Tooltip },
   props: {
     playlist: { type: Object as PropType<PlaylistLocal>, required: true },
@@ -38,17 +38,21 @@ export default Vue.extend({
     isAlreadyInPlaylist(): boolean {
       return this.playlist.maps.some((map) => map.hash === this.beatmap.hash);
     },
-    lockPlaylistModification: sync<boolean>('appState/lockPlaylistModification'),
+    lockPlaylistModification: sync<boolean>(
+      "appState/lockPlaylistModification"
+    ),
   },
   methods: {
     Remove() {
       this.loading = true;
       this.lockPlaylistModification = true;
-      PlaylistOperation.RemoveMapFromPlaylist(this.playlist, this.beatmap.hash)
-        .finally(() => {
-          this.loading = false;
-          this.lockPlaylistModification = false;
-        });
+      PlaylistOperation.RemoveMapFromPlaylist(
+        this.playlist,
+        this.beatmap.hash
+      ).finally(() => {
+        this.loading = false;
+        this.lockPlaylistModification = false;
+      });
     },
   },
 });

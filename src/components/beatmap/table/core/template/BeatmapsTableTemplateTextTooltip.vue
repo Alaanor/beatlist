@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="text-truncate"
-    :style="`width: ${header.width}px`"
-  >
+  <div class="text-truncate" :style="`width: ${header.width}px`">
     <Tooltip :text="data">
       <span>
         {{ data }}
@@ -12,12 +9,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Utilities from '@/libraries/helper/Utilities';
-import Tooltip from '@/components/helper/Tooltip.vue';
+import Vue from "vue";
+import Utilities from "@/libraries/helper/Utilities";
+import Tooltip from "@/components/helper/Tooltip.vue";
 
 export default Vue.extend({
-  name: 'BeatmapsTableTemplateDefault',
+  name: "BeatmapsTableTemplateDefault",
   components: { Tooltip },
   props: {
     item: { type: Object, required: true },
@@ -31,6 +28,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

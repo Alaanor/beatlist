@@ -66,20 +66,20 @@ export interface Stats {
 }
 
 export interface BeatsaverPage {
-  docs: BeatsaverBeatmap[],
-  totalDocs: number,
-  lastPage: number,
-  prevPage: number | null,
-  nextPage: number | null,
+  docs: BeatsaverBeatmap[];
+  totalDocs: number;
+  lastPage: number;
+  prevPage: number | null;
+  nextPage: number | null;
 }
 
 // Dumb and quick check if the object is kinda what we expect, doesn't fully validate it
 export function isBeatsaverBeatmap(beatmap: any): beatmap is BeatsaverBeatmap {
   return (
-    'metadata' in beatmap
-    && 'stats' in beatmap
-    && 'key' in beatmap
-    && 'hash' in beatmap
-    && 'name' in beatmap
+    "metadata" in beatmap &&
+    "stats" in beatmap &&
+    "key" in beatmap &&
+    "hash" in beatmap &&
+    "name" in beatmap
   );
 }

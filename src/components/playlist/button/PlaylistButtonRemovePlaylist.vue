@@ -1,10 +1,7 @@
 <template>
   <div>
     <Tooltip text="Remove this playlist">
-      <v-btn
-        icon
-        @click.stop="dialog = true"
-      >
+      <v-btn icon @click.stop="dialog = true">
         <v-icon color="error">
           delete_forever
         </v-icon>
@@ -24,15 +21,17 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import Tooltip from '@/components/helper/Tooltip.vue';
-import ConfirmDialog from '@/components/dialogs/ConfirmDialog.vue';
-import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
-import NotificationService, { NOTIFICATION_ICON_DELETE } from '@/libraries/notification/NotificationService';
-import PlaylistOperation from '@/libraries/playlist/PlaylistOperation';
+import Vue, { PropType } from "vue";
+import Tooltip from "@/components/helper/Tooltip.vue";
+import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
+import { PlaylistLocal } from "@/libraries/playlist/PlaylistLocal";
+import NotificationService, {
+  NOTIFICATION_ICON_DELETE,
+} from "@/libraries/notification/NotificationService";
+import PlaylistOperation from "@/libraries/playlist/PlaylistOperation";
 
 export default Vue.extend({
-  name: 'PlaylistButtonRemovePlaylist',
+  name: "PlaylistButtonRemovePlaylist",
   components: { Tooltip, ConfirmDialog },
   props: {
     playlist: { type: Object as PropType<PlaylistLocal>, required: true },
@@ -44,15 +43,13 @@ export default Vue.extend({
     async deletePlaylist() {
       await PlaylistOperation.DeletePlaylist(this.playlist);
       NotificationService.NotifyMessage(
-        'The playlist has been deleted',
-        '',
-        NOTIFICATION_ICON_DELETE,
+        "The playlist has been deleted",
+        "",
+        NOTIFICATION_ICON_DELETE
       );
     },
   },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

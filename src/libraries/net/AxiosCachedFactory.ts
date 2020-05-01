@@ -1,6 +1,9 @@
-import axios, { AxiosAdapter, AxiosInstance } from 'axios';
-import { cacheAdapterEnhancer, throttleAdapterEnhancer } from 'axios-extensions';
-import axiosRetry, { exponentialDelay } from 'axios-retry';
+import axios, { AxiosAdapter, AxiosInstance } from "axios";
+import {
+  cacheAdapterEnhancer,
+  throttleAdapterEnhancer,
+} from "axios-extensions";
+import axiosRetry, { exponentialDelay } from "axios-retry";
 
 export default class AxiosCachedFactory {
   public static getAxios(apiBaseUrl: string): AxiosInstance {

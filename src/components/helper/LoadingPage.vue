@@ -9,7 +9,7 @@
             color="grey darken-2"
             indeterminate
           />
-          <slot/>
+          <slot />
         </div>
       </v-col>
     </v-row>
@@ -17,10 +17,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from "vue";
 
 export default Vue.extend({
-  name: 'LoadingPage',
+  name: "LoadingPage",
 });
 </script>
 

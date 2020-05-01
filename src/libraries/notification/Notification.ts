@@ -1,4 +1,4 @@
-import { DownloadOperationBeatmapResult } from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
+import { DownloadOperationBeatmapResult } from "@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult";
 
 export const enum NotificationState {
   ReadyToBeSend = 0,
@@ -12,8 +12,8 @@ export interface ICommonNotification {
 }
 
 export const enum NotificationType {
-  Message = 'Message',
-  BeatmapDownload = 'BeatmapDownload',
+  Message = "Message",
+  BeatmapDownload = "BeatmapDownload",
 }
 
 export interface INotificationType {
@@ -34,7 +34,5 @@ export interface IBeatmapDownloadNotification extends INotificationType {
 
 export type IKeyedNotification = INotification & { key: number };
 
-export type INotification = ICommonNotification & (
-  IMessageNotification |
-  IBeatmapDownloadNotification
-);
+export type INotification = ICommonNotification &
+  (IMessageNotification | IBeatmapDownloadNotification);

@@ -1,8 +1,8 @@
-import Progress from '@/libraries/common/Progress';
-import ProgressGroup from '@/libraries/common/ProgressGroup';
+import Progress from "@/libraries/common/Progress";
+import ProgressGroup from "@/libraries/common/ProgressGroup";
 
-describe('progress and progress group', () => {
-  it('should track the right progress', () => {
+describe("progress and progress group", () => {
+  it("should track the right progress", () => {
     expect.assertions(5);
 
     const progress = new Progress();
@@ -22,7 +22,7 @@ describe('progress and progress group', () => {
     expect(progress.getRatio()).toBe(1);
   });
 
-  it('should track the overall progress when using group', () => {
+  it("should track the overall progress when using group", () => {
     expect.assertions(5);
 
     const progressOne = new Progress();
@@ -51,7 +51,7 @@ describe('progress and progress group', () => {
     expect(progressGroup.getRatio()).toBe(4 / 12);
   });
 
-  it('should be able to get a new progress directly from the group object', () => {
+  it("should be able to get a new progress directly from the group object", () => {
     expect.assertions(2);
 
     const group = new ProgressGroup();

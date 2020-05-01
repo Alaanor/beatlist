@@ -1,26 +1,16 @@
 <template>
   <div>
     <v-hover #default="{ hover }">
-      <v-avatar
-        :size="avatarSize"
-        :tile="tile"
-        class="my-1"
-      >
-        <BeatmapCover
-          :beatmap="beatmap"
-          :progress-size="avatarSize"
-        >
+      <v-avatar :size="avatarSize" :tile="tile" class="my-1">
+        <BeatmapCover :beatmap="beatmap" :progress-size="avatarSize">
           <transition name="slide-y-transition">
             <div
               v-if="hover"
               class="d-flex fill-height align-center justify-center"
-              style="width: 100%; background-color: #000000A0"
+              style="width: 100%; background-color: #000000a0;"
             >
               <v-btn icon>
-                <v-icon
-                  :size="iconExpandSize"
-                  @click="imageOverlay = true"
-                >
+                <v-icon :size="iconExpandSize" @click="imageOverlay = true">
                   zoom_out_map
                 </v-icon>
               </v-btn>
@@ -35,17 +25,8 @@
       opacity="0.7"
       @click="imageOverlay = false"
     >
-      <BeatmapCover
-        :beatmap="beatmap"
-        max-height="512"
-        contain
-      />
-      <v-btn
-        icon
-        large
-        class="mt-2"
-        @click="imageOverlay = false"
-      >
+      <BeatmapCover :beatmap="beatmap" max-height="512" contain />
+      <v-btn icon large class="mt-2" @click="imageOverlay = false">
         <v-icon large>
           mdi-close
         </v-icon>
@@ -55,16 +36,19 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import { BeatmapLocal } from '@/libraries/beatmap/BeatmapLocal';
-import BeatmapCover from '@/components/beatmap/cover/BeatmapCover.vue';
+import Vue, { PropType } from "vue";
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import { BeatmapLocal } from "@/libraries/beatmap/BeatmapLocal";
+import BeatmapCover from "@/components/beatmap/cover/BeatmapCover.vue";
 
 export default Vue.extend({
-  name: 'BeatmapCoverAvatar',
+  name: "BeatmapCoverAvatar",
   components: { BeatmapCover },
   props: {
-    beatmap: { type: Object as PropType<BeatsaverBeatmap | BeatmapLocal>, default: {} },
+    beatmap: {
+      type: Object as PropType<BeatsaverBeatmap | BeatmapLocal>,
+      default: {},
+    },
     avatarSize: { type: Number, default: undefined },
     iconExpandSize: { type: Number, default: undefined },
     tile: { type: Boolean, default: undefined },
@@ -75,6 +59,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

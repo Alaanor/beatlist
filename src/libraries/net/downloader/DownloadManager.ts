@@ -1,9 +1,9 @@
-import events from 'events';
-import { DownloadOperation } from '@/libraries/net/downloader/operation/DownloadOperation';
-import DownloadLibrary from '@/libraries/net/downloader/DownloadLibrary';
+import events from "events";
+import { DownloadOperation } from "@/libraries/net/downloader/operation/DownloadOperation";
+import DownloadLibrary from "@/libraries/net/downloader/DownloadLibrary";
 
 const maxOperationInParallel = 3;
-const ON_QUEUE_UPDATED = 'on_queue_updated';
+const ON_QUEUE_UPDATED = "on_queue_updated";
 
 export default class DownloadManager {
   private static EventEmitter = new events.EventEmitter();
@@ -26,16 +26,19 @@ export default class DownloadManager {
   }
 
   private static UpdateQueue() {
-    DownloadLibrary.completedOperation
-      .push(...DownloadLibrary.ongoingOperation
-        .filter((value: DownloadOperation) => value.isCompleted));
+    DownloadLibrary.completedOperation.push(
+      ...DownloadLibrary.ongoingOperation.filter(
+        (value: DownloadOperation) => value.isCompleted
+      )
+    );
 
-    DownloadLibrary.ongoingOperation = DownloadLibrary.ongoingOperation
-      .filter((value: DownloadOperation) => !value.isCompleted);
+    DownloadLibrary.ongoingOperation = DownloadLibrary.ongoingOperation.filter(
+      (value: DownloadOperation) => !value.isCompleted
+    );
 
     while (
-      DownloadLibrary.ongoingOperation.length < maxOperationInParallel
-      && DownloadLibrary.queuedOperation.length !== 0
+      DownloadLibrary.ongoingOperation.length < maxOperationInParallel &&
+      DownloadLibrary.queuedOperation.length !== 0
     ) {
       const operation = DownloadLibrary.queuedOperation.pop();
 

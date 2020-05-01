@@ -1,8 +1,5 @@
 <template>
-  <Tooltip
-    v-if="!autoHide || (autoHide && !isDownloaded)"
-    :text="tooltipText"
-  >
+  <Tooltip v-if="!autoHide || (autoHide && !isDownloaded)" :text="tooltipText">
     <v-btn
       icon
       :disabled="isDownloaded || isDownloading"
@@ -10,35 +7,32 @@
       :small="small"
       @click="downloadIt()"
     >
-      <v-icon
-        color="success"
-        :small="small"
-      >
+      <v-icon color="success" :small="small">
         mdi-download
       </v-icon>
       <template #loader>
-        <DownloadProgressCircular :operation="operation"/>
+        <DownloadProgressCircular :operation="operation" />
       </template>
     </v-btn>
   </Tooltip>
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import DownloadManager from '@/libraries/net/downloader/DownloadManager';
-import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
-import Tooltip from '@/components/helper/Tooltip.vue';
-import DownloadOperationBeatmap from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmap';
-import { DownloadOperation } from '@/libraries/net/downloader/operation/DownloadOperation';
-import NotificationService from '@/libraries/notification/NotificationService';
-import DownloadLibrary from '@/libraries/net/downloader/DownloadLibrary';
-import DownloadProgressCircular from '@/components/downloads/DownloadProgressCircular.vue';
-import { FormatProgressAllInOne } from '@/libraries/net/downloader/DownloadUnitProgress';
-import BeatmapInstaller from '@/libraries/os/beatSaber/installer/BeatmapInstaller';
+import Vue, { PropType } from "vue";
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import DownloadManager from "@/libraries/net/downloader/DownloadManager";
+import BeatmapLibrary from "@/libraries/beatmap/BeatmapLibrary";
+import Tooltip from "@/components/helper/Tooltip.vue";
+import DownloadOperationBeatmap from "@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmap";
+import { DownloadOperation } from "@/libraries/net/downloader/operation/DownloadOperation";
+import NotificationService from "@/libraries/notification/NotificationService";
+import DownloadLibrary from "@/libraries/net/downloader/DownloadLibrary";
+import DownloadProgressCircular from "@/components/downloads/DownloadProgressCircular.vue";
+import { FormatProgressAllInOne } from "@/libraries/net/downloader/DownloadUnitProgress";
+import BeatmapInstaller from "@/libraries/os/beatSaber/installer/BeatmapInstaller";
 
 export default Vue.extend({
-  name: 'BeatmapDownloadButton',
+  name: "BeatmapDownloadButton",
   components: { Tooltip, DownloadProgressCircular },
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
@@ -55,7 +49,7 @@ export default Vue.extend({
         return FormatProgressAllInOne(this.operation.progress);
       }
 
-      return 'Download';
+      return "Download";
     },
     isDownloaded(): boolean {
       return BeatmapLibrary.GetMapByHash(this.beatmap.hash) !== undefined;
@@ -88,6 +82,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

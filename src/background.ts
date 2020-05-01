@@ -1,16 +1,21 @@
-import electron, { app, protocol, BrowserWindow } from 'electron';
-import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib';
-import path from 'path';
-import registerIpc from '@/libraries/ipc';
+import electron, { app, protocol, BrowserWindow } from "electron";
+import {
+  createProtocol,
+  installVueDevtools,
+} from "vue-cli-plugin-electron-builder/lib";
+import path from "path";
+import registerIpc from "@/libraries/ipc";
 
 class Background {
   private static RegisterProtocol() {
-    protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }]);
+    protocol.registerSchemesAsPrivileged([
+      { scheme: "app", privileges: { secure: true, standard: true } },
+    ]);
   }
 
   private win: BrowserWindow | null = null;
 
-  private isDevelopment: boolean = process.env.NODE_ENV !== 'production';
+  private isDevelopment: boolean = process.env.NODE_ENV !== "production";
 
   public Initiate() {
     Background.RegisterProtocol();
@@ -28,11 +33,11 @@ class Background {
       webPreferences: {
         nodeIntegration: true,
       },
-      icon: path.join(__dirname, '../public/icon_bold_64.png'),
-      backgroundColor: '#303030',
+      icon: path.join(__dirname, "../public/icon_bold_64.png"),
+      backgroundColor: "#303030",
     });
 
-    this.win.webContents.on('new-window', (e, url) => {
+    this.win.webContents.on("new-window", (e, url) => {
       e.preventDefault();
       electron.shell.openExternal(url);
     });
@@ -43,22 +48,22 @@ class Background {
         this.win.webContents.openDevTools();
       }
     } else {
-      createProtocol('app');
-      this.win.loadURL('app://./index.html');
+      createProtocol("app");
+      this.win.loadURL("app://./index.html");
     }
 
-    this.win.on('closed', () => {
+    this.win.on("closed", () => {
       this.win = null;
     });
   }
 
   private SetUpOnReady() {
-    app.on('ready', async () => {
+    app.on("ready", async () => {
       if (this.isDevelopment && !process.env.IS_TEST) {
         try {
           await installVueDevtools();
         } catch (e) {
-          console.error('Vue Devtools failed to install:', e.toString());
+          console.error("Vue Devtools failed to install:", e.toString());
         }
       }
       this.InitiateWindow();
@@ -69,19 +74,19 @@ class Background {
   private static SetUpServices() {
     registerIpc();
 
-    app.setAsDefaultProtocolClient('beatsaver');
+    app.setAsDefaultProtocolClient("beatsaver");
   }
 
   private OnDevMode() {
     if (this.isDevelopment) {
-      if (process.platform === 'win32') {
-        process.on('message', (data) => {
-          if (data === 'graceful-exit') {
+      if (process.platform === "win32") {
+        process.on("message", (data) => {
+          if (data === "graceful-exit") {
             app.quit();
           }
         });
       } else {
-        process.on('SIGTERM', () => {
+        process.on("SIGTERM", () => {
           app.quit();
         });
       }

@@ -1,4 +1,4 @@
-import { BeatmapLoadState } from './BeatmapLoadState';
+import { BeatmapLoadState } from "./BeatmapLoadState";
 
 export interface BeatmapLocal {
   folderPath: string;
@@ -10,10 +10,10 @@ export interface BeatmapLocal {
 
 export function isBeatmapLocal(beatmap: any): beatmap is BeatmapLocal {
   return (
-    'folderPath' in beatmap
-    && 'coverPath' in beatmap
-    && 'songPath' in beatmap
-    && 'hash' in beatmap
-    && 'loadState' in beatmap
+    "folderPath" in beatmap &&
+    "coverPath" in beatmap &&
+    "songPath" in beatmap &&
+    "hash" in beatmap &&
+    "loadState" in beatmap
   );
 }

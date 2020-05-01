@@ -3,26 +3,17 @@
     <v-col cols="auto">
       <table>
         <tr>
-          <td
-            class="body-2 pr-2"
-            align="right"
-          >
+          <td class="body-2 pr-2" align="right">
             Duration
           </td>
           <td class="body-1 pl-2">
-            <Tooltip
-              :text="difficulty.duration.toString()"
-              right
-            >
+            <Tooltip :text="difficulty.duration.toString()" right>
               {{ difficulty.duration.toFixed(2) }}
             </Tooltip>
           </td>
         </tr>
         <tr>
-          <td
-            class="body-2 pr-2"
-            align="right"
-          >
+          <td class="body-2 pr-2" align="right">
             length
           </td>
           <td class="body-1 pl-2">
@@ -30,10 +21,7 @@
           </td>
         </tr>
         <tr>
-          <td
-            class="body-2 pr-2"
-            align="right"
-          >
+          <td class="body-2 pr-2" align="right">
             Bombs
           </td>
           <td class="body-1 pl-2">
@@ -41,10 +29,7 @@
           </td>
         </tr>
         <tr>
-          <td
-            class="body-2 pr-2"
-            align="right"
-          >
+          <td class="body-2 pr-2" align="right">
             Notes
           </td>
           <td class="body-1 pl-2">
@@ -56,10 +41,7 @@
     <v-col cols="auto">
       <table>
         <tr>
-          <td
-            class="body-2 pr-2"
-            align="right"
-          >
+          <td class="body-2 pr-2" align="right">
             Obstacles
           </td>
           <td class="body-1 pl-2">
@@ -67,10 +49,7 @@
           </td>
         </tr>
         <tr>
-          <td
-            class="body-2 pr-2"
-            align="right"
-          >
+          <td class="body-2 pr-2" align="right">
             njs
           </td>
           <td class="body-1 pl-2">
@@ -78,10 +57,7 @@
           </td>
         </tr>
         <tr>
-          <td
-            class="body-2 pr-2"
-            align="right"
-          >
+          <td class="body-2 pr-2" align="right">
             njs offset
           </td>
           <td class="body-1 pl-2">
@@ -94,12 +70,12 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { Difficulty } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import Tooltip from '@/components/helper/Tooltip.vue';
+import Vue, { PropType } from "vue";
+import { Difficulty } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import Tooltip from "@/components/helper/Tooltip.vue";
 
 export default Vue.extend({
-  name: 'BeatmapSummaryDifficulty',
+  name: "BeatmapSummaryDifficulty",
   components: { Tooltip },
   props: {
     difficulty: { type: Object as PropType<Difficulty>, required: true },
@@ -107,6 +83,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

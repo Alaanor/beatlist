@@ -1,20 +1,20 @@
-import PlaylistLoadStateError from '@/libraries/playlist/loader/PlaylistLoadStateError';
-import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
+import PlaylistLoadStateError from "@/libraries/playlist/loader/PlaylistLoadStateError";
+import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
 
-export type PlaylistLoadState = PlaylistLoadStateBase
-  & (PlaylistLoadStateValid | PlaylistLoadStateInvalid);
+export type PlaylistLoadState = PlaylistLoadStateBase &
+  (PlaylistLoadStateValid | PlaylistLoadStateInvalid);
 
 export interface PlaylistLoadStateBase {
   valid: boolean;
 }
 
 export interface PlaylistLoadStateValid {
-  valid: true,
+  valid: true;
   format: PlaylistFormatType | undefined;
 }
 
 export interface PlaylistLoadStateInvalid {
-  valid: false,
+  valid: false;
   errorType: PlaylistLoadStateError | undefined;
   errorMessage: string | undefined;
 }

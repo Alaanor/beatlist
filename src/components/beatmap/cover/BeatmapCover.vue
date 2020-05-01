@@ -16,34 +16,32 @@
     :max-height="maxHeight"
     @error="imageSrc = 'error'"
   >
-    <slot/>
+    <slot />
     <template v-slot:placeholder>
-      <v-row
-        class="fill-height ma-0"
-        align="center"
-        justify="center"
-      >
-        <v-progress-circular
-          indeterminate
-          :size="progressSize"
-          color="grey"
-        />
+      <v-row class="fill-height ma-0" align="center" justify="center">
+        <v-progress-circular indeterminate :size="progressSize" color="grey" />
       </v-row>
     </template>
   </v-img>
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { BeatsaverBeatmap, isBeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import { BeatmapLocal, isBeatmapLocal } from '@/libraries/beatmap/BeatmapLocal';
-import BeatmapLoader from '@/libraries/beatmap/BeatmapLoader';
-import BeatsaverUtilities from '@/libraries/net/beatsaver/BeatsaverUtilities';
+import Vue, { PropType } from "vue";
+import {
+  BeatsaverBeatmap,
+  isBeatsaverBeatmap,
+} from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import { BeatmapLocal, isBeatmapLocal } from "@/libraries/beatmap/BeatmapLocal";
+import BeatmapLoader from "@/libraries/beatmap/BeatmapLoader";
+import BeatsaverUtilities from "@/libraries/net/beatsaver/BeatsaverUtilities";
 
 export default Vue.extend({
-  name: 'BeatmapCover',
+  name: "BeatmapCover",
   props: {
-    beatmap: { type: Object as PropType<BeatsaverBeatmap | BeatmapLocal>, default: {} },
+    beatmap: {
+      type: Object as PropType<BeatsaverBeatmap | BeatmapLocal>,
+      default: {},
+    },
     progressSize: { type: Number, default: undefined },
     gradient: { type: String, default: undefined },
     contain: { type: Boolean, default: undefined },
@@ -81,6 +79,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

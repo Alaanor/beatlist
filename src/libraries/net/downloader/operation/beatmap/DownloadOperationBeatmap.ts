@@ -1,28 +1,30 @@
-import fs from 'fs-extra';
-import path from 'path';
-import AdmZip from 'adm-zip';
-import events from 'events';
-import { remote } from 'electron';
+import fs from "fs-extra";
+import path from "path";
+import AdmZip from "adm-zip";
+import events from "events";
+import { remote } from "electron";
 import {
   DownloadOperationBase,
   DownloadOperationType,
   DownloadOperationTypeBeatmap,
-} from '@/libraries/net/downloader/operation/DownloadOperation';
-import DownloadUnit from '@/libraries/net/downloader/DownloadUnit';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import BeatsaverUtilities from '@/libraries/net/beatsaver/BeatsaverUtilities';
-import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
+} from "@/libraries/net/downloader/operation/DownloadOperation";
+import DownloadUnit from "@/libraries/net/downloader/DownloadUnit";
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import BeatsaverUtilities from "@/libraries/net/beatsaver/BeatsaverUtilities";
+import BeatSaber from "@/libraries/os/beatSaber/BeatSaber";
 import {
   DownloadOperationBeatmapResult,
   DownloadOperationBeatmapResultStatus,
-} from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
-import { DownloadUnitProgress, DownloadUnitProgressFactory } from '@/libraries/net/downloader/DownloadUnitProgress';
+} from "@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult";
+import {
+  DownloadUnitProgress,
+  DownloadUnitProgressFactory,
+} from "@/libraries/net/downloader/DownloadUnitProgress";
 
-const ON_COMPLETED: string = 'completed';
-
+const ON_COMPLETED: string = "completed";
 
 export default class DownloadOperationBeatmap
-implements DownloadOperationBase, DownloadOperationTypeBeatmap {
+  implements DownloadOperationBase, DownloadOperationTypeBeatmap {
   public type: DownloadOperationType.Beatmap = DownloadOperationType.Beatmap;
 
   public download: DownloadUnit | undefined;
@@ -41,7 +43,7 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
 
   constructor(
     beatmap: BeatsaverBeatmap,
-    progress: DownloadUnitProgress = DownloadUnitProgressFactory(),
+    progress: DownloadUnitProgress = DownloadUnitProgressFactory()
   ) {
     this.beatmap = beatmap;
     this.progress = progress;
@@ -56,14 +58,19 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
 
   public async Start(): Promise<void> {
     try {
-      this.tempFolder = await fs.mkdtemp(path.join(remote.app.getPath('temp'), 'beatlist-'));
+      this.tempFolder = await fs.mkdtemp(
+        path.join(remote.app.getPath("temp"), "beatlist-")
+      );
 
       const url = BeatsaverUtilities.GetDownloadUrl(this.beatmap);
       const zipPath = path.join(this.tempFolder, `${this.beatmap.key}.zip`);
       const stream = fs.createWriteStream(zipPath);
 
       try {
-        this.result = { ...this.result, status: DownloadOperationBeatmapResultStatus.Downloading };
+        this.result = {
+          ...this.result,
+          status: DownloadOperationBeatmapResultStatus.Downloading,
+        };
 
         this.download = new DownloadUnit(url, stream, this.progress);
         this.download.onError(this.onDownloadError);
@@ -101,7 +108,9 @@ implements DownloadOperationBase, DownloadOperationTypeBeatmap {
     zip.extractAllTo(extractPath, true);
   }
 
-  OnCompleted(callback: (result: DownloadOperationBeatmapResult) => void): void {
+  OnCompleted(
+    callback: (result: DownloadOperationBeatmapResult) => void
+  ): void {
     this._eventEmitter.on(ON_COMPLETED, () => callback(this.result));
   }
 

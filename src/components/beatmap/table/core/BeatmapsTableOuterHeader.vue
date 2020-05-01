@@ -1,18 +1,12 @@
 <template>
   <v-row>
-    <v-col
-      sm="8"
-      cols="10"
-    >
+    <v-col sm="8" cols="10">
       <BeatmapsTableColumnSelector
         :value="shownColumn"
         @input="$emit('update:shownColumn', $event)"
       />
     </v-col>
-    <v-col
-      sm="4"
-      cols="2"
-    >
+    <v-col sm="4" cols="2">
       <BeatmapsTableSearchInput
         :value="search"
         @input="$emit('update:search', $event)"
@@ -22,13 +16,12 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import BeatmapsTableColumnSelector
-  from '@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue';
-import BeatmapsTableSearchInput from '@/components/beatmap/table/core/BeatmapsTableSearchInput.vue';
+import Vue, { PropType } from "vue";
+import BeatmapsTableColumnSelector from "@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue";
+import BeatmapsTableSearchInput from "@/components/beatmap/table/core/BeatmapsTableSearchInput.vue";
 
 export default Vue.extend({
-  name: 'BeatmapsTableOuterHeader',
+  name: "BeatmapsTableOuterHeader",
   components: { BeatmapsTableColumnSelector, BeatmapsTableSearchInput },
   props: {
     shownColumn: { type: Array as PropType<string[]>, required: true },
@@ -37,6 +30,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

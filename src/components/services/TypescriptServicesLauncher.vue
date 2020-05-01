@@ -1,23 +1,27 @@
 <template>
-  <div/>
+  <div />
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { ipcRenderer } from 'electron';
-import { get } from 'vuex-pathify';
-import DiscordRichPresence from '@/libraries/ipc/DiscordRichPresence';
-import { ON_BEATSAVER_LINK_OPENER_COMPONENT_READY, OPEN_BEATSAVER_LINK }
-  from '@/libraries/ipc/BeatsaverLinkOpener';
-import AutoScanLibHandler from '@/libraries/scanner/AutoScanLibHandler';
-import NotificationServiceScanner from '@/libraries/notification/NotificationServiceScanner';
-import UpgradeCheckerService from '@/libraries/app/UpgradeCheckerService';
-import DownloadManager from '@/libraries/net/downloader/DownloadManager';
+import Vue from "vue";
+import { ipcRenderer } from "electron";
+import { get } from "vuex-pathify";
+import DiscordRichPresence from "@/libraries/ipc/DiscordRichPresence";
+import {
+  ON_BEATSAVER_LINK_OPENER_COMPONENT_READY,
+  OPEN_BEATSAVER_LINK,
+} from "@/libraries/ipc/BeatsaverLinkOpener";
+import AutoScanLibHandler from "@/libraries/scanner/AutoScanLibHandler";
+import NotificationServiceScanner from "@/libraries/notification/NotificationServiceScanner";
+import UpgradeCheckerService from "@/libraries/app/UpgradeCheckerService";
+import DownloadManager from "@/libraries/net/downloader/DownloadManager";
 
 export default Vue.extend({
-  name: 'TypescriptServicesLauncher',
+  name: "TypescriptServicesLauncher",
   computed: {
-    enableDiscordRichPresence: get<boolean>('settings/enableDiscordRichPresence'),
+    enableDiscordRichPresence: get<boolean>(
+      "settings/enableDiscordRichPresence"
+    ),
   },
   mounted(): void {
     this.LaunchServices();
@@ -36,7 +40,7 @@ export default Vue.extend({
     },
     RegisterBeatsaverLinkListener() {
       ipcRenderer.on(OPEN_BEATSAVER_LINK, (event: any, key: any) => {
-        this.$router.push({ name: 'beatmap', params: { key } });
+        this.$router.push({ name: "beatmap", params: { key } });
       });
 
       ipcRenderer.send(ON_BEATSAVER_LINK_OPENER_COMPONENT_READY);
@@ -45,6 +49,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

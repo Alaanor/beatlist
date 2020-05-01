@@ -1,4 +1,8 @@
-import Progress, { ON_PLUS_ONE, ON_TOTAL_CHANGE, ProgressInterface } from '@/libraries/common/Progress';
+import Progress, {
+  ON_PLUS_ONE,
+  ON_TOTAL_CHANGE,
+  ProgressInterface,
+} from "@/libraries/common/Progress";
 
 export default class ProgressGroup implements ProgressInterface {
   private _progresses: Progress[] = [];
@@ -17,7 +21,7 @@ export default class ProgressGroup implements ProgressInterface {
     this.computeTotal();
   }
 
-  public get(): {done: number, total: number} {
+  public get(): { done: number; total: number } {
     return {
       done: this._done,
       total: this._total,
@@ -37,7 +41,7 @@ export default class ProgressGroup implements ProgressInterface {
   }
 
   private computeTotal() {
-    const sum = ((previous: number, current: number) => previous + current);
+    const sum = (previous: number, current: number) => previous + current;
 
     this._total = this._progresses
       .map((p: Progress) => p.get().total)

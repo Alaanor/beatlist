@@ -1,11 +1,11 @@
 export interface Range {
-  min: number | undefined,
-  max: number | undefined,
+  min: number | undefined;
+  max: number | undefined;
 }
 
 export interface DateRange {
-  min: Date | undefined,
-  max: Date | undefined,
+  min: Date | undefined;
+  max: Date | undefined;
 }
 
 export function IsIn(value: number, range: Range): boolean {
@@ -29,11 +29,8 @@ export function IsIn(value: number, range: Range): boolean {
 }
 
 export function IsInDate(value: Date, range: DateRange): boolean {
-  return IsIn(
-    value.getTime(),
-    {
-      min: range.min?.getTime(),
-      max: range.max?.getTime(),
-    },
-  );
+  return IsIn(value.getTime(), {
+    min: range.min?.getTime(),
+    max: range.max?.getTime(),
+  });
 }

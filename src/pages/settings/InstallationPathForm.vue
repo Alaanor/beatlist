@@ -33,30 +33,36 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { sync } from 'vuex-pathify';
-import { remote } from 'electron';
-import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
-import PathResolver from '@/libraries/ipc/PathResolver.ipc';
+import Vue from "vue";
+import { sync } from "vuex-pathify";
+import { remote } from "electron";
+import BeatSaber from "@/libraries/os/beatSaber/BeatSaber";
+import PathResolver from "@/libraries/ipc/PathResolver.ipc";
 
 export default Vue.extend({
-  name: 'InstallationPathForm',
+  name: "InstallationPathForm",
   data: () => ({
     rules: {
-      validInstallationPath: [(v: string) => BeatSaber.validateInstallationPathSync(v) || 'Installation path is not valid'],
+      validInstallationPath: [
+        (v: string) =>
+          BeatSaber.validateInstallationPathSync(v) ||
+          "Installation path is not valid",
+      ],
     },
     snackbar: false,
-    snackbarType: '',
-    snackbarText: '',
+    snackbarType: "",
+    snackbarText: "",
     resolveBtnLoading: false,
   }),
   computed: {
-    installationPath: sync<string>('settings/installationPath'),
-    installationPathValid: sync<string>('settings/installationPathValid'),
+    installationPath: sync<string>("settings/installationPath"),
+    installationPathValid: sync<string>("settings/installationPathValid"),
   },
   methods: {
     openFileExplorer() {
-      const folder = remote.dialog.showOpenDialog({ properties: ['openDirectory'] });
+      const folder = remote.dialog.showOpenDialog({
+        properties: ["openDirectory"],
+      });
       if (folder !== undefined) {
         [this.installationPath] = folder;
       }
@@ -64,25 +70,22 @@ export default Vue.extend({
     async detectPath() {
       this.resolveBtnLoading = true;
 
-      PathResolver.detectInstallationPath()
-        .then((path: string) => {
-          if (path === '') {
-            this.snackbarType = 'error';
-            this.snackbarText = 'Couldn\'t detect installation path :(';
-          } else {
-            this.installationPath = path;
-            this.snackbarType = 'success';
-            this.snackbarText = 'Installation path found :)';
-          }
+      PathResolver.detectInstallationPath().then((path: string) => {
+        if (path === "") {
+          this.snackbarType = "error";
+          this.snackbarText = "Couldn't detect installation path :(";
+        } else {
+          this.installationPath = path;
+          this.snackbarType = "success";
+          this.snackbarText = "Installation path found :)";
+        }
 
-          this.resolveBtnLoading = false;
-          this.snackbar = true;
-        });
+        this.resolveBtnLoading = false;
+        this.snackbar = true;
+      });
     },
   },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -34,21 +34,27 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { sync } from 'vuex-pathify';
-import DiscordRichPresence from '@/libraries/ipc/DiscordRichPresence';
-import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
+import Vue from "vue";
+import { sync } from "vuex-pathify";
+import DiscordRichPresence from "@/libraries/ipc/DiscordRichPresence";
+import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
 
 export default Vue.extend({
-  name: 'Preferences',
+  name: "Preferences",
   computed: {
-    enableDiscordRichPresence: sync<boolean>('settings/enableDiscordRichPresence'),
-    darkTheme: sync<boolean>('settings/darkTheme'),
-    installationPathValid: sync<boolean>('settings/installationPathValid'),
-    defaultExportFormat: sync<PlaylistFormatType>('settings/defaultExportFormat'),
-    exportFormatList: () => Object.values(PlaylistFormatType).filter((format) => ![
-      PlaylistFormatType.Unset, PlaylistFormatType.Blist,
-    ].includes(format)),
+    enableDiscordRichPresence: sync<boolean>(
+      "settings/enableDiscordRichPresence"
+    ),
+    darkTheme: sync<boolean>("settings/darkTheme"),
+    installationPathValid: sync<boolean>("settings/installationPathValid"),
+    defaultExportFormat: sync<PlaylistFormatType>(
+      "settings/defaultExportFormat"
+    ),
+    exportFormatList: () =>
+      Object.values(PlaylistFormatType).filter(
+        (format) =>
+          ![PlaylistFormatType.Unset, PlaylistFormatType.Blist].includes(format)
+      ),
   },
   watch: {
     enableDiscordRichPresence() {
@@ -58,6 +64,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,4 +1,4 @@
 export interface TocItem {
-  name: string,
-  sectionId: string,
+  name: string;
+  sectionId: string;
 }

@@ -1,4 +1,4 @@
-import pathify from 'vuex-pathify';
+import pathify from "vuex-pathify";
 
 pathify.options.deep = 2;
 

@@ -1,10 +1,7 @@
 <template>
-  <div style="height: 52px">
+  <div style="height: 52px;">
     <v-slide-x-transition>
-      <v-container
-        v-if="selected.length > 0"
-        class="d-flex align-center ml-n4"
-      >
+      <v-container v-if="selected.length > 0" class="d-flex align-center ml-n4">
         <v-btn
           v-if="bulkAdd"
           outlined
@@ -42,7 +39,8 @@
         </v-btn>
 
         <span class="pl-3">
-          {{ selected.length }} item{{ selected.length > 1 ? 's' : '' }} selected
+          {{ selected.length }} item{{ selected.length > 1 ? "s" : "" }}
+          selected
         </span>
       </v-container>
     </v-slide-x-transition>
@@ -50,16 +48,16 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import PlaylistOperation from '@/libraries/playlist/PlaylistOperation';
-import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
-import BeatmapInstaller from '@/libraries/os/beatSaber/installer/BeatmapInstaller';
-import NotificationService from '@/libraries/notification/NotificationService';
-import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
+import Vue, { PropType } from "vue";
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import PlaylistOperation from "@/libraries/playlist/PlaylistOperation";
+import { PlaylistLocal } from "@/libraries/playlist/PlaylistLocal";
+import BeatmapInstaller from "@/libraries/os/beatSaber/installer/BeatmapInstaller";
+import NotificationService from "@/libraries/notification/NotificationService";
+import BeatmapLibrary from "@/libraries/beatmap/BeatmapLibrary";
 
 export default Vue.extend({
-  name: 'BeatmapsTableBulkActions',
+  name: "BeatmapsTableBulkActions",
   props: {
     playlist: { type: Object as PropType<PlaylistLocal>, required: true },
     selected: { type: Array as PropType<BeatsaverBeatmap[]>, required: true },
@@ -75,28 +73,31 @@ export default Vue.extend({
   methods: {
     performBulkAdd() {
       this.bulkAddLoading = true;
-      PlaylistOperation.BulkAddMapInPlaylist(this.playlist, this.selected.map((s) => s.hash))
-        .finally(() => {
-          this.bulkAddLoading = false;
-          this.$emit('onDone');
-        });
+      PlaylistOperation.BulkAddMapInPlaylist(
+        this.playlist,
+        this.selected.map((s) => s.hash)
+      ).finally(() => {
+        this.bulkAddLoading = false;
+        this.$emit("onDone");
+      });
     },
     performBulkRemove() {
       this.bulkRemoveLoading = true;
-      PlaylistOperation.BulkRemoveMapFromPlaylist(this.playlist, this.selected.map((s) => s.hash))
-        .finally(() => {
-          this.bulkRemoveLoading = false;
-          this.$emit('onDone');
-        });
+      PlaylistOperation.BulkRemoveMapFromPlaylist(
+        this.playlist,
+        this.selected.map((s) => s.hash)
+      ).finally(() => {
+        this.bulkRemoveLoading = false;
+        this.$emit("onDone");
+      });
     },
     performBulkDownload() {
       this.bulkDownloadLoading = true;
 
       this.selected.forEach((beatmap: BeatsaverBeatmap) => {
         if (BeatmapLibrary.GetMapByHash(beatmap.hash) === undefined) {
-          BeatmapInstaller.Install(
-            beatmap,
-            (operation) => NotificationService.NotifyBeatmapDownload(operation.result),
+          BeatmapInstaller.Install(beatmap, (operation) =>
+            NotificationService.NotifyBeatmapDownload(operation.result)
           );
         }
       });
@@ -105,6 +106,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

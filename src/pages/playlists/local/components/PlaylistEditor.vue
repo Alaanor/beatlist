@@ -1,11 +1,8 @@
 <template>
   <div>
-    <PlaylistEditorSidebar :items="menu"/>
+    <PlaylistEditorSidebar :items="menu" />
     <v-container>
-      <PlaylistEditorDetails
-        id="playlist-details"
-        :playlist="playlist"
-      />
+      <PlaylistEditorDetails id="playlist-details" :playlist="playlist" />
       <PlaylistEditorBeatmapList
         id="playlist-content-list"
         :playlist="playlist"
@@ -20,18 +17,16 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { TocItem } from '@/components/toc/TocItem';
-import PlaylistEditorSidebar from '@/pages/playlists/local/components/PlaylistEditorSidebar.vue';
-import PlaylistEditorDetails from '@/pages/playlists/local/components/PlaylistEditorDetails.vue';
-import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
-import PlaylistEditorBeatmapList
-  from '@/pages/playlists/local/components/PlaylistEditorBeatmapList.vue';
-import PlaylistEditorBeatmapBrowser
-  from '@/pages/playlists/local/components/PlaylistEditorBeatmapBrowser.vue';
+import Vue, { PropType } from "vue";
+import { TocItem } from "@/components/toc/TocItem";
+import PlaylistEditorSidebar from "@/pages/playlists/local/components/PlaylistEditorSidebar.vue";
+import PlaylistEditorDetails from "@/pages/playlists/local/components/PlaylistEditorDetails.vue";
+import { PlaylistLocal } from "@/libraries/playlist/PlaylistLocal";
+import PlaylistEditorBeatmapList from "@/pages/playlists/local/components/PlaylistEditorBeatmapList.vue";
+import PlaylistEditorBeatmapBrowser from "@/pages/playlists/local/components/PlaylistEditorBeatmapBrowser.vue";
 
 export default Vue.extend({
-  name: 'PlaylistEditor',
+  name: "PlaylistEditor",
   components: {
     PlaylistEditorSidebar,
     PlaylistEditorDetails,
@@ -43,14 +38,12 @@ export default Vue.extend({
   },
   data: () => ({
     menu: [
-      { name: 'Details', sectionId: 'playlist-details' },
-      { name: 'Content', sectionId: 'playlist-content-list' },
-      { name: 'Browser', sectionId: 'playlist-browser' },
+      { name: "Details", sectionId: "playlist-details" },
+      { name: "Content", sectionId: "playlist-content-list" },
+      { name: "Browser", sectionId: "playlist-browser" },
     ] as TocItem[],
   }),
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

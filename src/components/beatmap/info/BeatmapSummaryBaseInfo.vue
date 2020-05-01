@@ -4,10 +4,7 @@
       <v-col cols="6">
         <table>
           <tr>
-            <td
-              class="body-2 pr-2"
-              align="right"
-            >
+            <td class="body-2 pr-2" align="right">
               Name
             </td>
             <td class="body-1 pl-2">
@@ -15,10 +12,7 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="body-2 pr-2"
-              align="right"
-            >
+            <td class="body-2 pr-2" align="right">
               Subname
             </td>
             <td class="body-1 pl-2">
@@ -26,10 +20,7 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="body-2 pr-2"
-              align="right"
-            >
+            <td class="body-2 pr-2" align="right">
               Author
             </td>
             <td class="body-1 pl-2">
@@ -37,10 +28,7 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="body-2 pr-2"
-              align="right"
-            >
+            <td class="body-2 pr-2" align="right">
               Mapper
             </td>
             <td class="body-1 pl-2">
@@ -48,10 +36,7 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="body-2 pr-2"
-              align="right"
-            >
+            <td class="body-2 pr-2" align="right">
               BPM
             </td>
             <td class="body-1 pl-2">
@@ -59,10 +44,7 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="body-2 pr-2"
-              align="right"
-            >
+            <td class="body-2 pr-2" align="right">
               Key
             </td>
             <td class="body-1 pl-2">
@@ -70,10 +52,7 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="body-2 pr-2"
-              align="right"
-            >
+            <td class="body-2 pr-2" align="right">
               Difficulties
             </td>
             <td class="pl-2">
@@ -89,10 +68,7 @@
       <v-col cols="6">
         <table>
           <tr>
-            <td
-              class="body-2 pr-2"
-              align="right"
-            >
+            <td class="body-2 pr-2" align="right">
               Uploaded
             </td>
             <td class="body-1 pl-2">
@@ -100,10 +76,7 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="body-2 pr-2"
-              align="right"
-            >
+            <td class="body-2 pr-2" align="right">
               Downloads
             </td>
             <td class="body-1 pl-2">
@@ -111,10 +84,7 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="body-2 pr-2"
-              align="right"
-            >
+            <td class="body-2 pr-2" align="right">
               Plays
             </td>
             <td class="body-1 pl-2">
@@ -122,10 +92,7 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="body-2 pr-2"
-              align="right"
-            >
+            <td class="body-2 pr-2" align="right">
               Up votes
             </td>
             <td class="body-1 pl-2">
@@ -133,10 +100,7 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="body-2 pr-2"
-              align="right"
-            >
+            <td class="body-2 pr-2" align="right">
               Down votes
             </td>
             <td class="body-1 pl-2">
@@ -144,17 +108,11 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="body-2 pr-2"
-              align="right"
-            >
+            <td class="body-2 pr-2" align="right">
               Rating
             </td>
             <td class="body-1 pl-2">
-              <Tooltip
-                :text="beatmap.stats.rating.toString()"
-                right
-              >
+              <Tooltip :text="beatmap.stats.rating.toString()" right>
                 {{ beatmap.stats.rating | toPercent }}
               </Tooltip>
             </td>
@@ -171,14 +129,11 @@
           <v-expansion-panel>
             <v-expansion-panel-header>Description</v-expansion-panel-header>
             <v-expansion-panel-content>
-              <span v-html="Linkify(FormatNewLine(beatmap.description))"/>
+              <span v-html="Linkify(FormatNewLine(beatmap.description))" />
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
-        <p
-          v-else
-          class="grey--text font-italic"
-        >
+        <p v-else class="grey--text font-italic">
           No description given.
         </p>
       </v-col>
@@ -187,14 +142,14 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import linkifyHtml from 'linkifyjs/html';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import DifficultiesChips from '@/components/beatmap/DifficultiesChips.vue';
-import Tooltip from '@/components/helper/Tooltip.vue';
+import Vue, { PropType } from "vue";
+import linkifyHtml from "linkifyjs/html";
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import DifficultiesChips from "@/components/beatmap/DifficultiesChips.vue";
+import Tooltip from "@/components/helper/Tooltip.vue";
 
 export default Vue.extend({
-  name: 'BeatmapSummaryBaseInfo',
+  name: "BeatmapSummaryBaseInfo",
   components: { DifficultiesChips, Tooltip },
   filters: {
     toDate(value: string): string {
@@ -204,7 +159,7 @@ export default Vue.extend({
       return `${(value * 100).toFixed(2)}%`;
     },
     emptyCheck(value: string): string {
-      return value || '-';
+      return value || "-";
     },
   },
   props: {
@@ -218,16 +173,14 @@ export default Vue.extend({
       return linkifyHtml(str);
     },
     FormatNewLine(str: string): string {
-      return str
-        .replace(/\r\n/g, '<br>')
-        .replace(/\n/g, '<br>');
+      return str.replace(/\r\n/g, "<br>").replace(/\n/g, "<br>");
     },
   },
 });
 </script>
 
 <style>
- a.linkified {
+a.linkified {
   color: cornflowerblue !important;
- }
+}
 </style>

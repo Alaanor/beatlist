@@ -22,7 +22,8 @@
       action-color="error"
       :on-action="deleteBeatmap"
     >
-      <span>You're about to
+      <span
+        >You're about to
         <strong>
           <span class="error--text">remove</span>
           {{ beatmap.metadata.songName }}
@@ -35,17 +36,17 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import Tooltip from '@/components/helper/Tooltip.vue';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import ConfirmDialog from '@/components/dialogs/ConfirmDialog.vue';
-import BeatmapInstaller from '@/libraries/os/beatSaber/installer/BeatmapInstaller';
-import BeatmapLibrary from '@/libraries/beatmap/BeatmapLibrary';
-import { BeatmapLocal } from '@/libraries/beatmap/BeatmapLocal';
-import NotificationService from '@/libraries/notification/NotificationService';
+import Vue, { PropType } from "vue";
+import Tooltip from "@/components/helper/Tooltip.vue";
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
+import BeatmapInstaller from "@/libraries/os/beatSaber/installer/BeatmapInstaller";
+import BeatmapLibrary from "@/libraries/beatmap/BeatmapLibrary";
+import { BeatmapLocal } from "@/libraries/beatmap/BeatmapLocal";
+import NotificationService from "@/libraries/notification/NotificationService";
 
 export default Vue.extend({
-  name: 'BeatmapButtonRemoveBeatmap',
+  name: "BeatmapButtonRemoveBeatmap",
   components: { Tooltip, ConfirmDialog },
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
@@ -65,19 +66,24 @@ export default Vue.extend({
     deleteBeatmap(): void {
       this.loading = true;
       if (this.localBeatmap) {
-        BeatmapInstaller
-          .Uninstall(this.localBeatmap)
+        BeatmapInstaller.Uninstall(this.localBeatmap)
           .then(() => {
-            NotificationService.NotifyMessage('Map uninstalled', 'success');
+            NotificationService.NotifyMessage("Map uninstalled", "success");
           })
           .catch((e: Error) => {
-            NotificationService.NotifyMessage(`Couldn't uninstall the map - ${e.message}`, 'error');
+            NotificationService.NotifyMessage(
+              `Couldn't uninstall the map - ${e.message}`,
+              "error"
+            );
           })
           .finally(() => {
             this.loading = false;
           });
       } else {
-        NotificationService.NotifyMessage("Couldn't find the local beatmap - strange :(", 'warning');
+        NotificationService.NotifyMessage(
+          "Couldn't find the local beatmap - strange :(",
+          "warning"
+        );
         this.loading = false;
       }
 
@@ -87,6 +93,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

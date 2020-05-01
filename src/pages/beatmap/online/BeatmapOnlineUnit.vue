@@ -1,14 +1,8 @@
 <template>
   <v-container>
     <v-row>
-      <v-col
-        cols="auto"
-        align-self="center"
-      >
-        <v-btn
-          icon
-          @click="backHistory"
-        >
+      <v-col cols="auto" align-self="center">
+        <v-btn icon @click="backHistory">
           <v-icon>chevron_left</v-icon>
         </v-btn>
       </v-col>
@@ -19,15 +13,8 @@
       </v-col>
     </v-row>
 
-    <BeatmapSummary
-      v-if="beatmap && !error"
-      :beatmap="beatmap"
-    />
-    <v-alert
-      v-else-if="error"
-      type="warning"
-      outlined
-    >
+    <BeatmapSummary v-if="beatmap && !error" :beatmap="beatmap" />
+    <v-alert v-else-if="error" type="warning" outlined>
       {{ error }}
     </v-alert>
     <LoadingPage v-else>
@@ -39,15 +26,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import BeatmapSummary from '@/components/beatmap/info/BeatmapSummary.vue';
-import BeatsaverAPI, { BeatSaverAPIResponse, BeatSaverAPIResponseStatus } from '@/libraries/net/beatsaver/BeatsaverAPI';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import BeatsaverUtilities from '@/libraries/net/beatsaver/BeatsaverUtilities';
-import LoadingPage from '@/components/helper/LoadingPage.vue';
+import Vue from "vue";
+import BeatmapSummary from "@/components/beatmap/info/BeatmapSummary.vue";
+import BeatsaverAPI, {
+  BeatSaverAPIResponse,
+  BeatSaverAPIResponseStatus,
+} from "@/libraries/net/beatsaver/BeatsaverAPI";
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import BeatsaverUtilities from "@/libraries/net/beatsaver/BeatsaverUtilities";
+import LoadingPage from "@/components/helper/LoadingPage.vue";
 
 export default Vue.extend({
-  name: 'BeatmapOnlineUnit',
+  name: "BeatmapOnlineUnit",
   components: { BeatmapSummary, LoadingPage },
   data: () => ({
     beatmap: undefined as BeatsaverBeatmap | undefined,
@@ -84,6 +74,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

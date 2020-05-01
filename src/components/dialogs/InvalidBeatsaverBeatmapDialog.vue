@@ -1,19 +1,11 @@
 <template>
-  <v-dialog
-    v-model="open"
-    max-width="80%"
-    @click:outside="closeDialog"
-  >
+  <v-dialog v-model="open" max-width="80%" @click:outside="closeDialog">
     <v-card>
       <v-card-title>
         Invalid beatmaps
       </v-card-title>
       <v-card-text>
-        <v-simple-table
-          height="500"
-          dense
-          fixed-header
-        >
+        <v-simple-table height="500" dense fixed-header>
           <template v-slot:default>
             <thead>
               <tr>
@@ -53,11 +45,8 @@
         </v-simple-table>
       </v-card-text>
       <v-card-actions>
-        <v-spacer/>
-        <v-btn
-          text
-          @click="closeDialog"
-        >
+        <v-spacer />
+        <v-btn text @click="closeDialog">
           Ok
         </v-btn>
       </v-card-actions>
@@ -66,26 +55,26 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import BeatsaverCachedLibrary from '@/libraries/beatmap/repo/BeatsaverCachedLibrary';
-import { BeatsaverItemLoadError } from '@/libraries/beatmap/repo/BeatsaverItem';
+import Vue from "vue";
+import BeatsaverCachedLibrary from "@/libraries/beatmap/repo/BeatsaverCachedLibrary";
+import { BeatsaverItemLoadError } from "@/libraries/beatmap/repo/BeatsaverItem";
 
 export default Vue.extend({
-  name: 'InvalidBeatmapDialog',
+  name: "InvalidBeatmapDialog",
   filters: {
     errorTranslated: (error: BeatsaverItemLoadError): string => {
       switch (error) {
         case BeatsaverItemLoadError.BeatmapNotOnBeatsaver:
           return "Couldn't find the map on beatsaver";
         case BeatsaverItemLoadError.BeatsaverServerNotAvailable:
-          return 'Beatsaver server was unavailable';
+          return "Beatsaver server was unavailable";
         case BeatsaverItemLoadError.InvalidDataReceivedFromBeatsaver:
-          return 'Unexpected answer gotten from beatsaver';
+          return "Unexpected answer gotten from beatsaver";
         case BeatsaverItemLoadError.BeatsaverRateLimited:
           return "Got rate limited by the beatsaver's server";
         case BeatsaverItemLoadError.Unknown:
         default:
-          return 'Unknown error';
+          return "Unknown error";
       }
     },
   },
@@ -97,12 +86,10 @@ export default Vue.extend({
   },
   methods: {
     closeDialog() {
-      this.$emit('update:open', false);
+      this.$emit("update:open", false);
     },
   },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

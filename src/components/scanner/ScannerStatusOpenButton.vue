@@ -1,14 +1,7 @@
 <template>
   <div>
-    <Tooltip
-      text="Scanner"
-      right
-    >
-      <v-btn
-        icon
-        :loading="scanning"
-        @click="openScannerDialog()"
-      >
+    <Tooltip text="Scanner" right>
+      <v-btn icon :loading="scanning" @click="openScannerDialog()">
         <v-icon>find_in_page</v-icon>
       </v-btn>
     </Tooltip>
@@ -16,12 +9,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Tooltip from '@/components/helper/Tooltip.vue';
-import ScannerService from '@/libraries/scanner/ScannerService';
+import Vue from "vue";
+import Tooltip from "@/components/helper/Tooltip.vue";
+import ScannerService from "@/libraries/scanner/ScannerService";
 
 export default Vue.extend({
-  name: 'ScannerStatusOpenButton',
+  name: "ScannerStatusOpenButton",
   components: { Tooltip },
   data: () => ({
     scanning: false,
@@ -48,6 +41,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

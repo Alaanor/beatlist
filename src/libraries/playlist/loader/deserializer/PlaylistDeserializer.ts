@@ -1,5 +1,5 @@
-import { PlaylistBase } from '@/libraries/playlist/PlaylistLocal';
-import Progress from '@/libraries/common/Progress';
+import { PlaylistBase } from "@/libraries/playlist/PlaylistLocal";
+import Progress from "@/libraries/common/Progress";
 
 export default abstract class PlaylistDeserializer {
   protected filepath: string;

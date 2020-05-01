@@ -6,26 +6,19 @@
     bottom
     right
   >
-    <v-list
-      v-if="isSuccess"
-      style="background: none"
-      class="pa-0"
-    >
+    <v-list v-if="isSuccess" style="background: none;" class="pa-0">
       <v-list-item class="pa-0">
         <v-list-item-avatar class="my-0">
-          <BeatmapCover :beatmap="beatmap"/>
+          <BeatmapCover :beatmap="beatmap" />
         </v-list-item-avatar>
         <v-list-item-content class="py-0">
           <v-list-item-title>{{ beatmap.metadata.songName }}</v-list-item-title>
-          <v-list-item-subtitle>The beatmap has successfully been downloaded.</v-list-item-subtitle>
+          <v-list-item-subtitle>
+            The beatmap has successfully been downloaded.
+          </v-list-item-subtitle>
         </v-list-item-content>
         <v-list-item-action class="ma-0">
-          <v-btn
-            text
-            color=""
-            class="ma-0"
-            @click="close()"
-          >
+          <v-btn text color="" class="ma-0" @click="close()">
             Close
           </v-btn>
         </v-list-item-action>
@@ -38,26 +31,28 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import Vue, { PropType } from "vue";
 import {
   NotificationType,
   ICommonNotification,
   IBeatmapDownloadNotification,
-} from '@/libraries/notification/Notification';
-import NotificationLibrary from '@/libraries/notification/NotificationLibrary';
+} from "@/libraries/notification/Notification";
+import NotificationLibrary from "@/libraries/notification/NotificationLibrary";
 import {
   DownloadOperationBeatmapResult,
   DownloadOperationBeatmapResultStatus,
-} from '@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult';
-import BeatmapCover from '@/components/beatmap/cover/BeatmapCover.vue';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
+} from "@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult";
+import BeatmapCover from "@/components/beatmap/cover/BeatmapCover.vue";
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 
 export default Vue.extend({
   name: `NotificationModel${NotificationType.BeatmapDownload}`,
   components: { BeatmapCover },
   props: {
     notification: {
-      type: Object as PropType<ICommonNotification & IBeatmapDownloadNotification>,
+      type: Object as PropType<
+        ICommonNotification & IBeatmapDownloadNotification
+      >,
       required: true,
     },
   },
@@ -69,19 +64,22 @@ export default Vue.extend({
       return this.notification.result.beatmap;
     },
     snackbarColor(): string {
-      switch (this.notification.result.status as DownloadOperationBeatmapResultStatus) {
+      switch (
+        this.notification.result.status as DownloadOperationBeatmapResultStatus
+      ) {
         case DownloadOperationBeatmapResultStatus.DownloadError:
         case DownloadOperationBeatmapResultStatus.ExtractionError:
         case DownloadOperationBeatmapResultStatus.IOError:
-          return 'error';
+          return "error";
 
         case DownloadOperationBeatmapResultStatus.Success:
         default:
-          return '';
+          return "";
       }
     },
     isSuccess(): boolean {
-      const status = this.notification.result.status as DownloadOperationBeatmapResultStatus;
+      const status = this.notification.result
+        .status as DownloadOperationBeatmapResultStatus;
       return status === DownloadOperationBeatmapResultStatus.Success;
     },
     errorText(): string {
@@ -93,14 +91,17 @@ export default Vue.extend({
           return result.errorWritten;
 
         default:
-          return '';
+          return "";
       }
     },
   },
   watch: {
     snackbar() {
       if (!this.snackbar) {
-        setTimeout(() => NotificationLibrary.SetAsNotified(this.notification), 250);
+        setTimeout(
+          () => NotificationLibrary.SetAsNotified(this.notification),
+          250
+        );
       }
     },
   },
@@ -117,6 +118,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

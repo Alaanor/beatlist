@@ -1,7 +1,10 @@
-import PlaylistInstaller from '@/libraries/os/beatSaber/installer/PlaylistInstaller';
-import { PlaylistLocal, PlaylistLocalMap } from '@/libraries/playlist/PlaylistLocal';
-import PlaylistLoader from '@/libraries/playlist/loader/PlaylistLoader';
-import PlaylistScanner from '@/libraries/scanner/playlist/PlaylistScanner';
+import PlaylistInstaller from "@/libraries/os/beatSaber/installer/PlaylistInstaller";
+import {
+  PlaylistLocal,
+  PlaylistLocalMap,
+} from "@/libraries/playlist/PlaylistLocal";
+import PlaylistLoader from "@/libraries/playlist/loader/PlaylistLoader";
+import PlaylistScanner from "@/libraries/scanner/playlist/PlaylistScanner";
 
 export default class PlaylistOperation {
   public static async CreateNewPlaylist(): Promise<PlaylistLocal> {
@@ -12,7 +15,9 @@ export default class PlaylistOperation {
     return PlaylistInstaller.Uninstall(playlist);
   }
 
-  public static async UpdatePlaylist(playlist: PlaylistLocal): Promise<PlaylistLocal | undefined> {
+  public static async UpdatePlaylist(
+    playlist: PlaylistLocal
+  ): Promise<PlaylistLocal | undefined> {
     if (!playlist.path) return undefined;
 
     await PlaylistLoader.Save(playlist);
@@ -21,8 +26,10 @@ export default class PlaylistOperation {
     return scanner.scanOne(playlist.path);
   }
 
-  public static AddMapInPlaylist(playlist: PlaylistLocal, beatmapHash: string)
-    : Promise<PlaylistLocal | undefined> {
+  public static AddMapInPlaylist(
+    playlist: PlaylistLocal,
+    beatmapHash: string
+  ): Promise<PlaylistLocal | undefined> {
     const copy = { ...playlist };
     copy.maps = [...playlist.maps];
 
@@ -31,16 +38,23 @@ export default class PlaylistOperation {
     return this.UpdatePlaylist(copy);
   }
 
-  public static RemoveMapFromPlaylist(playlist: PlaylistLocal, beatmapHash: string) {
+  public static RemoveMapFromPlaylist(
+    playlist: PlaylistLocal,
+    beatmapHash: string
+  ) {
     const copy = { ...playlist };
 
-    copy.maps = playlist.maps
-      .filter((entry: PlaylistLocalMap) => entry.hash !== beatmapHash);
+    copy.maps = playlist.maps.filter(
+      (entry: PlaylistLocalMap) => entry.hash !== beatmapHash
+    );
 
     return this.UpdatePlaylist(copy);
   }
 
-  public static BulkAddMapInPlaylist(playlist: PlaylistLocal, beatmapHashes: string[]) {
+  public static BulkAddMapInPlaylist(
+    playlist: PlaylistLocal,
+    beatmapHashes: string[]
+  ) {
     const copy = { ...playlist };
     copy.maps = [...playlist.maps];
 
@@ -51,17 +65,24 @@ export default class PlaylistOperation {
     return this.UpdatePlaylist(copy);
   }
 
-  public static BulkRemoveMapFromPlaylist(playlist: PlaylistLocal, beatmapHashes: string[]) {
+  public static BulkRemoveMapFromPlaylist(
+    playlist: PlaylistLocal,
+    beatmapHashes: string[]
+  ) {
     const copy = { ...playlist };
 
-    copy.maps = playlist.maps
-      .filter((entry: PlaylistLocalMap) => !beatmapHashes
-        .find((hash: string) => entry.hash === hash));
+    copy.maps = playlist.maps.filter(
+      (entry: PlaylistLocalMap) =>
+        !beatmapHashes.find((hash: string) => entry.hash === hash)
+    );
 
     return this.UpdatePlaylist(copy);
   }
 
-  private static PushMapInPlaylist(playlist: PlaylistLocal, beatmapHash: string) {
+  private static PushMapInPlaylist(
+    playlist: PlaylistLocal,
+    beatmapHash: string
+  ) {
     const playlistLocalMap = {
       hash: beatmapHash,
       dateAdded: new Date(),

@@ -5,12 +5,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Utilities from '@/libraries/helper/Utilities';
-import Tooltip from '@/components/helper/Tooltip.vue';
+import Vue from "vue";
+import Utilities from "@/libraries/helper/Utilities";
+import Tooltip from "@/components/helper/Tooltip.vue";
 
 export default Vue.extend({
-  name: 'BeatmapsTableTemplateStrToDate',
+  name: "BeatmapsTableTemplateStrToDate",
   components: { Tooltip },
   props: {
     item: { type: Object, required: true },
@@ -27,6 +27,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

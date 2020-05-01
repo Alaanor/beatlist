@@ -1,31 +1,24 @@
 <template>
   <span>
     <Tooltip text="Add/Remove from playlists">
-      <v-btn
-        icon
-        :small="small"
-        @click="dialog = true"
-      >
+      <v-btn icon :small="small" @click="dialog = true">
         <v-icon :small="small">
           playlist_add
         </v-icon>
       </v-btn>
-    </tooltip>
-    <AddRemoveFromPlaylistsDialog
-      :open.sync="dialog"
-      :beatmap="beatmap"
-    />
+    </Tooltip>
+    <AddRemoveFromPlaylistsDialog :open.sync="dialog" :beatmap="beatmap" />
   </span>
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import Tooltip from '@/components/helper/Tooltip.vue';
-import AddRemoveFromPlaylistsDialog from '@/components/dialogs/AddRemoveFromPlaylistsDialog.vue';
+import Vue, { PropType } from "vue";
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import Tooltip from "@/components/helper/Tooltip.vue";
+import AddRemoveFromPlaylistsDialog from "@/components/dialogs/AddRemoveFromPlaylistsDialog.vue";
 
 export default Vue.extend({
-  name: 'BeatmapButtonAddToNPlaylists',
+  name: "BeatmapButtonAddToNPlaylists",
   components: { Tooltip, AddRemoveFromPlaylistsDialog },
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
@@ -37,6 +30,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

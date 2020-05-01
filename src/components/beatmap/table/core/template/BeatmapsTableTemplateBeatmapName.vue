@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="text-truncate"
-    :style="`width: ${header.width}px`"
-  >
+  <div class="text-truncate" :style="`width: ${header.width}px`">
     <Tooltip :text="tooltipText">
       {{ item.data.metadata.songName }}
       <span class="caption grey--text">
@@ -13,11 +10,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Tooltip from '@/components/helper/Tooltip.vue';
+import Vue from "vue";
+import Tooltip from "@/components/helper/Tooltip.vue";
 
 export default Vue.extend({
-  name: 'BeatmapsTableTemplateBeatmapName',
+  name: "BeatmapsTableTemplateBeatmapName",
   components: { Tooltip },
   props: {
     item: { type: Object, required: true },

@@ -19,33 +19,33 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import Vue, { PropType } from "vue";
 
 export default Vue.extend({
-  name: 'BeatmapsTableColumnSelector',
+  name: "BeatmapsTableColumnSelector",
   props: {
     value: { type: Array as PropType<string[]>, required: true },
   },
   data: () => ({
     shownColumn: [] as string[],
     headers: [
-      { value: 'cover', text: 'Cover' },
-      { value: 'name', text: 'Song name' },
-      { value: 'artist', text: 'Artist' },
-      { value: 'mapper', text: 'Mapper' },
-      { value: 'difficulties', text: 'Difficulties' },
-      { value: 'dl', text: 'Downloads' },
-      { value: 'plays', text: 'Plays' },
-      { value: 'upvotes', text: 'Up votes' },
-      { value: 'downvotes', text: 'Down votes' },
-      { value: 'rating', text: 'Rating' },
-      { value: 'uploaded', text: 'Uploaded' },
-      { value: 'key', text: 'Key' },
-      { value: 'hash', text: 'Hash' },
+      { value: "cover", text: "Cover" },
+      { value: "name", text: "Song name" },
+      { value: "artist", text: "Artist" },
+      { value: "mapper", text: "Mapper" },
+      { value: "difficulties", text: "Difficulties" },
+      { value: "dl", text: "Downloads" },
+      { value: "plays", text: "Plays" },
+      { value: "upvotes", text: "Up votes" },
+      { value: "downvotes", text: "Down votes" },
+      { value: "rating", text: "Rating" },
+      { value: "uploaded", text: "Uploaded" },
+      { value: "key", text: "Key" },
+      { value: "hash", text: "Hash" },
     ],
   }),
   computed: {
-    availableColumn(): {name: string, value: string }[] {
+    availableColumn(): { name: string; value: string }[] {
       return this.headers.map((header) => ({
         name: header.text,
         value: header.value,
@@ -54,7 +54,7 @@ export default Vue.extend({
   },
   watch: {
     shownColumn(): void {
-      this.$emit('input', this.shownColumn);
+      this.$emit("input", this.shownColumn);
     },
   },
   mounted(): void {

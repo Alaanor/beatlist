@@ -1,23 +1,20 @@
 <template>
   <Tooltip text="Open on beatsaver">
-    <v-btn
-      icon
-      @click="openBeatsaver"
-    >
+    <v-btn icon @click="openBeatsaver">
       <v-icon>open_in_new</v-icon>
     </v-btn>
   </Tooltip>
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { shell } from 'electron';
-import { BeatsaverBeatmap } from '@/libraries/net/beatsaver/BeatsaverBeatmap';
-import Tooltip from '@/components/helper/Tooltip.vue';
-import BeatsaverUtilities from '@/libraries/net/beatsaver/BeatsaverUtilities';
+import Vue, { PropType } from "vue";
+import { shell } from "electron";
+import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import Tooltip from "@/components/helper/Tooltip.vue";
+import BeatsaverUtilities from "@/libraries/net/beatsaver/BeatsaverUtilities";
 
 export default Vue.extend({
-  name: 'BeatmapButtonOpenBeatsaver',
+  name: "BeatmapButtonOpenBeatsaver",
   components: { Tooltip },
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
@@ -30,6 +27,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

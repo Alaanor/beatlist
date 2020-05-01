@@ -1,17 +1,10 @@
 <template>
   <v-edit-dialog>
-    <v-btn
-      icon
-      small
-      :color="!isModified() ? '' : 'success'"
-    >
+    <v-btn icon small :color="!isModified() ? '' : 'success'">
       <v-icon>filter_list</v-icon>
     </v-btn>
     <template v-slot:input>
-      <v-chip-group
-        v-model="selectedValues"
-        multiple
-      >
+      <v-chip-group v-model="selectedValues" multiple>
         <v-chip
           v-for="diff in difficulties"
           :key="diff.name"
@@ -26,12 +19,16 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { BeatmapsTableHeader } from '@/components/beatmap/table/core/BeatmapsTableHeaders';
-import { getNameFor, getColorFor, listOfDifficulties } from '@/libraries/helper/DifficultiesHelper';
+import Vue, { PropType } from "vue";
+import { BeatmapsTableHeader } from "@/components/beatmap/table/core/BeatmapsTableHeaders";
+import {
+  getNameFor,
+  getColorFor,
+  listOfDifficulties,
+} from "@/libraries/helper/DifficultiesHelper";
 
 export default Vue.extend({
-  name: 'BeatmapsTableFilterDifficulties',
+  name: "BeatmapsTableFilterDifficulties",
   props: {
     value: { type: Array as PropType<string[]>, required: true },
     header: { type: Object as PropType<BeatmapsTableHeader>, required: true },
@@ -58,15 +55,15 @@ export default Vue.extend({
   },
   methods: {
     update() {
-      this.$emit('input', this.selectedValues);
+      this.$emit("input", this.selectedValues);
     },
     isModified() {
-      return !listOfDifficulties.every((diff) => this.selectedValues.includes(diff));
+      return !listOfDifficulties.every((diff) =>
+        this.selectedValues.includes(diff)
+      );
     },
   },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

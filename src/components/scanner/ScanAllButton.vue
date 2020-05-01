@@ -15,13 +15,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { get } from 'vuex-pathify';
-import ScannerService from '@/libraries/scanner/ScannerService';
-import NotificationServiceScanner from '@/libraries/notification/NotificationServiceScanner';
+import Vue from "vue";
+import { get } from "vuex-pathify";
+import ScannerService from "@/libraries/scanner/ScannerService";
+import NotificationServiceScanner from "@/libraries/notification/NotificationServiceScanner";
 
 export default Vue.extend({
-  name: 'ScanAllButton',
+  name: "ScanAllButton",
   props: {
     small: { type: Boolean, default: false },
     text: { type: Boolean, default: false },
@@ -31,7 +31,7 @@ export default Vue.extend({
     isScanning: false,
   }),
   computed: {
-    installationPath: get<string>('settings/installationPath'),
+    installationPath: get<string>("settings/installationPath"),
   },
   mounted(): void {
     ScannerService.onScanningStateUpdate(this.onScanningStateUpdate);
@@ -52,6 +52,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

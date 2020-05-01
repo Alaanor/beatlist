@@ -7,7 +7,7 @@
   >
     <template #activator="{ on }">
       <span v-on="on">
-        <slot/>
+        <slot />
       </span>
     </template>
     <span>{{ text }}</span>
@@ -15,10 +15,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from "vue";
 
 export default Vue.extend({
-  name: 'Tooltip',
+  name: "Tooltip",
   props: {
     text: { type: String, required: true },
     top: { type: Boolean, default: true },
@@ -29,6 +29,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

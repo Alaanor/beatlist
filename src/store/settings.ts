@@ -1,34 +1,34 @@
-import { make } from 'vuex-pathify';
-import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
+import { make } from "vuex-pathify";
+import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
 
 export interface SettingsStoreState {
-  appVersion: string | undefined,
-  installationPath: string,
-  installationPathValid: boolean,
-  darkTheme: boolean,
-  enableDiscordRichPresence: boolean,
-  defaultExportFormat: PlaylistFormatType,
+  appVersion: string | undefined;
+  installationPath: string;
+  installationPathValid: boolean;
+  darkTheme: boolean;
+  enableDiscordRichPresence: boolean;
+  defaultExportFormat: PlaylistFormatType;
   beatmapsTable: {
     localBeatmaps: BeatmapTableStoreState;
     beatsaverBeatmaps: BeatmapTableStoreState;
     playlistContent: BeatmapTableStoreState;
     playlistBrowser: BeatmapTableStoreState;
-  }
+  };
 }
 
 export interface BeatmapTableStoreState {
-  shownColumn: string[],
-  itemsPerPage: number,
+  shownColumn: string[];
+  itemsPerPage: number;
 }
 
 const defaultTableSettings = {
-  shownColumn: ['cover', 'name', 'mapper', 'difficulties'],
+  shownColumn: ["cover", "name", "mapper", "difficulties"],
   itemsPerPage: 10,
 };
 
 const state = {
   appVersion: undefined,
-  installationPath: '',
+  installationPath: "",
   installationPathValid: false,
   darkTheme: true,
   enableDiscordRichPresence: true,

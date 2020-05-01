@@ -11,16 +11,10 @@
           <v-icon>{{ icon }}</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title
-            v-if="progress === undefined"
-            class="body-2"
-          >
+          <v-list-item-title v-if="progress === undefined" class="body-2">
             {{ text }}
           </v-list-item-title>
-          <v-list-item-title
-            v-else
-            class="body-2"
-          >
+          <v-list-item-title v-else class="body-2">
             {{ `${text} (${progress.get().done}/${progress.get().total})` }}
           </v-list-item-title>
         </v-list-item-content>
@@ -31,31 +25,29 @@
           :indeterminate="true"
           class="mb-0"
         />
-        <v-progress-linear
-          v-else
-          :value="progress.getRatio() * 100"
-        />
+        <v-progress-linear v-else :value="progress.getRatio() * 100" />
       </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { ProgressInterface } from '@/libraries/common/Progress';
+import Vue, { PropType } from "vue";
+import { ProgressInterface } from "@/libraries/common/Progress";
 
 export default Vue.extend({
-  name: 'LoaderDialog',
+  name: "LoaderDialog",
   props: {
     value: { type: Boolean, required: true },
-    progress: { type: Object as PropType<ProgressInterface>, default: undefined },
-    icon: { type: String, default: 'load' },
-    text: { type: String, default: 'loading' },
+    progress: {
+      type: Object as PropType<ProgressInterface>,
+      default: undefined,
+    },
+    icon: { type: String, default: "load" },
+    text: { type: String, default: "loading" },
     color: { type: String, default: undefined },
   },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

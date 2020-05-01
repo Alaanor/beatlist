@@ -11,11 +11,7 @@
     height="24"
   >
     <v-toolbar-title>
-      <v-img
-        :src="logo"
-        class="ml-2"
-        width="24"
-      />
+      <v-img :src="logo" class="ml-2" width="24" />
     </v-toolbar-title>
     <v-spacer />
     <v-btn
@@ -58,13 +54,13 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { remote } from 'electron';
+import Vue from "vue";
+import { remote } from "electron";
 
-const logo = require('@/assets/logo.png');
+const logo = require("@/assets/logo.png");
 
 export default Vue.extend({
-  name: 'AppBar',
+  name: "AppBar",
   computed: {
     logo: () => logo,
   },

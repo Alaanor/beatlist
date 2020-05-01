@@ -6,24 +6,18 @@
         id="markdown"
         v-html="changelog"
       />
-      <v-col
-        v-if="hasErr"
-      >
-        <v-alert
-          text
-          type="warning"
-          icon="warning"
-          class="mt-5"
-        >
+      <v-col v-if="hasErr">
+        <v-alert text type="warning" icon="warning" class="mt-5">
           <span>Unfortunately, we weren't able to fetch the CHANGELOG.md</span>
-          <br>
+          <br />
           <span class="caption">
             You can always check the
             <a
               href="https://github.com/Alaanor/beatlist"
               target="_blank"
               class="warning--text"
-            >Github repo</a>.
+              >Github repo</a
+            >.
           </span>
         </v-alert>
       </v-col>
@@ -32,14 +26,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import marked from 'marked';
-import BeatlistRepo from '@/libraries/net/github/BeatlistRepo';
+import Vue from "vue";
+import marked from "marked";
+import BeatlistRepo from "@/libraries/net/github/BeatlistRepo";
 
 export default Vue.extend({
-  name: 'ChangelogDisplayer',
+  name: "ChangelogDisplayer",
   data: () => ({
-    changelogRaw: '',
+    changelogRaw: "",
     hasErr: false,
   }),
   computed: {
@@ -48,16 +42,14 @@ export default Vue.extend({
     },
   },
   mounted(): void {
-    new BeatlistRepo()
-      .GetChangelogContent()
-      .then((content) => {
-        if (content) {
-          this.changelogRaw = content;
-          this.hasErr = false;
-        } else {
-          this.hasErr = true;
-        }
-      });
+    new BeatlistRepo().GetChangelogContent().then((content) => {
+      if (content) {
+        this.changelogRaw = content;
+        this.hasErr = false;
+      } else {
+        this.hasErr = true;
+      }
+    });
   },
 });
 </script>

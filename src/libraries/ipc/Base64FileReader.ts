@@ -1,8 +1,8 @@
-import { ipcMain, ipcRenderer } from 'electron';
-import fs from 'fs-extra';
+import { ipcMain, ipcRenderer } from "electron";
+import fs from "fs-extra";
 
-export const ON_FILE_READ_REQUEST = 'on_file_read_request';
-export const ON_FILE_READ_REPLY = 'on_file_read_reply';
+export const ON_FILE_READ_REQUEST = "on_file_read_request";
+export const ON_FILE_READ_REPLY = "on_file_read_reply";
 
 export default class Base64FileReader {
   public static register(): void {
@@ -12,9 +12,13 @@ export default class Base64FileReader {
     });
   }
 
-  private static async getFileInBase64(srcPath: string): Promise<string | undefined> {
+  private static async getFileInBase64(
+    srcPath: string
+  ): Promise<string | undefined> {
     try {
-      return fs.readFile(srcPath).then((value: Buffer) => value.toString('base64'));
+      return fs
+        .readFile(srcPath)
+        .then((value: Buffer) => value.toString("base64"));
     } catch (e) {
       return undefined;
     }
@@ -24,7 +28,10 @@ export default class Base64FileReader {
     ipcRenderer.send(ON_FILE_READ_REQUEST, srcPath);
 
     return new Promise((resolve) => {
-      ipcRenderer.on(ON_FILE_READ_REPLY, (event: any, data: string | undefined) => resolve(data));
+      ipcRenderer.on(
+        ON_FILE_READ_REPLY,
+        (event: any, data: string | undefined) => resolve(data)
+      );
     });
   }
 }

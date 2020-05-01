@@ -10,13 +10,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import NotificationLibrary from '@/libraries/notification/NotificationLibrary';
-import NotificationModelMessage from '@/components/notification/NotificationModelMessage.vue';
-import NotificationModelBeatmapDownload from '@/components/notification/NotificationModelBeatmapDownload.vue';
+import Vue from "vue";
+import NotificationLibrary from "@/libraries/notification/NotificationLibrary";
+import NotificationModelMessage from "@/components/notification/NotificationModelMessage.vue";
+import NotificationModelBeatmapDownload from "@/components/notification/NotificationModelBeatmapDownload.vue";
 
 export default Vue.extend({
-  name: 'NotificationService',
+  name: "NotificationService",
   components: { NotificationModelMessage, NotificationModelBeatmapDownload },
   computed: {
     toNotify: () => NotificationLibrary.GetAllUnnotified(),
@@ -24,6 +24,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

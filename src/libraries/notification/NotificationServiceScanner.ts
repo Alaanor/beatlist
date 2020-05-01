@@ -1,12 +1,16 @@
-import NotificationService from '@/libraries/notification/NotificationService';
-import BeatmapScannerResult from '@/libraries/scanner/beatmap/BeatmapScannerResult';
-import PlaylistScannerResult from '@/libraries/scanner/playlist/PlaylistScannerResult';
-import ScannerService from '@/libraries/scanner/ScannerService';
+import NotificationService from "@/libraries/notification/NotificationService";
+import BeatmapScannerResult from "@/libraries/scanner/beatmap/BeatmapScannerResult";
+import PlaylistScannerResult from "@/libraries/scanner/playlist/PlaylistScannerResult";
+import ScannerService from "@/libraries/scanner/ScannerService";
 
 export default class NotificationServiceScanner {
-  private static latestResultBeatmap = undefined as undefined | BeatmapScannerResult;
+  private static latestResultBeatmap = undefined as
+    | undefined
+    | BeatmapScannerResult;
 
-  private static latestResultPlaylist = undefined as undefined | PlaylistScannerResult;
+  private static latestResultPlaylist = undefined as
+    | undefined
+    | PlaylistScannerResult;
 
   private static notifyNextScan = false;
 
@@ -53,9 +57,19 @@ export default class NotificationServiceScanner {
     }
 
     if (message.length > 0) {
-      NotificationService.NotifyMessage(message.join('. '), 'info', 'find_in_page', 10 * 1000);
+      NotificationService.NotifyMessage(
+        message.join(". "),
+        "info",
+        "find_in_page",
+        10 * 1000
+      );
     } else {
-      NotificationService.NotifyMessage('No change', 'info', 'find_in_page', 2500);
+      NotificationService.NotifyMessage(
+        "No change",
+        "info",
+        "find_in_page",
+        2500
+      );
     }
   }
 }

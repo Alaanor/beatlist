@@ -8,11 +8,11 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { DownloadOperation } from '@/libraries/net/downloader/operation/DownloadOperation';
+import Vue, { PropType } from "vue";
+import { DownloadOperation } from "@/libraries/net/downloader/operation/DownloadOperation";
 
 export default Vue.extend({
-  name: 'DownloadProgressCircular',
+  name: "DownloadProgressCircular",
   props: {
     operation: { type: Object as PropType<DownloadOperation>, required: true },
   },
@@ -25,6 +25,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

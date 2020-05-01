@@ -1,17 +1,17 @@
-import fs from 'fs-extra';
-import path from 'path';
-import Base64SrcLoader from '@/libraries/os/utils/Base64SrcLoader';
-import { BeatsaverKeyType } from '@/libraries/beatmap/repo/BeatsaverKeyType';
-import BeatsaverCacheManager from '@/libraries/beatmap/repo/BeatsaverCacheManager';
-import { BeatmapLocal } from './BeatmapLocal';
-import BeatmapLoadStateError from './BeatmapLoadStateError';
-import { BeatmapLoadState } from './BeatmapLoadState';
-import BeatmapHashComputer from './BeatmapHashComputer';
+import fs from "fs-extra";
+import path from "path";
+import Base64SrcLoader from "@/libraries/os/utils/Base64SrcLoader";
+import { BeatsaverKeyType } from "@/libraries/beatmap/repo/BeatsaverKeyType";
+import BeatsaverCacheManager from "@/libraries/beatmap/repo/BeatsaverCacheManager";
+import { BeatmapLocal } from "./BeatmapLocal";
+import BeatmapLoadStateError from "./BeatmapLoadStateError";
+import { BeatmapLoadState } from "./BeatmapLoadState";
+import BeatmapHashComputer from "./BeatmapHashComputer";
 
 export default class BeatmapLoader {
   private readonly beatmap: BeatmapLocal;
 
-  private beatmapFolder: string = '';
+  private beatmapFolder: string = "";
 
   private hash: string | undefined;
 
@@ -19,8 +19,10 @@ export default class BeatmapLoader {
     return new BeatmapLoader().Load(beatmapFolder);
   }
 
-  public static async LoadCover(beatmap: BeatmapLocal): Promise<string | undefined> {
-    if (!await fs.pathExists(beatmap.coverPath)) {
+  public static async LoadCover(
+    beatmap: BeatmapLocal
+  ): Promise<string | undefined> {
+    if (!(await fs.pathExists(beatmap.coverPath))) {
       return undefined;
     }
 
@@ -40,7 +42,8 @@ export default class BeatmapLoader {
     await this.FindTheHash();
     await this.CacheBeatsaverMap();
 
-    this.beatmap.loadState.valid = this.beatmap.loadState.errorType === undefined;
+    this.beatmap.loadState.valid =
+      this.beatmap.loadState.errorType === undefined;
 
     return this.beatmap;
   }
@@ -50,23 +53,33 @@ export default class BeatmapLoader {
     let soundFilePath: string;
 
     try {
-      const infoDat = await fs.readFile(path.join(this.beatmapFolder, 'info.dat'));
+      const infoDat = await fs.readFile(
+        path.join(this.beatmapFolder, "info.dat")
+      );
       const beatmapDescription = JSON.parse(infoDat.toString());
 
-      coverImageFilePath = path.join(this.beatmapFolder, beatmapDescription._coverImageFilename);
-      soundFilePath = path.join(this.beatmapFolder, beatmapDescription._songFilename);
+      coverImageFilePath = path.join(
+        this.beatmapFolder,
+        beatmapDescription._coverImageFilename
+      );
+      soundFilePath = path.join(
+        this.beatmapFolder,
+        beatmapDescription._songFilename
+      );
     } catch (e) {
-      this.beatmap.loadState.errorType = BeatmapLoadStateError.NoInfoDatFileFound;
+      this.beatmap.loadState.errorType =
+        BeatmapLoadStateError.NoInfoDatFileFound;
       return;
     }
 
-    if (!await fs.pathExists(coverImageFilePath)) {
-      this.beatmap.loadState.errorType = BeatmapLoadStateError.NoCoverImageFound;
+    if (!(await fs.pathExists(coverImageFilePath))) {
+      this.beatmap.loadState.errorType =
+        BeatmapLoadStateError.NoCoverImageFound;
     } else {
       this.beatmap.coverPath = coverImageFilePath;
     }
 
-    if (!await fs.pathExists(soundFilePath)) {
+    if (!(await fs.pathExists(soundFilePath))) {
       this.beatmap.loadState.errorType = BeatmapLoadStateError.NoSoundFileFound;
     } else {
       this.beatmap.songPath = soundFilePath;
@@ -81,7 +94,8 @@ export default class BeatmapLoader {
     this.hash = await BeatmapHashComputer.Compute(this.beatmapFolder);
 
     if (!this.hash) {
-      this.beatmap.loadState.errorType = BeatmapLoadStateError.FailedToComputeHash;
+      this.beatmap.loadState.errorType =
+        BeatmapLoadStateError.FailedToComputeHash;
     } else {
       this.beatmap.hash = this.hash;
     }
@@ -89,7 +103,10 @@ export default class BeatmapLoader {
 
   private async CacheBeatsaverMap() {
     if (this.hash) {
-      await BeatsaverCacheManager.cacheBeatmap({ type: BeatsaverKeyType.Hash, value: this.hash });
+      await BeatsaverCacheManager.cacheBeatmap({
+        type: BeatsaverKeyType.Hash,
+        value: this.hash,
+      });
     }
   }
 }

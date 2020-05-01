@@ -1,7 +1,7 @@
-import { computeDifference } from '@/libraries/common/Differences';
+import { computeDifference } from "@/libraries/common/Differences";
 
-describe('differences', () => {
-  it('should give the right differences', () => {
+describe("differences", () => {
+  it("should give the right differences", () => {
     expect.assertions(3);
 
     const difference = computeDifference([0, 1, 2], [1, 2, 3]);

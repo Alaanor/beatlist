@@ -1,14 +1,15 @@
-import path from 'path';
-import { promisify } from 'util';
-import fs, { PathLike } from 'fs';
-import regKey from './Registry';
+import path from "path";
+import { promisify } from "util";
+import fs, { PathLike } from "fs";
+import regKey from "./Registry";
 
 const access = promisify(fs.access);
 const readFile = promisify(fs.readFile);
 
-const STEAM_APP_ID: string = '620980';
-const STEAM_REG_KEY: string = '\\Software\\WOW6432Node\\Valve\\PathResolverForSteam';
-const STEAM_REG_VAL: string = 'InstallPath';
+const STEAM_APP_ID: string = "620980";
+const STEAM_REG_KEY: string =
+  "\\Software\\WOW6432Node\\Valve\\PathResolverForSteam";
+const STEAM_REG_VAL: string = "InstallPath";
 
 export default class PathResolverForSteam {
   public static async findPath(): Promise<string | undefined> {
@@ -25,10 +26,12 @@ export default class PathResolverForSteam {
     return undefined;
   }
 
-  private static async findSteamPathFromRegistry(): Promise<string | undefined> {
+  private static async findSteamPathFromRegistry(): Promise<
+    string | undefined
+  > {
     const key = await regKey(
       `\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App ${STEAM_APP_ID}`,
-      'InstallLocation',
+      "InstallLocation"
     );
 
     if (key === undefined) {
@@ -42,7 +45,7 @@ export default class PathResolverForSteam {
       await access(pathToCheck, fs.constants.F_OK);
       return true;
     } catch (err) {
-      if (err.code === 'ENOENT') {
+      if (err.code === "ENOENT") {
         return false;
       }
       throw err;
@@ -52,11 +55,13 @@ export default class PathResolverForSteam {
   private static parseManifest(manifestLines: string, library: string) {
     const regex = /\s"installdir"\s+"(.+)"/;
     const [installDir] = manifestLines
-      .split('\n')
+      .split("\n")
       .filter((line) => line.match(regex))
-      .map((line) => (regex.exec(line) as RegExpMatchArray)[1].replace(/\\\\/g, '\\'));
+      .map((line) =>
+        (regex.exec(line) as RegExpMatchArray)[1].replace(/\\\\/g, "\\")
+      );
 
-    return path.join(library, 'common', installDir);
+    return path.join(library, "common", installDir);
   }
 
   private static async findSteamLibraries() {
@@ -66,23 +71,27 @@ export default class PathResolverForSteam {
       return [];
     }
 
-    const baseDir = path.join(steamPath, 'steamapps');
+    const baseDir = path.join(steamPath, "steamapps");
     const libraryFolders = await readFile(
-      path.join(baseDir, 'libraryfolders.vdf'),
-      'utf8',
+      path.join(baseDir, "libraryfolders.vdf"),
+      "utf8"
     );
 
     const regex = /\s"\d"\s+"(.+)"/;
     const libraries = libraryFolders
-      .split('\n')
+      .split("\n")
       .filter((line: string) => line.match(regex))
-      .map((line: string) => (regex.exec(line) as RegExpExecArray)[1].replace(/\\\\/g, '\\'))
-      .map((line: string) => path.join(line, 'steamapps'));
+      .map((line: string) =>
+        (regex.exec(line) as RegExpExecArray)[1].replace(/\\\\/g, "\\")
+      )
+      .map((line: string) => path.join(line, "steamapps"));
 
     return [baseDir, ...libraries];
   }
 
-  private static async findSteamPathFromLibraries(): Promise<string | undefined> {
+  private static async findSteamPathFromLibraries(): Promise<
+    string | undefined
+  > {
     const libraries = await PathResolverForSteam.findSteamLibraries();
 
     if (libraries.length === 0) {
@@ -94,7 +103,7 @@ export default class PathResolverForSteam {
         const test = path.join(library, `appmanifest_${STEAM_APP_ID}.acf`);
         const fileExists = await PathResolverForSteam.exists(test);
         return { path: test, library, fileExists };
-      }),
+      })
     );
 
     const filtered = manifests.filter((x) => x.fileExists);
@@ -102,7 +111,7 @@ export default class PathResolverForSteam {
       return undefined;
     }
     const [manifestInfo] = filtered;
-    const manifestLines = await readFile(manifestInfo.path, 'utf8');
+    const manifestLines = await readFile(manifestInfo.path, "utf8");
 
     return this.parseManifest(manifestLines, manifestInfo.library);
   }

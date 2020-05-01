@@ -1,11 +1,11 @@
 export enum BeatsaverKeyType {
-  Hash = 'hash',
-  Key = 'key',
+  Hash = "hash",
+  Key = "key",
 }
 
 export interface BeatsaverKey {
-  type: BeatsaverKeyType,
-  value: string,
+  type: BeatsaverKeyType;
+  value: string;
 }
 
 export function toStrKey(key: BeatsaverKey) {

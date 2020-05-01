@@ -1,4 +1,4 @@
-import { PlaylistBase } from '@/libraries/playlist/PlaylistLocal';
+import { PlaylistBase } from "@/libraries/playlist/PlaylistLocal";
 
 export default abstract class PlaylistSerializer {
   protected filepath: string;

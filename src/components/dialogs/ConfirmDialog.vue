@@ -1,29 +1,18 @@
 <template>
-  <v-dialog
-    v-model="open"
-    persistent
-    width="300"
-  >
+  <v-dialog v-model="open" persistent width="300">
     <v-card>
       <v-card-title>
         {{ title }}
       </v-card-title>
       <v-card-text>
-        <slot/>
+        <slot />
       </v-card-text>
       <v-card-actions>
-        <v-spacer/>
-        <v-btn
-          text
-          @click="closeDialog"
-        >
+        <v-spacer />
+        <v-btn text @click="closeDialog">
           Cancel
         </v-btn>
-        <v-btn
-          text
-          :color="actionColor"
-          @click="doAction()"
-        >
+        <v-btn text :color="actionColor" @click="doAction()">
           {{ actionText }}
         </v-btn>
       </v-card-actions>
@@ -32,20 +21,20 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from "vue";
 
 export default Vue.extend({
-  name: 'ConfirmDialog',
+  name: "ConfirmDialog",
   props: {
     open: { type: Boolean, required: true },
     title: { type: String, default: undefined },
-    actionText: { type: String, default: 'Confirm' },
-    actionColor: { type: String, default: '' },
+    actionText: { type: String, default: "Confirm" },
+    actionColor: { type: String, default: "" },
     onAction: { type: Function, default: () => {} },
   },
   methods: {
     closeDialog() {
-      this.$emit('update:open', false);
+      this.$emit("update:open", false);
     },
     doAction() {
       this.closeDialog();
@@ -58,6 +47,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

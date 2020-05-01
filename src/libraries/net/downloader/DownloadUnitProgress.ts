@@ -4,11 +4,11 @@ export interface DownloadUnitProgress {
     received: number;
     percent: number; // 0 to 1
     speed: number; // bytes per ms
-  },
+  };
   time: {
     startedAt: number;
     remaining: number; // in ms
-  },
+  };
 }
 
 export function DownloadUnitProgressFactory(): DownloadUnitProgress {
@@ -27,15 +27,15 @@ export function DownloadUnitProgressFactory(): DownloadUnitProgress {
 }
 
 function formatBytes(bytes: number, decimals: number = 2) {
-  if (bytes === 0) return '0 Bytes';
+  if (bytes === 0) return "0 Bytes";
 
   const k = 1024;
   const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  return `${parseFloat((bytes / (k ** i)).toFixed(dm))} ${sizes[i]}`;
+  return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 }
 
 export function FormatProgressSpeed(progress: DownloadUnitProgress): string {
@@ -57,11 +57,15 @@ export function FormatProgressState(progress: DownloadUnitProgress): string {
   return `${received} of ${total}`;
 }
 
-export function FormatProgressRemaining(progress: DownloadUnitProgress): string {
+export function FormatProgressRemaining(
+  progress: DownloadUnitProgress
+): string {
   const remaining = Math.ceil(progress.time.remaining / 1000);
-  return `${remaining} second${remaining > 1 ? 's' : ''} remaining`;
+  return `${remaining} second${remaining > 1 ? "s" : ""} remaining`;
 }
 
 export function FormatProgressAllInOne(progress: DownloadUnitProgress): string {
-  return `${FormatProgressRemaining(progress)} - ${FormatProgressState(progress)}, ${FormatProgressSpeed(progress)}`;
+  return `${FormatProgressRemaining(progress)} - ${FormatProgressState(
+    progress
+  )}, ${FormatProgressSpeed(progress)}`;
 }

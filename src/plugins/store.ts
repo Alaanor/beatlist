@@ -1,14 +1,14 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import VuexPersistence from 'vuex-persist';
-import localForage from 'localforage';
-import pathify from '@/plugins/pathify';
-import modules, { StoreState } from '@/store';
+import Vue from "vue";
+import Vuex from "vuex";
+import VuexPersistence from "vuex-persist";
+import localForage from "localforage";
+import pathify from "@/plugins/pathify";
+import modules, { StoreState } from "@/store";
 
 Vue.use(Vuex);
 
 const vuexLocalCachedData = new VuexPersistence<StoreState>({
-  key: 'vuex-cached-data',
+  key: "vuex-cached-data",
   storage: localForage,
   asyncStorage: true,
   strictMode: true,
@@ -19,7 +19,7 @@ const vuexLocalCachedData = new VuexPersistence<StoreState>({
 });
 
 const vuexLocalMain = new VuexPersistence<StoreState>({
-  key: 'vuex-main',
+  key: "vuex-main",
   storage: localForage,
   asyncStorage: true,
   strictMode: true,
@@ -31,11 +31,7 @@ const vuexLocalMain = new VuexPersistence<StoreState>({
 });
 
 const store = new Vuex.Store<StoreState>({
-  plugins: [
-    vuexLocalMain.plugin,
-    vuexLocalCachedData.plugin,
-    pathify.plugin,
-  ],
+  plugins: [vuexLocalMain.plugin, vuexLocalCachedData.plugin, pathify.plugin],
   modules,
   mutations: {
     RESTORE_MUTATION: vuexLocalMain.RESTORE_MUTATION,

@@ -1,8 +1,8 @@
-import { make } from 'vuex-pathify';
+import { make } from "vuex-pathify";
 
 export interface AppStateStoreState {
-  subNav: Object[],
-  lockPlaylistModification: boolean,
+  subNav: Object[];
+  lockPlaylistModification: boolean;
 }
 
 const state = {

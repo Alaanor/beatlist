@@ -27,15 +27,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import DownloadsListGroup from '@/components/downloads/list/DownloadsListGroup.vue';
-import DownloadLibrary from '@/libraries/net/downloader/DownloadLibrary';
-import DownloadManager from '@/libraries/net/downloader/DownloadManager';
-import { DownloadOperation } from '@/libraries/net/downloader/operation/DownloadOperation';
-import DiscordRichPresence from '@/libraries/ipc/DiscordRichPresence';
+import Vue from "vue";
+import DownloadsListGroup from "@/components/downloads/list/DownloadsListGroup.vue";
+import DownloadLibrary from "@/libraries/net/downloader/DownloadLibrary";
+import DownloadManager from "@/libraries/net/downloader/DownloadManager";
+import { DownloadOperation } from "@/libraries/net/downloader/operation/DownloadOperation";
+import DiscordRichPresence from "@/libraries/ipc/DiscordRichPresence";
 
 export default Vue.extend({
-  name: 'Downloads',
+  name: "Downloads",
   components: { DownloadsListGroup },
   data: () => ({
     queued: [] as DownloadOperation[],
@@ -47,7 +47,7 @@ export default Vue.extend({
     this.updateDownloadData();
   },
   beforeRouteEnter(to, from, next) {
-    DiscordRichPresence.UpdateStatus('Checking his downloads');
+    DiscordRichPresence.UpdateStatus("Checking his downloads");
     next();
   },
   beforeDestroy(): void {
@@ -63,6 +63,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

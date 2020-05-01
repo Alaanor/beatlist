@@ -1,22 +1,19 @@
 <template>
   <Tooltip text="New playlist">
-    <v-btn
-      icon
-      @click="openFolder"
-    >
+    <v-btn icon @click="openFolder">
       <v-icon>folder</v-icon>
     </v-btn>
   </Tooltip>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { shell } from 'electron';
-import Tooltip from '@/components/helper/Tooltip.vue';
-import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
+import Vue from "vue";
+import { shell } from "electron";
+import Tooltip from "@/components/helper/Tooltip.vue";
+import BeatSaber from "@/libraries/os/beatSaber/BeatSaber";
 
 export default Vue.extend({
-  name: 'PlaylistButtonOpenFolder',
+  name: "PlaylistButtonOpenFolder",
   components: { Tooltip },
   methods: {
     openFolder() {
@@ -27,6 +24,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

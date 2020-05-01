@@ -1,11 +1,13 @@
-import fs from 'fs-extra';
-import path from 'path';
-import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
+import fs from "fs-extra";
+import path from "path";
+import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
 
-export const PLAYLIST_EXTENSION_NAME_BPLIST = 'bplist';
-export const PLAYLIST_EXTENSION_NAME_JSON = 'json';
-export const PLAYLIST_EXTENSION_NAME_BLIST = 'blist';
-export const FILENAME_EXTENSION_UNHANDLED = new Error('Unhandled filename extension');
+export const PLAYLIST_EXTENSION_NAME_BPLIST = "bplist";
+export const PLAYLIST_EXTENSION_NAME_JSON = "json";
+export const PLAYLIST_EXTENSION_NAME_BLIST = "blist";
+export const FILENAME_EXTENSION_UNHANDLED = new Error(
+  "Unhandled filename extension"
+);
 
 export default class PlaylistFilenameExtension {
   static GetFor(format: PlaylistFormatType): string {
@@ -30,17 +32,25 @@ export default class PlaylistFilenameExtension {
 
     const newFilepath = path.join(
       path.dirname(filepath),
-      `${path.basename(filepath, path.extname(filepath))}.${PlaylistFilenameExtension.GetFor(format)}`,
+      `${path.basename(
+        filepath,
+        path.extname(filepath)
+      )}.${PlaylistFilenameExtension.GetFor(format)}`
     );
 
     if (await fs.pathExists(newFilepath)) {
-      throw new Error(`The new path already exist, cancelled before the override. (path: ${newFilepath})`);
+      throw new Error(
+        `The new path already exist, cancelled before the override. (path: ${newFilepath})`
+      );
     }
 
     await fs.rename(filepath, newFilepath);
   }
 
-  public static isExtensionCorrect(filepath: string, format: PlaylistFormatType) {
+  public static isExtensionCorrect(
+    filepath: string,
+    format: PlaylistFormatType
+  ) {
     return path.extname(filepath).substr(1) === this.GetFor(format);
   }
 

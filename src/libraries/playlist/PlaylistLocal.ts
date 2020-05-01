@@ -1,12 +1,12 @@
-import { PlaylistLoadState } from '@/libraries/playlist/loader/PlaylistLoadState';
-import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
+import { PlaylistLoadState } from "@/libraries/playlist/loader/PlaylistLoadState";
+import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
 
 export interface PlaylistBase {
   title: string;
   author: string;
   description: string | null;
   cover: Buffer | null;
-  maps: PlaylistMap[],
+  maps: PlaylistMap[];
 }
 
 export interface PlaylistLocal extends PlaylistBase {
