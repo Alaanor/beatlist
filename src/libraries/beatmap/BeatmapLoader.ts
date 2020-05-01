@@ -1,12 +1,12 @@
 import fs from 'fs-extra';
 import path from 'path';
+import Base64SrcLoader from '@/libraries/os/utils/Base64SrcLoader';
+import { BeatsaverKeyType } from '@/libraries/beatmap/repo/BeatsaverKeyType';
+import BeatsaverCacheManager from '@/libraries/beatmap/repo/BeatsaverCacheManager';
 import { BeatmapLocal } from './BeatmapLocal';
 import BeatmapLoadStateError from './BeatmapLoadStateError';
 import { BeatmapLoadState } from './BeatmapLoadState';
 import BeatmapHashComputer from './BeatmapHashComputer';
-import Base64SrcLoader from '@/libraries/os/utils/Base64SrcLoader';
-import { BeatsaverKeyType } from '@/libraries/beatmap/repo/BeatsaverKeyType';
-import BeatsaverCacheManager from '@/libraries/beatmap/repo/BeatsaverCacheManager';
 
 export default class BeatmapLoader {
   private readonly beatmap: BeatmapLocal;

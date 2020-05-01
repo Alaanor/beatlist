@@ -1,13 +1,13 @@
 import * as Throttle from 'promise-parallel-throttle';
 import BeatSaber from '@/libraries/os/beatSaber/BeatSaber';
-import BeatmapLibrary from '../../beatmap/BeatmapLibrary';
-import BeatmapLoader from '../../beatmap/BeatmapLoader';
-import { BeatmapLocal } from '../../beatmap/BeatmapLocal';
 import { computeDifference, Differences } from '@/libraries/common/Differences';
 import Progress from '@/libraries/common/Progress';
 import BeatmapScannerResult from '@/libraries/scanner/beatmap/BeatmapScannerResult';
 import { ScannerInterface } from '@/libraries/scanner/ScannerInterface';
 import ScannerLocker from '@/libraries/scanner/ScannerLocker';
+import { BeatmapLocal } from '../../beatmap/BeatmapLocal';
+import BeatmapLoader from '../../beatmap/BeatmapLoader';
+import BeatmapLibrary from '../../beatmap/BeatmapLibrary';
 
 export default class BeatmapScanner implements ScannerInterface<BeatmapLocal> {
   public result: BeatmapScannerResult = new BeatmapScannerResult();

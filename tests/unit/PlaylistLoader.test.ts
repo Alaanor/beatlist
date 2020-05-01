@@ -3,11 +3,11 @@ import fs from 'fs-extra';
 import { PlaylistLocal } from '@/libraries/playlist/PlaylistLocal';
 import PlaylistLoader from '@/libraries/playlist/loader/PlaylistLoader';
 import BeatsaverAPI from '@/libraries/net/beatsaver/BeatsaverAPI';
-import mockResponseSuccess from './helper/BeatsaverAPIResponseMocking';
 import PlaylistLoadStateError from '@/libraries/playlist/loader/PlaylistLoadStateError';
 import { PlaylistLoadStateInvalid } from '@/libraries/playlist/loader/PlaylistLoadState';
 import PlaylistFormatType from '@/libraries/playlist/PlaylistFormatType';
 import { BeatsaverKey, BeatsaverKeyType } from '@/libraries/beatmap/repo/BeatsaverKeyType';
+import mockResponseSuccess from './helper/BeatsaverAPIResponseMocking';
 
 jest.mock('@/plugins/store', () => ({
   getters: { 'settings/defaultExportFormat': 'Json' },

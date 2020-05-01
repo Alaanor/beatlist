@@ -1,21 +1,18 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import store from './store';
-
 import Settings from '@/pages/settings';
 import Home from '@/pages/home';
 import Downloads from '@/pages/downloads/';
-
 import Beatmap, {
   BeatmapLocal, BeatmapLocalUnit,
   BeatmapOnline, BeatmapOnlineUnit,
 } from '@/pages/beatmap';
-
 import Playlists, {
   PlaylistsLocal,
   PlaylistsLocalUnit,
   PlaylistsBsaber,
 } from '@/pages/playlists';
+import store from './store';
 
 Vue.use(VueRouter);
 
