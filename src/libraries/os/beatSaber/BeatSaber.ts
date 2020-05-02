@@ -19,24 +19,40 @@ export default class BeatSaber {
     return resolveInstallPath();
   }
 
-  public static getBeatmapFolder(): string {
+  public static async getBeatmapFolder(): Promise<string> {
     const installationPath = store.getters["settings/installationPath"];
-    return path.join(installationPath, BEAT_SABER_CUSTOM_LEVEL);
+    const beatmapFolder = path.join(installationPath, BEAT_SABER_CUSTOM_LEVEL);
+
+    if (!(await fs.pathExists(beatmapFolder))) {
+      if (await fs.pathExists(installationPath)) {
+        await fs.mkdirp(beatmapFolder);
+      }
+    }
+
+    return beatmapFolder;
   }
 
-  public static getPlaylistFolder(): string {
+  public static async getPlaylistFolder(): Promise<string> {
     const installationPath = store.getters["settings/installationPath"];
-    return path.join(installationPath, BEAT_SABER_PLAYLIST);
+    const playlistPath = path.join(installationPath, BEAT_SABER_PLAYLIST);
+
+    if (!(await fs.pathExists(playlistPath))) {
+      if (await fs.pathExists(installationPath)) {
+        await fs.mkdirp(playlistPath);
+      }
+    }
+
+    return playlistPath;
   }
 
   public static async getAllSongFolderPath(): Promise<string[]> {
-    const pathSongList = this.getBeatmapFolder();
+    const pathSongList = await this.getBeatmapFolder();
     const directoryList = await fs.readdir(pathSongList);
     return directoryList.map((directory) => path.join(pathSongList, directory));
   }
 
   public static async getAllPlaylistsPath(): Promise<string[] | undefined> {
-    const pathPlaylists = this.getPlaylistFolder();
+    const pathPlaylists = await this.getPlaylistFolder();
     const fileList = await fs.readdir(pathPlaylists);
 
     const allFile = await Promise.all(

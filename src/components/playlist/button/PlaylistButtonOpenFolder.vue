@@ -16,8 +16,8 @@ export default Vue.extend({
   name: "PlaylistButtonOpenFolder",
   components: { Tooltip },
   methods: {
-    openFolder() {
-      const folderPath = BeatSaber.getPlaylistFolder();
+    async openFolder() {
+      const folderPath = await BeatSaber.getPlaylistFolder();
       shell.openItem(folderPath);
     },
   },

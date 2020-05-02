@@ -29,7 +29,7 @@ export default class PlaylistInstaller {
     ] as PlaylistFormatType;
     const extension = PlaylistFilenameExtension.GetFor(format);
     const filepath = path
-      .join(BeatSaber.getPlaylistFolder(), `${name}.${extension}`)
+      .join(await BeatSaber.getPlaylistFolder(), `${name}.${extension}`)
       .toLowerCase();
 
     const emptyPlaylist = {

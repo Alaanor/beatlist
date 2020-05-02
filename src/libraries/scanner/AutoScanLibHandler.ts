@@ -8,8 +8,8 @@ export default class AutoScanLibHandler {
     // @ts-ignore
     await store.restored;
 
-    const beatmapFolder = BeatSaber.getBeatmapFolder();
-    const playlistFolder = BeatSaber.getPlaylistFolder();
+    const beatmapFolder = await BeatSaber.getBeatmapFolder();
+    const playlistFolder = await BeatSaber.getPlaylistFolder();
 
     const watcher = chokidar.watch([beatmapFolder, playlistFolder], {
       ignoreInitial: true,
