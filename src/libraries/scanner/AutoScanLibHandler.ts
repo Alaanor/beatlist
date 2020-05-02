@@ -20,6 +20,13 @@ export default class AutoScanLibHandler {
     watcher.on("unlink", AutoScanLibHandler.onChange);
     watcher.on("addDir", AutoScanLibHandler.onChange);
     watcher.on("unlinkDir", AutoScanLibHandler.onChange);
+
+    if (
+      store.getters["settings/configValid"] &&
+      !store.getters["modal/newUserModal"]
+    ) {
+      this.onChange();
+    }
   }
 
   private static onChange() {

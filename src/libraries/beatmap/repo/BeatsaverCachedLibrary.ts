@@ -34,7 +34,16 @@ export default class BeatsaverCachedLibrary {
   }
 
   public static UpdateOne(item: BeatsaverItem) {
-    store.commit("beatmap/updateBeatsaberCached", item);
+    if (item.beatmap === undefined) {
+      return;
+    }
+
+    const key = {
+      type: BeatsaverKeyType.Hash,
+      value: item.beatmap.hash,
+    } as BeatsaverKey;
+
+    store.commit("beatmap/updateBeatsaberCached", { key, item });
   }
 
   public static GetAllInvalid() {
