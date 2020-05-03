@@ -59,13 +59,16 @@ export default Vue.extend({
     installationPathValid: sync<string>("settings/installationPathValid"),
   },
   methods: {
-    openFileExplorer() {
-      const folder = remote.dialog.showOpenDialog({
+    async openFileExplorer() {
+      const folder = await remote.dialog.showOpenDialog({
         properties: ["openDirectory"],
       });
-      if (folder !== undefined) {
-        [this.installationPath] = folder;
+
+      if (folder.filePaths.length === 0) {
+        return;
       }
+
+      [this.installationPath] = folder.filePaths;
     },
     async detectPath() {
       this.resolveBtnLoading = true;

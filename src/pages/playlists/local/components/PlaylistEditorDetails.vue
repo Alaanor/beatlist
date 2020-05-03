@@ -248,7 +248,7 @@ export default Vue.extend({
       });
     },
     async openFileExplorer() {
-      const file = remote.dialog.showOpenDialog({
+      const file = await remote.dialog.showOpenDialog({
         properties: ["openFile"],
         filters: [
           {
@@ -257,19 +257,23 @@ export default Vue.extend({
           },
         ],
       });
-      if (file !== undefined) {
-        const imageData = await Base64SrcLoader.FromFile(file[0]);
-        if (imageData) {
-          this.imageData = imageData;
-          this.imageChanged = true;
-        } else {
-          NotificationService.NotifyMessage(
-            "Couldn't read the image",
-            "error",
-            NOTIFICATION_ICON_FAILED,
-            2500
-          );
-        }
+
+      if (file.filePaths.length === 0) {
+        return;
+      }
+
+      const imageData = await Base64SrcLoader.FromFile(file.filePaths[0]);
+
+      if (imageData) {
+        this.imageData = imageData;
+        this.imageChanged = true;
+      } else {
+        NotificationService.NotifyMessage(
+          "Couldn't read the image",
+          "error",
+          NOTIFICATION_ICON_FAILED,
+          2500
+        );
       }
     },
   },

@@ -32,7 +32,7 @@
     "chokidar": "^3.4.0",
     "core-js": "^3.6.0",
     "discord-rpc": "^3.1.0",
-    "electron": "^5.0.13",
+    "electron": "^8.2.5",
     "fs-extra": "^8.1.0",
     "linkifyjs": "^2.1.9",
     "localforage": "^1.7.3",

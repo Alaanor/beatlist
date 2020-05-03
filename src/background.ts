@@ -1,4 +1,8 @@
-import electron, { app, protocol, BrowserWindow } from "electron";
+import electron, {
+  app,
+  protocol,
+  BrowserWindow,
+} from "electron";
 import {
   createProtocol,
   installVueDevtools,
@@ -7,23 +11,25 @@ import path from "path";
 import registerIpc from "@/libraries/ipc";
 
 class Background {
-  private static RegisterProtocol() {
-    protocol.registerSchemesAsPrivileged([
-      { scheme: "app", privileges: { secure: true, standard: true } },
-    ]);
-  }
-
   private win: BrowserWindow | null = null;
 
   private isDevelopment: boolean = process.env.NODE_ENV !== "production";
 
   public Initiate() {
-    Background.RegisterProtocol();
+    Background.Setup();
     this.SetUpOnReady();
     this.OnDevMode();
   }
 
-  private InitiateWindow(): void {
+  private static Setup(): void {
+    protocol.registerSchemesAsPrivileged([
+      { scheme: "app", privileges: { secure: true, standard: true } },
+    ]);
+
+    app.allowRendererProcessReuse = false;
+  }
+
+  private async InitiateWindow(): Promise<void> {
     this.win = new BrowserWindow({
       width: 1000,
       height: 750,
@@ -43,13 +49,13 @@ class Background {
     });
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
-      this.win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
+      await this.win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
       if (!process.env.IS_TEST) {
         this.win.webContents.openDevTools();
       }
     } else {
       createProtocol("app");
-      this.win.loadURL("app://./index.html");
+      await this.win.loadURL("app://./index.html");
     }
 
     this.win.on("closed", () => {
@@ -66,7 +72,8 @@ class Background {
           console.error("Vue Devtools failed to install:", e.toString());
         }
       }
-      this.InitiateWindow();
+
+      await this.InitiateWindow();
       Background.SetUpServices();
     });
   }
