@@ -74,11 +74,19 @@ export default class BeatSaber {
   }
 
   public static GetFolderPathFor(beatmap: BeatsaverBeatmap): string {
+    const purgeText = (text: string) =>
+      text
+        .replace(/\s/g, " ")
+        .replace(/[^a-zA-Z0-9 ]/g, "")
+        .trim();
+
     const installationPath = store.getters["settings/installationPath"];
-    const beatmapFolder = `${beatmap.key} (${beatmap.metadata.songName} - ${beatmap.metadata.levelAuthorName})`
-      .replace(/[?|&:*;$%@"<>()+,]/g, "")
-      .replace("\\", "_")
-      .replace("/", "_");
+
+    const key = purgeText(beatmap.key);
+    const songName = purgeText(beatmap.metadata.songName);
+    const levelAuthorName = purgeText(beatmap.metadata.levelAuthorName);
+
+    const beatmapFolder = `${key} ${songName} - ${levelAuthorName}`;
 
     return path.join(installationPath, BEAT_SABER_CUSTOM_LEVEL, beatmapFolder);
   }
