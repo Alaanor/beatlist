@@ -244,7 +244,7 @@ export default Vue.extend({
           ) {
             this.beatsaverPage = BeatsaverUtilities.GetEmptyPage();
             this.error =
-              "No beatmap was found with this search (you are in Key or Hash mode !). Result must be exact in this mode.";
+              "No beatmap was found with this search (you are in Key or Hash mode !). Search must be exact in this mode.";
           } else {
             this.beatsaverPage = undefined;
           }

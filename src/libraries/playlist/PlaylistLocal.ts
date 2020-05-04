@@ -17,10 +17,6 @@ export interface PlaylistLocal extends PlaylistBase {
   format: PlaylistFormatType;
 }
 
-export interface PlaylistOnline extends PlaylistBase {
-  maps: PlaylistOnlineMap[];
-}
-
 export interface PlaylistMap {
   hash: string | undefined;
   dateAdded: Date;
@@ -34,8 +30,6 @@ export interface PlaylistLocalMap extends PlaylistMap {
   error: PlaylistMapImportError | undefined;
   errorInfo: string | undefined;
 }
-
-export interface PlaylistOnlineMap extends PlaylistMap {}
 
 export enum PlaylistMapImportError {
   BeatmapTypeLevelIdNotSupported = 0,

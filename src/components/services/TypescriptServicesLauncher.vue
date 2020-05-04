@@ -30,6 +30,7 @@ export default Vue.extend({
     LaunchServices() {
       this.DiscordRichPresence();
       this.RegisterBeatsaverLinkListener();
+
       AutoScanLibHandler.register();
       NotificationServiceScanner.Initialize();
       UpgradeCheckerService.Initialize();

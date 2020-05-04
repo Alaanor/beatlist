@@ -1,8 +1,4 @@
-import electron, {
-  app,
-  protocol,
-  BrowserWindow,
-} from "electron";
+import electron, { app, protocol, BrowserWindow } from "electron";
 import {
   createProtocol,
   installVueDevtools,
@@ -75,6 +71,7 @@ class Background {
 
       await this.InitiateWindow();
       Background.SetUpServices();
+      this.bypassCORS();
     });
   }
 
@@ -98,6 +95,27 @@ class Background {
         });
       }
     }
+  }
+
+  private bypassCORS() {
+    if (!this.win) {
+      return;
+    }
+
+    const filter = {
+      urls: ["*://*.bsaber.com/*"],
+    };
+
+    this.win.webContents.session.webRequest.onHeadersReceived(
+      filter,
+      (details, callback) => {
+        if (details.responseHeaders) {
+          details.responseHeaders["access-control-allow-origin"] = ["*"];
+        }
+
+        callback({ responseHeaders: details.responseHeaders });
+      }
+    );
   }
 }
 

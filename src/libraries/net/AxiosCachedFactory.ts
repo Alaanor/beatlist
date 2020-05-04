@@ -18,7 +18,7 @@ export default class AxiosCachedFactory {
     });
 
     axiosRetry(instance, {
-      retries: 3,
+      retries: 2,
       retryDelay: exponentialDelay,
     });
 
