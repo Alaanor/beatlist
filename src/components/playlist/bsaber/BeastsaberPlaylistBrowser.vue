@@ -15,6 +15,7 @@
       :playlist-beastsaber="currentPlaylistBeast"
       :progress="progress"
       :error="errorPlaylist"
+      :loading="loadingPlaylistLocal"
     />
   </v-container>
 </template>
@@ -42,6 +43,7 @@ export default Vue.extend({
       errorPlaylists: undefined as string | undefined,
       errorPlaylist: undefined as string | undefined,
       progress: undefined as Progress | undefined,
+      loadingPlaylistLocal: false,
     };
   },
   mounted(): void {
@@ -74,6 +76,7 @@ export default Vue.extend({
       this.progress = new Progress();
       this.currentPlaylistLocal = undefined;
       this.currentPlaylistBeast = playlist;
+      this.loadingPlaylistLocal = true;
 
       PlaylistFetcher.Fetch(playlist.playlistURL, this.progress)
         .then((pl: PlaylistLocal) => {
@@ -82,6 +85,9 @@ export default Vue.extend({
         })
         .catch((e: Error) => {
           this.errorPlaylist = e.message;
+        })
+        .finally(() => {
+          this.loadingPlaylistLocal = false;
         });
     },
   },

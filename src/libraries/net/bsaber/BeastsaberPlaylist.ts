@@ -3,7 +3,7 @@ export default interface BeastsaberPlaylist {
   playlistDescription: string;
   playlistAuthor: string;
   playlistSongCount: number;
-  playlistDate: Date;
+  playlistDate: string;
   playlistCategory: string;
   playlistURL: string;
   image: string;
