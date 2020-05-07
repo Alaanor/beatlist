@@ -31,13 +31,17 @@ export default class JsonDeserializer extends PlaylistDeserializer {
         title: json.playlistTitle ?? "",
         author: json.playlistAuthor ?? "",
         description: json.playlistDescription ?? "",
-        cover: Buffer.from(Base64SrcLoader.GetRawSrc(json.image), "base64"),
+        cover: Buffer.from(
+          Base64SrcLoader.GetRawSrc(json.image ?? ""),
+          "base64"
+        ),
         maps: await JsonDeserializer.convertToHash(
           json.songs,
           progress ?? new Progress()
         ),
       } as PlaylistBase;
     } catch (e) {
+      console.log(e);
       throw INVALID_JSON;
     }
   }
