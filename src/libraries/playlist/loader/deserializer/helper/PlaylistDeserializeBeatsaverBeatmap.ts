@@ -36,6 +36,7 @@ export default class PlaylistDeserializeBeatsaverBeatmap {
       identifiers.map((identifier) => async () =>
         this.fromAny(identifier).then((item) => {
           progress.plusOne();
+          console.log("+1");
           return item;
         })
       ),
