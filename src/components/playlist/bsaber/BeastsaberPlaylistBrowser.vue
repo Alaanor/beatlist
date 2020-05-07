@@ -72,6 +72,7 @@ export default Vue.extend({
     },
     onPlaylistSelected(playlist: BeastsaberPlaylist) {
       this.progress = new Progress();
+      this.currentPlaylistLocal = undefined;
       this.currentPlaylistBeast = playlist;
 
       PlaylistFetcher.Fetch(playlist.playlistURL, this.progress)

@@ -3,7 +3,7 @@
     <v-slide-x-transition>
       <v-container v-if="selected.length > 0" class="d-flex align-center ml-n4">
         <v-btn
-          v-if="bulkAdd"
+          v-if="bulkAdd && playlist"
           outlined
           small
           color="success"
@@ -15,7 +15,7 @@
         </v-btn>
 
         <v-btn
-          v-if="bulkRemove"
+          v-if="bulkRemove && playlist"
           outlined
           small
           color="error"
@@ -59,8 +59,11 @@ import BeatmapLibrary from "@/libraries/beatmap/BeatmapLibrary";
 export default Vue.extend({
   name: "BeatmapsTableBulkActions",
   props: {
-    playlist: { type: Object as PropType<PlaylistLocal>, required: true },
     selected: { type: Array as PropType<BeatsaverBeatmap[]>, required: true },
+    playlist: {
+      type: Object as PropType<PlaylistLocal | undefined>,
+      default: undefined,
+    },
     bulkAdd: { type: Boolean, default: false },
     bulkRemove: { type: Boolean, default: false },
     bulkDownload: { type: Boolean, default: false },
@@ -72,7 +75,10 @@ export default Vue.extend({
   }),
   methods: {
     performBulkAdd() {
+      if (!this.playlist) return;
+
       this.bulkAddLoading = true;
+
       PlaylistOperation.BulkAddMapInPlaylist(
         this.playlist,
         this.selected.map((s) => s.hash)
@@ -82,7 +88,10 @@ export default Vue.extend({
       });
     },
     performBulkRemove() {
+      if (!this.playlist) return;
+
       this.bulkRemoveLoading = true;
+
       PlaylistOperation.BulkRemoveMapFromPlaylist(
         this.playlist,
         this.selected.map((s) => s.hash)

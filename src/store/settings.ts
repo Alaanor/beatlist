@@ -38,6 +38,7 @@ const state = {
     beatsaverBeatmaps: { ...defaultTableSettings },
     playlistContent: { ...defaultTableSettings },
     playlistBrowser: { ...defaultTableSettings },
+    beastsaberPlaylistContent: { ...defaultTableSettings },
   },
 };
 
