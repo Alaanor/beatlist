@@ -47,11 +47,12 @@
         :items-per-page="10"
         :server-items-length="totalDocs"
         :loading="loading"
+        :page.sync="page"
         see-more-route-name="beatmaps-online-unit"
         no-item-per-page-choice
         no-filter
         no-sort
-        @update:page="updatePagination"
+        @paginated="updatePagination"
       >
         <template #actions="{ beatsaver }">
           <BeatmapButtonAddToNPlaylists :beatmap="beatsaver" small />
@@ -114,6 +115,7 @@ export default Vue.extend({
     currentPage: 1,
     loading: false,
     error: undefined as string | undefined,
+    page: 1,
   }),
   computed: {
     shownColumn: sync<string[]>(
@@ -143,7 +145,8 @@ export default Vue.extend({
         this.fetchData();
       }
 
-      this.beatsaverPage = undefined;
+      this.page = 1;
+      this.clearPage();
     },
   },
   mounted(): void {
@@ -259,9 +262,12 @@ export default Vue.extend({
       }
 
       if (this.search === "") {
+        this.selectedMode = "hot";
         return;
       }
 
+      this.page = 1;
+      this.clearPage();
       this.fetchData();
     },
     updatePagination(page: number) {

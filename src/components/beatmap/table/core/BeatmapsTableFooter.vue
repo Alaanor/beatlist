@@ -78,7 +78,7 @@ export default Vue.extend({
     },
   },
   props: {
-    options: { type: Object, required: true },
+    page: { type: Number, required: true },
     pagination: { type: Object, required: true },
     itemsPerPage: { type: Number, default: undefined },
     itemsPerPageList: {
@@ -89,28 +89,28 @@ export default Vue.extend({
   },
   computed: {
     isFirstPage() {
-      return this.options.page === 1;
+      return this.page === 1;
     },
     isLastPage() {
-      return this.options.page === this.pagination.pageCount;
+      return this.page === this.pagination.pageCount;
     },
   },
   methods: {
     pagePrevious() {
-      if (this.options.page > 0) {
-        this.options.page -= 1;
+      if (this.page > 0) {
+        this.$emit("update:page", this.page - 1);
       }
     },
     pageNext() {
-      if (this.options.page < this.pagination.pageCount) {
-        this.options.page += 1;
+      if (this.page < this.pagination.pageCount) {
+        this.$emit("update:page", this.page + 1);
       }
     },
     pageStart() {
-      this.options.page = 1;
+      this.$emit("update:page", 1);
     },
     pageEnd() {
-      this.options.page = this.pagination.pageCount;
+      this.$emit("update:page", this.pagination.pageCount);
     },
     updateItemsPerPage(item: number) {
       this.$emit("update:itemsPerPage", item);

@@ -3,7 +3,7 @@
     v-model="selectedItem"
     :headers="getHeaders()"
     :items="beatmapAsTableDataFiltered"
-    :options="{ ...options, itemsPerPage }"
+    :options="{ page, itemsPerPage }"
     :server-items-length="serverItemsLength"
     :loading="loading"
     :disable-sort="noSort"
@@ -20,7 +20,7 @@
         :items-per-page="itemsPerPage"
         :items-per-page-list="itemsPerPageList"
         :no-item-per-page-choice="noItemPerPageChoice"
-        :options="options"
+        :page="page"
         :pagination="pagination"
         v-on="$listeners"
       />
@@ -155,6 +155,7 @@ export default Vue.extend({
     seeMoreRouteName: { type: String, default: undefined },
     noActions: { type: Boolean, default: false },
     noSort: { type: Boolean, default: false },
+    page: { type: Number, default: 1 },
     selected: {
       type: Array as PropType<BeatsaverBeatmap[]>,
       default: undefined,
@@ -162,9 +163,6 @@ export default Vue.extend({
     search: { type: String, default: undefined },
   },
   data: () => ({
-    options: {
-      page: 1,
-    },
     filtersValue: {
       name: "",
       artist: "",
@@ -411,6 +409,9 @@ export default Vue.extend({
         this.selectedItem.map((entry: any) => entry.raw.data)
       );
     },
+    page() {
+      this.$emit("update:page", this.page);
+    },
   },
   methods: {
     headerToSlotName(header: any): string {
@@ -423,7 +424,7 @@ export default Vue.extend({
       );
     },
     updatePage(page: number): void {
-      this.$emit("update:page", page);
+      this.$emit("paginated", page);
     },
     selectAllItems(select: boolean): void {
       if (select) {
