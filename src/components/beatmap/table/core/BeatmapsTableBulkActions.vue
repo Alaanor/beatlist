@@ -35,7 +35,7 @@
           :loading="bulkDownloadLoading"
           @click="performBulkDownload"
         >
-          Download
+          Download ({{ beatmapNotDownloadedAndSelected.length }})
         </v-btn>
 
         <span class="pl-3">
@@ -73,6 +73,13 @@ export default Vue.extend({
     bulkRemoveLoading: false,
     bulkDownloadLoading: false,
   }),
+  computed: {
+    beatmapNotDownloadedAndSelected(): BeatsaverBeatmap[] {
+      return this.selected.filter((beatmap: BeatsaverBeatmap) => {
+        return !BeatmapLibrary.HasBeatmap(beatmap);
+      });
+    },
+  },
   methods: {
     performBulkAdd() {
       if (!this.playlist) return;
@@ -103,13 +110,13 @@ export default Vue.extend({
     performBulkDownload() {
       this.bulkDownloadLoading = true;
 
-      this.selected.forEach((beatmap: BeatsaverBeatmap) => {
-        if (BeatmapLibrary.GetMapByHash(beatmap.hash) === undefined) {
+      this.beatmapNotDownloadedAndSelected.forEach(
+        (beatmap: BeatsaverBeatmap) => {
           BeatmapInstaller.Install(beatmap, (operation) =>
             NotificationService.NotifyBeatmapDownload(operation.result)
           );
         }
-      });
+      );
     },
   },
 });
