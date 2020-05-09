@@ -33,6 +33,7 @@
           color="success"
           class="ml-4"
           :loading="bulkDownloadLoading"
+          :disabled="beatmapNotDownloadedAndSelected.length === 0"
           @click="performBulkDownload"
         >
           Download ({{ beatmapNotDownloadedAndSelected.length }})
