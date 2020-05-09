@@ -16,8 +16,17 @@ declare const __static: string;
 const defaultCoverPath = path.join(__static, "defaultCover.jpg");
 
 export default class PlaylistInstaller {
-  public static Install() {
-    // TODO when online playlist
+  public static async Install(
+    playlist: PlaylistLocal,
+    format: PlaylistFormatType,
+    filename: string
+  ) {
+    const playlistFolder = await BeatSaber.getPlaylistFolder();
+    const filepath = path.join(
+      playlistFolder,
+      `${filename}.${PlaylistFilenameExtension.GetFor(format)}`
+    );
+    return PlaylistLoader.SaveAt(filepath, playlist, format);
   }
 
   public static async InstallNewEmpty(): Promise<PlaylistLocal> {

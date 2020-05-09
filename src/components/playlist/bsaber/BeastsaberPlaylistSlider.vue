@@ -20,23 +20,18 @@
         <v-card
           width="175"
           :raised="active"
-          @click.stop="toggle"
-          @click="showPlaylist(pl)"
+          @click.stop="
+            () => {
+              toggle();
+              showPlaylist(pl);
+            }
+          "
         >
           <v-img :src="pl.image" width="175" height="175">
             <v-overlay absolute :value="active" :opacity="0.7">
               <v-row class="fill-height" align="center" justify="center">
                 <v-scale-transition>
-                  <v-btn
-                    v-if="active"
-                    icon
-                    x-large
-                    :disabled="isPlaylistDownloaded(pl)"
-                  >
-                    <v-icon color="success" x-large @click="installPlaylist()">
-                      {{ isPlaylistDownloaded(pl) ? "done" : "file_download" }}
-                    </v-icon>
-                  </v-btn>
+                  <slot v-if="active" :playlist="pl" />
                 </v-scale-transition>
               </v-row>
             </v-overlay>
@@ -50,8 +45,6 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import BeastsaberPlaylist from "@/libraries/net/bsaber/BeastsaberPlaylist";
-import PlaylistLibrary from "@/libraries/playlist/PlaylistLibrary";
-import { PlaylistLocal } from "@/libraries/playlist/PlaylistLocal";
 
 export default Vue.extend({
   name: "BeastsaberPlaylistSlider",
@@ -66,16 +59,6 @@ export default Vue.extend({
     forceSelected: false,
   }),
   methods: {
-    isPlaylistDownloaded(playlist: BeastsaberPlaylist) {
-      PlaylistLibrary.GetAllValidPlaylists().find((p: PlaylistLocal) => {
-        return (
-          playlist.playlistTitle === p.title &&
-          playlist.playlistAuthor === p.author &&
-          playlist.playlistDescription === p.description
-        );
-      });
-    },
-    installPlaylist() {},
     showPlaylist(playlist: BeastsaberPlaylist) {
       this.forceSelected = true;
       this.$emit("playlistClick", playlist);

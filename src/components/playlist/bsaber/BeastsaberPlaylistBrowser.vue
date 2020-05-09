@@ -4,12 +4,26 @@
       Couldn't load playlists
       <v-icon>sentiment_dissatisfied</v-icon>
     </v-alert>
+
     <BeastsaberPlaylistSlider
       v-else
+      #default="{ playlist }"
       :playlists="playlists"
       :loading="loading"
       @playlistClick="onPlaylistSelected"
-    />
+    >
+      <v-btn
+        icon
+        x-large
+        :disabled="!currentPlaylistLocal || isPlaylistDownloaded(playlist)"
+        @click.stop="installPlaylist(currentPlaylistLocal)"
+      >
+        <v-icon color="success" x-large>
+          {{ isPlaylistDownloaded(playlist) ? "done" : "file_download" }}
+        </v-icon>
+      </v-btn>
+    </BeastsaberPlaylistSlider>
+
     <BeastsaberPlaylistContent
       :playlist-local="currentPlaylistLocal"
       :playlist-beastsaber="currentPlaylistBeast"
@@ -30,6 +44,12 @@ import PlaylistFetcher from "@/libraries/net/playlist/PlaylistFetcher";
 import Progress from "@/libraries/common/Progress";
 import { PlaylistLocal } from "@/libraries/playlist/PlaylistLocal";
 import BeastsaberPlaylistContent from "@/components/playlist/bsaber/BeastsaberPlaylistContent.vue";
+import PlaylistLibrary from "@/libraries/playlist/PlaylistLibrary";
+import PlaylistInstaller from "@/libraries/os/beatSaber/installer/PlaylistInstaller";
+import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
+import NotificationService, {
+  NOTIFICATION_ICON_SUCCESS,
+} from "@/libraries/notification/NotificationService";
 
 export default Vue.extend({
   name: "BeastsaberPlaylistBrowser",
@@ -44,6 +64,7 @@ export default Vue.extend({
       errorPlaylist: undefined as string | undefined,
       progress: undefined as Progress | undefined,
       loadingPlaylistLocal: false,
+      loadingPlaylistInstall: false,
     };
   },
   mounted(): void {
@@ -89,6 +110,40 @@ export default Vue.extend({
         .finally(() => {
           this.loadingPlaylistLocal = false;
         });
+    },
+    isPlaylistDownloaded(playlist: BeastsaberPlaylist) {
+      return (
+        PlaylistLibrary.GetAllValidPlaylists().find((p: PlaylistLocal) => {
+          return (
+            playlist.playlistTitle === p.title &&
+            playlist.playlistAuthor === p.author
+          );
+        }) !== undefined
+      );
+    },
+    installPlaylist(playlist: PlaylistLocal) {
+      if (!this.currentPlaylistBeast) {
+        return;
+      }
+
+      const filename = this.currentPlaylistBeast.playlistTitle
+        .replace(/[\s]/g, "-")
+        .replace(/[^a-zA-Z0-9-]*/g, "");
+
+      this.loadingPlaylistInstall = true;
+      PlaylistInstaller.Install(
+        playlist,
+        PlaylistFormatType.Json,
+        filename
+      ).finally(() => {
+        this.loadingPlaylistInstall = false;
+        NotificationService.NotifyMessage(
+          `${this.currentPlaylistBeast?.playlistTitle} has been installed`,
+          "success",
+          NOTIFICATION_ICON_SUCCESS,
+          2500
+        );
+      });
     },
   },
 });
