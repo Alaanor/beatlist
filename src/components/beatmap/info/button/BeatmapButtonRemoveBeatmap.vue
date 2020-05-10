@@ -68,7 +68,7 @@ export default Vue.extend({
       if (this.localBeatmap) {
         BeatmapInstaller.Uninstall(this.localBeatmap)
           .then(() => {
-            NotificationService.NotifyMessage("Map uninstalled", "success");
+            NotificationService.NotifyMessage("Map uninstalled");
           })
           .catch((e: Error) => {
             NotificationService.NotifyMessage(
