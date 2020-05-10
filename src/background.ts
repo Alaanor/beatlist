@@ -77,8 +77,6 @@ class Background {
 
   private static SetUpServices() {
     registerIpc();
-
-    app.setAsDefaultProtocolClient("beatsaver");
   }
 
   private OnDevMode() {

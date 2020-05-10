@@ -14,6 +14,10 @@ export interface SettingsStoreState {
     playlistContent: BeatmapTableStoreState;
     playlistBrowser: BeatmapTableStoreState;
   };
+  oneClick: {
+    enabled: boolean;
+    downloadOnClick: boolean;
+  };
 }
 
 export interface BeatmapTableStoreState {
@@ -39,6 +43,10 @@ const state = {
     playlistContent: { ...defaultTableSettings },
     playlistBrowser: { ...defaultTableSettings },
     beastsaberPlaylistContent: { ...defaultTableSettings },
+  },
+  oneClick: {
+    enabled: false,
+    downloadOnClick: false,
   },
 };
 
