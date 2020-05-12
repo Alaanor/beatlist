@@ -3,7 +3,7 @@
     v-model="selectedItem"
     :headers="getHeaders()"
     :items="beatmapAsTableDataFiltered"
-    :options="{ page, itemsPerPage }"
+    :options="{ page: currentPage, itemsPerPage }"
     :server-items-length="serverItemsLength"
     :loading="loading"
     :disable-sort="noSort"
@@ -13,14 +13,13 @@
     item-key="hash"
     hide-default-footer
     dense
-    @update:page="updatePage"
   >
     <template #footer="{ props: { pagination } }">
       <BeatmapsTableFooter
         :items-per-page="itemsPerPage"
         :items-per-page-list="itemsPerPageList"
         :no-item-per-page-choice="noItemPerPageChoice"
-        :page="page"
+        :page.sync="currentPage"
         :pagination="pagination"
         v-on="$listeners"
       />
@@ -179,6 +178,7 @@ export default Vue.extend({
     },
     itemsDisplayed: [] as { raw: BeatmapsTableDataUnit }[],
     selectedItem: [] as { hash: string; key: string }[],
+    currentPage: 1,
   }),
   computed: {
     headers(): BeatmapsTableHeader[] {
@@ -411,6 +411,7 @@ export default Vue.extend({
     },
     page() {
       this.$emit("update:page", this.page);
+      this.currentPage = this.page;
     },
   },
   methods: {
@@ -424,7 +425,7 @@ export default Vue.extend({
       );
     },
     updatePage(page: number): void {
-      this.$emit("paginated", page);
+      this.$emit("update:page", page);
     },
     selectAllItems(select: boolean): void {
       if (select) {

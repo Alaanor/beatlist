@@ -52,7 +52,6 @@
         no-item-per-page-choice
         no-filter
         no-sort
-        @paginated="updatePagination"
       >
         <template #actions="{ beatsaver }">
           <BeatmapButtonAddToNPlaylists :beatmap="beatsaver" small />
@@ -112,7 +111,6 @@ export default Vue.extend({
     search: "",
     beatsaverPage: undefined as BeatsaverPage | undefined,
     totalDocs: 0,
-    currentPage: 1,
     loading: false,
     error: undefined as string | undefined,
     page: 1,
@@ -135,6 +133,9 @@ export default Vue.extend({
   watch: {
     beatsaverPage(): void {
       this.totalDocs = this.beatsaverPage?.totalDocs ?? 0;
+    },
+    page(): void {
+      this.fetchData();
     },
     selectedMode(): void {
       if (
@@ -166,34 +167,28 @@ export default Vue.extend({
         case "search":
           requestPage = BeatsaverAPI.Singleton.searchBeatmaps(
             this.search,
-            this.currentPage - 1
+            this.page - 1
           );
           break;
 
         case "hot":
-          requestPage = BeatsaverAPI.Singleton.getByHot(this.currentPage - 1);
+          requestPage = BeatsaverAPI.Singleton.getByHot(this.page - 1);
           break;
 
         case "rating":
-          requestPage = BeatsaverAPI.Singleton.getByRating(
-            this.currentPage - 1
-          );
+          requestPage = BeatsaverAPI.Singleton.getByRating(this.page - 1);
           break;
 
         case "latest":
-          requestPage = BeatsaverAPI.Singleton.getByLatest(
-            this.currentPage - 1
-          );
+          requestPage = BeatsaverAPI.Singleton.getByLatest(this.page - 1);
           break;
 
         case "download":
-          requestPage = BeatsaverAPI.Singleton.getByDownloads(
-            this.currentPage - 1
-          );
+          requestPage = BeatsaverAPI.Singleton.getByDownloads(this.page - 1);
           break;
 
         case "plays":
-          requestPage = BeatsaverAPI.Singleton.getByPlays(this.currentPage - 1);
+          requestPage = BeatsaverAPI.Singleton.getByPlays(this.page - 1);
           break;
 
         case "key":
@@ -268,10 +263,6 @@ export default Vue.extend({
 
       this.page = 1;
       this.clearPage();
-      this.fetchData();
-    },
-    updatePagination(page: number) {
-      this.currentPage = page;
       this.fetchData();
     },
     clearPage() {
