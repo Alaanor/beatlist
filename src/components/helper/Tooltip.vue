@@ -10,7 +10,7 @@
         <slot />
       </span>
     </template>
-    <span>{{ text }}</span>
+    <span v-html="text" />
   </v-tooltip>
 </template>
 

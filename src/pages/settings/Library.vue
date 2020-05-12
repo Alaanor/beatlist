@@ -35,8 +35,19 @@
           </span>
           <span>
             <strong>{{ playlistsCountValid }}</strong>
-            {{ beatmapsCountValid > 1 ? "playlists are" : "playlist is" }}
+            {{ playlistsCountValid > 1 ? "playlists are" : "playlist is" }}
             loaded.
+          </span>
+          <span>
+            <strong>{{ beatsaverBeatmapCountValid }}</strong>
+            {{ beatsaverBeatmapCountValid > 1 ? "beatmaps are" : "beatmap is" }}
+            cached.
+            <Tooltip
+              right
+              text="We cache the online info such as <br> vote and download so everything <br> happen in local and is fast"
+            >
+              <v-icon x-small>mdi-help</v-icon>
+            </Tooltip>
           </span>
           <span class="py-1" />
 
@@ -154,10 +165,12 @@ import InvalidPlaylistsMapsDialog from "@/components/dialogs/InvalidPlaylistsMap
 import BeatsaverCachedLibrary from "@/libraries/beatmap/repo/BeatsaverCachedLibrary";
 import InvalidBeatsaverBeatmapDialog from "@/components/dialogs/InvalidBeatsaverBeatmapDialog.vue";
 import NotificationServiceScanner from "@/libraries/notification/NotificationServiceScanner";
+import Tooltip from "@/components/helper/Tooltip.vue";
 
 export default Vue.extend({
   name: "Library",
   components: {
+    Tooltip,
     ConfirmDialog,
     InvalidBeatmapDialog,
     InvalidPlaylistDialog,
@@ -181,8 +194,9 @@ export default Vue.extend({
       PlaylistLibrary.GetAllInvalidPlaylists().length,
     playlistsMapsCountInvalid: () =>
       PlaylistMapsLibrary.GetAllInvalidMapFlatten().length,
+    beatsaverBeatmapCountValid: () => BeatsaverCachedLibrary.GetAllValid().size,
     beatsaverBeatmapCountInvalid: () =>
-      BeatsaverCachedLibrary.GetAllInvalid().length,
+      BeatsaverCachedLibrary.GetAllInvalid().size,
     lastScan: () =>
       BeatmapLibrary.GetLastScanDate()?.toLocaleString() ?? undefined,
   },
