@@ -8,7 +8,7 @@ import mockResponseSuccess from "./helper/BeatsaverAPIResponseMocking";
 jest.mock("@/plugins/store", () => {});
 jest.mock("@/libraries/beatmap/repo/BeatsaverCachedLibrary", () => ({
   cacheBeatmap: () => {},
-  Get: () => ({}),
+  Get: () => ({ date: new Date() }),
 }));
 
 describe("beatmap loader", () => {
