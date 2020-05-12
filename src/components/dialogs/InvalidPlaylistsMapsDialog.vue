@@ -62,6 +62,8 @@ export default Vue.extend({
   data: () => ({
     headers: [
       { text: "Filename", value: "filename" },
+      { text: "Key type", value: "keyType" },
+      { text: "Key value", value: "keyValue" },
       { text: "Error", value: "error" },
       { text: "Details", value: "errorInfo" },
     ],
@@ -72,6 +74,8 @@ export default Vue.extend({
         key: (entry.playlist.path ?? "") + (entry.map.errorInfo ?? ""),
         path: entry.playlist.path,
         filename: path.basename(entry.playlist.path ?? ""),
+        keyType: entry.map.attemptedSource.type,
+        keyValue: entry.map.attemptedSource.value,
         error: entry.map.error,
         errorInfo: entry.map.errorInfo,
       })),

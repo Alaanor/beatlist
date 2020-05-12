@@ -57,6 +57,7 @@ export default class JsonDeserializer extends PlaylistDeserializer {
           ({
             dateAdded: new Date(),
             hash: item?.beatmap?.hash,
+            attemptedSource: item.loadState.attemptedSource,
             ...this.getErrorFor(item),
           } as PlaylistLocalMap)
       );

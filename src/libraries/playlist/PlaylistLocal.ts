@@ -1,5 +1,6 @@
 import { PlaylistLoadState } from "@/libraries/playlist/loader/PlaylistLoadState";
 import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
+import { BeatsaverKey } from "@/libraries/beatmap/repo/BeatsaverKeyType";
 
 export interface PlaylistBase {
   title: string;
@@ -29,6 +30,7 @@ export interface PlaylistValidMap extends PlaylistMap {
 export interface PlaylistLocalMap extends PlaylistMap {
   error: PlaylistMapImportError | undefined;
   errorInfo: string | undefined;
+  attemptedSource: BeatsaverKey;
 }
 
 export enum PlaylistMapImportError {
