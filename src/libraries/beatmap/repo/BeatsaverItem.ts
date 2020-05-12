@@ -16,8 +16,15 @@ export interface BeatsaverItemLoadState {
   attemptedSource: BeatsaverKey;
 }
 
-export interface BeatsaverItem {
-  beatmap: BeatsaverBeatmap | undefined;
+export type BeatsaverItem = BeatsaverItemValid | BeatsaverItemInvalid;
+
+export interface BeatsaverItemValid {
+  beatmap: BeatsaverBeatmap;
+  loadState: BeatsaverItemLoadState;
+}
+
+export interface BeatsaverItemInvalid {
+  beatmap: undefined;
   loadState: BeatsaverItemLoadState;
 }
 

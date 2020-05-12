@@ -1,6 +1,9 @@
 import { make } from "vuex-pathify";
 import { BeatmapLocal } from "@/libraries/beatmap/BeatmapLocal";
-import { BeatsaverItem } from "@/libraries/beatmap/repo/BeatsaverItem";
+import {
+  BeatsaverItemInvalid,
+  BeatsaverItemValid,
+} from "@/libraries/beatmap/repo/BeatsaverItem";
 import {
   BeatsaverKey,
   toStrKey,
@@ -9,13 +12,17 @@ import {
 export interface BeatmapStoreState {
   lastScan: Date;
   beatmaps: BeatmapLocal[];
-  beatsaverCached: Map<string, BeatsaverItem>;
+  beatsaverCached: Map<string, BeatsaverItemValid>;
+  beatsaverFailCached: Map<string, BeatsaverItemInvalid>;
+  beatsaverKeyToHashIndex: Map<string, string>;
 }
 
 const state = {
   lastScan: undefined,
   beatmaps: [],
-  beatsaverCached: new Map<string, BeatsaverItem>(),
+  beatsaverCached: new Map<string, BeatsaverItemInvalid>(),
+  beatsaverFailCached: new Map<string, BeatsaverItemInvalid>(),
+  beatsaverKeyToHashIndex: new Map<string, string>(),
 };
 
 const getters = {
@@ -35,26 +42,26 @@ const mutations = {
       (value: BeatmapLocal) => value.hash !== payload.beatmap.hash
     );
   },
-  addBeatsaberCached(
+  setBeatsaverCached(
     context: BeatmapStoreState,
-    payload: { key: BeatsaverKey; item: BeatsaverItem }
+    payload: { hash: string; item: BeatsaverItemValid }
   ) {
-    context.beatsaverCached.set(toStrKey(payload.key), payload.item);
+    context.beatsaverCached.set(payload.hash.toUpperCase(), payload.item);
+    context.beatsaverKeyToHashIndex.set(
+      payload.item.beatmap.key.toUpperCase(),
+      payload.item.beatmap.hash.toUpperCase()
+    );
   },
-  updateBeatsaberCached(
+  addBeatsaverCachedInvalid(
     context: BeatmapStoreState,
-    payload: { key: BeatsaverKey; item: BeatsaverItem }
+    payload: { key: BeatsaverKey; item: BeatsaverItemInvalid }
   ) {
-    const cached = context.beatsaverCached.get(toStrKey(payload.key));
-
-    if (cached && cached.loadState.valid && !payload.item.loadState.valid) {
-      return;
-    }
-
-    context.beatsaverCached.set(toStrKey(payload.key), payload.item);
+    context.beatsaverFailCached.set(toStrKey(payload.key), payload.item);
   },
   clearBeatsaverCache(context: BeatmapStoreState) {
-    context.beatsaverCached = new Map<string, BeatsaverItem>();
+    context.beatsaverCached = new Map<string, BeatsaverItemValid>();
+    context.beatsaverFailCached = new Map<string, BeatsaverItemInvalid>();
+    context.beatsaverKeyToHashIndex = new Map<string, string>();
   },
 };
 

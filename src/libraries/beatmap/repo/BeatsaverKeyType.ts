@@ -9,7 +9,7 @@ export interface BeatsaverKey {
 }
 
 export function toStrKey(key: BeatsaverKey) {
-  return `${key.type}@${key.value}`;
+  return `${key.type.toUpperCase()}@${key.value.toUpperCase()}`;
 }
 
 export default {};

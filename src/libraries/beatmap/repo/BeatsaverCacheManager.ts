@@ -23,7 +23,12 @@ export default class BeatsaverCacheManager {
 
     const beatsaverItem = await BeatsaverCacheManager.getOnlineData(key);
 
-    BeatsaverCachedLibrary.Add(key, beatsaverItem);
+    if (beatsaverItem.beatmap) {
+      BeatsaverCachedLibrary.Add(beatsaverItem.beatmap.hash, beatsaverItem);
+    } else {
+      BeatsaverCachedLibrary.AddInvalid(key, beatsaverItem);
+    }
+
     return beatsaverItem;
   }
 
