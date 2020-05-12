@@ -15,7 +15,7 @@ export default class PlaylistDeserializeBeatsaverBeatmap {
       type: BeatsaverKeyType.Hash,
       value: hash.toUpperCase(),
     };
-    return BeatsaverCacheManager.cacheBeatmap(k);
+    return BeatsaverCacheManager.forceGetCacheBeatmap(k);
   }
 
   public static async fromKey(key: string): Promise<BeatsaverItem> {
@@ -23,7 +23,7 @@ export default class PlaylistDeserializeBeatsaverBeatmap {
       type: BeatsaverKeyType.Key,
       value: key.toUpperCase(),
     };
-    return BeatsaverCacheManager.cacheBeatmap(k);
+    return BeatsaverCacheManager.forceGetCacheBeatmap(k);
   }
 
   public static async convert(

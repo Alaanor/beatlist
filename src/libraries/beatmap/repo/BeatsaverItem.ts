@@ -26,6 +26,7 @@ export interface BeatsaverItemValid {
 export interface BeatsaverItemInvalid {
   beatmap: undefined;
   loadState: BeatsaverItemLoadState;
+  date: Date;
 }
 
 export default {};

@@ -14,11 +14,23 @@ import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 import BeatsaverCachedLibrary from "@/libraries/beatmap/repo/BeatsaverCachedLibrary";
 
 export default class BeatsaverCacheManager {
-  public static async cacheBeatmap(key: BeatsaverKey): Promise<BeatsaverItem> {
+  public static async forceGetCacheBeatmap(
+    key: BeatsaverKey
+  ): Promise<BeatsaverItem> {
     const existingBeatmap = BeatsaverCachedLibrary.Get(key);
 
     if (existingBeatmap !== undefined) {
-      return existingBeatmap;
+      if (existingBeatmap.beatmap) {
+        return existingBeatmap;
+      }
+
+      const OneDayInMs = 1000 * 60 * 60 * 24;
+      const diffInMs = new Date().getTime() - existingBeatmap.date.getTime();
+      const isOlderThan10Day = diffInMs / OneDayInMs > 10;
+
+      if (!isOlderThan10Day) {
+        return existingBeatmap;
+      }
     }
 
     const beatsaverItem = await BeatsaverCacheManager.getOnlineData(key);
@@ -56,6 +68,7 @@ export default class BeatsaverCacheManager {
         valid: false,
         attemptedSource: key,
       },
+      date: new Date(),
     } as BeatsaverItem;
 
     switch (key.type) {

@@ -103,7 +103,7 @@ export default class BeatmapLoader {
 
   private async CacheBeatsaverMap() {
     if (this.hash) {
-      await BeatsaverCacheManager.cacheBeatmap({
+      await BeatsaverCacheManager.forceGetCacheBeatmap({
         type: BeatsaverKeyType.Hash,
         value: this.hash,
       });

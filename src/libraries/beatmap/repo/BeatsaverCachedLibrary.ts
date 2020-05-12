@@ -56,7 +56,7 @@ export default class BeatsaverCachedLibrary {
   }
 
   public static GetAllInvalid(): Map<string, BeatsaverItemInvalid> {
-    return store.getters["beatmap/beatsaverCached"];
+    return store.getters["beatmap/beatsaverFailCached"];
   }
 
   public static Get(key: BeatsaverKey) {
