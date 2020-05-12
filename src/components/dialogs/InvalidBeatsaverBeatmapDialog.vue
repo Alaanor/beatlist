@@ -24,13 +24,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="item in invalidBeatmap"
-                :key="`
-                  ${item.loadState.attemptedSource.type}
-                  ${item.loadState.attemptedSource.value}
-                 `"
-              >
+              <tr v-for="[index, item] in invalidBeatmap" :key="index">
                 <td>{{ item.loadState.attemptedSource.type }}</td>
                 <td>{{ item.loadState.attemptedSource.value }}</td>
                 <td class="error--text">
