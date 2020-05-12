@@ -2,6 +2,8 @@ import chokidar from "chokidar";
 import BeatSaber from "@/libraries/os/beatSaber/BeatSaber";
 import store from "@/plugins/store";
 import ScannerService from "@/libraries/scanner/ScannerService";
+import BeatmapLibrary from "@/libraries/beatmap/BeatmapLibrary";
+import PlaylistLibrary from "@/libraries/playlist/PlaylistLibrary";
 
 export default class AutoScanLibHandler {
   public static async register(): Promise<void> {
@@ -30,6 +32,11 @@ export default class AutoScanLibHandler {
   }
 
   private static onChange() {
-    ScannerService.ScanAll().then();
+    if (
+      BeatmapLibrary.GetAllMaps().length > 0 ||
+      PlaylistLibrary.GetAllPlaylists().length > 0
+    ) {
+      ScannerService.ScanAll().then();
+    }
   }
 }

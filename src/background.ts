@@ -5,6 +5,7 @@ import {
 } from "vue-cli-plugin-electron-builder/lib";
 import path from "path";
 import registerIpc from "@/libraries/ipc";
+import BeatsaverLinkOpener from "@/libraries/ipc/BeatsaverLinkOpener";
 
 class Background {
   private win: BrowserWindow | null = null;
@@ -14,6 +15,7 @@ class Background {
   public Initiate() {
     Background.Setup();
     this.SetUpOnReady();
+    this.ForceSingleInstance();
     this.OnDevMode();
   }
 
@@ -92,6 +94,26 @@ class Background {
           app.quit();
         });
       }
+    }
+  }
+
+  private ForceSingleInstance() {
+    // force single instance
+    const primaryInstance = app.requestSingleInstanceLock();
+
+    if (!primaryInstance) {
+      app.quit();
+    } else {
+      app.on("second-instance", (event, commandLine) => {
+        if (this.win) {
+          if (this.win.isMinimized()) {
+            this.win.restore();
+          }
+
+          this.win.focus();
+          BeatsaverLinkOpener.SendArgvSecondInstance(commandLine);
+        }
+      });
     }
   }
 

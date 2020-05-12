@@ -4,6 +4,7 @@
     <TypescriptServicesLauncher />
     <ScannerStatusService />
     <NewUserModalService />
+    <BeatsaverLinkOpenerService />
   </span>
 </template>
 
@@ -13,6 +14,7 @@ import TypescriptServicesLauncher from "@/components/services/TypescriptServices
 import NotificationService from "@/components/services/NotificationService.vue";
 import ScannerStatusService from "@/components/services/ScannerStatusService.vue";
 import NewUserModalService from "@/components/services/modal/newUser/NewUserModalService.vue";
+import BeatsaverLinkOpenerService from "@/components/services/BeatsaverLinkOpenerService";
 
 export default Vue.extend({
   name: "AppServices",
@@ -21,6 +23,7 @@ export default Vue.extend({
     NotificationService,
     ScannerStatusService,
     NewUserModalService,
+    BeatsaverLinkOpenerService,
   },
 });
 </script>
