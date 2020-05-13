@@ -73,8 +73,12 @@ export default class DownloadOperationBeatmap
         };
 
         this.download = new DownloadUnit(url, stream, this.progress);
-        this.download.onError(this.onDownloadError);
+        this.download.onError((error: Error) => this.onDownloadError(error));
         this.download.onCompleted(() => {
+          if (this.isCompleted) {
+            return; // was terminated before by an error
+          }
+
           try {
             this.handleExtraction(zipPath);
             this.onSuccess();

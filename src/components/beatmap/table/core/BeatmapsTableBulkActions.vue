@@ -56,6 +56,7 @@ import { PlaylistLocal } from "@/libraries/playlist/PlaylistLocal";
 import BeatmapInstaller from "@/libraries/os/beatSaber/installer/BeatmapInstaller";
 import NotificationService from "@/libraries/notification/NotificationService";
 import BeatmapLibrary from "@/libraries/beatmap/BeatmapLibrary";
+import DownloadLibrary from "@/libraries/net/downloader/DownloadLibrary";
 
 export default Vue.extend({
   name: "BeatmapsTableBulkActions",
@@ -77,7 +78,10 @@ export default Vue.extend({
   computed: {
     beatmapNotDownloadedAndSelected(): BeatsaverBeatmap[] {
       return this.selected.filter((beatmap: BeatsaverBeatmap) => {
-        return !BeatmapLibrary.HasBeatmap(beatmap);
+        return (
+          !BeatmapLibrary.HasBeatmap(beatmap) &&
+          !DownloadLibrary.HasBeatmapScheduled(beatmap)
+        );
       });
     },
   },
@@ -118,6 +122,9 @@ export default Vue.extend({
           );
         }
       );
+
+      this.bulkDownloadLoading = false;
+      this.$emit("onDone");
     },
   },
 });
