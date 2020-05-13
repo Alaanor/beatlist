@@ -39,7 +39,7 @@ export default Vue.extend({
       this.twoSecond = true;
     }, 2000);
 
-    await (store as any).restored.then();
+    await store.restored.then();
     this.onReady();
   },
   methods: {

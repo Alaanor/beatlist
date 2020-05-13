@@ -7,7 +7,6 @@ import PlaylistLibrary from "@/libraries/playlist/PlaylistLibrary";
 
 export default class AutoScanLibHandler {
   public static async register(): Promise<void> {
-    // @ts-ignore
     await store.restored;
 
     const beatmapFolder = await BeatSaber.getBeatmapFolder();

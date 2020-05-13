@@ -5,7 +5,6 @@ import store from "@/plugins/store";
 
 export default class UpgradeCheckerService {
   public static async Initialize() {
-    // @ts-ignore
     await store.restored;
 
     const previousVersion = this.getRegisteredAppVersion();

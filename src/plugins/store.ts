@@ -39,4 +39,4 @@ const store = new Vuex.Store<StoreState>({
   strict: true,
 });
 
-export default store;
+export default store as typeof store & { restored: Promise<void> };
