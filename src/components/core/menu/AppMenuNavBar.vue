@@ -43,10 +43,15 @@
 <script lang="ts">
 import MenuNavigationItem from "@/components/core/menu/MenuNavigationItem.vue";
 import ScannerStatusOpenButton from "@/components/scanner/ScannerStatusOpenButton.vue";
+import DownloadGoToPageButton from "@/components/downloads/DownloadGoToPageButton.vue";
 
 export default {
   name: "AppMenuNavBar",
-  components: { MenuNavigationItem, ScannerStatusOpenButton },
+  components: {
+    MenuNavigationItem,
+    ScannerStatusOpenButton,
+    DownloadGoToPageButton,
+  },
   props: {
     menus: { type: Array, required: true },
     main: { type: Boolean, default: false },

@@ -71,10 +71,8 @@ export default Vue.extend({
         component: "ScannerStatusOpenButton",
       },
       {
-        type: "entry",
-        path: "/downloads",
-        name: "Downloads",
-        icon: "cloud_download",
+        type: "component",
+        component: "DownloadGoToPageButton",
       },
       {
         type: "entry",
