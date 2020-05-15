@@ -87,6 +87,8 @@ export default class BeatmapLoader {
   }
 
   private async FindTheHash() {
+    this.beatmap.hash = undefined;
+
     if (this.beatmap.loadState.errorType) {
       return;
     }
