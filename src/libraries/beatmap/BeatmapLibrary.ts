@@ -26,7 +26,9 @@ export default class BeatmapLibrary {
     return this.GetAllMaps()
       .map((beatmap: BeatmapLocal) => ({
         local: beatmap,
-        data: BeatsaverCachedLibrary.GetByHash(beatmap.hash)?.beatmap,
+        data: beatmap.hash
+          ? BeatsaverCachedLibrary.GetByHash(beatmap.hash)?.beatmap
+          : undefined,
       }))
       .filter((unit) => unit.data !== undefined) as BeatmapsTableDataUnit[];
   }

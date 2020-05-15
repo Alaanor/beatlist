@@ -4,7 +4,7 @@ export interface BeatmapLocal {
   folderPath: string;
   coverPath: string;
   songPath: string;
-  hash: string;
+  hash: string | undefined;
   loadState: BeatmapLoadState;
 }
 
