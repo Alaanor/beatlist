@@ -71,7 +71,11 @@ export default Vue.extend({
   computed: {
     invalidPlaylistsMaps: () =>
       PlaylistMapsLibrary.GetAllInvalidMapFlatten().map((entry) => ({
-        key: (entry.playlist.path ?? "") + (entry.map.errorInfo ?? ""),
+        key:
+          (entry.playlist.path ?? "") +
+          (entry.map.errorInfo ?? "") +
+          entry.map.attemptedSource.type +
+          entry.map.attemptedSource.value,
         path: entry.playlist.path,
         filename: path.basename(entry.playlist.path ?? ""),
         keyType: entry.map.attemptedSource.type,
