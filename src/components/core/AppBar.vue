@@ -6,10 +6,13 @@
     fixed
     clipped-left
     clipped-right
-    class="windows-draggable"
     color="app"
     height="24"
   >
+    <div
+      class="windows-draggable"
+      style="position: absolute; top: 4px; left: 4px; right: 4px; height: 20px;"
+    />
     <v-toolbar-title>
       <v-img :src="logo" class="ml-2" width="24" />
     </v-toolbar-title>
