@@ -52,8 +52,12 @@ export default Vue.extend({
       const hash = PlaylistLibrary.GetByPath(this.playlist.path)?.hash;
 
       if (!hash) return;
+      if (hash === this.$route.params.hash) return;
 
-      this.$router.replace({ name: "playlists-local-unit", params: { hash } });
+      this.$router.replace({
+        name: "playlists-local-unit",
+        params: { hash },
+      });
     },
   },
 });
