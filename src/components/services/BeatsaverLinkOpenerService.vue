@@ -5,10 +5,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { ipcRenderer, IpcRendererEvent } from "electron";
-import {
-  ON_BEATSAVER_LINK_OPENER_COMPONENT_READY,
-  OPEN_BEATSAVER_LINK,
-} from "@/libraries/ipc/BeatsaverLinkOpener";
+import { OPEN_BEATSAVER_LINK } from "@/libraries/ipc/BeatsaverLinkOpener";
 import BeatsaverCacheManager from "@/libraries/beatmap/repo/BeatsaverCacheManager";
 import { BeatsaverKeyType } from "@/libraries/beatmap/repo/BeatsaverKeyType";
 import NotificationService, {
@@ -28,8 +25,6 @@ export default Vue.extend({
         this.handleOneClick(key);
       }
     );
-
-    ipcRenderer.send(ON_BEATSAVER_LINK_OPENER_COMPONENT_READY);
   },
   methods: {
     async handleOneClick(key: string): Promise<void> {

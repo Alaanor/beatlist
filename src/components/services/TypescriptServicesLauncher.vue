@@ -4,13 +4,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { ipcRenderer } from "electron";
 import { get } from "vuex-pathify";
 import DiscordRichPresence from "@/libraries/ipc/DiscordRichPresence";
-import {
-  ON_BEATSAVER_LINK_OPENER_COMPONENT_READY,
-  OPEN_BEATSAVER_LINK,
-} from "@/libraries/ipc/BeatsaverLinkOpener";
 import AutoScanLibHandler from "@/libraries/scanner/AutoScanLibHandler";
 import NotificationServiceScanner from "@/libraries/notification/NotificationServiceScanner";
 import UpgradeCheckerService from "@/libraries/app/UpgradeCheckerService";
@@ -29,7 +24,6 @@ export default Vue.extend({
   methods: {
     LaunchServices() {
       this.DiscordRichPresence();
-      this.RegisterBeatsaverLinkListener();
 
       AutoScanLibHandler.register();
       NotificationServiceScanner.Initialize();
@@ -38,13 +32,6 @@ export default Vue.extend({
     },
     DiscordRichPresence() {
       DiscordRichPresence.SetVisibility(this.enableDiscordRichPresence);
-    },
-    RegisterBeatsaverLinkListener() {
-      ipcRenderer.on(OPEN_BEATSAVER_LINK, (event: any, key: any) => {
-        this.$router.push({ name: "beatmap", params: { key } });
-      });
-
-      ipcRenderer.send(ON_BEATSAVER_LINK_OPENER_COMPONENT_READY);
     },
   },
 });
