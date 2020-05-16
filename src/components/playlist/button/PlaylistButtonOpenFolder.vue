@@ -1,5 +1,5 @@
 <template>
-  <Tooltip text="New playlist">
+  <Tooltip text="Open playlist folder">
     <v-btn icon @click="openFolder">
       <v-icon>folder</v-icon>
     </v-btn>
