@@ -5,6 +5,7 @@ import {
 } from "@/libraries/playlist/PlaylistLocal";
 import PlaylistLoader from "@/libraries/playlist/loader/PlaylistLoader";
 import PlaylistScanner from "@/libraries/scanner/playlist/PlaylistScanner";
+import PlaylistLibrary from "@/libraries/playlist/PlaylistLibrary";
 
 export default class PlaylistOperation {
   public static async CreateNewPlaylist(): Promise<PlaylistLocal> {
@@ -19,11 +20,16 @@ export default class PlaylistOperation {
     playlist: PlaylistLocal
   ): Promise<PlaylistLocal | undefined> {
     if (!playlist.path) return undefined;
+    const oldPlaylist = { ...playlist };
 
     let updatedPlaylist = await PlaylistLoader.Save(playlist);
     const scanner = new PlaylistScanner();
 
     if (updatedPlaylist.path) {
+      if (oldPlaylist.path !== updatedPlaylist.path) {
+        PlaylistLibrary.RemovePlaylist(oldPlaylist);
+      }
+
       updatedPlaylist = await scanner.scanOne(updatedPlaylist.path);
     }
 
