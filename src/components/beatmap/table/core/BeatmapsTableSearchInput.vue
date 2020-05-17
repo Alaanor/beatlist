@@ -7,7 +7,7 @@
     hide-details
     append-icon="search"
     clearable
-    @input="$emit('input', $event)"
+    @input="$emit('input', $event || '')"
     @click:clear="$emit('input', '')"
   />
 </template>
