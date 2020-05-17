@@ -21,7 +21,10 @@ export default class PlaylistFilenameExtension {
     }
   }
 
-  static async RenameTo(filepath: string, format: PlaylistFormatType) {
+  static async RenameTo(
+    filepath: string,
+    format: PlaylistFormatType
+  ): Promise<string> {
     if (!(await fs.pathExists(filepath))) {
       throw new Error(`That path doesn't exist, can't rename: ${filepath}`);
     }
@@ -45,6 +48,8 @@ export default class PlaylistFilenameExtension {
     }
 
     await fs.rename(filepath, newFilepath);
+
+    return newFilepath;
   }
 
   public static isExtensionCorrect(

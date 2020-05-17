@@ -211,15 +211,8 @@ export default Vue.extend({
             return;
           }
 
-          if (this.$router.currentRoute.params.hash !== updatedPlaylist.hash) {
-            this.$router.push({
-              name: "playlists-local-unit",
-              params: { hash: updatedPlaylist.hash },
-            });
-          }
-
           this.imageChanged = false;
-
+          this.$emit("update:playlist", updatedPlaylist);
           NotificationService.NotifyMessage("Saved", "success", "save", 2500);
         })
         .finally(() => {

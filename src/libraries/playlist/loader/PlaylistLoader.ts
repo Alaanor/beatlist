@@ -17,6 +17,7 @@ import JsonDeserializer, {
 } from "@/libraries/playlist/loader/deserializer/JsonDeserializer";
 import PlaylistDeserializer from "@/libraries/playlist/loader/deserializer/PlaylistDeserializer";
 import PlaylistSerializer from "@/libraries/playlist/loader/serializer/PlaylistSerializer";
+import PlaylistFilename from "@/libraries/playlist/PlaylistFilename";
 
 export default class PlaylistLoader {
   public static async Load(
@@ -45,17 +46,28 @@ export default class PlaylistLoader {
   public static async Save(
     playlist: PlaylistLocal,
     format?: PlaylistFormatType
-  ): Promise<void> {
-    if (playlist.path === undefined) {
-      throw new Error("this playlist doesn't contain a path");
-    }
+  ): Promise<PlaylistLocal> {
+    const noPathError = new Error("this playlist doesn't contain a path");
+    if (playlist.path === undefined) throw noPathError;
 
     format = format ?? playlist.format;
     await this.SaveAt(playlist.path, playlist, format);
 
-    if (!PlaylistFilenameExtension.isExtensionCorrect(playlist.path, format)) {
-      await PlaylistFilenameExtension.RenameTo(playlist.path, format);
+    if (!PlaylistFilename.isFilenameCorrect(playlist.path, playlist.title)) {
+      playlist.path = await PlaylistFilename.renameToItsTitle(
+        playlist.path,
+        playlist.title
+      );
     }
+
+    if (!PlaylistFilenameExtension.isExtensionCorrect(playlist.path, format)) {
+      playlist.path = await PlaylistFilenameExtension.RenameTo(
+        playlist.path,
+        format
+      );
+    }
+
+    return playlist;
   }
 
   public static async SaveAt(

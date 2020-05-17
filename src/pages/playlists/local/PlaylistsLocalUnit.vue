@@ -13,7 +13,7 @@
         </span>
       </span>
     </div>
-    <PlaylistEditor :playlist="playlist" />
+    <PlaylistEditor :playlist.sync="playlist" />
   </v-container>
   <v-container v-else>
     <v-alert text type="warning">
@@ -40,12 +40,6 @@ export default Vue.extend({
     playlists: get<PlaylistLocal[]>("playlist/playlists"),
   },
   watch: {
-    $route: {
-      handler() {
-        this.playlist = PlaylistLibrary.GetByHash(this.$route.params.hash);
-      },
-      immediate: true,
-    },
     playlists() {
       if (!this.playlist?.path) return;
 
@@ -58,6 +52,21 @@ export default Vue.extend({
         name: "playlists-local-unit",
         params: { hash },
       });
+    },
+    playlist() {
+      if (!this.playlist || !this.playlist.hash) return;
+      if (this.playlist.hash === this.$route.params.hash) return;
+
+      this.$router.replace({
+        name: "playlists-local-unit",
+        params: { hash: this.playlist.hash },
+      });
+    },
+    $route: {
+      handler(): void {
+        this.playlist = PlaylistLibrary.GetByHash(this.$route.params.hash);
+      },
+      immediate: true,
     },
   },
 });

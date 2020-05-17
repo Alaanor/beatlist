@@ -2,7 +2,11 @@
   <div>
     <PlaylistEditorSidebar :items="menu" />
     <v-container>
-      <PlaylistEditorDetails id="playlist-details" :playlist="playlist" />
+      <PlaylistEditorDetails
+        id="playlist-details"
+        :playlist="playlist"
+        @update:playlist="$emit('update:playlist', $event)"
+      />
       <PlaylistEditorBeatmapList
         id="playlist-content-list"
         :playlist="playlist"

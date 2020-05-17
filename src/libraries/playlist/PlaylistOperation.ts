@@ -20,10 +20,14 @@ export default class PlaylistOperation {
   ): Promise<PlaylistLocal | undefined> {
     if (!playlist.path) return undefined;
 
-    await PlaylistLoader.Save(playlist);
-
+    let updatedPlaylist = await PlaylistLoader.Save(playlist);
     const scanner = new PlaylistScanner();
-    return scanner.scanOne(playlist.path);
+
+    if (updatedPlaylist.path) {
+      updatedPlaylist = await scanner.scanOne(updatedPlaylist.path);
+    }
+
+    return updatedPlaylist;
   }
 
   public static AddMapInPlaylist(
