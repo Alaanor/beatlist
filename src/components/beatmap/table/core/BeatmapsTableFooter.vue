@@ -12,7 +12,7 @@
           <v-list-item
             v-for="item in itemsPerPageList"
             :key="item"
-            @click="updateItemsPerPage(item)"
+            @click="checkForConfirmItemPerPage(item)"
           >
             <v-list-item-title>{{ item | withAll }}</v-list-item-title>
           </v-list-item>
@@ -64,14 +64,24 @@
         </v-icon>
       </v-btn>
     </div>
+    <ConfirmDialog
+      :open.sync="heavyListDialogConfirm"
+      action-color="warning"
+      :on-action="() => updateItemsPerPage(heavyListRequestedAmount)"
+    >
+      Beatlist is <strong>not optimized</strong> to have huge list displayed,
+      this may cause lag, are you sure ?
+    </ConfirmDialog>
   </div>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
+import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
 
 export default Vue.extend({
   name: "BeatmapsTableFooter",
+  components: { ConfirmDialog },
   filters: {
     withAll(item: number): string {
       return item === -1 ? "all" : item.toString();
@@ -87,6 +97,10 @@ export default Vue.extend({
     },
     noItemPerPageChoice: { type: Boolean, default: false },
   },
+  data: () => ({
+    heavyListDialogConfirm: false,
+    heavyListRequestedAmount: 0,
+  }),
   computed: {
     isFirstPage() {
       return this.page === 1;
@@ -111,6 +125,14 @@ export default Vue.extend({
     },
     pageEnd() {
       this.$emit("update:page", this.pagination.pageCount);
+    },
+    checkForConfirmItemPerPage(item: number) {
+      if (item > 50 || item === -1) {
+        this.heavyListRequestedAmount = item;
+        this.heavyListDialogConfirm = true;
+      } else {
+        this.updateItemsPerPage(item);
+      }
     },
     updateItemsPerPage(item: number) {
       this.$emit("update:itemsPerPage", item);
