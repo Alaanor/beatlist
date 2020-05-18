@@ -1,5 +1,29 @@
 # Changelog
 
+## v1.2.0 (18/05/2020)
+**Features:**
+ - Rework of the whole UI, it now uses table and overall the app is denser.
+ - Along with tables, you can now do bulk action such as download all beatmaps from a playlist.
+ - There's a little button to preview the music on each beatmap page
+
+**Improvement:**
+ - More filter and search possibilities, locally.
+ - A better scanner, more efficient and a cache system so you don't spam beatsaver server.
+ - New users are welcomed with a message
+ - You can now see the reason if a playlist or a beatmap failed to be loaded in beatlist.
+ - Option to automatically start the download after opening a one-click install button.
+ - Downloader queue
+
+**Bug fixes:**
+ - Should now handle bigger scan without white screen.
+ - Download should no longer fail after the application being unfocused.
+ - One click will no longer be enabled by default at each startup.
+ - If an important folder such as playlists or custom level does not exist, beatlist will handle the creation of them.
+ - No longer undeletable beatmap.
+ - Paginate back to page 1 when changing the query.
+ 
+Any kind of feedback is welcome, don't hesitate to DM me on discord. And yes, 2-4 weeks prediction from the previous release note was a failure oof.
+
 ## v1.1.4 (05/01/2020)
 **Quick change:**
  - Changed the way beatlist download beatmap on the background to help the beatsaver server.
