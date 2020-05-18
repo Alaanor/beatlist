@@ -10,26 +10,26 @@
 
 # Beatlist
 
-Beatlist is an app to manage playlists and beatmaps for the game Beat Saber. 
+Beatlist is an app that manages playlists and beatmaps for the game Beat Saber.
 
 # Feature
 
- - Create, edit, delete playlist.
- - Download beatmap and playlist from the community.
- - Manage your local beatmap library.
+ - Create, edit, delete playlists.
+ - Download beatmaps and playlists from the community.
+ - Manage your local beatmaps library.
  - One click install
  
 # Requirement
 
 - **Beat Saber** on **Windows**. _This is not for quest user and there's no plan to support it at the moment._
-- You might need [rithik-b/PlaylistLoaderPlugin](https://github.com/rithik-b/PlaylistLoaderPlugin). So you can load playlist in game.
+- You might need [rithik-b/PlaylistLoaderPlugin](https://github.com/rithik-b/PlaylistLoaderPlugin). So you can load playlists in game.
   - This plugin is on **ModAssistant**, it's called **PlaylistLoaderLite**.
 
 # Installation
 
 1. [Download](https://github.com/Alaanor/beatlist/releases/latest) and execute the latest version.
 2. Insert manually or use the detector to set the **installation path** of Beat Saber in **settings**
-3. **Scan** your songs library in settings through the scan button.
+3. **Scan** your beatmaps/playlists library in settings through the scan button.
 4. Enjoy !
 
 # Screenshots
