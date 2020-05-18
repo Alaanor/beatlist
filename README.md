@@ -10,37 +10,52 @@
 
 # Beatlist
 
-Beatlist is an app to manage playlist and beatmap for the game BeatSaber. 
+Beatlist is an app to manage playlists and beatmaps for the game Beat Saber. 
 
 # Feature
 
  - Create, edit, delete playlist.
  - Download beatmap and playlist from the community.
  - Manage your local beatmap library.
+ - One click install
  
+# Requirement
+
+- **Beat Saber** on **Windows**. _This is not for quest user and there's no plan to support it at the moment._
+- You might need [rithik-b/PlaylistLoaderPlugin](https://github.com/rithik-b/PlaylistLoaderPlugin). So you can load playlist in game.
+  - This plugin is on **ModAssistant**, it's called **PlaylistLoaderLite**.
+
 # Installation
 
 1. [Download](https://github.com/Alaanor/beatlist/releases/latest) and execute the latest version.
-2. Insert manually or use the detector to set the **installation path** of BeatSaber in **settings**
+2. Insert manually or use the detector to set the **installation path** of Beat Saber in **settings**
 3. **Scan** your songs library in settings through the scan button.
 4. Enjoy !
 
 # Screenshots
 
-<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/onlineBeatmap.png">
-  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/onlineBeatmap.png" width="48%">
+<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_2/beatmapLocal.png">
+  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_2/beatmapLocal.png" width="48%">
 </a>
 
-<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/onlinePlaylist.png">
-  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/onlinePlaylist.png" width="48%">
+<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_2/beatmapPage.png">
+  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_2/beatmapPage.png" width="48%">
 </a>
 
-<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/localPlaylist.png">
-  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/localPlaylist.png" width="48%">
+<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_2/beastsaberPlaylists.png">
+  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_2/beastsaberPlaylists.png" width="48%">
 </a>
 
-<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/beatmapInfo.png">
-  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_1/beatmapInfo.png" width="48%">
+<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_2/beatsaverOnline.png">
+  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_2/beatsaverOnline.png" width="48%">
+</a>
+
+<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_2/localPlaylist.png">
+  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_2/localPlaylist.png" width="48%">
+</a>
+
+<a href="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_2/editingPlaylist.png">
+  <img src="https://raw.githubusercontent.com/Alaanor/beatlist/screenshot/v1_2/editingPlaylist.png" width="48%">
 </a>
 
 # Changelog
@@ -62,7 +77,7 @@ cd beatlist
 npm install
 
 # Run the electron app
-npm run electron:serve
+npm run serve
 ```
 
 It use [Vuetify](https://vuetifyjs.com/) for the UI and [Pathify](https://github.com/davestewart/vuex-pathify) to simplify vuex. If you got any question, feel free to hit me up.
