@@ -86,7 +86,7 @@ export default class BeatSaber {
     const songName = purgeText(beatmap.metadata.songName);
     const levelAuthorName = purgeText(beatmap.metadata.levelAuthorName);
 
-    const beatmapFolder = `${key} ${songName} - ${levelAuthorName}`;
+    const beatmapFolder = `${key} (${songName} - ${levelAuthorName})`;
 
     return path.join(installationPath, BEAT_SABER_CUSTOM_LEVEL, beatmapFolder);
   }
