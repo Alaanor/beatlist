@@ -3,7 +3,9 @@
     <v-container v-if="isReady" fluid>
       <v-row>
         <transition name="slide-x-transition" mode="out-in">
-          <router-view style="z-index: 1;" />
+          <keep-alive>
+            <router-view style="z-index: 1;" />
+          </keep-alive>
         </transition>
       </v-row>
     </v-container>
