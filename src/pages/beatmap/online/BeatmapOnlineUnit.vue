@@ -35,6 +35,7 @@ import BeatsaverAPI, {
 import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 import BeatsaverUtilities from "@/libraries/net/beatsaver/BeatsaverUtilities";
 import LoadingPage from "@/components/helper/LoadingPage.vue";
+import route from "@/plugins/route/route";
 
 export default Vue.extend({
   name: "BeatmapOnlineUnit",
@@ -46,7 +47,9 @@ export default Vue.extend({
   }),
   watch: {
     $route() {
-      this.fetchData();
+      if (this.$route.name === route.BEATMAPS_ONLINE_UNIT) {
+        this.fetchData();
+      }
     },
   },
   mounted(): void {
@@ -55,6 +58,7 @@ export default Vue.extend({
   methods: {
     fetchData(): void {
       this.loading = true;
+      this.beatmap = undefined;
       BeatsaverAPI.Singleton.getBeatmapByHash(this.$route.params.hash)
         .then((response: BeatSaverAPIResponse<BeatsaverBeatmap>) => {
           this.error = BeatsaverUtilities.ErrorToMessage(response);

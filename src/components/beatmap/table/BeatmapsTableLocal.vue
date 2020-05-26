@@ -10,7 +10,7 @@
         :shown-column="shownColumn"
         :items-per-page.sync="itemsPerPage"
         :search="search"
-        see-more-route-name="beatmaps-local-unit"
+        :see-more-route-name="seeMoreRouteName"
       >
         <template #actions="{ beatsaver }">
           <BeatmapButtonRemoveBeatmap :beatmap="beatsaver" small />
@@ -29,6 +29,7 @@ import BeatmapLibrary from "@/libraries/beatmap/BeatmapLibrary";
 import BeatmapsTableOuterHeader from "@/components/beatmap/table/core/BeatmapsTableOuterHeader.vue";
 import BeatmapButtonAddToNPlaylists from "@/components/beatmap/button/BeatmapButtonAddToNPlaylists.vue";
 import BeatmapButtonRemoveBeatmap from "@/components/beatmap/info/button/BeatmapButtonRemoveBeatmap.vue";
+import route from "@/plugins/route/route";
 
 export default Vue.extend({
   name: "BeatmapTableLocal",
@@ -49,6 +50,7 @@ export default Vue.extend({
       "settings/beatmapsTable@localBeatmaps.itemsPerPage"
     ),
     beatmaps: () => BeatmapLibrary.GetAllValidBeatmapAsTableData(),
+    seeMoreRouteName: () => route.BEATMAPS_LOCAL_UNIT,
   },
 });
 </script>

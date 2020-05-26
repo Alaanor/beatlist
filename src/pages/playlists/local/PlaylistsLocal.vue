@@ -17,7 +17,7 @@
             <v-btn
               icon
               :to="{
-                name: 'playlists-local-unit',
+                name: playlistLocalUnitRouteName,
                 params: { hash: playlist.hash },
               }"
             >
@@ -43,6 +43,7 @@ import NotificationService, {
 } from "@/libraries/notification/NotificationService";
 import PlaylistButtonOpenFolder from "@/components/playlist/button/PlaylistButtonOpenFolder.vue";
 import DiscordRichPresence from "@/libraries/ipc/DiscordRichPresence";
+import route from "@/plugins/route/route";
 
 export default Vue.extend({
   name: "PlaylistsLocal",
@@ -61,12 +62,13 @@ export default Vue.extend({
   },
   computed: {
     playlists: () => PlaylistLibrary.GetAllValidPlaylists(),
+    playlistLocalUnitRouteName: () => route.PLAYLISTS_LOCAL_UNIT,
   },
   methods: {
     openPlaylist(playlist: PlaylistLocal): void {
       if (playlist.hash) {
         this.$router.push({
-          name: "playlists-local-unit",
+          name: route.PLAYLISTS_LOCAL_UNIT,
           params: { hash: playlist.hash },
         });
       } else {

@@ -22,6 +22,7 @@ import Vue from "vue";
 import BeatmapSummary from "@/components/beatmap/info/BeatmapSummary.vue";
 import BeatsaverCachedLibrary from "@/libraries/beatmap/repo/BeatsaverCachedLibrary";
 import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
+import route from "@/plugins/route/route";
 
 export default Vue.extend({
   name: "BeatmapLocalUnit",
@@ -31,7 +32,9 @@ export default Vue.extend({
   }),
   watch: {
     $route() {
-      this.fetchData();
+      if (this.$route.name === route.BEATMAPS_LOCAL_UNIT) {
+        this.fetchData();
+      }
     },
   },
   mounted(): void {
@@ -39,6 +42,7 @@ export default Vue.extend({
   },
   methods: {
     fetchData(): void {
+      this.beatmap = undefined;
       this.beatmap = BeatsaverCachedLibrary.GetByHash(
         this.$route.params.hash
       )?.beatmap;

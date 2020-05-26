@@ -14,6 +14,7 @@ import Playlists, {
   PlaylistsLocalUnit,
   PlaylistsBsaber,
 } from "@/pages/playlists";
+import route from "@/plugins/route/route";
 import store from "./store";
 
 Vue.use(VueRouter);
@@ -22,12 +23,12 @@ const router = new VueRouter({
   routes: [
     {
       path: "/",
-      name: "home",
+      name: route.HOME,
       component: Home,
     },
     {
       path: "/beatmaps",
-      name: "beatmaps",
+      name: route.BEATMAPS,
       redirect: { name: "beatmaps-local" },
       component: Beatmap,
       meta: {
@@ -47,22 +48,22 @@ const router = new VueRouter({
       children: [
         {
           path: "local",
-          name: "beatmaps-local",
+          name: route.BEATMAPS_LOCAL,
           component: BeatmapLocal,
         },
         {
           path: "local/:hash",
-          name: "beatmaps-local-unit",
+          name: route.BEATMAPS_LOCAL_UNIT,
           component: BeatmapLocalUnit,
         },
         {
           path: "online",
-          name: "beatmaps-online",
+          name: route.BEATMAPS_ONLINE,
           component: BeatmapOnline,
         },
         {
           path: "online/:hash",
-          name: "beatmaps-online-unit",
+          name: route.BEATMAPS_ONLINE_UNIT,
           component: BeatmapOnlineUnit,
         },
       ],
@@ -89,29 +90,29 @@ const router = new VueRouter({
       children: [
         {
           path: "local",
-          name: "playlists-local",
+          name: route.PLAYLISTS_LOCAL,
           component: PlaylistsLocal,
         },
         {
           path: "local/:hash",
-          name: "playlists-local-unit",
+          name: route.PLAYLISTS_LOCAL_UNIT,
           component: PlaylistsLocalUnit,
         },
         {
           path: "bsaber",
-          name: "playlists-bsaber",
+          name: route.PLAYLISTS_BSABER,
           component: PlaylistsBsaber,
         },
       ],
     },
     {
       path: "/downloads",
-      name: "downloads",
+      name: route.DOWNLOADS,
       component: Downloads,
     },
     {
       path: "/settings",
-      name: "settings",
+      name: route.SETTINGS,
       component: Settings,
     },
     { path: "*", redirect: "/" },

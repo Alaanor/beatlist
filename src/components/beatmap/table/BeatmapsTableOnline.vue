@@ -48,7 +48,7 @@
         :server-items-length="totalDocs"
         :loading="loading"
         :page.sync="page"
-        see-more-route-name="beatmaps-online-unit"
+        :see-more-route-name="seeMoreRouteName"
         no-item-per-page-choice
         no-filter
         no-sort
@@ -85,6 +85,7 @@ import BeatsaverUtilities from "@/libraries/net/beatsaver/BeatsaverUtilities";
 import BeatmapDownloadButton from "@/components/downloads/BeatmapDownloadButton.vue";
 import BeatmapButtonRemoveBeatmap from "@/components/beatmap/info/button/BeatmapButtonRemoveBeatmap.vue";
 import BeatmapButtonAddToNPlaylists from "@/components/beatmap/button/BeatmapButtonAddToNPlaylists.vue";
+import route from "@/plugins/route/route";
 
 export default Vue.extend({
   name: "BeatmapTableLocal",
@@ -129,6 +130,7 @@ export default Vue.extend({
         ) ?? []
       );
     },
+    seeMoreRouteName: () => route.BEATMAPS_ONLINE_UNIT,
   },
   watch: {
     beatsaverPage(): void {

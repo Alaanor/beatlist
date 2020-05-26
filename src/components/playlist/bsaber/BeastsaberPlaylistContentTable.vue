@@ -10,7 +10,7 @@
       :items-per-page.sync="itemsPerPage"
       :selected.sync="selectedBeatmap"
       :search="search"
-      see-more-route-name="beatmaps-online-unit"
+      :see-more-route-name="seeMoreRouteName"
     >
       <template #actions="{ beatsaver }">
         <BeatmapDownloadButton :beatmap="beatsaver" small />
@@ -34,6 +34,7 @@ import { sync } from "vuex-pathify";
 import PlaylistMapsLibrary from "@/libraries/playlist/PlaylistMapsLibrary";
 import { PlaylistLocal } from "@/libraries/playlist/PlaylistLocal";
 import BeatmapDownloadButton from "@/components/downloads/BeatmapDownloadButton.vue";
+import route from "@/plugins/route/route";
 
 export default Vue.extend({
   name: "BeastsaberPlaylistContentTable",
@@ -60,6 +61,7 @@ export default Vue.extend({
     beatmaps() {
       return PlaylistMapsLibrary.GetAllValidMapAsTableDataFor(this.playlist);
     },
+    seeMoreRouteName: () => route.BEATMAPS_ONLINE_UNIT,
   },
 });
 </script>

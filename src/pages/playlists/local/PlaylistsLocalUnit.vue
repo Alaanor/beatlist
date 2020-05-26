@@ -29,6 +29,7 @@ import { PlaylistLocal } from "@/libraries/playlist/PlaylistLocal";
 import PlaylistLibrary from "@/libraries/playlist/PlaylistLibrary";
 import PlaylistCoverAvatar from "@/components/playlist/cover/PlaylistCoverAvatar.vue";
 import PlaylistEditor from "@/pages/playlists/local/components/PlaylistEditor.vue";
+import route from "@/plugins/route/route";
 
 export default Vue.extend({
   name: "PlaylistLocalUnit",
@@ -49,7 +50,7 @@ export default Vue.extend({
       if (hash === this.$route.params.hash) return;
 
       this.$router.replace({
-        name: "playlists-local-unit",
+        name: route.PLAYLISTS_LOCAL_UNIT,
         params: { hash },
       });
     },
@@ -58,7 +59,7 @@ export default Vue.extend({
       if (this.playlist.hash === this.$route.params.hash) return;
 
       this.$router.replace({
-        name: "playlists-local-unit",
+        name: route.PLAYLISTS_LOCAL_UNIT,
         params: { hash: this.playlist.hash },
       });
     },
