@@ -14,6 +14,7 @@
     >
       <template #actions="{ beatsaver }">
         <BeatmapDownloadButton :beatmap="beatsaver" small />
+        <BeatmapButtonOpenPreview :beatmap="beatsaver" small />
       </template>
     </BeatmapsTable>
     <BeatmapsTableBulkActions
@@ -34,6 +35,7 @@ import { sync } from "vuex-pathify";
 import PlaylistMapsLibrary from "@/libraries/playlist/PlaylistMapsLibrary";
 import { PlaylistLocal } from "@/libraries/playlist/PlaylistLocal";
 import BeatmapDownloadButton from "@/components/downloads/BeatmapDownloadButton.vue";
+import BeatmapButtonOpenPreview from "@/components/beatmap/info/button/BeatmapButtonOpenPreview.vue";
 
 export default Vue.extend({
   name: "BeastsaberPlaylistContentTable",
@@ -42,6 +44,7 @@ export default Vue.extend({
     BeatmapsTableOuterHeader,
     BeatmapsTableBulkActions,
     BeatmapDownloadButton,
+    BeatmapButtonOpenPreview,
   },
   props: {
     playlist: { type: Object as PropType<PlaylistLocal>, required: true },
