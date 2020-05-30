@@ -1,6 +1,6 @@
 <template>
   <Tooltip text="Preview beatmap">
-    <v-btn icon @click="openPreview">
+    <v-btn icon :small="small" @click="openPreview">
       <v-icon>remove_red_eye</v-icon>
     </v-btn>
   </Tooltip>
@@ -17,6 +17,7 @@ export default Vue.extend({
   components: { Tooltip },
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
+    small: { type: Boolean, default: false },
   },
   methods: {
     openPreview(): void {
