@@ -2,7 +2,7 @@
   <v-container>
     <transition name="slide-x-transition" mode="out-in">
       <keep-alive>
-        <router-view />
+        <router-view :key="$route.path" />
       </keep-alive>
     </transition>
   </v-container>

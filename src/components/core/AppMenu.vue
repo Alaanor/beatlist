@@ -38,6 +38,7 @@ import Vue from "vue";
 import { get } from "vuex-pathify";
 import MenuNavigationItem from "@/components/core/menu/MenuNavigationItem.vue";
 import AppMenuNavBar from "@/components/core/menu/AppMenuNavBar.vue";
+import route from "@/plugins/route/route";
 
 export default Vue.extend({
   name: "AppMenu",
@@ -47,19 +48,19 @@ export default Vue.extend({
     menus: [
       {
         type: "entry",
-        path: "/",
+        path: { name: route.HOME },
         name: "Home",
         icon: "home",
       },
       {
         type: "entry",
-        path: "/beatmaps",
+        path: { name: route.BEATMAPS },
         name: "Beatmaps",
         icon: "library_music",
       },
       {
         type: "entry",
-        path: "/playlists",
+        path: { name: route.PLAYLISTS },
         name: "Playlists",
         icon: "playlist_play",
       },
@@ -76,7 +77,7 @@ export default Vue.extend({
       },
       {
         type: "entry",
-        path: "/settings",
+        path: { name: route.SETTINGS },
         name: "Settings",
         icon: "settings",
       },

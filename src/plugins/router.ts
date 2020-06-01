@@ -70,7 +70,7 @@ const router = new VueRouter({
     },
     {
       path: "/playlists",
-      name: "playlists",
+      name: route.PLAYLISTS,
       redirect: { name: "playlists-local" },
       component: Playlists,
       meta: {

@@ -1,7 +1,7 @@
 <template>
   <div v-if="configValid">
     <Tooltip :text="item.name" right>
-      <v-btn :to="item.path" icon>
+      <v-btn :to="item.path" icon exact>
         <v-icon>
           {{ item.icon }}
         </v-icon>
@@ -10,7 +10,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
 import { get } from "vuex-pathify";
 import Tooltip from "@/components/helper/Tooltip.vue";

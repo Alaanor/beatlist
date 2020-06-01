@@ -10,7 +10,7 @@
     :value="isDownloading"
   >
     <Tooltip :text="DownloadTooltipText" right>
-      <v-btn icon to="/downloads">
+      <v-btn icon :to="toDownloadPage">
         <v-icon>cloud_download</v-icon>
       </v-btn>
     </Tooltip>
@@ -22,6 +22,7 @@ import Vue from "vue";
 import Tooltip from "@/components/helper/Tooltip.vue";
 import DownloadManager from "@/libraries/net/downloader/DownloadManager";
 import DownloadLibrary from "@/libraries/net/downloader/DownloadLibrary";
+import route from "@/plugins/route/route";
 
 export default Vue.extend({
   name: "DownloadGoToPageButton",
@@ -30,6 +31,7 @@ export default Vue.extend({
     onGoingCount: 0,
     queuedCount: 0,
     completedCount: 0,
+    toDownloadPage: { name: route.DOWNLOADS },
   }),
   computed: {
     isDownloading() {
