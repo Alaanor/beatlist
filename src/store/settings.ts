@@ -18,6 +18,7 @@ export interface SettingsStoreState {
     enabled: boolean;
     downloadOnClick: boolean;
   };
+  colorBlindMode: boolean;
 }
 
 export interface BeatmapTableStoreState {
@@ -48,6 +49,7 @@ const state = {
     enabled: false,
     downloadOnClick: false,
   },
+  colorBlindMode: false,
 };
 
 const mutations = {

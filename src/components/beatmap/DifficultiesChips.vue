@@ -8,7 +8,11 @@
           :class="short ? 'ml-n3' : 'ma-1'"
           v-on="on"
         >
-          {{ short ? "" : value.chipName }}
+          <span style="margin-left: -1px; margin-right: -1px;">
+            {{
+              short ? (colorBlindMode ? value.shortName : "") : value.chipName
+            }}
+          </span>
         </v-chip>
       </template>
       <span>{{ value.chipName }}</span>
@@ -22,8 +26,10 @@ import { DifficultiesSimple } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 import {
   getColorFor,
   getNameFor,
+  getShortNameFor,
   getWeightFor,
 } from "@/libraries/helper/DifficultiesHelper";
+import { get } from "vuex-pathify";
 
 export default Vue.extend({
   name: "DifficultiesChips",
@@ -35,6 +41,9 @@ export default Vue.extend({
   data: () => ({
     difficulties: [] as any,
   }),
+  computed: {
+    colorBlindMode: get<boolean>("settings/colorBlindMode"),
+  },
   watch: {
     diff: {
       handler() {
@@ -50,6 +59,7 @@ export default Vue.extend({
           name: key,
           enabled: value,
           chipName: getNameFor(key),
+          shortName: getShortNameFor(key),
           color: getColorFor(key),
           weight: getWeightFor(key),
         }))

@@ -36,6 +36,17 @@
       filled
     />
     <OneClickSettings />
+    <p class="title pt-5">
+      Accessibility
+    </p>
+    <v-switch
+      v-model="colorBlindMode"
+      color="accent"
+      label="Color blind mode"
+      messages="This will show a letter in difficulty label to make it easier to distinguish them."
+      dense
+      inset
+    />
   </v-container>
 </template>
 
@@ -58,6 +69,7 @@ export default Vue.extend({
     defaultExportFormat: sync<PlaylistFormatType>(
       "settings/defaultExportFormat"
     ),
+    colorBlindMode: sync<boolean>("settings/colorBlindMode"),
     exportFormatList: () =>
       Object.values(PlaylistFormatType).filter(
         (format) =>
