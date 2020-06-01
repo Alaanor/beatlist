@@ -50,6 +50,14 @@ export default Vue.extend({
       return this.convertTimeHHMMSS(this.totalSeconds);
     },
   },
+  watch: {
+    $route() {
+      if (!this.audio.paused) {
+        this.audio.pause();
+        this.audio.currentTime = 0;
+      }
+    },
+  },
   methods: {
     async LoadAudioSrc(): Promise<void> {
       this.loading = true;
