@@ -4,8 +4,17 @@
   </a>
 </p>
 <p align="center">
-  <img src="https://img.shields.io/github/release/Alaanor/beatlist.svg?style=flat-square" alt="version">
+  <img src="https://img.shields.io/github/release/Alaanor/beatlist.svg" alt="version">
   <img src="https://img.shields.io/github/downloads/Alaanor/beatlist/total.svg?color=#3fb911?style=flat-square" alt="download count">
+</p>
+<p align="center">
+   <a href="https://www.notion.so/alaanor/Roadmap-9081f17b56e24ec8802e8ff9d339804c">
+     <img src="https://img.shields.io/badge/roadmap-notion.so-informational" alt="notion.so roadmap">
+   </a>
+   <img src="https://img.shields.io/github/downloads/Alaanor/Beatlist/latest/total" alt="GitHub latest release download count">
+   <a href="https://discord.gg/f5AmKSH">
+     <img src="https://discordapp.com/api/guilds/636966918741557280/widget.png" alt="discord server"> 
+   </a>
 </p>
 
 # Beatlist
