@@ -49,23 +49,6 @@ export function getNameFor(name: string) {
   }
 }
 
-export function getShortNameFor(name: string) {
-  switch (name) {
-    case "easy":
-      return "E";
-    case "normal":
-      return "N";
-    case "hard":
-      return "H";
-    case "expert":
-      return "X";
-    case "expertPlus":
-      return "+";
-    default:
-      return undefined;
-  }
-}
-
 export const listOfDifficulties = [
   "easy",
   "normal",

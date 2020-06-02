@@ -10,7 +10,7 @@
         >
           <span style="margin-left: -1px; margin-right: -1px;">
             {{
-              short ? (colorBlindMode ? value.shortName : "") : value.chipName
+              short ? (showShortLetter ? value.shortName : "") : value.chipName
             }}
           </span>
         </v-chip>
@@ -26,10 +26,10 @@ import { DifficultiesSimple } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 import {
   getColorFor,
   getNameFor,
-  getShortNameFor,
   getWeightFor,
 } from "@/libraries/helper/DifficultiesHelper";
 import { get } from "vuex-pathify";
+import Colorblind, { ColorblindMode } from "@/libraries/app/Colorblind";
 
 export default Vue.extend({
   name: "DifficultiesChips",
@@ -42,25 +42,36 @@ export default Vue.extend({
     difficulties: [] as any,
   }),
   computed: {
-    colorBlindMode: get<boolean>("settings/colorBlindMode"),
+    showShortLetter: get<boolean>(
+      "settings/accessibility@showLetterInDifficulty"
+    ),
+    colorBlindMode: get<ColorblindMode>(
+      "settings/accessibility@colorBlindMode"
+    ),
   },
   watch: {
     diff: {
-      handler() {
+      handler(): void {
         this.computeDifficulties();
       },
       immediate: true,
     },
+    colorBlindMode(): void {
+      this.computeDifficulties();
+    },
   },
   methods: {
-    computeDifficulties() {
+    computeDifficulties(): void {
       this.difficulties = Object.entries(this.diff)
         .map(([key, value]) => ({
           name: key,
           enabled: value,
           chipName: getNameFor(key),
-          shortName: getShortNameFor(key),
-          color: getColorFor(key),
+          shortName: Colorblind.getShortNameFor(key),
+          color:
+            this.colorBlindMode === ColorblindMode.GreyScale
+              ? Colorblind.getColorGreyScaled(key)
+              : getColorFor(key),
           weight: getWeightFor(key),
         }))
         .sort((a: any, b: any) => a.weight - b.weight);

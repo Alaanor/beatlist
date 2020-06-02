@@ -40,10 +40,20 @@
       Accessibility
     </p>
     <v-switch
+      v-model="showLetterInDifficulty"
+      color="accent"
+      label="Show text in difficulty label"
+      messages="This will show a letter in difficulty label to make it easier to distinguish them."
+      dense
+      inset
+    />
+    <v-select
       v-model="colorBlindMode"
+      :items="colorBlindModeList"
+      class="pt-7"
       color="accent"
       label="Color blind mode"
-      messages="This will show a letter in difficulty label to make it easier to distinguish them."
+      messages="This change the way color are shown on difficulty label"
       dense
       inset
     />
@@ -56,6 +66,7 @@ import { sync } from "vuex-pathify";
 import DiscordRichPresence from "@/libraries/ipc/DiscordRichPresence";
 import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
 import OneClickSettings from "@/pages/settings/components/OneClickSettings.vue";
+import { ColorblindMode } from "@/libraries/app/Colorblind";
 
 export default Vue.extend({
   name: "Preferences",
@@ -69,7 +80,17 @@ export default Vue.extend({
     defaultExportFormat: sync<PlaylistFormatType>(
       "settings/defaultExportFormat"
     ),
-    colorBlindMode: sync<boolean>("settings/colorBlindMode"),
+    showLetterInDifficulty: sync<boolean>(
+      "settings/accessibility@showLetterInDifficulty"
+    ),
+    colorBlindMode: sync<ColorblindMode>(
+      "settings/accessibility@colorBlindMode"
+    ),
+    colorBlindModeList: () =>
+      Object.entries(ColorblindMode).map((entry) => ({
+        text: entry[0],
+        value: entry[1],
+      })),
     exportFormatList: () =>
       Object.values(PlaylistFormatType).filter(
         (format) =>

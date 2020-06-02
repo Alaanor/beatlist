@@ -1,5 +1,6 @@
 import { make } from "vuex-pathify";
 import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
+import { ColorblindMode } from "@/libraries/app/Colorblind";
 
 export interface SettingsStoreState {
   appVersion: string | undefined;
@@ -18,7 +19,10 @@ export interface SettingsStoreState {
     enabled: boolean;
     downloadOnClick: boolean;
   };
-  colorBlindMode: boolean;
+  accessibility: {
+    showLetterInDifficulty: boolean;
+    colorBlindMode: ColorblindMode;
+  };
 }
 
 export interface BeatmapTableStoreState {
@@ -49,7 +53,10 @@ const state = {
     enabled: false,
     downloadOnClick: false,
   },
-  colorBlindMode: false,
+  accessibility: {
+    showLetterInDifficulty: false,
+    colorBlindMode: ColorblindMode.None,
+  },
 };
 
 const mutations = {
