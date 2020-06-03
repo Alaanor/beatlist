@@ -140,6 +140,7 @@ export default Vue.extend({
   },
 });
 </script>
+
 <style scoped>
 .small-font {
   font-size: 12px;

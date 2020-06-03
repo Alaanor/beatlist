@@ -15,5 +15,3 @@ export default Vue.extend({
   name: "Beatmap",
 });
 </script>
-
-<style scoped></style>

@@ -58,6 +58,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 #curve {
   position: absolute;

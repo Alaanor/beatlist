@@ -15,5 +15,3 @@ export default Vue.extend({
   name: "Playlists",
 });
 </script>
-
-<style scoped></style>
