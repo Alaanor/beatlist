@@ -14,6 +14,7 @@
           fixed-header
           height="500"
           group-by="filename"
+          aria-describedby="All invalid beatmaps inside playlists"
           dense
         >
           <template #item.error="{item}">

@@ -11,6 +11,7 @@
     :show-select="selected !== undefined"
     loading-text="Loading contents ..."
     item-key="hash"
+    aria-describedby="List of beatmaps for the current context"
     hide-default-footer
     dense
   >
