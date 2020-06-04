@@ -26,9 +26,10 @@ export default class JsonDeserializer extends PlaylistDeserializer {
 
     try {
       const json = JSON.parse(rawJson.toString());
+      JsonDeserializer.validateJson(json);
 
       return {
-        title: json.playlistTitle ?? "",
+        title: json.playlistTitle,
         author: json.playlistAuthor ?? "",
         description: json.playlistDescription ?? "",
         cover: Buffer.from(
@@ -36,13 +37,19 @@ export default class JsonDeserializer extends PlaylistDeserializer {
           "base64"
         ),
         maps: await JsonDeserializer.convertToHash(
-          json.songs,
+          json.songs ?? [],
           progress ?? new Progress()
         ),
       } as PlaylistBase;
     } catch (e) {
-      console.log(e);
       throw INVALID_JSON;
+    }
+  }
+
+  private static validateJson(json: any) {
+    // check for required fields
+    if (!json.playlistTitle) {
+      throw new Error("missing required fields");
     }
   }
 
