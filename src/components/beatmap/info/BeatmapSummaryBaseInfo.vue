@@ -2,9 +2,12 @@
   <v-container class="pa-0">
     <v-row align="center">
       <v-col cols="6">
-        <table aria-describedby="infos about the beatmap (1st column)">
+        <table
+          aria-describedby="infos about the beatmap (1st column)"
+          class="align-first-column-left"
+        >
           <tr>
-            <td class="body-2 pr-2" align="right">
+            <td class="body-2 pr-2">
               Name
             </td>
             <td class="body-1 pl-2">
@@ -12,7 +15,7 @@
             </td>
           </tr>
           <tr>
-            <td class="body-2 pr-2" align="right">
+            <td class="body-2 pr-2">
               Subname
             </td>
             <td class="body-1 pl-2">
@@ -20,7 +23,7 @@
             </td>
           </tr>
           <tr>
-            <td class="body-2 pr-2" align="right">
+            <td class="body-2 pr-2">
               Author
             </td>
             <td class="body-1 pl-2">
@@ -28,7 +31,7 @@
             </td>
           </tr>
           <tr>
-            <td class="body-2 pr-2" align="right">
+            <td class="body-2 pr-2">
               Mapper
             </td>
             <td class="body-1 pl-2">
@@ -36,7 +39,7 @@
             </td>
           </tr>
           <tr>
-            <td class="body-2 pr-2" align="right">
+            <td class="body-2 pr-2">
               BPM
             </td>
             <td class="body-1 pl-2">
@@ -44,7 +47,7 @@
             </td>
           </tr>
           <tr>
-            <td class="body-2 pr-2" align="right">
+            <td class="body-2 pr-2">
               Key
             </td>
             <td class="body-1 pl-2">
@@ -52,7 +55,7 @@
             </td>
           </tr>
           <tr>
-            <td class="body-2 pr-2" align="right">
+            <td class="body-2 pr-2">
               Difficulties
             </td>
             <td class="pl-2">
@@ -66,9 +69,12 @@
         </table>
       </v-col>
       <v-col cols="6">
-        <table aria-describedby="infos about the beatmap (second column)">
+        <table
+          aria-describedby="infos about the beatmap (second column)"
+          class="align-first-column-left"
+        >
           <tr>
-            <td class="body-2 pr-2" align="right">
+            <td class="body-2 pr-2">
               Uploaded
             </td>
             <td class="body-1 pl-2">
@@ -76,7 +82,7 @@
             </td>
           </tr>
           <tr>
-            <td class="body-2 pr-2" align="right">
+            <td class="body-2 pr-2">
               Downloads
             </td>
             <td class="body-1 pl-2">
@@ -84,7 +90,7 @@
             </td>
           </tr>
           <tr>
-            <td class="body-2 pr-2" align="right">
+            <td class="body-2 pr-2">
               Plays
             </td>
             <td class="body-1 pl-2">
@@ -92,7 +98,7 @@
             </td>
           </tr>
           <tr>
-            <td class="body-2 pr-2" align="right">
+            <td class="body-2 pr-2">
               Up votes
             </td>
             <td class="body-1 pl-2">
@@ -100,7 +106,7 @@
             </td>
           </tr>
           <tr>
-            <td class="body-2 pr-2" align="right">
+            <td class="body-2 pr-2">
               Down votes
             </td>
             <td class="body-1 pl-2">
@@ -108,7 +114,7 @@
             </td>
           </tr>
           <tr>
-            <td class="body-2 pr-2" align="right">
+            <td class="body-2 pr-2">
               Rating
             </td>
             <td class="body-1 pl-2">
@@ -182,5 +188,9 @@ export default Vue.extend({
 <style>
 a.linkified {
   color: cornflowerblue !important;
+}
+
+table.align-first-column-left > tr > td:first-child {
+  text-align: right;
 }
 </style>

@@ -1,9 +1,12 @@
 <template>
   <v-row align="center">
     <v-col cols="auto">
-      <table aria-describedby="infos about the difficulty (1st column)">
+      <table
+        aria-describedby="infos about the difficulty (1st column)"
+        class="align-first-column-left"
+      >
         <tr>
-          <td class="body-2 pr-2" align="right">
+          <td class="body-2 pr-2">
             Duration
           </td>
           <td class="body-1 pl-2">
@@ -13,7 +16,7 @@
           </td>
         </tr>
         <tr>
-          <td class="body-2 pr-2" align="right">
+          <td class="body-2 pr-2">
             length
           </td>
           <td class="body-1 pl-2">
@@ -21,7 +24,7 @@
           </td>
         </tr>
         <tr>
-          <td class="body-2 pr-2" align="right">
+          <td class="body-2 pr-2">
             Bombs
           </td>
           <td class="body-1 pl-2">
@@ -29,7 +32,7 @@
           </td>
         </tr>
         <tr>
-          <td class="body-2 pr-2" align="right">
+          <td class="body-2 pr-2">
             Notes
           </td>
           <td class="body-1 pl-2">
@@ -39,9 +42,12 @@
       </table>
     </v-col>
     <v-col cols="auto">
-      <table aria-describedby="infos about the difficulty (2nd column)">
+      <table
+        aria-describedby="infos about the difficulty (2nd column)"
+        class="align-first-column-left"
+      >
         <tr>
-          <td class="body-2 pr-2" align="right">
+          <td class="body-2 pr-2">
             Obstacles
           </td>
           <td class="body-1 pl-2">
@@ -49,7 +55,7 @@
           </td>
         </tr>
         <tr>
-          <td class="body-2 pr-2" align="right">
+          <td class="body-2 pr-2">
             njs
           </td>
           <td class="body-1 pl-2">
@@ -57,7 +63,7 @@
           </td>
         </tr>
         <tr>
-          <td class="body-2 pr-2" align="right">
+          <td class="body-2 pr-2">
             njs offset
           </td>
           <td class="body-1 pl-2">
