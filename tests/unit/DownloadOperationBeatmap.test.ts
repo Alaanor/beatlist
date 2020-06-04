@@ -11,7 +11,7 @@ import {
 const fakeInstallationPath = path.join(__dirname, "../data/fakeInstallation");
 const fakeInstallationLevelsPath = path.join(
   fakeInstallationPath,
-  "Beat Saber_Data\\CustomLevels"
+  path.join("Beat Saber_Data", "CustomLevels")
 );
 const sourceFooZipPath = path.join(__dirname, "../data/foo.zip");
 const destinationFooZipPath = path.join(fakeInstallationLevelsPath, "foo.zip");
