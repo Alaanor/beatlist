@@ -7,7 +7,11 @@
       :icon-expand-size="24"
       style="margin-top: auto; margin-bottom: auto;"
     />
-    <table style="max-width: 500px;" class="pl-5">
+    <table
+      style="max-width: 500px;"
+      class="pl-5"
+      aria-describedby="infos about the playlist (1st column)"
+    >
       <tr>
         <td>Title</td>
         <td>{{ playlistBeastsaber.playlistTitle }}</td>
@@ -25,7 +29,10 @@
         <td>{{ playlistLocal ? playlistLocal.maps.length : "..." }}</td>
       </tr>
     </table>
-    <table style="max-width: 700px;">
+    <table
+      style="max-width: 700px;"
+      aria-describedby="infos about the playlist (2nd column)"
+    >
       <tr>
         <td>Category</td>
         <td>

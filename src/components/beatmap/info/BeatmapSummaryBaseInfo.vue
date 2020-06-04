@@ -2,7 +2,7 @@
   <v-container class="pa-0">
     <v-row align="center">
       <v-col cols="6">
-        <table>
+        <table aria-describedby="infos about the beatmap (1st column)">
           <tr>
             <td class="body-2 pr-2" align="right">
               Name
@@ -66,7 +66,7 @@
         </table>
       </v-col>
       <v-col cols="6">
-        <table>
+        <table aria-describedby="infos about the beatmap (second column)">
           <tr>
             <td class="body-2 pr-2" align="right">
               Uploaded

@@ -1,7 +1,7 @@
 <template>
   <v-row align="center">
     <v-col cols="auto">
-      <table>
+      <table aria-describedby="infos about the difficulty (1st column)">
         <tr>
           <td class="body-2 pr-2" align="right">
             Duration
@@ -39,7 +39,7 @@
       </table>
     </v-col>
     <v-col cols="auto">
-      <table>
+      <table aria-describedby="infos about the difficulty (2nd column)">
         <tr>
           <td class="body-2 pr-2" align="right">
             Obstacles
