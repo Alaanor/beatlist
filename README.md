@@ -14,6 +14,13 @@
   <a href="https://discord.gg/f5AmKSH">
     <img src="https://discordapp.com/api/guilds/636966918741557280/widget.png" alt="discord server"> 
   </a>
+  <br>
+  <a href="https://sonarcloud.io/dashboard?id=Alaanor_beatlist">
+    <img src="https://sonarcloud.io/api/project_badges/measure?project=Alaanor_beatlist&metric=alert_status" alt="Quality Gate Status">
+  </a>
+  <a href="https://github.com/Alaanor/beatlist/actions">
+    <img src="https://github.com/Alaanor/beatlist/workflows/Node.js%20CI/badge.svg" alt="Node.js CI">
+  </a>
 </p>
 
 # Beatlist
