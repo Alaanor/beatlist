@@ -5,6 +5,8 @@ import { BeatmapLocal } from "@/libraries/beatmap/BeatmapLocal";
 import BeatmapLoader from "@/libraries/beatmap/BeatmapLoader";
 import Progress from "@/libraries/common/Progress";
 
+jest.mock("@/plugins/store", () => {});
+
 describe("beatmap beatmapScanner", () => {
   it("should only scan the difference", async () => {
     expect.assertions(7);
