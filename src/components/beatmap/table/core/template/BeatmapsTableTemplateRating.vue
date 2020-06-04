@@ -1,7 +1,7 @@
 <template>
   <Tooltip :text="item.data.stats.rating.toString()">
     <span>
-      {{ item.data.stats.rating.toFixed(2) }}
+      {{ `${(item.data.stats.rating * 100).toFixed(2)}%` }}
     </span>
   </Tooltip>
 </template>
