@@ -7,7 +7,7 @@ import PlaylistFilenameExtension from "@/libraries/playlist/PlaylistFilenameExte
 
 const BEAT_SABER_EXE = "Beat Saber.exe";
 const BEAT_SABER_PLAYLIST = "Playlists";
-const BEAT_SABER_CUSTOM_LEVEL = "Beat Saber_Data\\CustomLevels";
+const BEAT_SABER_CUSTOM_LEVEL = path.join("Beat Saber_Data", "CustomLevels");
 
 export default class BeatSaber {
   public static validateInstallationPathSync(folderPath: string): boolean {
