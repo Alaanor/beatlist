@@ -38,9 +38,11 @@ jest.mock("electron", () => ({
   remote: { session: { defaultSession: { getUserAgent: () => "foobar" } } },
 }));
 
+let server: http.Server;
+
 describe("download unit", () => {
   beforeAll(() => {
-    http
+    server = http
       .createServer((req, res) => {
         switch (req.url) {
           case "/":
@@ -67,6 +69,7 @@ describe("download unit", () => {
   });
 
   afterAll(() => {
+    server.close();
     fs.removeSync(tmpFolder);
   });
 
