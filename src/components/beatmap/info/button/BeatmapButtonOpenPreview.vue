@@ -1,7 +1,7 @@
 <template>
   <Tooltip text="Preview beatmap">
     <v-btn icon :small="small" @click="openPreview">
-      <v-icon>remove_red_eye</v-icon>
+      <v-icon :small="small">remove_red_eye</v-icon>
     </v-btn>
   </Tooltip>
 </template>
