@@ -13,8 +13,5 @@ import Vue from "vue";
 
 export default Vue.extend({
   name: "Playlists",
-  mounted() {
-    console.log(this.$route);
-  },
 });
 </script>
