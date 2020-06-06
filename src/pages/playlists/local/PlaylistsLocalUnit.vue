@@ -41,7 +41,7 @@ export default Vue.extend({
     playlists: get<PlaylistLocal[]>("playlist/playlists"),
   },
   watch: {
-    playlists() {
+    async playlists() {
       if (!this.playlist?.path) return;
 
       const hash = PlaylistLibrary.GetByPath(this.playlist.path)?.hash;
@@ -49,16 +49,16 @@ export default Vue.extend({
       if (!hash) return;
       if (hash === this.$route.params.hash) return;
 
-      this.$router.replace({
+      await this.$router.replace({
         name: route.PLAYLISTS_LOCAL_UNIT,
         params: { hash },
       });
     },
-    playlist() {
+    async playlist() {
       if (!this.playlist || !this.playlist.hash) return;
       if (this.playlist.hash === this.$route.params.hash) return;
 
-      this.$router.replace({
+      await this.$router.replace({
         name: route.PLAYLISTS_LOCAL_UNIT,
         params: { hash: this.playlist.hash },
       });
