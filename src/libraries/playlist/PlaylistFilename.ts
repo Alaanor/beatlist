@@ -26,7 +26,7 @@ export default class PlaylistFilename {
     return newPlaylistPath;
   }
 
-  private static computeFilenameFor(title: string) {
+  public static computeFilenameFor(title: string) {
     return title.replace(/[^a-zA-Z0-9]+/g, "_").toLowerCase();
   }
 }

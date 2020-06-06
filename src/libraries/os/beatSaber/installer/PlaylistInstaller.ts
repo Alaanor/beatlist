@@ -11,6 +11,7 @@ import PlaylistScanner from "@/libraries/scanner/playlist/PlaylistScanner";
 import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
 import store from "@/plugins/store";
 import PlaylistFilenameExtension from "@/libraries/playlist/PlaylistFilenameExtension";
+import PlaylistFilename from "@/libraries/playlist/PlaylistFilename";
 
 declare const __static: string;
 const defaultCoverPath = path.join(__static, "defaultCover.jpg");
@@ -38,7 +39,10 @@ export default class PlaylistInstaller {
     ] as PlaylistFormatType;
     const extension = PlaylistFilenameExtension.GetFor(format);
     const filepath = path
-      .join(await BeatSaber.getPlaylistFolder(), `${name}.${extension}`)
+      .join(
+        await BeatSaber.getPlaylistFolder(),
+        `${PlaylistFilename.computeFilenameFor(name)}.${extension}`
+      )
       .toLowerCase();
 
     const emptyPlaylist = {

@@ -4,7 +4,6 @@ import { PlaylistBase, PlaylistMap } from "@/libraries/playlist/PlaylistLocal";
 import Base64SrcLoader from "@/libraries/os/utils/Base64SrcLoader";
 
 export default class JsonSerializer extends PlaylistSerializer {
-  // eslint-disable-next-line class-methods-use-this
   public async serialize(playlist: PlaylistBase): Promise<void> {
     const data = JsonSerializer.format(playlist);
     await fs.writeFile(this.filepath, JSON.stringify(data));
