@@ -10,6 +10,7 @@
         :shown-column="shownColumn"
         :items-per-page.sync="itemsPerPage"
         :search="search"
+        :page.sync="page"
         :see-more-route-name="seeMoreRouteName"
       >
         <template #actions="{ beatsaver }">
@@ -41,6 +42,7 @@ export default Vue.extend({
   },
   data: () => ({
     search: "",
+    page: 1,
   }),
   computed: {
     shownColumn: sync<string[]>(
@@ -51,6 +53,11 @@ export default Vue.extend({
     ),
     beatmaps: () => BeatmapLibrary.GetAllValidBeatmapAsTableData(),
     seeMoreRouteName: () => route.BEATMAPS_LOCAL_UNIT,
+  },
+  watch: {
+    search() {
+      this.page = 1;
+    },
   },
 });
 </script>
