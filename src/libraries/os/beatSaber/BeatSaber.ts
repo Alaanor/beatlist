@@ -77,7 +77,7 @@ export default class BeatSaber {
     const purgeText = (text: string) =>
       text
         .replace(/\s/g, " ")
-        .replace(/[^a-zA-Z0-9 ]/g, "")
+        .replace(/[^a-zA-Z0-9 &]/g, "")
         .trim();
 
     const installationPath = store.getters["settings/installationPath"];
