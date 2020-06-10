@@ -1,7 +1,7 @@
 {
   "name": "beatlist",
   "description": "App to create playlist for BeatSaber",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "homepage": "https://github.com/Alaanor/beatlist",
   "repository": {
     "type": "git",

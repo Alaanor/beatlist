@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.2.1 (10/06/2020)
+**Improvement:**
+ - Colorblind mode (difficulties badges can now have a letter or be grey-scaled)
+ - All pages are now "keep-alive", so you won't lose your search and filter if you change page.
+ - Preview button directly on the row in some tables (#43)
+ - Adjust naming convention to match ModAssistant and BeatSaverDownloader (#39)
+ - The song preview will now be stopped if you change page
+ 
 ## v1.2.0 (18/05/2020)
 **Features:**
  - Rework of the whole UI, it now uses table and overall the app is denser.
