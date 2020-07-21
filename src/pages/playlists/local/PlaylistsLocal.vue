@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <p class="display-2">
-      Local Playlists
+      My Playlists
     </p>
     <v-container class="d-flex align-center">
       <v-subheader>actions</v-subheader>

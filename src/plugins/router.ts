@@ -34,7 +34,7 @@ const router = new VueRouter({
       meta: {
         subNav: [
           {
-            name: "Local",
+            name: "Saved Beatmaps",
             path: { name: "beatmaps-local" },
             icon: "computer",
           },
@@ -76,7 +76,7 @@ const router = new VueRouter({
       meta: {
         subNav: [
           {
-            name: "Local",
+            name: "My Playlists",
             path: { name: "playlists-local" },
             icon: "computer",
           },

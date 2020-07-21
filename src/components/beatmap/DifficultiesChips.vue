@@ -69,7 +69,7 @@ export default Vue.extend({
           chipName: getNameFor(key),
           shortName: Colorblind.getShortNameFor(key),
           color:
-            this.colorBlindMode === ColorblindMode.GreyScale
+            this.colorBlindMode === ColorblindMode.Greyscale
               ? Colorblind.getColorGreyScaled(key)
               : getColorFor(key),
           weight: getWeightFor(key),

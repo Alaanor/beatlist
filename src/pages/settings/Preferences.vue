@@ -10,21 +10,18 @@
       v-model="darkTheme"
       color="accent"
       label="Dark theme"
-      messages="Use the dark theme."
       dense
       inset
     />
     <v-switch
       v-model="enableDiscordRichPresence"
       color="accent"
-      label="Enable Discord Rich Presence"
-      messages="Enables the Discord Rich Presence which provides information that pops up on your
-        Discord profile."
+      label="Discord Rich Presence"
       dense
       inset
     />
     <p class="title pt-5">
-      Playlist
+      Playlists
     </p>
     <v-select
       v-model="defaultExportFormat"
@@ -52,8 +49,8 @@
       :items="colorBlindModeList"
       class="pt-7"
       color="accent"
-      label="Color blind mode"
-      messages="This change the way color are shown on difficulty label"
+      label="Colorblind mode"
+      messages="This changes the way color is shown on difficulty labels"
       dense
       inset
     />

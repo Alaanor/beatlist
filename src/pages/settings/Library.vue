@@ -31,20 +31,23 @@
         <v-col class="d-flex justify-center align-start flex-column py-0">
           <span>
             <strong>{{ beatmapsCountValid }}</strong>
-            {{ beatmapsCountValid > 1 ? "beatmaps are" : "beatmap is" }} loaded.
+            {{ beatmapsCountValid === 1 ? "beatmap" : "beatmaps" }}
+            loaded.
           </span>
           <span>
             <strong>{{ playlistsCountValid }}</strong>
-            {{ playlistsCountValid > 1 ? "playlists are" : "playlist is" }}
+            {{ playlistsCountValid === 1 ? "playlist is" : "playlists" }}
             loaded.
           </span>
           <span>
             <strong>{{ beatsaverBeatmapCountValid }}</strong>
-            {{ beatsaverBeatmapCountValid > 1 ? "beatmaps are" : "beatmap is" }}
+            {{
+              beatsaverBeatmapCountValid === 1 ? "beatmap is" : "beatmaps are"
+            }}
             cached.
             <Tooltip
               right
-              text="We cache the online info such as <br> vote and download so everything <br> happen in local and is fast"
+              text="Caches information such as <br> vote and download data."
             >
               <v-icon x-small>mdi-help</v-icon>
             </Tooltip>

@@ -1,7 +1,8 @@
 <template>
   <v-container>
     <p class="display-2">
-      Beatmap Online
+      <!--Couldn't get it small enough lol-->
+      Beatmap Online <small><small>via Beatsaver</small></small>
     </p>
     <BeatmapsTableOnline />
   </v-container>
