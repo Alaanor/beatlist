@@ -18,26 +18,16 @@ export default class PathResolverForSteam {
       return fromLibs;
     }
 
-    const fromReg = await PathResolverForSteam.findSteamPathFromRegistry();
+    // Won't work unless in administrator mode. See Registry.ts.
+    const fromReg = await regKey(
+      `\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App ${STEAM_APP_ID}`,
+      "InstallLocation"
+    );
     if (fromReg !== undefined) {
       return fromReg;
     }
 
     return undefined;
-  }
-
-  private static async findSteamPathFromRegistry(): Promise<
-    string | undefined
-  > {
-    const key = await regKey(
-      `\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App ${STEAM_APP_ID}`,
-      "InstallLocation"
-    );
-
-    if (key === undefined) {
-      return undefined;
-    }
-    return key;
   }
 
   private static async exists(pathToCheck: PathLike) {
