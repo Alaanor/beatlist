@@ -39,9 +39,10 @@ export default Vue.extend({
     },
     DownloadTooltipText() {
       const total = this.queuedCount + this.onGoingCount + this.completedCount;
-      return `Download ${
-        this.onGoingCount > 0 ? `${this.completedCount}/${total}` : ""
-      }`;
+
+      return this.onGoingCount > 0
+        ? `Downloading ${this.completedCount}/${total}`
+        : "Downloads";
     },
   },
   mounted(): void {

@@ -1,6 +1,6 @@
 export enum ColorblindMode {
   None = "None",
-  GreyScale = "Grey scale",
+  Greyscale = "Greyscale",
 }
 
 function getShortNameFor(difficultyName: string) {

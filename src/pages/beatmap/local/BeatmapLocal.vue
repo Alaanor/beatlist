@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <p class="display-2">
-      Beatmap Local
+      Saved Beatmaps
     </p>
     <BeatmapsTableLocal />
   </v-container>
