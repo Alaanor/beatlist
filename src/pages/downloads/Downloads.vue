@@ -7,7 +7,7 @@
     <v-card>
       <v-card-text>
         <DownloadsListGroup
-          sub-header="On going"
+          sub-header="Ongoing"
           type="ongoing"
           :operations="ongoing"
         />
@@ -47,7 +47,7 @@ export default Vue.extend({
     this.updateDownloadData();
   },
   beforeRouteEnter(to, from, next) {
-    DiscordRichPresence.UpdateStatus("Checking his downloads");
+    DiscordRichPresence.UpdateStatus("Checking their downloads");
     next();
   },
   beforeDestroy(): void {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="title pt-3">
-      One click
+      URI
     </p>
     <span class="text--disabled">
       The current beatsaver:// url handler is
@@ -12,7 +12,7 @@
     <v-switch
       v-model="enabled"
       color="accent"
-      label="Enable one click feature"
+      label="Enable one click open"
       messages="Open beatsaver:// link with beatlist"
       dense
       inset
@@ -20,8 +20,8 @@
     <v-switch
       v-model="downloadOnClick"
       color="accent"
-      label="Download on click"
-      messages="If this option is enabled it will directly start the download after you open a beatsaver:// link."
+      label="Automatic URI download"
+      messages="Downloads beatmaps when visiting a beatsaver:// link."
       :disabled="!enabled"
       dense
       inset
