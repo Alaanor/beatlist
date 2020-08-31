@@ -70,13 +70,12 @@ export default class BeatmapLibrary {
   public static GetPlaylists(beatmap: BeatmapLocal): PlaylistLocal[] {
     const affiliatedPlaylists: PlaylistLocal[] = [];
     PlaylistLibrary.GetAllValidPlaylists().forEach((playlist) => {
-      playlist.maps.some((map) => {
+      for (const map of playlist.maps) {
         if (map.hash !== undefined && map.hash === beatmap.hash) {
           affiliatedPlaylists.push(playlist);
-          return true;
+          break;
         }
-        return false;
-      });
+      }
     });
     return affiliatedPlaylists;
   }
