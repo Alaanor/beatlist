@@ -4,6 +4,8 @@ import { BeatmapLocal } from "@/libraries/beatmap/BeatmapLocal";
 import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 import { BeatmapsTableDataUnit } from "@/components/beatmap/table/core/BeatmapsTableDataUnit";
 import BeatsaverCachedLibrary from "@/libraries/beatmap/repo/BeatsaverCachedLibrary";
+import PlaylistLibrary from "../playlist/PlaylistLibrary";
+import { PlaylistLocal } from "../playlist/PlaylistLocal";
 
 export default class BeatmapLibrary {
   public static GetAllMaps(): BeatmapLocal[] {
@@ -63,5 +65,19 @@ export default class BeatmapLibrary {
 
   public static RemoveBeatmap(beatmap: BeatmapLocal) {
     store.commit("beatmap/removeBeatmap", { beatmap });
+  }
+
+  public static GetPlaylists(beatmap: BeatmapLocal): PlaylistLocal[] {
+    const affiliatedPlaylists: PlaylistLocal[] = [];
+    PlaylistLibrary.GetAllValidPlaylists().forEach((playlist) => {
+      playlist.maps.some((map) => {
+        if (map.hash !== undefined && map.hash === beatmap.hash) {
+          affiliatedPlaylists.push(playlist);
+          return true;
+        }
+        return false;
+      });
+    });
+    return affiliatedPlaylists;
   }
 }
