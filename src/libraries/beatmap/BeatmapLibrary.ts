@@ -68,15 +68,10 @@ export default class BeatmapLibrary {
   }
 
   public static GetPlaylists(beatmap: BeatmapLocal): PlaylistLocal[] {
-    const affiliatedPlaylists: PlaylistLocal[] = [];
-    PlaylistLibrary.GetAllValidPlaylists().forEach((playlist) => {
-      for (const map of playlist.maps) {
-        if (map.hash !== undefined && map.hash === beatmap.hash) {
-          affiliatedPlaylists.push(playlist);
-          break;
-        }
-      }
-    });
-    return affiliatedPlaylists;
+    return PlaylistLibrary.GetAllValidPlaylists().filter((playlist) =>
+      playlist.maps.find(
+        (map) => map.hash !== undefined && map.hash === beatmap.hash
+      )
+    );
   }
 }
