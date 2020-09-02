@@ -5,11 +5,11 @@
  - Added a way to display in which playlist(s) a beatmap is the table (#40, #65)
  - Some rephrasing & installation path detection change (#59)
  
- **Bug fixes:**
+**Bug fixes:**
  - Snackbar is now displayed in white when using the white mode
  - & is now whitelisted as character for the folder's name
  
- Many thanks to @SWinxy and @SpellcheckerExtraordinaire for their contributions in this release
+Many thanks to @SWinxy and @SpellcheckerExtraordinaire for their contributions in this release
  
 ## v1.2.1 (10/06/2020)
 **Improvement:**
