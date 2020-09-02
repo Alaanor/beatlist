@@ -8,6 +8,7 @@
 **Bug fixes:**
  - Snackbar is now displayed in white when using the white mode
  - & is now whitelisted as character for the folder's name
+ - Rewording from "cancel" to "close" (#61)
  
 Many thanks to @SWinxy and @SpellcheckerExtraordinaire for their contributions in this release
  
