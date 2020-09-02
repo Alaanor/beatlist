@@ -18,7 +18,7 @@
           </v-list-item-subtitle>
         </v-list-item-content>
         <v-list-item-action class="ma-0">
-          <v-btn text color="" class="ma-0" @click="close()">
+          <v-btn text color="secondary" class="ma-0" @click="close()">
             Close
           </v-btn>
         </v-list-item-action>
@@ -63,7 +63,7 @@ export default Vue.extend({
     beatmap(): BeatsaverBeatmap {
       return this.notification.result.beatmap;
     },
-    snackbarColor(): string {
+    snackbarColor(): string | undefined {
       switch (
         this.notification.result.status as DownloadOperationBeatmapResultStatus
       ) {
@@ -74,7 +74,7 @@ export default Vue.extend({
 
         case DownloadOperationBeatmapResultStatus.Success:
         default:
-          return "";
+          return this.$vuetify.theme.dark ? "" : "white";
       }
     },
     isSuccess(): boolean {

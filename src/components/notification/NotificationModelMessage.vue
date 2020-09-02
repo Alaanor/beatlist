@@ -1,16 +1,17 @@
 <template>
   <v-snackbar
     v-model="snackbar"
-    :color="notification.color"
+    :color="snackbarColor"
     :timeout="0"
     right
     bottom
+    :class="$vuetify.theme.dark ? '' : 'black--text'"
   >
     <v-icon v-if="notification.icon" class="pr-2">
       {{ notification.icon }}
     </v-icon>
     <span style="width: 100%;" v-html="notification.content" />
-    <v-btn text class="ma-0" @click="close()">
+    <v-btn text color="secondary" class="ma-0" @click="close()">
       Close
     </v-btn>
   </v-snackbar>
@@ -36,6 +37,18 @@ export default Vue.extend({
   data: () => ({
     snackbar: true,
   }),
+  computed: {
+    snackbarColor(): string {
+      if (
+        this.notification.color !== "" &&
+        this.notification.color !== undefined
+      ) {
+        return this.notification.color as string;
+      }
+
+      return this.$vuetify.theme.dark ? "" : "white";
+    },
+  },
   watch: {
     snackbar() {
       if (!this.snackbar) {
