@@ -23,7 +23,7 @@
       <v-card-actions>
         <v-spacer />
         <v-btn text @click="closeDialog">
-          Cancel
+          Close
         </v-btn>
       </v-card-actions>
     </v-card>
