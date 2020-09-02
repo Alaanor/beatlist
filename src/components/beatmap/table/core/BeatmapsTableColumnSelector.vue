@@ -34,6 +34,7 @@ export default Vue.extend({
       { value: "artist", text: "Artist" },
       { value: "mapper", text: "Mapper" },
       { value: "difficulties", text: "Difficulties" },
+      { value: "playlists", text: "Playlists" },
       { value: "dl", text: "Downloads" },
       { value: "plays", text: "Plays" },
       { value: "upvotes", text: "Up votes" },

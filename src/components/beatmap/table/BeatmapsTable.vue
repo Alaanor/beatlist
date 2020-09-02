@@ -121,6 +121,7 @@ import BeatmapsTableTemplateTextTooltip from "@/components/beatmap/table/core/te
 import BeatmapsTableTemplateBeatmapName from "@/components/beatmap/table/core/template/BeatmapsTableTemplateBeatmapName.vue";
 import BeatmapsTableTemplateStrToDate from "@/components/beatmap/table/core/template/BeatmapsTableTemplateStrToDate.vue";
 import BeatmapsTableTemplateDifficulties from "@/components/beatmap/table/core/template/BeatmapsTableTemplateDifficulties.vue";
+import BeatmapsTableTemplatePlaylists from "@/components/beatmap/table/core/template/BeatmapsTableTemplatePlaylists.vue";
 import BeatmapsTableTemplateRating from "@/components/beatmap/table/core/template/BeatmapsTableTemplateRating.vue";
 import BeatmapsTableColumnSelector from "@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue";
 import BeatmapsTableFooter from "@/components/beatmap/table/core/BeatmapsTableFooter.vue";
@@ -135,6 +136,7 @@ export default Vue.extend({
     BeatmapsTableTemplateCover,
     BeatmapsTableTemplateText,
     BeatmapsTableTemplateDifficulties,
+    BeatmapsTableTemplatePlaylists,
     BeatmapsTableTemplateTextTooltip,
     BeatmapsTableTemplateBeatmapName,
     BeatmapsTableTemplateStrToDate,
@@ -248,6 +250,15 @@ export default Vue.extend({
           filterable: true,
           localFilter: (value) =>
             FilterDifficulties(value, this.filtersValue.difficulties),
+          width: 110,
+        },
+        {
+          value: "playlists",
+          text: "Playlists",
+          template: BeatmapsTableHeadersTemplate.Playlists,
+          align: "left",
+          sortable: false,
+          filterable: false,
           width: 110,
         },
         {
