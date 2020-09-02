@@ -2,11 +2,14 @@
   <v-container class="pa-0 pl-3">
     <v-tooltip v-for="playlist in playlists" :key="playlist.key" top>
       <template #activator="{ on }">
-        <v-chip :v-on="on" color="transparent">
-          <v-avatar :size="24" class="mx-1" v-on="on">
-            <PlaylistCover :playlist="playlist" />
-          </v-avatar>
-        </v-chip>
+        <v-avatar :size="24" class="mx-1" v-on="on">
+          <PlaylistCover
+            :playlist="playlist"
+            :avatar-size="24"
+            :icon-expand-size="16"
+            contains
+          />
+        </v-avatar>
       </template>
       <span>{{ playlist.title }}</span>
     </v-tooltip>
