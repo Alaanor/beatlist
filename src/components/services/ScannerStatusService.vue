@@ -10,7 +10,7 @@
         <p>
           Scanning beatmaps:
           {{
-            `${progress.beatmap.get().done} on ${
+            `${progress.beatmap.get().done} of ${
               progress.beatmap.get().total
             } done.`
           }}
@@ -27,7 +27,7 @@
         <p>
           Scanning playlists:
           {{
-            `${progress.playlist.get().done} on ${
+            `${progress.playlist.get().done} of ${
               progress.playlist.get().total
             } done.`
           }}
