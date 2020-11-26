@@ -2,7 +2,7 @@
   <v-navigation-drawer
     :mini-variant="true"
     mini-variant-width="44"
-    mobile-break-point="0"
+    mobile-breakpoint="0"
     width="120"
     color="app"
     style="overflow: visible;"

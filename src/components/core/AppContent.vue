@@ -1,5 +1,5 @@
 <template>
-  <v-content>
+  <v-main>
     <v-container v-if="isReady" fluid>
       <v-row>
         <transition name="slide-x-transition" mode="out-in">
@@ -17,7 +17,7 @@
         </span>
       </transition>
     </LoadingPage>
-  </v-content>
+  </v-main>
 </template>
 
 <script lang="ts">
