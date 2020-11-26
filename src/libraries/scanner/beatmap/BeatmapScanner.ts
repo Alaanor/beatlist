@@ -5,11 +5,11 @@ import Progress from "@/libraries/common/Progress";
 import BeatmapScannerResult from "@/libraries/scanner/beatmap/BeatmapScannerResult";
 import { ScannerInterface } from "@/libraries/scanner/ScannerInterface";
 import ScannerLocker from "@/libraries/scanner/ScannerLocker";
-import { BeatmapLocal } from "../../beatmap/BeatmapLocal";
+import { Beatmap } from "../../beatmap/Beatmap";
 import BeatmapLoader from "../../beatmap/BeatmapLoader";
 import BeatmapLibrary from "../../beatmap/BeatmapLibrary";
 
-export default class BeatmapScanner implements ScannerInterface<BeatmapLocal> {
+export default class BeatmapScanner implements ScannerInterface<Beatmap> {
   public result: BeatmapScannerResult = new BeatmapScannerResult();
 
   public async scanAll(
@@ -22,7 +22,7 @@ export default class BeatmapScanner implements ScannerInterface<BeatmapLocal> {
 
       this.result.newItems = await Throttle.all(
         diff.added.map((path: string) => () =>
-          BeatmapLoader.Load(path).then((beatmap: BeatmapLocal) => {
+          BeatmapLoader.Load(path).then((beatmap: Beatmap) => {
             progress.plusOne();
             return beatmap;
           })
@@ -40,7 +40,7 @@ export default class BeatmapScanner implements ScannerInterface<BeatmapLocal> {
     });
   }
 
-  public async scanOne(path: string): Promise<BeatmapLocal> {
+  public async scanOne(path: string): Promise<Beatmap> {
     return ScannerLocker.acquire(async () => {
       const beatmap = await BeatmapLoader.Load(path);
       BeatmapLibrary.AddBeatmap(beatmap);
@@ -55,16 +55,16 @@ export default class BeatmapScanner implements ScannerInterface<BeatmapLocal> {
       await BeatSaber.getAllSongFolderPath()
     )?.map((path: string) => path.toLowerCase());
 
-    const oldPaths = BeatmapLibrary.GetAllMaps().map((beatmap: BeatmapLocal) =>
+    const oldPaths = BeatmapLibrary.GetAllMaps().map((beatmap: Beatmap) =>
       beatmap.folderPath.toLowerCase()
     );
 
     return computeDifference(oldPaths, currentPaths);
   }
 
-  private ReassembleAllBeatmap(diff: Differences<string>): BeatmapLocal[] {
+  private ReassembleAllBeatmap(diff: Differences<string>): Beatmap[] {
     const existingBeatmap = BeatmapLibrary.GetAllMaps().filter(
-      (beatmap: BeatmapLocal) =>
+      (beatmap: Beatmap) =>
         diff.kept.find((path: string) => beatmap.folderPath === path)
     );
 

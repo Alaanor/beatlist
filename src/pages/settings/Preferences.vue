@@ -63,7 +63,7 @@ import { sync } from "vuex-pathify";
 import DiscordRichPresence from "@/libraries/ipc/DiscordRichPresence";
 import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
 import OneClickSettings from "@/pages/settings/components/OneClickSettings.vue";
-import { ColorblindMode } from "@/libraries/app/Colorblind";
+import { ColorblindMode } from "@/libraries/app/DifficultyLabels";
 
 export default Vue.extend({
   name: "Preferences",

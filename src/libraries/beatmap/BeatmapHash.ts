@@ -2,7 +2,11 @@ import fs from "fs-extra";
 import path from "path";
 import crypto from "crypto";
 
-export default class BeatmapHashComputer {
+/**
+ * Computes the hash of a beatmap given the path of said beatmap
+ */
+
+export default class BeatmapHash {
   public static async Compute(folderPath: string): Promise<string | undefined> {
     try {
       const infoDatPath = path.join(folderPath, "info.dat");

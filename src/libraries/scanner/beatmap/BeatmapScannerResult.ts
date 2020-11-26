@@ -1,8 +1,8 @@
-import { BeatmapLocal } from "@/libraries/beatmap/BeatmapLocal";
+import { Beatmap } from "@/libraries/beatmap/Beatmap";
 import { ScannerResultInterface } from "@/libraries/scanner/ScannerInterface";
 
 export default class BeatmapScannerResult implements ScannerResultInterface {
-  public newItems: BeatmapLocal[] = [];
+  public newItems: Beatmap[] = [];
 
   public removedItems: number = 0;
 

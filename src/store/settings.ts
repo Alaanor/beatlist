@@ -1,6 +1,6 @@
 import { make } from "vuex-pathify";
 import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
-import { ColorblindMode } from "@/libraries/app/Colorblind";
+import { ColorblindMode } from "@/libraries/app/DifficultyLabels";
 
 export interface SettingsStoreState {
   appVersion: string | undefined;

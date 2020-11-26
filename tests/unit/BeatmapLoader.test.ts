@@ -2,7 +2,7 @@ import path from "path";
 import BeatmapLoader from "@/libraries/beatmap/BeatmapLoader";
 import BeatsaverAPI from "@/libraries/net/beatsaver/BeatsaverAPI";
 import BeatmapLoadStateError from "@/libraries/beatmap/BeatmapLoadStateError";
-import BeatmapHashComputer from "@/libraries/beatmap/BeatmapHashComputer";
+import BeatmapHash from "@/libraries/beatmap/BeatmapHash";
 import mockResponseSuccess from "./helper/BeatsaverAPIResponseMocking";
 
 jest.mock("@/plugins/store", () => {});
@@ -76,7 +76,7 @@ describe("beatmap loader", () => {
 
     const mockHashCompute = jest.fn();
     mockHashCompute.mockReturnValue(undefined);
-    BeatmapHashComputer.Compute = mockHashCompute;
+    BeatmapHash.Compute = mockHashCompute;
 
     const beatmapFolder = path.join(__dirname, "../data/beatmap");
     const beatmap = await BeatmapLoader.Load(beatmapFolder);

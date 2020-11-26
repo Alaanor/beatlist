@@ -1,7 +1,7 @@
 import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
-import { BeatmapLocal } from "@/libraries/beatmap/BeatmapLocal";
+import { Beatmap } from "@/libraries/beatmap/Beatmap";
 
 export interface BeatmapsTableDataUnit {
-  local: BeatmapLocal | undefined;
+  local: Beatmap | undefined;
   data: BeatsaverBeatmap;
 }

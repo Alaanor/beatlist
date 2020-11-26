@@ -29,7 +29,7 @@ import {
   getWeightFor,
 } from "@/libraries/helper/DifficultiesHelper";
 import { get } from "vuex-pathify";
-import Colorblind, { ColorblindMode } from "@/libraries/app/Colorblind";
+import Colorblind, { ColorblindMode } from "@/libraries/app/DifficultyLabels";
 
 export default Vue.extend({
   name: "DifficultiesChips",

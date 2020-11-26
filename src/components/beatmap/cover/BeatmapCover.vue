@@ -31,7 +31,7 @@ import {
   BeatsaverBeatmap,
   isBeatsaverBeatmap,
 } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
-import { BeatmapLocal, isBeatmapLocal } from "@/libraries/beatmap/BeatmapLocal";
+import { BeatmapLocal, isBeatmapLocal } from "@/libraries/beatmap/Beatmap";
 import BeatmapLoader from "@/libraries/beatmap/BeatmapLoader";
 import BeatsaverUtilities from "@/libraries/net/beatsaver/BeatsaverUtilities";
 

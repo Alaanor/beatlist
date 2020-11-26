@@ -42,7 +42,7 @@ import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
 import BeatmapInstaller from "@/libraries/os/beatSaber/installer/BeatmapInstaller";
 import BeatmapLibrary from "@/libraries/beatmap/BeatmapLibrary";
-import { BeatmapLocal } from "@/libraries/beatmap/BeatmapLocal";
+import { BeatmapLocal } from "@/libraries/beatmap/Beatmap";
 import NotificationService from "@/libraries/notification/NotificationService";
 
 export default Vue.extend({

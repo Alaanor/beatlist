@@ -23,7 +23,7 @@ import Vue, { PropType } from "vue";
 import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 import Tooltip from "@/components/helper/Tooltip.vue";
 import BeatmapLibrary from "@/libraries/beatmap/BeatmapLibrary";
-import { BeatmapLocal } from "@/libraries/beatmap/BeatmapLocal";
+import { BeatmapLocal } from "@/libraries/beatmap/Beatmap";
 import BeatmapLocalUtilities from "@/libraries/beatmap/BeatmapLocalUtilities";
 
 export default Vue.extend({

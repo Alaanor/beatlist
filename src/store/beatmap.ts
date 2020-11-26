@@ -1,5 +1,5 @@
 import { make } from "vuex-pathify";
-import { BeatmapLocal } from "@/libraries/beatmap/BeatmapLocal";
+import { Beatmap } from "@/libraries/beatmap/Beatmap";
 import {
   BeatsaverItemInvalid,
   BeatsaverItemValid,
@@ -11,7 +11,7 @@ import {
 
 export interface BeatmapStoreState {
   lastScan: Date;
-  beatmaps: BeatmapLocal[];
+  beatmaps: Beatmap[];
   beatsaverCached: Map<string, BeatsaverItemValid>;
   beatsaverFailCached: Map<string, BeatsaverItemInvalid>;
   beatsaverKeyToHashIndex: Map<string, string>;
@@ -31,15 +31,12 @@ const getters = {
 
 const mutations = {
   ...make.mutations(state),
-  addBeatmap(context: BeatmapStoreState, payload: { beatmap: BeatmapLocal }) {
+  addBeatmap(context: BeatmapStoreState, payload: { beatmap: Beatmap }) {
     context.beatmaps.push(payload.beatmap);
   },
-  removeBeatmap(
-    context: BeatmapStoreState,
-    payload: { beatmap: BeatmapLocal }
-  ) {
+  removeBeatmap(context: BeatmapStoreState, payload: { beatmap: Beatmap }) {
     context.beatmaps = context.beatmaps.filter(
-      (value: BeatmapLocal) => value.hash !== payload.beatmap.hash
+      (value: Beatmap) => value.hash !== payload.beatmap.hash
     );
   },
   setBeatsaverCached(

@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 import DownloadOperationBeatmap from "@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmap";
 import DownloadManager from "@/libraries/net/downloader/DownloadManager";
-import { BeatmapLocal } from "@/libraries/beatmap/BeatmapLocal";
+import { Beatmap } from "@/libraries/beatmap/Beatmap";
 
 export default class BeatmapInstaller {
   public static Install(
@@ -20,7 +20,7 @@ export default class BeatmapInstaller {
     DownloadManager.AddQueue(operation);
   }
 
-  public static async Uninstall(beatmap: BeatmapLocal): Promise<void> {
+  public static async Uninstall(beatmap: Beatmap): Promise<void> {
     await fs.remove(beatmap.folderPath);
   }
 }

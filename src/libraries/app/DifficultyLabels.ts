@@ -3,7 +3,7 @@ export enum ColorblindMode {
   Greyscale = "Greyscale",
 }
 
-function getShortNameFor(difficultyName: string) {
+function getShortNameFor(difficultyName: string): string | undefined {
   switch (difficultyName) {
     case "easy":
       return "E";
@@ -20,7 +20,7 @@ function getShortNameFor(difficultyName: string) {
   }
 }
 
-function getColorGreyScaled(difficultyName: string) {
+function getColorGreyScaled(difficultyName: string): string | undefined {
   switch (difficultyName) {
     case "easy":
       return "grey lighten-1";

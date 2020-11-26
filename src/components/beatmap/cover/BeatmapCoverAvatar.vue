@@ -38,7 +38,7 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
-import { BeatmapLocal } from "@/libraries/beatmap/BeatmapLocal";
+import { BeatmapLocal } from "@/libraries/beatmap/Beatmap";
 import BeatmapCover from "@/components/beatmap/cover/BeatmapCover.vue";
 
 export default Vue.extend({

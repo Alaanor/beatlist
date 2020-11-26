@@ -3,25 +3,23 @@ import path from "path";
 import Base64SrcLoader from "@/libraries/os/utils/Base64SrcLoader";
 import { BeatsaverKeyType } from "@/libraries/beatmap/repo/BeatsaverKeyType";
 import BeatsaverCacheManager from "@/libraries/beatmap/repo/BeatsaverCacheManager";
-import { BeatmapLocal } from "./BeatmapLocal";
+import { Beatmap } from "./Beatmap";
 import BeatmapLoadStateError from "./BeatmapLoadStateError";
 import { BeatmapLoadState } from "./BeatmapLoadState";
-import BeatmapHashComputer from "./BeatmapHashComputer";
+import BeatmapHash from "./BeatmapHash";
 
 export default class BeatmapLoader {
-  private readonly beatmap: BeatmapLocal;
+  private readonly beatmap: Beatmap;
 
   private beatmapFolder: string = "";
 
   private hash: string | undefined;
 
-  public static async Load(beatmapFolder: string): Promise<BeatmapLocal> {
+  public static async Load(beatmapFolder: string): Promise<Beatmap> {
     return new BeatmapLoader().Load(beatmapFolder);
   }
 
-  public static async LoadCover(
-    beatmap: BeatmapLocal
-  ): Promise<string | undefined> {
+  public static async LoadCover(beatmap: Beatmap): Promise<string | undefined> {
     if (!(await fs.pathExists(beatmap.coverPath))) {
       return undefined;
     }
@@ -30,11 +28,11 @@ export default class BeatmapLoader {
   }
 
   private constructor() {
-    this.beatmap = {} as BeatmapLocal;
+    this.beatmap = {} as Beatmap;
     this.beatmap.loadState = { valid: false } as BeatmapLoadState;
   }
 
-  private async Load(beatmapFolder: string): Promise<BeatmapLocal> {
+  private async Load(beatmapFolder: string): Promise<Beatmap> {
     this.beatmapFolder = beatmapFolder;
     this.beatmap.folderPath = beatmapFolder;
 
@@ -93,7 +91,7 @@ export default class BeatmapLoader {
       return;
     }
 
-    this.hash = await BeatmapHashComputer.Compute(this.beatmapFolder);
+    this.hash = await BeatmapHash.Compute(this.beatmapFolder);
 
     if (!this.hash) {
       this.beatmap.loadState.errorType =

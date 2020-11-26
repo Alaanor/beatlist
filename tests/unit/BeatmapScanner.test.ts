@@ -1,7 +1,7 @@
 import BeatmapScanner from "@/libraries/scanner/beatmap/BeatmapScanner";
 import BeatSaber from "@/libraries/os/beatSaber/BeatSaber";
 import BeatmapLibrary from "@/libraries/beatmap/BeatmapLibrary";
-import { BeatmapLocal } from "@/libraries/beatmap/BeatmapLocal";
+import { Beatmap } from "@/libraries/beatmap/Beatmap";
 import BeatmapLoader from "@/libraries/beatmap/BeatmapLoader";
 import Progress from "@/libraries/common/Progress";
 
@@ -20,14 +20,14 @@ describe("beatmap beatmapScanner", () => {
       .spyOn(BeatmapLibrary, "GetAllMaps")
       .mockImplementation()
       .mockReturnValue([
-        { folderPath: "foo" } as BeatmapLocal,
-        { folderPath: "baz" } as BeatmapLocal,
+        { folderPath: "foo" } as Beatmap,
+        { folderPath: "baz" } as Beatmap,
       ]);
 
     jest
       .spyOn(BeatmapLoader, "Load")
       .mockImplementation((path: string) =>
-        Promise.resolve({ folderPath: path } as BeatmapLocal)
+        Promise.resolve({ folderPath: path } as Beatmap)
       );
 
     jest.spyOn(BeatmapLibrary, "UpdateAllMaps").mockImplementation();
