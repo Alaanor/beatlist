@@ -38,7 +38,7 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
-import { BeatmapLocal } from "@/libraries/beatmap/Beatmap";
+import { Beatmap } from "@/libraries/beatmap/Beatmap";
 import BeatmapCover from "@/components/beatmap/cover/BeatmapCover.vue";
 
 export default Vue.extend({
@@ -46,7 +46,7 @@ export default Vue.extend({
   components: { BeatmapCover },
   props: {
     beatmap: {
-      type: Object as PropType<BeatsaverBeatmap | BeatmapLocal>,
+      type: Object as PropType<BeatsaverBeatmap | Beatmap>,
       default: {},
     },
     avatarSize: { type: Number, default: undefined },

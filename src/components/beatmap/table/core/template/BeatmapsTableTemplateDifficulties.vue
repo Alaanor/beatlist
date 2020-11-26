@@ -1,15 +1,15 @@
 <template>
-  <DifficultiesChips :diff="data" small short />
+  <DifficultyIcons :diff="data" small short />
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Utilities from "@/libraries/helper/Utilities";
-import DifficultiesChips from "@/components/beatmap/DifficultiesChips.vue";
+import DifficultyIcons from "@/components/beatmap/DifficultyIcons.vue";
 
 export default Vue.extend({
   name: "BeatmapsTableTemplateDifficulties",
-  components: { DifficultiesChips },
+  components: { DifficultyIcons },
   props: {
     item: { type: Object, required: true },
     header: { type: Object, required: true },

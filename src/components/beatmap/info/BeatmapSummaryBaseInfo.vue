@@ -59,7 +59,7 @@
               Difficulties
             </td>
             <td class="pl-2">
-              <DifficultiesChips
+              <DifficultyIcons
                 :diff="beatmap.metadata.difficulties"
                 short
                 small
@@ -151,12 +151,12 @@
 import Vue, { PropType } from "vue";
 import linkifyHtml from "linkifyjs/html";
 import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
-import DifficultiesChips from "@/components/beatmap/DifficultiesChips.vue";
+import DifficultyIcons from "@/components/beatmap/DifficultyIcons.vue";
 import Tooltip from "@/components/helper/Tooltip.vue";
 
 export default Vue.extend({
   name: "BeatmapSummaryBaseInfo",
-  components: { DifficultiesChips, Tooltip },
+  components: { DifficultyIcons, Tooltip },
   filters: {
     toDate(value: string): string {
       return new Date(value).toLocaleString();

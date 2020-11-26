@@ -24,7 +24,7 @@
         <p class="headline grey--text mb-0">
           {{ beatmap.metadata.levelAuthorName }}
         </p>
-        <DifficultiesChips :diff="beatmap.metadata.difficulties" />
+        <DifficultyIcons :diff="beatmap.metadata.difficulties" />
       </v-col>
     </v-row>
   </v-container>
@@ -35,11 +35,11 @@ import Vue, { PropType } from "vue";
 import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 import BeatmapCover from "@/components/beatmap/cover/BeatmapCover.vue";
 import BeatmapCoverAvatar from "@/components/beatmap/cover/BeatmapCoverAvatar.vue";
-import DifficultiesChips from "@/components/beatmap/DifficultiesChips.vue";
+import DifficultyIcons from "@/components/beatmap/DifficultyIcons.vue";
 
 export default Vue.extend({
   name: "BeatmapSummary",
-  components: { BeatmapCover, BeatmapCoverAvatar, DifficultiesChips },
+  components: { BeatmapCover, BeatmapCoverAvatar, DifficultyIcons },
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
   },

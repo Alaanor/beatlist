@@ -31,7 +31,7 @@ import {
   BeatsaverBeatmap,
   isBeatsaverBeatmap,
 } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
-import { BeatmapLocal, isBeatmapLocal } from "@/libraries/beatmap/Beatmap";
+import { Beatmap, isBeatmapLocal } from "@/libraries/beatmap/Beatmap";
 import BeatmapLoader from "@/libraries/beatmap/BeatmapLoader";
 import BeatsaverUtilities from "@/libraries/net/beatsaver/BeatsaverUtilities";
 
@@ -39,7 +39,7 @@ export default Vue.extend({
   name: "BeatmapCover",
   props: {
     beatmap: {
-      type: Object as PropType<BeatsaverBeatmap | BeatmapLocal>,
+      type: Object as PropType<BeatsaverBeatmap | Beatmap>,
       default: {},
     },
     progressSize: { type: Number, default: undefined },

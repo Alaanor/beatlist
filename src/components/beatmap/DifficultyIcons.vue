@@ -32,7 +32,7 @@ import { get } from "vuex-pathify";
 import Colorblind, { ColorblindMode } from "@/libraries/app/DifficultyLabels";
 
 export default Vue.extend({
-  name: "DifficultiesChips",
+  name: "DifficultyIcons",
   props: {
     diff: { type: Object as PropType<DifficultiesSimple>, required: true },
     small: { type: Boolean, default: false },
