@@ -1,35 +1,29 @@
 <template>
   <v-container :class="short ? 'pa-0 pl-3' : 'pa-1 ml-n2'">
-    <v-tooltip v-for="value in difficulties" :key="value.key" top>
+    <v-tooltip v-for="difficulty in difficulties" :key="difficulty.string" top>
       <template #activator="{ on }">
         <v-chip
-          :color="value.color"
+          :color="grayScaled ? difficulty.colorGrayscaled : difficulty.color"
           :small="small"
           :class="short ? 'ml-n3' : 'ma-1'"
           v-on="on"
         >
           <span style="margin-left: -1px; margin-right: -1px;">
-            {{
-              short ? (showShortLetter ? value.shortName : "") : value.chipName
-            }}
+            {{ difficulty.char }}
           </span>
         </v-chip>
       </template>
-      <span>{{ value.chipName }}</span>
+      <span>{{ difficulty.string }}</span>
     </v-tooltip>
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import { DifficultiesSimple } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
-import {
-  getColorFor,
-  getNameFor,
-  getWeightFor,
-} from "@/libraries/helper/DifficultiesHelper";
+import DifficultyData from "@/libraries/app/difficulties/DifficultyData";
+import getDifficulty from "@/libraries/app/difficulties/Difficulty";
 import { get } from "vuex-pathify";
-import Colorblind, { ColorblindMode } from "@/libraries/app/DifficultyLabels";
+import { ColorblindMode } from "@/libraries/app/DifficultyLabels";
 
 export default Vue.extend({
   name: "DifficultyIcons",
@@ -39,12 +33,10 @@ export default Vue.extend({
     short: { type: Boolean, default: false },
   },
   data: () => ({
-    difficulties: [] as any,
+    difficulties: [] as DifficultyData,
+    grayScaled: Boolean,
   }),
   computed: {
-    showShortLetter: get<boolean>(
-      "settings/accessibility@showLetterInDifficulty"
-    ),
     colorBlindMode: get<ColorblindMode>(
       "settings/accessibility@colorBlindMode"
     ),
@@ -63,30 +55,11 @@ export default Vue.extend({
   methods: {
     computeDifficulties(): void {
       this.difficulties = Object.entries(this.diff)
-        .map(([key, value]) => ({
-          name: key,
-          enabled: value,
-          chipName: getNameFor(key),
-          shortName: Colorblind.getShortNameFor(key),
-          color:
-            this.colorBlindMode === ColorblindMode.Greyscale
-              ? Colorblind.getColorGreyScaled(key)
-              : getColorFor(key),
-          weight: getWeightFor(key),
-        }))
-        .sort((a: any, b: any) => a.weight - b.weight);
+        .filter(([key]) => key !== undefined && this.diff[key]) // I'm really annoyed that the linter won't allow (v: [key, value]) => value because key isn't used >:|
+        .map(([key]) => getDifficulty(key))
+        .sort((a: DifficultyData, b: DifficultyData) => a.order - b.order);
 
-      // to force the v-for to re-render on different state, we create an unique key
-      const keyBase = Object.values(this.difficulties)
-        .map((d: any) => d.enabled)
-        .join();
-
-      this.difficulties = this.difficulties
-        .map((d: any) => {
-          d.key = `${keyBase} - ${d.name}`;
-          return d;
-        })
-        .filter((d: any) => d.enabled);
+      this.grayScaled = this.colorBlindMode === ColorblindMode.Greyscale;
     },
   },
 });
