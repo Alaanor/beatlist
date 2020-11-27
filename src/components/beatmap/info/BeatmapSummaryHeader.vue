@@ -2,7 +2,7 @@
   <v-container>
     <div class="background-placement">
       <span class="align-helper" />
-      <BeatmapCover
+      <AlbumLoader
         :beatmap="beatmap"
         class="background-blurred-cover"
         :gradient="`to top, rgba(${gradientColor}, 1) 25%, rgba(0, 0, 0, 0.25) 100%`"
@@ -33,13 +33,13 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
-import BeatmapCover from "@/components/beatmap/cover/BeatmapCover.vue";
+import AlbumLoader from "@/components/beatmap/cover/AlbumLoader.vue";
 import BeatmapCoverAvatar from "@/components/beatmap/cover/BeatmapCoverAvatar.vue";
 import DifficultyIcons from "@/components/beatmap/DifficultyIcons.vue";
 
 export default Vue.extend({
   name: "BeatmapSummary",
-  components: { BeatmapCover, BeatmapCoverAvatar, DifficultyIcons },
+  components: { AlbumLoader, BeatmapCoverAvatar, DifficultyIcons },
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
   },

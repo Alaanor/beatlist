@@ -36,7 +36,7 @@ import BeatmapLoader from "@/libraries/beatmap/BeatmapLoader";
 import BeatsaverUtilities from "@/libraries/net/beatsaver/BeatsaverUtilities";
 
 export default Vue.extend({
-  name: "BeatmapCover",
+  name: "AlbumLoader",
   props: {
     beatmap: {
       type: Object as PropType<BeatsaverBeatmap | Beatmap>,

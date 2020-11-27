@@ -2,7 +2,7 @@
   <div>
     <v-hover #default="{ hover }">
       <v-avatar :size="avatarSize" :tile="tile" class="my-1">
-        <BeatmapCover :beatmap="beatmap" :progress-size="avatarSize">
+        <AlbumLoader :beatmap="beatmap" :progress-size="avatarSize">
           <transition name="slide-y-transition">
             <div
               v-if="hover"
@@ -16,7 +16,7 @@
               </v-btn>
             </div>
           </transition>
-        </BeatmapCover>
+        </AlbumLoader>
       </v-avatar>
     </v-hover>
     <v-overlay
@@ -25,7 +25,7 @@
       opacity="0.7"
       @click="imageOverlay = false"
     >
-      <BeatmapCover :beatmap="beatmap" max-height="512" contain />
+      <AlbumLoader :beatmap="beatmap" max-height="512" contain />
       <v-btn icon large class="mt-2" @click="imageOverlay = false">
         <v-icon large>
           mdi-close
@@ -39,11 +39,11 @@
 import Vue, { PropType } from "vue";
 import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 import { Beatmap } from "@/libraries/beatmap/Beatmap";
-import BeatmapCover from "@/components/beatmap/cover/BeatmapCover.vue";
+import AlbumLoader from "@/components/beatmap/cover/AlbumLoader.vue";
 
 export default Vue.extend({
-  name: "BeatmapCoverAvatar",
-  components: { BeatmapCover },
+  name: "AlbumLoaderAvatar",
+  components: { AlbumLoader },
   props: {
     beatmap: {
       type: Object as PropType<BeatsaverBeatmap | Beatmap>,

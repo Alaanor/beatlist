@@ -1,7 +1,7 @@
 <template>
   <v-list-item class="pa-0 my-1">
     <v-list-item-avatar class="my-0">
-      <BeatmapCover :beatmap="beatmap" />
+      <AlbumLoader :beatmap="beatmap" />
     </v-list-item-avatar>
     <v-list-item-content class="py-0">
       <v-list-item-title>{{ beatmap.metadata.songName }}</v-list-item-title>
@@ -23,7 +23,7 @@
 import Vue, { PropType } from "vue";
 import DownloadOperationBeatmap from "@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmap";
 import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
-import BeatmapCover from "@/components/beatmap/cover/BeatmapCover.vue";
+import AlbumLoader from "@/components/beatmap/cover/AlbumLoader.vue";
 import {
   FormatProgressAllInOne,
   FormatProgressSpeed,
@@ -32,7 +32,7 @@ import {
 
 export default Vue.extend({
   name: "DownloadsListTemplateBeatmap",
-  components: { BeatmapCover },
+  components: { AlbumLoader },
   props: {
     operation: {
       type: Object as PropType<DownloadOperationBeatmap>,

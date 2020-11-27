@@ -9,7 +9,7 @@
     <v-list v-if="isSuccess" style="background: none;" class="pa-0">
       <v-list-item class="pa-0">
         <v-list-item-avatar class="my-0">
-          <BeatmapCover :beatmap="beatmap" />
+          <AlbumLoader :beatmap="beatmap" />
         </v-list-item-avatar>
         <v-list-item-content class="py-0">
           <v-list-item-title>{{ beatmap.metadata.songName }}</v-list-item-title>
@@ -42,12 +42,12 @@ import {
   DownloadOperationBeatmapResult,
   DownloadOperationBeatmapResultStatus,
 } from "@/libraries/net/downloader/operation/beatmap/DownloadOperationBeatmapResult";
-import BeatmapCover from "@/components/beatmap/cover/BeatmapCover.vue";
+import AlbumLoader from "@/components/beatmap/cover/AlbumLoader.vue";
 import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 
 export default Vue.extend({
   name: `NotificationModel${NotificationType.BeatmapDownload}`,
-  components: { BeatmapCover },
+  components: { AlbumLoader },
   props: {
     notification: {
       type: Object as PropType<
