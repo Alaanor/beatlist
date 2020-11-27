@@ -12,7 +12,6 @@ import {
   BeatsaverItem,
   BeatsaverItemLoadError,
 } from "@/libraries/beatmap/repo/BeatsaverItem";
-import sharp from "sharp";
 
 export const FILE_NOT_FOUND: Error = new Error("File not found");
 export const INVALID_JSON: Error = new Error("Invalid JSON");
@@ -29,13 +28,14 @@ export default class JsonDeserializer extends PlaylistDeserializer {
       const json = JSON.parse(rawJson.toString());
       JsonDeserializer.validateJson(json);
 
-      const image = await JsonDeserializer.getOptimizedImage(json.image);
-
       return {
         title: json.playlistTitle,
         author: json.playlistAuthor ?? "",
         description: json.playlistDescription ?? "",
-        cover: image,
+        cover: Buffer.from(
+          Base64SrcLoader.GetRawSrc(json.image ?? ""),
+          "base64"
+        ),
         maps: await JsonDeserializer.convertToHash(
           json.songs ?? [],
           progress ?? new Progress()
@@ -102,10 +102,5 @@ export default class JsonDeserializer extends PlaylistDeserializer {
       default:
         return { error: PlaylistMapImportError.Unknown, errorInfo: "Unknown" };
     }
-  }
-
-  private static async getOptimizedImage(image: string) {
-    const buffer = Buffer.from(Base64SrcLoader.GetRawSrc(image), "base64");
-    return sharp(buffer).resize(256).jpeg({ quality: 65 }).toBuffer();
   }
 }
