@@ -10,7 +10,7 @@
     </div>
     <v-row>
       <v-col cols="auto">
-        <BeatmapCoverAvatar :beatmap="beatmap" :avatar-size="192" tile />
+        <AlbumImage :beatmap="beatmap" :avatar-size="192" tile />
       </v-col>
       <v-col align-self="center">
         <p class="d-flex align-baseline mb-0">
@@ -34,12 +34,12 @@
 import Vue, { PropType } from "vue";
 import { BeatsaverBeatmap } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 import AlbumLoader from "@/components/beatmap/cover/AlbumLoader.vue";
-import BeatmapCoverAvatar from "@/components/beatmap/cover/BeatmapCoverAvatar.vue";
+import AlbumImage from "@/components/beatmap/cover/AlbumImage.vue";
 import DifficultyIcons from "@/components/beatmap/DifficultyIcons.vue";
 
 export default Vue.extend({
   name: "BeatmapSummary",
-  components: { AlbumLoader, BeatmapCoverAvatar, DifficultyIcons },
+  components: { AlbumLoader, AlbumImage, DifficultyIcons },
   props: {
     beatmap: { type: Object as PropType<BeatsaverBeatmap>, required: true },
   },
