@@ -45,8 +45,8 @@
       inset
     />
     <v-select
-      v-model="colorBlindMode"
-      :items="colorBlindModeList"
+      v-model="colorMode"
+      :items="colorModeList"
       class="pt-7"
       color="accent"
       label="Colorblind mode"
@@ -63,7 +63,7 @@ import { sync } from "vuex-pathify";
 import DiscordRichPresence from "@/libraries/ipc/DiscordRichPresence";
 import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
 import OneClickSettings from "@/pages/settings/components/OneClickSettings.vue";
-import { ColorblindMode } from "@/libraries/app/DifficultyLabels";
+import { ColorMode } from "@/libraries/app/ColorMode";
 
 export default Vue.extend({
   name: "Preferences",
@@ -80,11 +80,9 @@ export default Vue.extend({
     showLetterInDifficulty: sync<boolean>(
       "settings/accessibility@showLetterInDifficulty"
     ),
-    colorBlindMode: sync<ColorblindMode>(
-      "settings/accessibility@colorBlindMode"
-    ),
-    colorBlindModeList: () =>
-      Object.entries(ColorblindMode).map((entry) => ({
+    colorMode: sync<ColorMode>("settings/accessibility@colorMode"),
+    colorModeList: () =>
+      Object.entries(ColorMode).map((entry) => ({
         text: entry[0],
         value: entry[1],
       })),

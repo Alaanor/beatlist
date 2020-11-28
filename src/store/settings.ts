@@ -1,6 +1,6 @@
 import { make } from "vuex-pathify";
 import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
-import { ColorblindMode } from "@/libraries/app/DifficultyLabels";
+import { ColorMode } from "@/libraries/app/ColorMode";
 
 export interface SettingsStoreState {
   appVersion: string | undefined;
@@ -21,7 +21,7 @@ export interface SettingsStoreState {
   };
   accessibility: {
     showLetterInDifficulty: boolean;
-    colorBlindMode: ColorblindMode;
+    colorMode: ColorMode;
   };
 }
 
@@ -55,7 +55,7 @@ const state = {
   },
   accessibility: {
     showLetterInDifficulty: false,
-    colorBlindMode: ColorblindMode.None,
+    colorMode: ColorMode.None,
   },
 };
 

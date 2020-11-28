@@ -1,4 +1,4 @@
-export default interface DifficultyData {
+export default interface DifficultyInformation {
   char: string;
   string: string;
   order: number;

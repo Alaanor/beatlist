@@ -1,42 +1,55 @@
 import Easy from "./Easy";
+import Normal from "./Normal";
+import Hard from "./Hard";
 import Expert from "./Expert";
 import ExpertPlus from "./ExpertPlus";
-import Hard from "./Hard";
-import Normal from "./Normal";
-import DifficultyData from "./DifficultyData";
-import { ColorblindMode } from "../DifficultyLabels";
+import DifficultyInformation from "./DifficultyInformation";
+import { ColorMode } from "../ColorMode";
 
-export function getDifficulty(difficulty: string): DifficultyData | undefined {
+export const EASY = new Easy();
+export const NORMAL = new Normal();
+export const HARD = new Hard();
+export const EXPERT = new Expert();
+export const EXPERTPLUS = new ExpertPlus();
+
+export function getDifficulty(
+  difficulty: string
+): DifficultyInformation | undefined {
   switch (difficulty.toLowerCase()) {
     case "easy":
     case "e":
-      return new Easy();
+      return EASY;
     case "normal":
     case "n":
-      return new Normal();
+      return NORMAL;
     case "hard":
     case "h":
-      return new Hard();
+      return HARD;
     case "expert":
     case "x":
-      return new Expert();
+      return EXPERT;
     case "expertplus":
     case "+":
-      return new ExpertPlus();
+      return EXPERTPLUS;
     default:
       return undefined;
   }
 }
 
 export function getColor(
-  difficulty: DifficultyData,
-  colorMode: ColorblindMode
+  difficulty: DifficultyInformation,
+  colorMode: ColorMode
 ): string {
   switch (colorMode) {
-    case ColorblindMode.Greyscale:
+    case ColorMode.Greyscale:
       return difficulty.colorGrayscaled;
-    case ColorblindMode.None:
+    case ColorMode.None:
     default:
       return difficulty.color;
   }
 }
+
+export default {
+  getDifficulty,
+  getColor,
+};
