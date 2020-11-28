@@ -4,10 +4,9 @@ import ExpertPlus from "./ExpertPlus";
 import Hard from "./Hard";
 import Normal from "./Normal";
 import DifficultyData from "./DifficultyData";
+import { ColorblindMode } from "../DifficultyLabels";
 
-export default function getDifficulty(
-  difficulty: string
-): DifficultyData | undefined {
+export function getDifficulty(difficulty: string): DifficultyData | undefined {
   switch (difficulty.toLowerCase()) {
     case "easy":
     case "e":
@@ -26,5 +25,18 @@ export default function getDifficulty(
       return new ExpertPlus();
     default:
       return undefined;
+  }
+}
+
+export function getColor(
+  difficulty: DifficultyData,
+  colorMode: ColorblindMode
+): string {
+  switch (colorMode) {
+    case ColorblindMode.Greyscale:
+      return difficulty.colorGrayscaled;
+    case ColorblindMode.None:
+    default:
+      return difficulty.color;
   }
 }
