@@ -3,7 +3,7 @@
     <v-tooltip v-for="difficulty in difficulties" :key="difficulty.string" top>
       <template #activator="{ on }">
         <v-chip
-          :color="grayScaled ? difficulty.colorGrayscaled : difficulty.color"
+          :color="getColor(difficulty)"
           :small="small"
           :class="short ? 'ml-n3' : 'ma-1'"
           v-on="on"
@@ -20,10 +20,14 @@
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import DifficultyData from "@/libraries/app/difficulties/DifficultyData";
-import getDifficulty from "@/libraries/app/difficulties/Difficulty";
+import DifficultyInformation from "@/libraries/app/difficulties/DifficultyInformation";
+import {
+  getDifficulty,
+  getColor,
+} from "@/libraries/app/difficulties/Difficulty";
+import { DifficultiesSimple } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 import { get } from "vuex-pathify";
-import { ColorblindMode } from "@/libraries/app/DifficultyLabels";
+import { ColorMode } from "@/libraries/app/ColorMode";
 
 export default Vue.extend({
   name: "DifficultyIcons",
@@ -33,13 +37,11 @@ export default Vue.extend({
     short: { type: Boolean, default: false },
   },
   data: () => ({
-    difficulties: [] as DifficultyData,
-    grayScaled: Boolean,
+    difficulties: [] as DifficultyInformation[],
+    grayScaled: false as boolean,
   }),
   computed: {
-    colorBlindMode: get<ColorblindMode>(
-      "settings/accessibility@colorBlindMode"
-    ),
+    colorMode: get<ColorMode>("settings/accessibility@colorMode"),
   },
   watch: {
     diff: {
@@ -48,18 +50,29 @@ export default Vue.extend({
       },
       immediate: true,
     },
-    colorBlindMode(): void {
-      this.computeDifficulties();
-    },
   },
   methods: {
     computeDifficulties(): void {
       this.difficulties = Object.entries(this.diff)
-        .filter(([key]) => key !== undefined && this.diff[key]) // I'm really annoyed that the linter won't allow (v: [key, value]) => value because key isn't used >:|
-        .map(([key]) => getDifficulty(key))
-        .sort((a: DifficultyData, b: DifficultyData) => a.order - b.order);
-
-      this.grayScaled = this.colorBlindMode === ColorblindMode.Greyscale;
+        .filter(
+          (difficulty: [string | undefined, boolean]): boolean =>
+            difficulty[0] !== undefined && difficulty[1]
+        )
+        .map((key: [string, boolean]): DifficultyInformation | undefined =>
+          getDifficulty(key[0])
+        )
+        .filter(
+          (difficulty: DifficultyInformation | undefined): boolean =>
+            difficulty !== undefined
+        ) as DifficultyInformation[];
+      // Can't chain this because of stupid type-checking reasons
+      this.difficulties.sort(
+        (a: DifficultyInformation, b: DifficultyInformation) =>
+          a.order - b.order
+      );
+    },
+    getColor(difficulty: DifficultyInformation): string {
+      return getColor(difficulty, this.colorMode);
     },
   },
 });

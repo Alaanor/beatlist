@@ -1,6 +1,6 @@
-import DifficultyData from "./DifficultyData";
+import DifficultyInformation from "./DifficultyInformation";
 
-export default class Easy implements DifficultyData {
+export default class Easy implements DifficultyInformation {
   char = "E";
 
   string = "Easy";
