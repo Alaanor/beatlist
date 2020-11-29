@@ -1,4 +1,4 @@
-import { DateRange, IsIn, Range } from "@/libraries/common/Range";
+import { DateRange, IsIn, IsInDate, Range } from "@/libraries/common/Range";
 import { DifficultiesSimple } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 import { BeatmapsTableDataUnit } from "../BeatmapsTableDataUnit";
 import { BeatmapsTableHeader } from "../BeatmapsTableHeaders";
@@ -12,9 +12,13 @@ export function FilterText(value: string, query: string): boolean {
   return value.toLowerCase().includes(query.toLowerCase());
 }
 
-export function FilterDateRange(value: DateRange | undefined, query: Date) {
-  console.log(value, query);
-  return true;
+// TODO: Fix. Dates are being treated as a min. Should return maps made between jan 1 2017 to dec 31 2017 for eg '2017'
+export function FilterDateRange(value: Date | undefined, query: string) {
+  if (value) {
+    const range: DateRange = { min: new Date(query), max: new Date() };
+    return IsInDate(value, range);
+  }
+  return false;
 }
 
 export function FilterDifficulties(
@@ -94,23 +98,6 @@ export function filter(
         }
       );
     });
-
-    // if (queries.length > 0) {
-    //   console.log(queries);
-
-    //   return this.beatmapAsTableData.filter((beatmap: any) =>
-    //     queryableHeaders.some((header: BeatmapsTableHeader) => {
-    //       if (
-    //         queries.some((q: string) => header.queryPrefix.indexOf(q) >= 0)
-    //       ) {
-    //         if (header.globalquery(beatmap, queries)) {
-    //           return true;
-    //         }
-    //       }
-    //       return false;
-    //     })
-    //   );
-    // }
   }
 
   const queryableHeaders = headers.filter(
@@ -127,32 +114,6 @@ export function filter(
       return false;
     })
   );
-
-  // return this.beatmapAsTableData.filter((
-  //   map: any // for each beatmap in the list
-  // ) =>
-  //   this.headers.some((dataType: BeatmapsTableHeader) => {
-  //     // for each data type we can query through we test if it matches
-
-  //     const queries = query.split("@");
-
-  //     if (dataType.queryPrefix && dataType.globalquery) {
-  //       for (const prefix of dataType.queryPrefix) {
-  //         for (const query of queries) {
-  //           if (query.startsWith(prefix)) {
-  //             console.log(query);
-  //             return dataType.globalquery(
-  //               map,
-  //               query.replace(`${prefix}:`, "")
-  //             );
-  //           }
-  //         }
-  //       }
-  //     }
-
-  //     return false;
-  //   })
-  // );
 }
 
 export default {

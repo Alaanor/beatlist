@@ -309,8 +309,9 @@ export default Vue.extend({
           templateItemAccess: "uploaded",
           align: "center",
           sortable: true,
+          searchPrefix: ["up", "uploaded"],
           globalSearch: (value: any, query: string) =>
-            FilterDateRange(undefined, new Date(query)),
+            FilterDateRange(value.uploaded, query),
           sort: sortDateFromString,
           width: 150,
         },
@@ -321,6 +322,7 @@ export default Vue.extend({
           templateItemAccess: "key",
           align: "center",
           sortable: false,
+          searchPrefix: ["key"],
           globalSearch: (value: any, query: string) =>
             FilterText(value.key, query),
           sort: sortNumber,
@@ -334,6 +336,7 @@ export default Vue.extend({
           align: "center",
           sortable: false,
           filterType: BeatmapsTableFilterType.Text,
+          searchPrefix: ["hash"],
           globalSearch: (value: any, query: string) =>
             FilterText(value.hash, query),
           sort: sortNumber,
