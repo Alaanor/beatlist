@@ -46,17 +46,17 @@ export function filter(
         header.searchPrefix !== undefined
     );
 
-    const headerPairs: { prefix: string; header: BeatmapsTableHeader }[] = [];
+    const headerPairs: { [prefix: string]: BeatmapsTableHeader } = {};
 
     queryableHeaders.forEach((header: BeatmapsTableHeader) => {
       if (header && header.searchPrefix) {
         header.searchPrefix.forEach((prefix: string) => {
-          headerPairs.push({ prefix, header });
+          headerPairs[prefix] = header;
         });
       }
     });
 
-    const pairs: { header: string; query: string }[] = queries
+    const pairs: { header: BeatmapsTableHeader; query: string }[] = queries
       .filter((thisQuery: string) => {
         const split: string[] = thisQuery.split(":") as string[];
         return (
@@ -68,12 +68,32 @@ export function filter(
           header: thisQuery.split(":")[0],
           query: thisQuery.split(":")[1],
         };
+      })
+      .map((pair) => {
+        console.log(pair);
+        return {
+          header: headerPairs[pair.header],
+          query: pair.query,
+        };
       });
     console.log(pairs);
 
     console.log(queryableHeaders);
 
-    return beatmaps;
+    if (pairs.length <= 0) {
+      return beatmaps;
+    }
+
+    return beatmaps.filter((beatmap: any[]) => {
+      return pairs.some(
+        (value: { header: BeatmapsTableHeader; query: string }) => {
+          if (value.header && value.header.globalSearch) {
+            return value.header.globalSearch(beatmap, value.query);
+          }
+          return false;
+        }
+      );
+    });
 
     // if (queries.length > 0) {
     //   console.log(queries);
