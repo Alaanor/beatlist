@@ -222,7 +222,7 @@ export default Vue.extend({
           align: "left",
           sortable: true,
           searchPrefix: ["mapper"],
-          requiresPrefix: true,
+          requiresPrefix: false,
           globalSearch: (value: any, query: string) =>
             FilterText(value.mapper, query),
           sort: sortText,

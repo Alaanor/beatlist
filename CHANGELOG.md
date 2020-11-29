@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.0 (???)
+**Improvements:**
+ - Added new ways to search through saved beatmaps
+
 ## v1.2.2 (02/09/2020)
 **Improvement:**
  - Added a way to display in which playlist(s) a beatmap is the table (#40, #65)
