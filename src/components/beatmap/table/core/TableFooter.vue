@@ -80,7 +80,7 @@ import Vue, { PropType } from "vue";
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
 
 export default Vue.extend({
-  name: "BeatmapsTableFooter",
+  name: "TableFooter",
   components: { ConfirmDialog },
   filters: {
     withAll(item: number): string {

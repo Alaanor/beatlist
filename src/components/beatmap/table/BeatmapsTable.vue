@@ -16,7 +16,7 @@
     dense
   >
     <template #footer="{ props: { pagination } }">
-      <BeatmapsTableFooter
+      <TableFooter
         :items-per-page="itemsPerPage"
         :items-per-page-list="itemsPerPageList"
         :no-item-per-page-choice="noItemPerPageChoice"
@@ -58,14 +58,6 @@
           </v-btn>
         </Tooltip>
       </span>
-    </template>
-
-    <template v-if="!noFilter" #body.append>
-      <BeatmapsTableFilterRow
-        :headers="getHeaders()"
-        :filters-value="filtersValue"
-        :shift-left="selected !== undefined ? 1 : 0"
-      />
     </template>
 
     <template #progress>
@@ -111,6 +103,7 @@ import {
   FilterRange,
   FilterText,
   FilterDifficulties,
+  filter,
 } from "@/components/beatmap/table/core/filter/BeatmapsTableFilterFunction";
 import { DateRange, Range } from "@/libraries/common/Range";
 
@@ -123,16 +116,14 @@ import BeatmapsTableTemplateStrToDate from "@/components/beatmap/table/core/temp
 import BeatmapsTableTemplateDifficulties from "@/components/beatmap/table/core/template/BeatmapsTableTemplateDifficulties.vue";
 import BeatmapsTableTemplatePlaylists from "@/components/beatmap/table/core/template/BeatmapsTableTemplatePlaylists.vue";
 import BeatmapsTableTemplateRating from "@/components/beatmap/table/core/template/BeatmapsTableTemplateRating.vue";
-import BeatmapsTableColumnSelector from "@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue";
-import BeatmapsTableFooter from "@/components/beatmap/table/core/BeatmapsTableFooter.vue";
-import BeatmapsTableFilterRow from "@/components/beatmap/table/core/BeatmapsTableFilterRow.vue";
+import ColumnSelector from "@/components/beatmap/table/core/ColumnSelector.vue";
+import TableFooter from "@/components/beatmap/table/core/TableFooter.vue";
 
 export default Vue.extend({
   name: "BeatmapsTable",
   components: {
-    BeatmapsTableColumnSelector,
-    BeatmapsTableFooter,
-    BeatmapsTableFilterRow,
+    ColumnSelector,
+    TableFooter,
     BeatmapsTableTemplateCover,
     BeatmapsTableTemplateText,
     BeatmapsTableTemplateDifficulties,
@@ -192,7 +183,6 @@ export default Vue.extend({
           template: BeatmapsTableHeadersTemplate.Cover,
           align: "left",
           sortable: false,
-          filterable: false,
           width: 50,
         },
         {
@@ -202,9 +192,10 @@ export default Vue.extend({
           align: "left",
           sortable: true,
           filterable: true,
-          localFilter: (value: string) =>
-            FilterText(value, this.filtersValue.name),
-          globalSearch: (value: string) => FilterText(value, this.search),
+          searchPrefix: ["name", "song"],
+          requiresPrefix: false,
+          globalSearch: (value: any, query: string) =>
+            FilterText(value.name, query),
           filterType: BeatmapsTableFilterType.Text,
           sort: sortText,
           width: 225,
@@ -216,11 +207,10 @@ export default Vue.extend({
           templateItemAccess: "metadata.songAuthorName",
           align: "left",
           sortable: true,
-          filterable: true,
-          localFilter: (value: string) =>
-            FilterText(value, this.filtersValue.artist),
-          globalSearch: (value: string) => FilterText(value, this.search),
-          filterType: BeatmapsTableFilterType.Text,
+          searchPrefix: ["artist", "author", "auth"],
+          requiresPrefix: false,
+          globalSearch: (value: any, query: string) =>
+            FilterText(value.artist, query),
           sort: sortText,
           width: 125,
         },
@@ -231,11 +221,10 @@ export default Vue.extend({
           templateItemAccess: "metadata.levelAuthorName",
           align: "left",
           sortable: true,
-          filterable: true,
-          localFilter: (value: string) =>
-            FilterText(value, this.filtersValue.mapper),
-          globalSearch: (value: string) => FilterText(value, this.search),
-          filterType: BeatmapsTableFilterType.Text,
+          searchPrefix: ["mapper"],
+          requiresPrefix: true,
+          globalSearch: (value: any, query: string) =>
+            FilterText(value.mapper, query),
           sort: sortText,
           width: 125,
         },
@@ -246,10 +235,10 @@ export default Vue.extend({
           templateItemAccess: "metadata.difficulties",
           align: "left",
           sortable: false,
-          filterType: BeatmapsTableFilterType.Difficulties,
-          filterable: true,
-          localFilter: (value) =>
-            FilterDifficulties(value, this.filtersValue.difficulties),
+          searchPrefix: ["difficulties", "diff"],
+          requiresPrefix: true,
+          globalSearch: (value: any, query: string) =>
+            FilterDifficulties(value.difficulties, query.split("|")),
           width: 110,
         },
         {
@@ -258,7 +247,6 @@ export default Vue.extend({
           template: BeatmapsTableHeadersTemplate.Playlists,
           align: "left",
           sortable: false,
-          filterable: false,
           width: 110,
         },
         {
@@ -268,10 +256,9 @@ export default Vue.extend({
           templateItemAccess: "stats.downloads",
           align: "center",
           sortable: true,
-          filterable: true,
-          filterType: BeatmapsTableFilterType.RangeInt,
-          localFilter: (value: number) =>
-            FilterRange(value, this.filtersValue.dl),
+          searchPrefix: ["dl", "downloads"],
+          globalSearch: (value: any, query: number) =>
+            FilterRange(value.downloads, query),
           sort: sortNumber,
           width: 50,
         },
@@ -282,10 +269,6 @@ export default Vue.extend({
           templateItemAccess: "stats.plays",
           align: "center",
           sortable: true,
-          filterable: true,
-          filterType: BeatmapsTableFilterType.RangeInt,
-          localFilter: (value: number) =>
-            FilterRange(value, this.filtersValue.plays),
           sort: sortNumber,
           width: 50,
         },
@@ -296,10 +279,6 @@ export default Vue.extend({
           templateItemAccess: "stats.upVotes",
           align: "center",
           sortable: true,
-          filterable: true,
-          filterType: BeatmapsTableFilterType.RangeInt,
-          localFilter: (value: number) =>
-            FilterRange(value, this.filtersValue.upvotes),
           sort: sortNumber,
           width: 50,
         },
@@ -310,10 +289,6 @@ export default Vue.extend({
           templateItemAccess: "stats.downVotes",
           align: "center",
           sortable: true,
-          filterable: true,
-          filterType: BeatmapsTableFilterType.RangeInt,
-          localFilter: (value: number) =>
-            FilterRange(value, this.filtersValue.downvotes),
           sort: sortNumber,
           width: 50,
         },
@@ -324,10 +299,6 @@ export default Vue.extend({
           templateItemAccess: "stats.rating",
           align: "center",
           sortable: true,
-          filterable: true,
-          filterType: BeatmapsTableFilterType.RangeInt,
-          localFilter: (value: number) =>
-            FilterRange(value, this.filtersValue.rating),
           sort: sortNumber,
           width: 50,
         },
@@ -338,10 +309,8 @@ export default Vue.extend({
           templateItemAccess: "uploaded",
           align: "center",
           sortable: true,
-          filterable: true,
-          filterType: BeatmapsTableFilterType.Date,
-          localFilter: (value: string) =>
-            FilterDateRange(new Date(value), this.filtersValue.uploaded),
+          globalSearch: (value: any, query: string) =>
+            FilterDateRange(undefined, new Date(query)),
           sort: sortDateFromString,
           width: 150,
         },
@@ -352,11 +321,8 @@ export default Vue.extend({
           templateItemAccess: "key",
           align: "center",
           sortable: false,
-          filterable: true,
-          filterType: BeatmapsTableFilterType.Text,
-          localFilter: (value: string) =>
-            FilterText(value, this.filtersValue.key),
-          globalSearch: (value: string) => FilterText(value, this.search),
+          globalSearch: (value: any, query: string) =>
+            FilterText(value.key, query),
           sort: sortNumber,
           width: 50,
         },
@@ -367,11 +333,9 @@ export default Vue.extend({
           templateItemAccess: "hash",
           align: "center",
           sortable: false,
-          filterable: true,
           filterType: BeatmapsTableFilterType.Text,
-          globalSearch: (value: string) => FilterText(value, this.search),
-          localFilter: (value: string) =>
-            FilterText(value, this.filtersValue.hash),
+          globalSearch: (value: any, query: string) =>
+            FilterText(value.hash, query),
           sort: sortNumber,
           width: 300,
         },
@@ -403,15 +367,11 @@ export default Vue.extend({
       }));
     },
     beatmapAsTableDataFiltered(): { raw: BeatmapsTableDataUnit }[] {
-      if (this.noFilter) {
+      if (!this.search) {
         return this.beatmapAsTableData;
       }
 
-      if (this.search) {
-        return this.filterWithSearch();
-      }
-
-      return this.filterWithFilters();
+      return this.filterWithSearch();
     },
   },
   watch: {
@@ -461,39 +421,8 @@ export default Vue.extend({
         );
       }
     },
-    filterWithSearch() {
-      return this.beatmapAsTableData.filter((entry: any) =>
-        this.headers.some((header: BeatmapsTableHeader) => {
-          if (!header.filterable) {
-            return false;
-          }
-
-          const value = entry[header.value];
-
-          if (this.search && header.globalSearch) {
-            return header.globalSearch(value);
-          }
-
-          return false;
-        })
-      );
-    },
-    filterWithFilters() {
-      return this.beatmapAsTableData.filter((entry: any) =>
-        this.headers.every((header: BeatmapsTableHeader) => {
-          if (!header.filterable) {
-            return true;
-          }
-
-          const value = entry[header.value];
-
-          if (value && header.localFilter) {
-            return header.localFilter(value);
-          }
-
-          return true;
-        })
-      );
+    filterWithSearch(): { raw: BeatmapsTableDataUnit }[] {
+      return filter(this.search, this.headers, this.beatmapAsTableData);
     },
   },
 });

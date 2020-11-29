@@ -22,7 +22,7 @@
 import Vue, { PropType } from "vue";
 
 export default Vue.extend({
-  name: "BeatmapsTableColumnSelector",
+  name: "ColumnSelector",
   props: {
     value: { type: Array as PropType<string[]>, required: true },
   },

@@ -7,6 +7,7 @@
     hide-details
     append-icon="search"
     clearable
+    :placeholder="placeholder"
     @input="$emit('input', $event || '')"
     @click:clear="$emit('input', '')"
   />
@@ -16,9 +17,10 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "BeatmapsTableSearchInput",
+  name: "SearchBox",
   props: {
     value: { type: String, required: true },
+    placeholder: { type: String, required: false, default: "Search" },
   },
 });
 </script>

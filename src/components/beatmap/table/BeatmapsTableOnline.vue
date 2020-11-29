@@ -39,7 +39,7 @@
         />
       </v-col>
     </v-row>
-    <BeatmapsTableColumnSelector v-model="shownColumn" />
+    <ColumnSelector v-model="shownColumn" />
     <v-card>
       <BeatmapsTable
         :items="beatmaps"
@@ -71,7 +71,7 @@
 import Vue from "vue";
 import { sync } from "vuex-pathify";
 import BeatmapsTable from "@/components/beatmap/table/BeatmapsTable.vue";
-import BeatmapsTableColumnSelector from "@/components/beatmap/table/core/BeatmapsTableColumnSelector.vue";
+import ColumnSelector from "@/components/beatmap/table/core/ColumnSelector.vue";
 import Tooltip from "@/components/helper/Tooltip.vue";
 import BeatsaverAPI, {
   BeatSaverAPIResponse,
@@ -92,7 +92,7 @@ import route from "@/plugins/route/route";
 export default Vue.extend({
   name: "BeatmapTableLocal",
   components: {
-    BeatmapsTableColumnSelector,
+    ColumnSelector,
     BeatmapsTable,
     Tooltip,
     BeatmapDownloadButton,

@@ -23,12 +23,11 @@ export interface BeatmapsTableHeader {
   width?: number;
 
   sortable?: boolean;
-  filterable?: boolean;
+  searchPrefix?: [string];
+  requiresPrefix?: boolean;
 
   sort?: (a: any, b: any) => number;
-  localFilter?: (value: any) => boolean;
-  globalSearch?: (value: string) => boolean;
-  filterType?: BeatmapsTableFilterType;
+  globalSearch?: (value: any, query: string) => boolean; // value is the beatmap's value of the data type
 
   template: BeatmapsTableHeadersTemplate;
   templateItemAccess?: string;
