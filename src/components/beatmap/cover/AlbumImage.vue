@@ -42,7 +42,7 @@ import { Beatmap } from "@/libraries/beatmap/Beatmap";
 import AlbumLoader from "@/components/beatmap/cover/AlbumLoader.vue";
 
 export default Vue.extend({
-  name: "AlbumLoaderAvatar",
+  name: "AlbumImage",
   components: { AlbumLoader },
   props: {
     beatmap: {
