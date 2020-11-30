@@ -99,7 +99,6 @@ import {
   sortText,
 } from "@/components/beatmap/table/core/function/BeatmapsTableSortFunctions";
 import {
-  FilterDateRange,
   FilterRange,
   FilterText,
   FilterDifficulties,
@@ -257,8 +256,8 @@ export default Vue.extend({
           align: "center",
           sortable: true,
           searchPrefix: ["dl", "downloads"],
-          globalSearch: (value: any, query: number) =>
-            FilterRange(value.downloads, query),
+          globalSearch: (value: any, query: string) =>
+            FilterRange(value.dl, query),
           sort: sortNumber,
           width: 50,
         },
@@ -269,6 +268,9 @@ export default Vue.extend({
           templateItemAccess: "stats.plays",
           align: "center",
           sortable: true,
+          searchPrefix: ["plays"],
+          globalSearch: (value: any, query: string) =>
+            FilterRange(value.plays, query),
           sort: sortNumber,
           width: 50,
         },
@@ -279,6 +281,9 @@ export default Vue.extend({
           templateItemAccess: "stats.upVotes",
           align: "center",
           sortable: true,
+          searchPrefix: ["up", "upvotes"],
+          globalSearch: (value: any, query: string) =>
+            FilterRange(value.upvotes, query),
           sort: sortNumber,
           width: 50,
         },
@@ -289,6 +294,9 @@ export default Vue.extend({
           templateItemAccess: "stats.downVotes",
           align: "center",
           sortable: true,
+          searchPrefix: ["down", "downvotes"],
+          globalSearch: (value: any, query: string) =>
+            FilterRange(value.downvotes, query),
           sort: sortNumber,
           width: 50,
         },
@@ -299,6 +307,9 @@ export default Vue.extend({
           templateItemAccess: "stats.rating",
           align: "center",
           sortable: true,
+          searchPrefix: ["rating"],
+          globalSearch: (value: any, query: string) =>
+            FilterRange(value.rating * 100, query),
           sort: sortNumber,
           width: 50,
         },
@@ -309,9 +320,9 @@ export default Vue.extend({
           templateItemAccess: "uploaded",
           align: "center",
           sortable: true,
-          searchPrefix: ["up", "uploaded"],
-          globalSearch: (value: any, query: string) =>
-            FilterDateRange(value.uploaded, query),
+          // searchPrefix: ["uploaded"],
+          // globalSearch: (value: any, query: string) =>
+          //   FilterDateRange(value.uploaded, query),
           sort: sortDateFromString,
           width: 150,
         },

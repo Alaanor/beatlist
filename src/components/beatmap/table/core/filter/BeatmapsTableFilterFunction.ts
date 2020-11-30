@@ -1,11 +1,33 @@
-import { DateRange, IsIn, IsInDate, Range } from "@/libraries/common/Range";
 import { DifficultiesSimple } from "@/libraries/net/beatsaver/BeatsaverBeatmap";
 import { BeatmapsTableDataUnit } from "../BeatmapsTableDataUnit";
 import { BeatmapsTableHeader } from "../BeatmapsTableHeaders";
 
-export function FilterRange(value: Range, query: number) {
-  console.log(value, query);
-  return IsIn(query, value);
+// This function recalculates the min/max from the string each iteration. Couldn't be bothered to change.
+// Maybe fix in next update.
+export function FilterRange(value: number, query: string) {
+  let min: number = Number.MIN_SAFE_INTEGER;
+  let max: number = Number.MAX_SAFE_INTEGER;
+  const split: string[] = query.replace("[.,]", "").split("-");
+  if (!value || !query) {
+    return false;
+  }
+
+  if (split.length === 1) {
+    console.log(query, value);
+    return value === parseInt(query, 10);
+  }
+  if (split.length !== 2) {
+    return false;
+  }
+
+  if (split[0] !== "") {
+    min = parseInt(split[0], 10);
+  }
+  if (split[1] !== "") {
+    max = parseInt(split[1], 10);
+  }
+  console.log(min, max);
+  return value >= min && value <= max;
 }
 
 export function FilterText(value: string, query: string): boolean {
@@ -14,11 +36,44 @@ export function FilterText(value: string, query: string): boolean {
 
 // TODO: Fix. Dates are being treated as a min. Should return maps made between jan 1 2017 to dec 31 2017 for eg '2017'
 export function FilterDateRange(value: Date | undefined, query: string) {
-  if (value) {
-    const range: DateRange = { min: new Date(query), max: new Date() };
-    return IsInDate(value, range);
+  if (!value || !query) {
+    return false;
   }
-  return false;
+
+  console.log(new Date().getMonth(), query);
+
+  let year: number | undefined;
+  let month: number | undefined;
+  let day: number | undefined;
+
+  const split: string[] = query.split(new RegExp("[- ]"));
+
+  split.forEach((s: string) => {
+    const number = parseInt(s, 10);
+    if (s.length === 4) {
+      year = number;
+    } else if (s.length === 2) {
+      if (!month && number <= 12) {
+        month = number;
+      } else if (day && number <= 31) {
+        day = number;
+      }
+    }
+  });
+
+  if (year && value.getFullYear() !== year) {
+    return false;
+  }
+
+  if (month && value.getMonth() !== month) {
+    return false;
+  }
+
+  if (day && value.getDay() !== day) {
+    return false;
+  }
+  console.log(split);
+  return true;
 }
 
 export function FilterDifficulties(
@@ -92,6 +147,7 @@ export function filter(
       return pairs.some(
         (value: { header: BeatmapsTableHeader; query: string }) => {
           if (value.header && value.header.globalSearch) {
+            console.log(beatmap);
             return value.header.globalSearch(beatmap, value.query);
           }
           return false;

@@ -4,6 +4,23 @@
       Saved Beatmaps
     </p>
     <BeatmapsTableLocal />
+    <p>
+      Search tips:
+    </p>
+    <ul>
+      <li>@name:Shake it off</li>
+      <li>@artist:Taylor Swift</li>
+      <li>@mapper:Leviathan</li>
+      <li>@diff:easy|expertPlus</li>
+      <li>@dl:200-</li>
+      <li>@plays:-4</li>
+      <li>@up:100-125</li>
+      <li>@down:150-</li>
+      <li>@rating:24-25</li>
+      <li>@uploaded:2020</li>
+      <li>@key:li96</li>
+      <li>@hash:25ef</li>
+    </ul>
   </v-container>
 </template>
 
