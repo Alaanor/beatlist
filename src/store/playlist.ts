@@ -21,7 +21,9 @@ const mutations = {
     context: PlaylistStoreState,
     payload: { playlist: PlaylistLocal }
   ) {
-    context.playlists.push(payload.playlist);
+    const copy = { ...payload.playlist };
+    copy.cover = null;
+    context.playlists.push(copy);
   },
   removePlaylist(
     context: PlaylistStoreState,
@@ -38,7 +40,10 @@ const mutations = {
     const index = context.playlists.findIndex(
       (item) => item.path === payload.from.path
     );
-    context.playlists[index] = payload.to;
+
+    const copyTo = { ...payload.to };
+    copyTo.cover = null;
+    context.playlists[index] = copyTo;
   },
 };
 

@@ -139,6 +139,7 @@ import Base64SrcLoader from "@/libraries/os/utils/Base64SrcLoader";
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
 import PlaylistOperation from "@/libraries/playlist/PlaylistOperation";
 import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
+import PlaylistLoader from "@/libraries/playlist/loader/PlaylistLoader";
 
 export default Vue.extend({
   name: "PlaylistEditorDetails",
@@ -182,9 +183,14 @@ export default Vue.extend({
   methods: {
     async LoadCover() {
       this.imageChanged = false;
+      let { cover } = this.playlist;
 
-      if (this.playlist.cover) {
-        this.imageData = Base64SrcLoader.FromBuffer(this.playlist.cover, "png");
+      if (!cover && this.playlist.path) {
+        cover = await PlaylistLoader.LoadCover(this.playlist.path);
+      }
+
+      if (cover) {
+        this.imageData = Base64SrcLoader.FromBuffer(cover, "png");
       } else {
         this.imageData = "";
       }
