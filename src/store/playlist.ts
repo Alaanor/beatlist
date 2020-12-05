@@ -15,15 +15,22 @@ const getters = {
   ...make.getters(state),
 };
 
+function emptyCoverCopy(playlist: PlaylistLocal): PlaylistLocal {
+  const copy = { ...playlist };
+  copy.cover = null;
+  return copy;
+}
+
 const mutations = {
   ...make.mutations(state),
+  SET_PLAYLISTS(context: PlaylistStoreState, playlists: PlaylistLocal[]) {
+    context.playlists = (playlists ?? []).map((p) => emptyCoverCopy(p));
+  },
   addPlaylist(
     context: PlaylistStoreState,
     payload: { playlist: PlaylistLocal }
   ) {
-    const copy = { ...payload.playlist };
-    copy.cover = null;
-    context.playlists.push(copy);
+    context.playlists.push(emptyCoverCopy(payload.playlist));
   },
   removePlaylist(
     context: PlaylistStoreState,
@@ -40,10 +47,7 @@ const mutations = {
     const index = context.playlists.findIndex(
       (item) => item.path === payload.from.path
     );
-
-    const copyTo = { ...payload.to };
-    copyTo.cover = null;
-    context.playlists[index] = copyTo;
+    context.playlists[index] = emptyCoverCopy(payload.to);
   },
 };
 

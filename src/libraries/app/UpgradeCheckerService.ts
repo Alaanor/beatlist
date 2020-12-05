@@ -2,6 +2,7 @@ import { remote } from "electron";
 import semver from "semver";
 import localforage from "localforage";
 import store from "@/plugins/store";
+import MigrateTo123 from "@/libraries/app/migration/MigrationVersion1.2.3";
 
 export default class UpgradeCheckerService {
   public static async Initialize() {
@@ -22,8 +23,18 @@ export default class UpgradeCheckerService {
     }
 
     if (isNewVersion) {
+      if (previousVersion !== undefined) {
+        UpgradeCheckerService.UpgradeFor(previousVersion);
+      }
+
       store.commit("modal/SET_NEW_VERSION_MODAL", true);
       store.commit("settings/SET_APP_VERSION", currentVersion);
+    }
+  }
+
+  private static UpgradeFor(previousVersion: string) {
+    if (semver.gt("1.2.3", previousVersion)) {
+      MigrateTo123();
     }
   }
 
