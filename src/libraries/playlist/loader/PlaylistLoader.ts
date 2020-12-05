@@ -89,6 +89,10 @@ export default class PlaylistLoader {
     await serializer.serialize(playlist);
   }
 
+  public static LoadCover(playlistPath: string): Promise<Buffer | null> {
+    return this.GetPlaylistBase(playlistPath).then((p) => p.cover);
+  }
+
   private static async GetPlaylistBase(
     filepath: string,
     progress?: Progress

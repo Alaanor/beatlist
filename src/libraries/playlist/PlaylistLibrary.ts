@@ -35,6 +35,11 @@ export default class PlaylistLibrary {
   }
 
   public static UpdateAllPlaylist(playlists: PlaylistLocal[]) {
+    playlists = playlists.map((playlist) => {
+      const copy = { ...playlist };
+      copy.cover = null;
+      return copy;
+    });
     store.commit("playlist/SET_LAST_SCAN", new Date());
     store.commit("playlist/SET_PLAYLISTS", playlists);
   }
