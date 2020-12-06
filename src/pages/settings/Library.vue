@@ -35,19 +35,19 @@
 
         <v-col class="d-flex justify-center align-start flex-column py-0">
           <span>
-            <strong>{{ beatmapsCountValid }}</strong>
-            {{ beatmapsCountValid === 1 ? "beatmap" : "beatmaps" }}
+            <strong>{{ beatmapsCountValid() }}</strong>
+            {{ beatmapsCountValid() === 1 ? "beatmap" : "beatmaps" }}
             loaded.
           </span>
           <span>
-            <strong>{{ playlistsCountValid }}</strong>
-            {{ playlistsCountValid === 1 ? "playlist is" : "playlists" }}
+            <strong>{{ playlistsCountValid() }}</strong>
+            {{ playlistsCountValid() === 1 ? "playlist is" : "playlists" }}
             loaded.
           </span>
           <span>
-            <strong>{{ beatsaverBeatmapCountValid }}</strong>
+            <strong>{{ beatsaverBeatmapCountValid() }}</strong>
             {{
-              beatsaverBeatmapCountValid === 1 ? "beatmap is" : "beatmaps are"
+              beatsaverBeatmapCountValid() === 1 ? "beatmap is" : "beatmaps are"
             }}
             cached.
             <Tooltip
@@ -60,11 +60,11 @@
           <span class="py-1" />
 
           <span
-            v-if="beatmapsCountInvalid > 0"
+            v-if="beatmapsCountInvalid() > 0"
             class="grey--text d-flex align-center"
           >
-            <strong class="pr-1">{{ beatmapsCountInvalid }}</strong>
-            {{ beatmapsCountValid > 1 ? "beatmaps are" : "beatmap is" }}
+            <strong class="pr-1">{{ beatmapsCountInvalid() }}</strong>
+            {{ beatmapsCountValid() > 1 ? "beatmaps are" : "beatmap is" }}
             invalid.
             <v-btn
               icon
@@ -77,11 +77,11 @@
           </span>
 
           <span
-            v-if="playlistsCountInvalid > 0"
+            v-if="playlistsCountInvalid() > 0"
             class="grey--text d-flex align-center"
           >
-            <strong class="pr-1">{{ playlistsCountInvalid }}</strong>
-            {{ playlistsCountInvalid > 1 ? "playlists are" : "playlist is" }}
+            <strong class="pr-1">{{ playlistsCountInvalid() }}</strong>
+            {{ playlistsCountInvalid() > 1 ? "playlists are" : "playlist is" }}
             invalid.
             <v-btn
               icon
@@ -94,12 +94,12 @@
           </span>
 
           <span
-            v-if="playlistsMapsCountInvalid > 0"
+            v-if="playlistsMapsCountInvalid() > 0"
             class="grey--text d-flex align-center"
           >
-            <strong class="pr-1">{{ playlistsMapsCountInvalid }}</strong>
+            <strong class="pr-1">{{ playlistsMapsCountInvalid() }}</strong>
             {{
-              playlistsMapsCountInvalid > 1
+              playlistsMapsCountInvalid() > 1
                 ? "beatmaps inside some playlists are"
                 : "beatmap inside a playlist is"
             }}
@@ -115,12 +115,12 @@
           </span>
 
           <span
-            v-if="beatsaverBeatmapCountInvalid > 0"
+            v-if="beatsaverBeatmapCountInvalid() > 0"
             class="grey--text d-flex align-center"
           >
-            <strong class="pr-1">{{ beatsaverBeatmapCountInvalid }}</strong>
+            <strong class="pr-1">{{ beatsaverBeatmapCountInvalid() }}</strong>
             {{
-              beatsaverBeatmapCountInvalid > 1
+              beatsaverBeatmapCountInvalid() > 1
                 ? "beatsaver cached beatmaps are"
                 : "beatsaver cached beatmap is"
             }}
@@ -135,8 +135,8 @@
             </v-btn>
           </span>
 
-          <span v-if="lastScan" class="grey--text">
-            Last scan done the <strong>{{ lastScan }}</strong>
+          <span v-if="lastScan()" class="grey--text">
+            Last scan done the <strong>{{ lastScan() }}</strong>
           </span>
         </v-col>
       </v-row>
@@ -198,18 +198,6 @@ export default Vue.extend({
   computed: {
     installationPathValid: get("settings/installationPathValid"),
     rateLimitResetDate: get<Date | undefined>("appState/beatsaverRateLimit"),
-    beatmapsCountValid: () => BeatmapLibrary.GetAllValidMap().length,
-    beatmapsCountInvalid: () => BeatmapLibrary.GetAllInvalidMap().length,
-    playlistsCountValid: () => PlaylistLibrary.GetAllValidPlaylists().length,
-    playlistsCountInvalid: () =>
-      PlaylistLibrary.GetAllInvalidPlaylists().length,
-    playlistsMapsCountInvalid: () =>
-      PlaylistMapsLibrary.GetAllInvalidMapFlatten().length,
-    beatsaverBeatmapCountValid: () => BeatsaverCachedLibrary.GetAllValid().size,
-    beatsaverBeatmapCountInvalid: () =>
-      BeatsaverCachedLibrary.GetAllInvalid().size,
-    lastScan: () =>
-      BeatmapLibrary.GetLastScanDate()?.toLocaleString() ?? undefined,
   },
   mounted(): void {
     ScannerService.onScanningStateUpdate(this.onScanningStateUpdate);
@@ -222,6 +210,30 @@ export default Vue.extend({
     ScannerService.offScanningStateUpdate(this.onScanningStateUpdate);
   },
   methods: {
+    beatmapsCountValid() {
+      return BeatmapLibrary.GetAllValidMap().length;
+    },
+    beatmapsCountInvalid() {
+      return BeatmapLibrary.GetAllInvalidMap().length;
+    },
+    playlistsCountValid() {
+      return PlaylistLibrary.GetAllValidPlaylists().length;
+    },
+    playlistsCountInvalid() {
+      return PlaylistLibrary.GetAllInvalidPlaylists().length;
+    },
+    playlistsMapsCountInvalid() {
+      return PlaylistMapsLibrary.GetAllInvalidMapFlatten().length;
+    },
+    beatsaverBeatmapCountValid() {
+      return BeatsaverCachedLibrary.GetAllValid().size;
+    },
+    beatsaverBeatmapCountInvalid() {
+      return BeatsaverCachedLibrary.GetAllInvalid().size;
+    },
+    lastScan() {
+      return BeatmapLibrary.GetLastScanDate()?.toLocaleString() ?? undefined;
+    },
     onScanningStateUpdate() {
       this.isScanning = ScannerService.isScanning;
     },
@@ -252,10 +264,10 @@ export default Vue.extend({
       return (
         this.isScanning ||
         !this.installationPathValid ||
-        (this.beatmapsCountValid === 0 &&
-          this.playlistsCountValid === 0 &&
-          this.beatmapsCountInvalid === 0 &&
-          this.playlistsCountInvalid === 0)
+        (this.beatmapsCountValid() === 0 &&
+          this.playlistsCountValid() === 0 &&
+          this.beatmapsCountInvalid() === 0 &&
+          this.playlistsCountInvalid() === 0)
       );
     },
   },

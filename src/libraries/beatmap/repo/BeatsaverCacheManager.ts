@@ -19,7 +19,6 @@ export default class BeatsaverCacheManager {
   ): Promise<BeatsaverItem> {
     const existingBeatmap = BeatsaverCachedLibrary.Get(key);
 
-    console.log(existingBeatmap);
     if (existingBeatmap !== undefined) {
       if (existingBeatmap.beatmap) {
         return existingBeatmap;
@@ -47,7 +46,6 @@ export default class BeatsaverCacheManager {
       }
     }
 
-    console.log("passed :)");
     const beatsaverItem = await BeatsaverCacheManager.getOnlineData(key);
 
     if (beatsaverItem.beatmap) {
