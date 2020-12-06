@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    :disabled="isScanning || installationPath === ''"
+    :disabled="isScanning || installationPath === '' || isRateLimited"
     :loading="isScanning"
     :color="color"
     :small="small"
@@ -29,12 +29,17 @@ export default Vue.extend({
   },
   data: () => ({
     isScanning: false,
+    isRateLimited: false,
   }),
   computed: {
     installationPath: get<string>("settings/installationPath"),
+    rateLimitResetDate: get<Date | undefined>("appState/beatsaverRateLimit"),
   },
   mounted(): void {
     ScannerService.onScanningStateUpdate(this.onScanningStateUpdate);
+    setInterval(() => {
+      this.isRateLimited = this.IsRateLimited();
+    }, 1000);
   },
   beforeDestroy(): void {
     ScannerService.offScanningStateUpdate(this.onScanningStateUpdate);
@@ -47,6 +52,10 @@ export default Vue.extend({
       ScannerService.ScanAll();
       ScannerService.requestDialogToBeOpened();
       NotificationServiceScanner.notifyOnNextScan();
+    },
+    IsRateLimited() {
+      if (this.rateLimitResetDate === undefined) return false;
+      return this.rateLimitResetDate > new Date();
     },
   },
 });

@@ -4,13 +4,18 @@
       Library
     </p>
     <v-container>
+      <p v-if="isRateLimited" class="warning--text">
+        Currently rate-limited, reset in
+        {{ rateLimitResetInSecond }}
+        seconds.
+      </p>
       <v-row>
         <v-col
           cols="auto"
           class="d-flex align-center justify-center flex-column py-0"
         >
           <v-btn
-            :disabled="isScanning || !installationPathValid"
+            :disabled="isScanning || !installationPathValid || isRateLimited"
             :loading="isScanning"
             color="success"
             class="my-2"
@@ -187,9 +192,12 @@ export default Vue.extend({
     invalidPlaylistsMapsDialog: false,
     invalidBeatsaverBeatmapDialog: false,
     isScanning: false,
+    isRateLimited: false,
+    rateLimitResetInSecond: 0,
   }),
   computed: {
     installationPathValid: get("settings/installationPathValid"),
+    rateLimitResetDate: get<Date | undefined>("appState/beatsaverRateLimit"),
     beatmapsCountValid: () => BeatmapLibrary.GetAllValidMap().length,
     beatmapsCountInvalid: () => BeatmapLibrary.GetAllInvalidMap().length,
     playlistsCountValid: () => PlaylistLibrary.GetAllValidPlaylists().length,
@@ -205,6 +213,10 @@ export default Vue.extend({
   },
   mounted(): void {
     ScannerService.onScanningStateUpdate(this.onScanningStateUpdate);
+    setInterval(() => {
+      this.isRateLimited = this.IsRateLimited();
+      this.rateLimitResetInSecond = this.RateLimitResetIn();
+    }, 1000);
   },
   beforeDestroy(): void {
     ScannerService.offScanningStateUpdate(this.onScanningStateUpdate);
@@ -212,6 +224,16 @@ export default Vue.extend({
   methods: {
     onScanningStateUpdate() {
       this.isScanning = ScannerService.isScanning;
+    },
+    IsRateLimited() {
+      if (this.rateLimitResetDate === undefined) return false;
+      return this.rateLimitResetDate > new Date();
+    },
+    RateLimitResetIn() {
+      if (this.rateLimitResetDate === undefined) return 0;
+      return Math.ceil(
+        (this.rateLimitResetDate.getTime() - new Date().getTime()) / 1000
+      );
     },
     scan() {
       ScannerService.ScanAll();
