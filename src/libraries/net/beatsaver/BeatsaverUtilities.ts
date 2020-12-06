@@ -34,7 +34,9 @@ export default class BeatsaverUtilities {
         return `Server is currently not available. [${response.statusCode}] ${response.statusMessage}`;
       case BeatSaverAPIResponseStatus.RateLimited:
         // eslint-disable-next-line no-case-declarations
-        const rateLimitState = `${response.remaining}/${response.total ?? "-"}`;
+        const rateLimitState = response.total
+          ? `${response.remaining}/${response.total}`
+          : "0 remaining, request skipped";
         return `We got rate-limited: ${rateLimitState} - reset at ${response.resetAt?.toLocaleString()}`;
       case BeatSaverAPIResponseStatus.ResourceFound:
       default:

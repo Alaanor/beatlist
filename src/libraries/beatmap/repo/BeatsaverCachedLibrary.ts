@@ -82,6 +82,10 @@ export default class BeatsaverCachedLibrary {
     store.commit("beatmap/clearBeatsaverCache");
   }
 
+  public static RemoveInvalid(key: BeatsaverKey) {
+    store.commit("beatmap/removeBeatsaverCachedInvalid", { key });
+  }
+
   private static GetKeyToHashIndex(): Map<string, string> {
     return store.getters["beatmap/beatsaverKeyToHashIndex"];
   }

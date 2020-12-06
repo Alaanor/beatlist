@@ -19,6 +19,7 @@ export default class BeatsaverCacheManager {
   ): Promise<BeatsaverItem> {
     const existingBeatmap = BeatsaverCachedLibrary.Get(key);
 
+    console.log(existingBeatmap);
     if (existingBeatmap !== undefined) {
       if (existingBeatmap.beatmap) {
         return existingBeatmap;
@@ -28,11 +29,25 @@ export default class BeatsaverCacheManager {
       const diffInMs = new Date().getTime() - existingBeatmap.date.getTime();
       const isOlderThan10Day = diffInMs / OneDayInMs > 10;
 
-      if (!isOlderThan10Day) {
+      if (
+        !isOlderThan10Day &&
+        existingBeatmap.loadState.errorType !==
+          BeatsaverItemLoadError.BeatsaverRateLimited
+      ) {
         return existingBeatmap;
+      }
+
+      if (
+        existingBeatmap.loadState.errorType ===
+        BeatsaverItemLoadError.BeatsaverRateLimited
+      ) {
+        BeatsaverCachedLibrary.RemoveInvalid(
+          existingBeatmap.loadState.attemptedSource
+        );
       }
     }
 
+    console.log("passed :)");
     const beatsaverItem = await BeatsaverCacheManager.getOnlineData(key);
 
     if (beatsaverItem.beatmap) {

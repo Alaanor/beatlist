@@ -58,6 +58,12 @@ const mutations = {
   ) {
     context.beatsaverFailCached.set(toStrKey(payload.key), payload.item);
   },
+  removeBeatsaverCachedInvalid(
+    context: BeatmapStoreState,
+    payload: { key: BeatsaverKey }
+  ) {
+    context.beatsaverFailCached.delete(toStrKey(payload.key));
+  },
   clearBeatsaverCache(context: BeatmapStoreState) {
     context.beatsaverCached = new Map<string, BeatsaverItemValid>();
     context.beatsaverFailCached = new Map<string, BeatsaverItemInvalid>();
