@@ -22,7 +22,8 @@ export type BeatSaverAPIResponse<T> =
   | BeatSaverAPIResponseDataFound<T>
   | BeatSaverAPIResponseDataInvalid
   | BeatSaverAPIResponseDataRateLimited
-  | BeatSaverAPIResponseDataInexistent;
+  | BeatSaverAPIResponseDataInexistent
+  | BeatSaverAPIResponseDataTimeout;
 
 export interface BeatSaverAPIResponseDataFound<T> {
   status: BeatSaverAPIResponseStatus.ResourceFound;
@@ -49,12 +50,17 @@ export interface BeatSaverAPIResponseDataInexistent {
   statusMessage: string;
 }
 
+export interface BeatSaverAPIResponseDataTimeout {
+  status: BeatSaverAPIResponseStatus.Timeout;
+}
+
 export enum BeatSaverAPIResponseStatus {
   ResourceFound = 0, // 200
   ResourceNotFound = 1, // 404
   ResourceFoundButInvalidData = 2, // 200 but data is not what we expected
   ServerNotAvailable = 3, // the rest
   RateLimited = 4, // rate-limit-remaining headers is at 0
+  Timeout = 5, // timeout
 }
 
 export default class BeatsaverAPI {
@@ -168,6 +174,10 @@ export default class BeatsaverAPI {
       return BeatsaverAPI.handleRateLimitedCase<T>(error);
     }
 
+    if (error.code === "ECONNABORTED") {
+      return BeatsaverAPI.handleTimeoutCase<T>();
+    }
+
     return {
       status:
         error.response?.status === 404
@@ -195,6 +205,12 @@ export default class BeatsaverAPI {
       remaining: remainingHeader,
       resetAt: resetHeader,
       total: totalHeader,
+    } as BeatSaverAPIResponse<T>;
+  }
+
+  private static handleTimeoutCase<T>() {
+    return {
+      status: BeatSaverAPIResponseStatus.Timeout,
     } as BeatSaverAPIResponse<T>;
   }
 

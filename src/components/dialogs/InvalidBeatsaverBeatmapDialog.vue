@@ -66,6 +66,8 @@ export default Vue.extend({
           return "Unexpected answer gotten from beatsaver";
         case BeatsaverItemLoadError.BeatsaverRateLimited:
           return "Got rate limited by the beatsaver's server";
+        case BeatsaverItemLoadError.RequestTimeout:
+          return "The request got a timeout";
         case BeatsaverItemLoadError.Unknown:
         default:
           return "Unknown error";
