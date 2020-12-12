@@ -2,6 +2,8 @@ import ScannerService from "@/libraries/scanner/ScannerService";
 import BeatsaverRateLimitManager from "@/libraries/net/beatsaver/BeatsaverRateLimitManager";
 import BeatsaverCachedLibrary from "@/libraries/beatmap/repo/BeatsaverCachedLibrary";
 import { BeatsaverItemLoadError } from "@/libraries/beatmap/repo/BeatsaverItem";
+import BeatmapLibrary from "@/libraries/beatmap/BeatmapLibrary";
+import PlaylistLibrary from "@/libraries/playlist/PlaylistLibrary";
 
 export default class AutoContinueAfterRateLimitedScan {
   public static register(): void {
@@ -26,6 +28,13 @@ export default class AutoContinueAfterRateLimitedScan {
         // another scan automatically after the reset
         const remainingSeconds = BeatsaverRateLimitManager.GetRemainingSeconds();
         setTimeout(() => {
+          if (
+            BeatmapLibrary.GetAllMaps().length === 0 &&
+            PlaylistLibrary.GetAllPlaylists().length === 0
+          ) {
+            return; // got a cache clear meanwhile. Cancelling
+          }
+
           ScannerService.ScanAll().then();
         }, 1000 * remainingSeconds);
       }
