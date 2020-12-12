@@ -15,6 +15,12 @@ export default class BeatsaverRateLimitManager {
     return store.getters["appState/beatsaverRateLimit"];
   }
 
+  public static GetRemainingSeconds(): number {
+    const reset = this.GetResetDate();
+    if (reset === undefined) return 0;
+    return Math.ceil((reset.getTime() - new Date().getTime()) / 1000);
+  }
+
   public static NotifyRateLimit(reset: Date) {
     store.commit("appState/SET_BEATSAVER_RATE_LIMIT", reset);
   }

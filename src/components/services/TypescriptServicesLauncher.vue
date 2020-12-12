@@ -10,6 +10,7 @@ import AutoScanLibHandler from "@/libraries/scanner/AutoScanLibHandler";
 import NotificationServiceScanner from "@/libraries/notification/NotificationServiceScanner";
 import UpgradeCheckerService from "@/libraries/app/UpgradeCheckerService";
 import DownloadManager from "@/libraries/net/downloader/DownloadManager";
+import AutoContinueAfterRateLimitedScan from "@/libraries/scanner/AutoContinueAfterRateLimitedScan";
 
 export default Vue.extend({
   name: "TypescriptServicesLauncher",
@@ -26,6 +27,7 @@ export default Vue.extend({
       this.DiscordRichPresence();
 
       AutoScanLibHandler.register();
+      AutoContinueAfterRateLimitedScan.register();
       NotificationServiceScanner.Initialize();
       UpgradeCheckerService.Initialize();
       DownloadManager.Initialize();
