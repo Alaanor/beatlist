@@ -28,8 +28,21 @@ export default class BeatsaverCacheManager {
       const diffInMs = new Date().getTime() - existingBeatmap.date.getTime();
       const isOlderThan10Day = diffInMs / OneDayInMs > 10;
 
-      if (!isOlderThan10Day) {
+      const isRateLimited =
+        existingBeatmap.loadState.errorType ===
+        BeatsaverItemLoadError.BeatsaverRateLimited;
+      const isTimeout =
+        existingBeatmap.loadState.errorType ===
+        BeatsaverItemLoadError.RequestTimeout;
+
+      if (!isOlderThan10Day && !isRateLimited && !isTimeout) {
         return existingBeatmap;
+      }
+
+      if (isRateLimited || isTimeout) {
+        BeatsaverCachedLibrary.RemoveInvalid(
+          existingBeatmap.loadState.attemptedSource
+        );
       }
     }
 
@@ -110,6 +123,11 @@ export default class BeatsaverCacheManager {
         item.loadState.errorType =
           BeatsaverItemLoadError.BeatsaverServerNotAvailable;
         item.loadState.errorMessage = `${response.statusCode}: ${response.statusMessage}`;
+        break;
+
+      case BeatSaverAPIResponseStatus.Timeout:
+        item.loadState.errorType = BeatsaverItemLoadError.RequestTimeout;
+        item.loadState.errorMessage = `Request timeout`;
         break;
 
       default:

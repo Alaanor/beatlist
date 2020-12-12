@@ -3,6 +3,7 @@ import Progress, {
   ON_TOTAL_CHANGE,
   ProgressInterface,
 } from "@/libraries/common/Progress";
+import events from "events";
 
 export default class ProgressGroup implements ProgressInterface {
   private _progresses: Progress[] = [];
@@ -10,6 +11,8 @@ export default class ProgressGroup implements ProgressInterface {
   private _done: number = 0;
 
   private _total: number = 0;
+
+  private _eventEmitter: events.EventEmitter = new events.EventEmitter();
 
   public AddProgresses(...progresses: Progress[]) {
     progresses.forEach((progress: Progress) => {
@@ -38,6 +41,7 @@ export default class ProgressGroup implements ProgressInterface {
 
   private plusOne() {
     this._done += 1;
+    this._eventEmitter.emit(ON_PLUS_ONE, this._done);
   }
 
   private computeTotal() {
@@ -52,5 +56,13 @@ export default class ProgressGroup implements ProgressInterface {
     const progress = new Progress();
     this.AddProgresses(progress);
     return progress;
+  }
+
+  public onPlusOne(callback: () => void) {
+    this._eventEmitter.on(ON_PLUS_ONE, callback);
+  }
+
+  public offPlusOne(callback: () => void) {
+    this._eventEmitter.off(ON_PLUS_ONE, callback);
   }
 }

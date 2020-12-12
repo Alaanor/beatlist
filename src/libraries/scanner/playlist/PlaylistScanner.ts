@@ -27,7 +27,7 @@ export default class PlaylistScanner
       this.result.removedItems = diff.removed.length;
       this.result.keptItems = diff.kept.length;
 
-      await this.checkForChange(diff.kept);
+      await this.checkForChange(diff.kept, progressGroup);
 
       const allPlaylists = this.MergeWithExistingPlaylists(diff);
       PlaylistLibrary.UpdateAllPlaylist(allPlaylists);
@@ -81,10 +81,16 @@ export default class PlaylistScanner
     return this.result.newItems.concat(existingPlaylist);
   }
 
-  private async checkForChange(paths: string[]): Promise<void[]> {
+  private async checkForChange(
+    paths: string[],
+    progress: ProgressGroup
+  ): Promise<void[]> {
     return Promise.all(
       paths.map(async (path: string) => {
-        const newPlaylist = await PlaylistLoader.Load(path);
+        const newPlaylist = await PlaylistLoader.Load(
+          path,
+          progress.getNewOne()
+        );
         const fileHash = newPlaylist.hash;
         const libHash = PlaylistLibrary.GetByPath(path)?.hash;
 

@@ -74,21 +74,15 @@ export default Vue.extend({
     },
   },
   mounted(): void {
-    ScannerService.onBindBeatmapProgress(() => {
-      this.progress.beatmap = new Progress();
-      return this.progress.beatmap;
-    });
+    this.updateProgressListener();
 
-    ScannerService.onBindPlaylistProgress(() => {
-      this.progress.playlist = new ProgressGroup();
-      return this.progress.playlist;
-    });
-
+    ScannerService.onScanStart(this.updateProgressListener);
     ScannerService.onStatusDialogRequestOpen(this.onStatusDialogRequestOpen);
     ScannerService.onScanCompleted(this.onScanCompleted);
     ScannerService.onScanningStateUpdate(this.onScanningStateUpdate);
   },
   beforeDestroy(): void {
+    ScannerService.offScanStart(this.updateProgressListener);
     ScannerService.offStatusDialogRequestOpen(this.onStatusDialogRequestOpen);
     ScannerService.offScanCompleted(this.onScanCompleted);
     ScannerService.offScanningStateUpdate(this.onScanningStateUpdate);
@@ -100,6 +94,7 @@ export default Vue.extend({
     },
     onStatusDialogRequestOpen(): void {
       this.dialog = true;
+      this.updateProgressListener();
     },
     onScanningStateUpdate(): void {
       this.scanningBeatmap = ScannerService.scanning.beatmap;
@@ -107,6 +102,16 @@ export default Vue.extend({
     },
     onScanCompleted(): void {
       this.dialog = false;
+      ScannerService.beatmapProgress.offPlusOne(this.updateProgress);
+      ScannerService.playlistProgress.offPlusOne(this.updateProgress);
+    },
+    updateProgressListener(): void {
+      ScannerService.beatmapProgress.onPlusOne(this.updateProgress);
+      ScannerService.playlistProgress.onPlusOne(this.updateProgress);
+    },
+    updateProgress(): void {
+      this.progress.beatmap = ScannerService.beatmapProgress;
+      this.progress.playlist = ScannerService.playlistProgress;
     },
   },
 });

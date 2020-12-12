@@ -98,6 +98,13 @@ export default class JsonDeserializer extends PlaylistDeserializer {
           error: PlaylistMapImportError.BeatsaverRequestError,
           errorInfo: "Reached the rate limit",
         };
+
+      case BeatsaverItemLoadError.RequestTimeout:
+        return {
+          error: PlaylistMapImportError.BeatsaverRequestError,
+          errorInfo: "Request timeout",
+        };
+
       case BeatsaverItemLoadError.Unknown:
       default:
         return { error: PlaylistMapImportError.Unknown, errorInfo: "Unknown" };

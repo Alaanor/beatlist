@@ -7,6 +7,7 @@ export enum BeatsaverItemLoadError {
   InvalidDataReceivedFromBeatsaver = 2,
   BeatsaverRateLimited = 3,
   Unknown = 4,
+  RequestTimeout = 5,
 }
 
 export interface BeatsaverItemLoadState {

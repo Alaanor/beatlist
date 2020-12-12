@@ -1,8 +1,9 @@
 <template>
   <div>
     <Tooltip text="Scanner" right>
-      <v-btn icon :loading="scanning" @click="openScannerDialog()">
-        <v-icon>find_in_page</v-icon>
+      <v-btn icon @click="openScannerDialog()">
+        <v-icon v-if="scanning" class="fa-spin">autorenew</v-icon>
+        <v-icon v-else>find_in_page</v-icon>
       </v-btn>
     </Tooltip>
   </div>

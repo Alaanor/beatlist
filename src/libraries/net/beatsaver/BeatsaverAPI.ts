@@ -1,6 +1,7 @@
 import http from "http";
 import { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import AxiosCachedFactory from "@/libraries/net/AxiosCachedFactory";
+import BeatsaverRateLimitManager from "@/libraries/net/beatsaver/BeatsaverRateLimitManager";
 import {
   BeatsaverBeatmap,
   BeatsaverPage,
@@ -21,7 +22,8 @@ export type BeatSaverAPIResponse<T> =
   | BeatSaverAPIResponseDataFound<T>
   | BeatSaverAPIResponseDataInvalid
   | BeatSaverAPIResponseDataRateLimited
-  | BeatSaverAPIResponseDataInexistent;
+  | BeatSaverAPIResponseDataInexistent
+  | BeatSaverAPIResponseDataTimeout;
 
 export interface BeatSaverAPIResponseDataFound<T> {
   status: BeatSaverAPIResponseStatus.ResourceFound;
@@ -48,12 +50,17 @@ export interface BeatSaverAPIResponseDataInexistent {
   statusMessage: string;
 }
 
+export interface BeatSaverAPIResponseDataTimeout {
+  status: BeatSaverAPIResponseStatus.Timeout;
+}
+
 export enum BeatSaverAPIResponseStatus {
   ResourceFound = 0, // 200
   ResourceNotFound = 1, // 404
   ResourceFoundButInvalidData = 2, // 200 but data is not what we expected
   ServerNotAvailable = 3, // the rest
   RateLimited = 4, // rate-limit-remaining headers is at 0
+  Timeout = 5, // timeout
 }
 
 export default class BeatsaverAPI {
@@ -124,6 +131,10 @@ export default class BeatsaverAPI {
     apiPath: string,
     validation?: (data: any) => boolean
   ): Promise<BeatSaverAPIResponse<T>> {
+    if (BeatsaverRateLimitManager.HasHitRateLimit()) {
+      return BeatsaverAPI.RateLimitedAnswer<T>();
+    }
+
     return this.http
       .get(apiPath, {
         validateStatus: (status: number) => status === 200,
@@ -159,8 +170,12 @@ export default class BeatsaverAPI {
   }
 
   private static handleResourceNotFoundCase<T>(error: AxiosError) {
-    if (error.response?.headers["rate-limit-remaining"] === 0) {
+    if (error.response?.status === 429) {
       return BeatsaverAPI.handleRateLimitedCase<T>(error);
+    }
+
+    if (error.code === "ECONNABORTED") {
+      return BeatsaverAPI.handleTimeoutCase<T>();
     }
 
     return {
@@ -181,7 +196,8 @@ export default class BeatsaverAPI {
     let resetHeader = error.response?.headers["rate-limit-reset"];
 
     if (resetHeader !== undefined) {
-      resetHeader = new Date(resetHeader);
+      resetHeader = new Date(resetHeader * 1000); // sec to ms
+      BeatsaverRateLimitManager.NotifyRateLimit(resetHeader);
     }
 
     return {
@@ -189,6 +205,21 @@ export default class BeatsaverAPI {
       remaining: remainingHeader,
       resetAt: resetHeader,
       total: totalHeader,
+    } as BeatSaverAPIResponse<T>;
+  }
+
+  private static handleTimeoutCase<T>() {
+    return {
+      status: BeatSaverAPIResponseStatus.Timeout,
+    } as BeatSaverAPIResponse<T>;
+  }
+
+  private static RateLimitedAnswer<T>() {
+    return {
+      status: BeatSaverAPIResponseStatus.RateLimited,
+      remaining: 0,
+      resetAt: BeatsaverRateLimitManager.GetResetDate(),
+      total: undefined,
     } as BeatSaverAPIResponse<T>;
   }
 }

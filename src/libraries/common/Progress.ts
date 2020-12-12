@@ -45,4 +45,12 @@ export default class Progress implements ProgressInterface {
   public on(event: string | symbol, listener: (...args: any[]) => void) {
     this._eventEmitter.on(event, listener);
   }
+
+  public onPlusOne(callback: () => void) {
+    this._eventEmitter.on(ON_PLUS_ONE, callback);
+  }
+
+  public offPlusOne(callback: () => void) {
+    this._eventEmitter.off(ON_PLUS_ONE, callback);
+  }
 }

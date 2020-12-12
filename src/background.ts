@@ -122,15 +122,25 @@ class Background {
       return;
     }
 
-    const filter = {
-      urls: ["*://*.bsaber.com/*"],
-    };
-
     this.win.webContents.session.webRequest.onHeadersReceived(
-      filter,
+      { urls: ["*://*.bsaber.com/*"] },
       (details, callback) => {
         if (details.responseHeaders) {
           details.responseHeaders["access-control-allow-origin"] = ["*"];
+        }
+
+        callback({ responseHeaders: details.responseHeaders });
+      }
+    );
+
+    this.win.webContents.session.webRequest.onHeadersReceived(
+      { urls: ["*://*.beatsaver.com/*"] },
+      (details, callback) => {
+        if (details.responseHeaders) {
+          details.responseHeaders["access-control-allow-origin"] = ["*"];
+          details.responseHeaders["Access-Control-Expose-Headers"] = [
+            "rate-limit-remaining, rate-limit-total, rate-limit-reset",
+          ];
         }
 
         callback({ responseHeaders: details.responseHeaders });

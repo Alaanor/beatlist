@@ -7,7 +7,7 @@ import {
 import Progress from "@/libraries/common/Progress";
 import BeatsaverCacheManager from "@/libraries/beatmap/repo/BeatsaverCacheManager";
 
-const MAX_CONCURRENCY_ITEM = 25;
+const MAX_CONCURRENCY_ITEM = 3;
 
 export default class PlaylistDeserializeBeatsaverBeatmap {
   public static async fromHash(hash: string): Promise<BeatsaverItem> {

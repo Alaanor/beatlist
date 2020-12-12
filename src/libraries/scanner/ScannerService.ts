@@ -14,6 +14,14 @@ const ON_REQUEST_DIALOG_OPEN = "on_request_dialog_open";
 const ON_SCANNING_STATE_UPDATE = "on_scanning_state_update";
 
 export default class ScannerService {
+  static get playlistProgress(): ProgressGroup {
+    return this._playlistProgress;
+  }
+
+  static get beatmapProgress(): Progress {
+    return this._beatmapProgress;
+  }
+
   public static get isScanning(): boolean {
     return this.locked;
   }
@@ -47,13 +55,9 @@ export default class ScannerService {
     | "all"
     | undefined = undefined;
 
-  private static beatmapProgress?: Progress;
+  private static _beatmapProgress: Progress = new Progress();
 
-  private static playlistProgress?: ProgressGroup;
-
-  private static beatmapProgressGetter?: () => Progress;
-
-  private static playlistProgressGetter?: () => ProgressGroup;
+  private static _playlistProgress: ProgressGroup = new ProgressGroup();
 
   public static async ScanAll(): Promise<void> {
     if (this.locked) return undefined;
@@ -69,14 +73,11 @@ export default class ScannerService {
     this.scanningBeatmap = true;
     this.locked = true;
     this.operation = this.operation ?? "beatmap";
+    this._beatmapProgress = new Progress();
     this.eventEmitter.emit(ON_SCAN_START);
 
-    if (this.beatmapProgressGetter) {
-      this.beatmapProgress = this.beatmapProgressGetter();
-    }
-
     return new BeatmapScanner()
-      .scanAll(this.beatmapProgress)
+      .scanAll(this._beatmapProgress)
       .then((result: BeatmapScannerResult) => {
         this.locked = false;
         this.scanningBeatmap = false;
@@ -91,14 +92,11 @@ export default class ScannerService {
     this.scanningPlaylist = true;
     this.locked = true;
     this.operation = this.operation ?? "playlist";
+    this._playlistProgress = new ProgressGroup();
     this.eventEmitter.emit(ON_SCAN_START);
 
-    if (this.playlistProgressGetter) {
-      this.playlistProgress = this.playlistProgressGetter();
-    }
-
     return new PlaylistScanner()
-      .scanAll(this.playlistProgress)
+      .scanAll(this._playlistProgress)
       .then((result: PlaylistScannerResult) => {
         this.locked = false;
         this.scanningPlaylist = false;
@@ -126,14 +124,6 @@ export default class ScannerService {
       default:
         break;
     }
-  }
-
-  public static onBindBeatmapProgress(callback: () => Progress) {
-    this.beatmapProgressGetter = callback;
-  }
-
-  public static onBindPlaylistProgress(callback: () => ProgressGroup) {
-    this.playlistProgressGetter = callback;
   }
 
   public static requestDialogToBeOpened() {
