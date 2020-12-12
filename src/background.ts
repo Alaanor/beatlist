@@ -137,6 +137,7 @@ class Background {
       { urls: ["*://*.beatsaver.com/*"] },
       (details, callback) => {
         if (details.responseHeaders) {
+          details.responseHeaders["access-control-allow-origin"] = ["*"];
           details.responseHeaders["Access-Control-Expose-Headers"] = [
             "rate-limit-remaining, rate-limit-total, rate-limit-reset",
           ];

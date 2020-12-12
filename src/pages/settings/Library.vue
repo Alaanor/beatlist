@@ -14,15 +14,7 @@
           cols="auto"
           class="d-flex align-center justify-center flex-column py-0"
         >
-          <v-btn
-            :disabled="isScanning || !installationPathValid || isRateLimited"
-            :loading="isScanning"
-            color="success"
-            class="my-2"
-            @click="scan()"
-          >
-            Update library
-          </v-btn>
+          <ScanAllButton color="success" />
           <v-btn
             :disabled="canClearCache()"
             color="warning"
@@ -174,6 +166,7 @@ import BeatsaverCachedLibrary from "@/libraries/beatmap/repo/BeatsaverCachedLibr
 import InvalidBeatsaverBeatmapDialog from "@/components/dialogs/InvalidBeatsaverBeatmapDialog.vue";
 import NotificationServiceScanner from "@/libraries/notification/NotificationServiceScanner";
 import Tooltip from "@/components/helper/Tooltip.vue";
+import ScanAllButton from "@/components/scanner/ScanAllButton.vue";
 
 export default Vue.extend({
   name: "Library",
@@ -184,6 +177,7 @@ export default Vue.extend({
     InvalidPlaylistDialog,
     InvalidPlaylistsMapsDialog,
     InvalidBeatsaverBeatmapDialog,
+    ScanAllButton,
   },
   data: () => ({
     confirmDialog: false,
