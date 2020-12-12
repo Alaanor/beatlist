@@ -7,7 +7,8 @@
       <p v-if="isRateLimited" class="warning--text">
         Currently rate-limited, reset in
         {{ rateLimitResetInSecond }}
-        seconds.
+        seconds. You can continue to use the application, it will continue
+        automatically in background.
       </p>
       <v-row>
         <v-col
