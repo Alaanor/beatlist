@@ -22,6 +22,7 @@ export default class DownloadUnit {
       timeout: DownloadUnit.TimeoutMs,
       headers: {
         "User-Agent": remote.session.defaultSession?.getUserAgent(),
+        "Accept-Language": "en",
       },
     });
 
