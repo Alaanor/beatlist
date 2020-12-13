@@ -2,13 +2,13 @@ import http from "http";
 import { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import AxiosCachedFactory from "@/libraries/net/AxiosCachedFactory";
 import BeatsaverRateLimitManager from "@/libraries/net/beatsaver/BeatsaverRateLimitManager";
+import BeatsaverServerUrl from "@/libraries/net/beatsaver/BeatsaverServerUrl";
 import {
   BeatsaverBeatmap,
   BeatsaverPage,
   isBeatsaverBeatmap,
 } from "./BeatsaverBeatmap";
 
-const API_BASE_URL = "https://beatsaver.com/api";
 const GET_BY_HASH = "maps/by-hash";
 const GET_BY_KEY = "maps/detail";
 const SEARCH = "search/text";
@@ -69,7 +69,7 @@ export default class BeatsaverAPI {
   public http: AxiosInstance;
 
   public constructor() {
-    this.http = AxiosCachedFactory.getAxios(API_BASE_URL);
+    this.http = AxiosCachedFactory.getAxios(BeatsaverServerUrl.Beatsaver);
   }
 
   public async getBeatmapByHash(
@@ -125,6 +125,10 @@ export default class BeatsaverAPI {
     page: number = 0
   ): Promise<BeatSaverAPIResponse<BeatsaverPage>> {
     return this.makeRequest<BeatsaverPage>(`${GET_BY_RATING}/${page}`);
+  }
+
+  public updateBaseUrl(baseUrl: BeatsaverServerUrl) {
+    this.http = AxiosCachedFactory.getAxios(baseUrl);
   }
 
   private async makeRequest<T>(
