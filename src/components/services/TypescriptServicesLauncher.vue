@@ -13,6 +13,7 @@ import DownloadManager from "@/libraries/net/downloader/DownloadManager";
 import AutoContinueAfterRateLimitedScan from "@/libraries/scanner/AutoContinueAfterRateLimitedScan";
 import BeatsaverAPI from "@/libraries/net/beatsaver/BeatsaverAPI";
 import store from "@/plugins/store";
+import BeatsaverServerUrl from "@/libraries/net/beatsaver/BeatsaverServerUrl";
 
 export default Vue.extend({
   name: "TypescriptServicesLauncher",
@@ -39,7 +40,9 @@ export default Vue.extend({
       DiscordRichPresence.SetVisibility(this.enableDiscordRichPresence);
     },
     BeatsaverServerUrl() {
-      const server = store.getters["settings/beatsaverServerUrl"];
+      const server =
+        store.getters["settings/beatsaverServerUrl"] ??
+        BeatsaverServerUrl.Beatsaver;
       BeatsaverAPI.Singleton.updateBaseUrl(server);
     },
   },
