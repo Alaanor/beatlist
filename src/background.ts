@@ -123,18 +123,7 @@ class Background {
     }
 
     this.win.webContents.session.webRequest.onHeadersReceived(
-      { urls: ["*://*.bsaber.com/*"] },
-      (details, callback) => {
-        if (details.responseHeaders) {
-          details.responseHeaders["access-control-allow-origin"] = ["*"];
-        }
-
-        callback({ responseHeaders: details.responseHeaders });
-      }
-    );
-
-    this.win.webContents.session.webRequest.onHeadersReceived(
-      { urls: ["*://*.beatsaver.com/*"] },
+      { urls: ["*://*.bsaber.com/*", "*://*.beatsaver.com/*"] },
       (details, callback) => {
         if (details.responseHeaders) {
           details.responseHeaders["access-control-allow-origin"] = ["*"];
