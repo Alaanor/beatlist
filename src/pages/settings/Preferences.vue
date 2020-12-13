@@ -32,6 +32,18 @@
       dense
       filled
     />
+    <p class="title pt-5">Beatsaver</p>
+    <v-select
+      v-model="beatsaverServerUrl"
+      :items="beatsaverUrlList"
+      class="pt-7"
+      color="accent"
+      label="Beatsaver server url"
+      messages="Where the request are made. This allow the usage of mirror server."
+      dense
+      inset
+      @change="updateServerUrl"
+    />
     <OneClickSettings />
     <p class="title pt-5">
       Accessibility
@@ -64,6 +76,8 @@ import DiscordRichPresence from "@/libraries/ipc/DiscordRichPresence";
 import PlaylistFormatType from "@/libraries/playlist/PlaylistFormatType";
 import OneClickSettings from "@/pages/settings/components/OneClickSettings.vue";
 import { ColorblindMode } from "@/libraries/app/Colorblind";
+import BeatsaverAPI from "@/libraries/net/beatsaver/BeatsaverAPI";
+import BeatsaverServerUrl from "@/libraries/net/beatsaver/BeatsaverServerUrl";
 
 export default Vue.extend({
   name: "Preferences",
@@ -74,6 +88,7 @@ export default Vue.extend({
     ),
     darkTheme: sync<boolean>("settings/darkTheme"),
     installationPathValid: sync<boolean>("settings/installationPathValid"),
+    beatsaverServerUrl: sync<BeatsaverServerUrl>("settings/beatsaverServerUrl"),
     defaultExportFormat: sync<PlaylistFormatType>(
       "settings/defaultExportFormat"
     ),
@@ -93,10 +108,20 @@ export default Vue.extend({
         (format) =>
           ![PlaylistFormatType.Unset, PlaylistFormatType.Blist].includes(format)
       ),
+    beatsaverUrlList: () =>
+      Object.entries(BeatsaverServerUrl).map((entry) => ({
+        text: `${entry[0]} (${entry[1]})`,
+        value: entry[1],
+      })),
   },
   watch: {
     enableDiscordRichPresence() {
       DiscordRichPresence.SetVisibility(this.enableDiscordRichPresence);
+    },
+  },
+  methods: {
+    updateServerUrl() {
+      BeatsaverAPI.Singleton.updateBaseUrl(this.beatsaverServerUrl);
     },
   },
 });
