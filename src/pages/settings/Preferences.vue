@@ -44,6 +44,9 @@
       inset
       @change="updateServerUrl"
     />
+    <p v-if="isBeatSaverPlus()" class="warning--text caption">
+      Be aware that BeatSaberPlus is an unofficial mirror of Beatsaver.
+    </p>
     <OneClickSettings />
     <p class="title pt-5">
       Accessibility
@@ -120,6 +123,9 @@ export default Vue.extend({
     },
   },
   methods: {
+    isBeatSaverPlus() {
+      return this.beatsaverServerUrl === BeatsaverServerUrl.BeatSaberPlus;
+    },
     updateServerUrl() {
       BeatsaverAPI.Singleton.updateBaseUrl(this.beatsaverServerUrl);
     },
