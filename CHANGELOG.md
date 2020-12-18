@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.2.3 (18/12/2020)
+**Features:**
+ - Handling rate limit (#77)
+ - Added a mirror of beatsaver, BeatSaberPlus, available in options (#79)
+
+**Improvement:**
+ - If you had a lot of playlist, beatlist could be slow. It should now handle better. (#79)
+
+**Bug fixes**:
+ - Download should now work again (#78)
+
 ## v1.2.2 (02/09/2020)
 **Improvement:**
  - Added a way to display in which playlist(s) a beatmap is the table (#40, #65)
