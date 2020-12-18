@@ -6,7 +6,7 @@
  - Added a mirror of beatsaver, BeatSaberPlus, available in options (#79)
 
 **Improvement:**
- - If you had a lot of playlist, beatlist could be slow. It should now handle better. (#79)
+ - If you had a lot of playlist, beatlist could be slow. It should now handle better. (#75)
 
 **Bug fixes**:
  - Download should now work again (#78)
