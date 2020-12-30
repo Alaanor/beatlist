@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.2.4 (30/12/2020)
+**Bug fixes**:
+ - Do not remove the playlist thumbnail when adding songs. (#80, #82)
+
+This is the final version of beatlist, and the repo will be archived. See README.MD for more information.
+
 ## v1.2.3 (18/12/2020)
 **Features:**
  - Handling rate limit (#77)

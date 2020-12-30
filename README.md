@@ -11,9 +11,6 @@
     <img src="https://img.shields.io/badge/roadmap-notion.so-informational" alt="notion.so roadmap">
   </a>
   <img src="https://img.shields.io/github/downloads/Alaanor/Beatlist/latest/total" alt="GitHub latest release download count">
-  <a href="https://discord.gg/f5AmKSH">
-    <img src="https://discordapp.com/api/guilds/636966918741557280/widget.png" alt="discord server"> 
-  </a>
   <br>
   <a href="https://sonarcloud.io/dashboard?id=Alaanor_beatlist">
     <img src="https://sonarcloud.io/api/project_badges/measure?project=Alaanor_beatlist&metric=alert_status" alt="Quality Gate Status">
@@ -22,6 +19,12 @@
     <img src="https://github.com/Alaanor/beatlist/workflows/Node.js%20CI/badge.svg" alt="Node.js CI">
   </a>
 </p>
+
+# Archived
+
+Beatlist has been archived as of December 30, 2020. While beatlist may continue to work for some, it has some problems.
+Fixing these issues will result in some work, and with complete transparency I do not have the time to maintain this repository anymore.
+I do believe this asset may still find use with some people, however, I will offer no continued support.
 
 # Beatlist
 
